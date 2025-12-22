@@ -1,0 +1,82 @@
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+let supabase: SupabaseClient | null = null;
+
+/**
+ * Check if Supabase is configured
+ */
+export const isSupabaseConfigured = (): boolean => {
+  return !!(
+    supabaseUrl &&
+    supabaseAnonKey &&
+    supabaseUrl !== "your-project-url" &&
+    supabaseAnonKey !== "your-anon-key"
+  );
+};
+
+/**
+ * Initialize Supabase client if configured
+ */
+export const initSupabase = (): SupabaseClient | null => {
+  if (!isSupabaseConfigured()) {
+    return null;
+  }
+
+  if (!supabase) {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  }
+
+  return supabase;
+};
+
+/**
+ * Get Supabase client (throws if not configured)
+ */
+export const getSupabase = (): SupabaseClient => {
+  if (!isSupabaseConfigured()) {
+    throw new Error("Supabase is not configured. Please complete the setup wizard.");
+  }
+
+  if (!supabase) {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  }
+
+  return supabase;
+};
+
+/**
+ * Test Supabase connection
+ */
+export const testSupabaseConnection = async (
+  url: string,
+  key: string
+): Promise<{ success: boolean; error?: string }> => {
+  try {
+    const testClient = createClient(url, key);
+    // Try to get the current session to test the connection
+    const { error } = await testClient.auth.getSession();
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to connect to Supabase",
+    };
+  }
+};
+
+// Initialize on module load if configured
+if (isSupabaseConfigured()) {
+  initSupabase();
+}
+
+// Export for backward compatibility (will be null if not configured)
+// Note: This export may be null if Supabase is not configured
+export { supabase };
