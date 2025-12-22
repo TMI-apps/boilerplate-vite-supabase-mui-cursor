@@ -34,3 +34,6 @@ coverage
 
 # Build
 build
+
+# ESLint
+.eslintcache

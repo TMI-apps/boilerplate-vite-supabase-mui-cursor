@@ -33,7 +33,7 @@ git clone https://github.com/TomFranse/boilerplate-vite-supabase-mui-cursor .
 pnpm install
 ```
 
-This clones the boilerplate directly into your current folder, ensuring Cursor indexes from the project root.
+**Note:** You may see TypeScript compilation errors during installation. These are normal and won't prevent the app from running. Vite transpiles TypeScript on the fly for the dev server.
 
 ### Step 2: Start the Development Server
 
@@ -41,7 +41,7 @@ This clones the boilerplate directly into your current folder, ensuring Cursor i
 pnpm dev
 ```
 
-The app will open at `http://localhost:5173/` and automatically redirect you to the setup wizard.
+The app will open at `http://localhost:5173/` (or another port if 5173 is in use) and automatically redirect you to the setup wizard.
 
 ### Step 3: Complete the Setup Wizard
 
@@ -176,6 +176,11 @@ If you skipped Supabase setup initially, you can configure it anytime:
 - Restart the dev server after changing `.env` file
 - Don't commit `.env` to git (it should be in `.gitignore`)
 
+**TypeScript errors during installation or when running `pnpm dev`?**
+- TypeScript compilation errors are normal and won't prevent the app from running
+- Vite handles TypeScript transpilation on the fly for the dev server
+- These errors are typically related to type definitions in node_modules and can be ignored during development
+
 ## Scripts
 
 - `pnpm dev` - Start development server
@@ -274,6 +279,3 @@ GitHub Actions workflow runs on every push/PR:
 3. Ensure all checks pass (`pnpm lint`, `pnpm format:check`, `pnpm test`)
 4. Update CHANGELOG.md for significant changes
 
-## License
-
-MIT
