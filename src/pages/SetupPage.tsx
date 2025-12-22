@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { CheckCircle, Error as ErrorIcon, ContentCopy } from "@mui/icons-material";
 import { isSupabaseConfigured, testSupabaseConnection } from "@shared/services/supabaseService";
+import { testAirtableConnection } from "@shared/services/airtableService";
 import {
   saveCustomTheme,
   validateThemeOptions,
@@ -28,14 +29,21 @@ import {
 } from "@shared/theme/theme";
 import { skipSupabaseSetup } from "@utils/setupUtils";
 
-type SetupStep = "credentials" | "hosting" | "database" | "theme" | "complete";
+type SetupStep = "credentials" | "airtable" | "hosting" | "database" | "theme" | "complete";
 
 export const SetupPage = () => {
   const [activeStep, setActiveStep] = useState<SetupStep>("credentials");
   const [supabaseUrl, setSupabaseUrl] = useState("");
   const [supabaseKey, setSupabaseKey] = useState("");
+  const [airtableApiKey, setAirtableApiKey] = useState("");
+  const [airtableBaseId, setAirtableBaseId] = useState("");
+  const [airtableTableId, setAirtableTableId] = useState("");
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; error?: string } | null>(null);
+  const [airtableTestResult, setAirtableTestResult] = useState<{
+    success: boolean;
+    error?: string;
+  } | null>(null);
   const [copied, setCopied] = useState(false);
   const [themeJson, setThemeJson] = useState("");
   const [themeValidation, setThemeValidation] = useState<{ valid: boolean; error?: string } | null>(
@@ -64,13 +72,39 @@ export const SetupPage = () => {
     setTesting(false);
 
     if (result.success) {
-      setActiveStep("database");
+      setActiveStep("airtable");
     }
   };
 
   const handleCopyEnv = () => {
     const envContent = `VITE_SUPABASE_URL=${supabaseUrl}
 VITE_SUPABASE_ANON_KEY=${supabaseKey}`;
+    navigator.clipboard.writeText(envContent);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleTestAirtableConnection = async () => {
+    if (!airtableApiKey || !airtableBaseId || !airtableTableId) {
+      setAirtableTestResult({
+        success: false,
+        error: "Please enter API key, Base ID, and Table ID",
+      });
+      return;
+    }
+
+    setTesting(true);
+    setAirtableTestResult(null);
+
+    const result = await testAirtableConnection(airtableApiKey, airtableBaseId, airtableTableId);
+    setAirtableTestResult(result);
+    setTesting(false);
+  };
+
+  const handleCopyAirtableEnv = () => {
+    const envContent = `VITE_AIRTABLE_API_KEY=${airtableApiKey}
+VITE_AIRTABLE_BASE_ID=${airtableBaseId}
+VITE_AIRTABLE_TABLE_ID=${airtableTableId}`;
     navigator.clipboard.writeText(envContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -110,6 +144,7 @@ VITE_SUPABASE_ANON_KEY=${supabaseKey}`;
 
   const steps = [
     { label: "Configure Supabase", step: "credentials" as SetupStep },
+    { label: "Configure Airtable (Optional)", step: "airtable" as SetupStep },
     { label: "Set Up Database", step: "database" as SetupStep },
     { label: "Configure Hosting", step: "hosting" as SetupStep },
     { label: "Customize Theme", step: "theme" as SetupStep },
@@ -144,8 +179,8 @@ VITE_SUPABASE_ANON_KEY=${supabaseKey}`;
               Step 1: Configure Supabase Credentials
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              You can configure Supabase to enable authentication and database features. If you don't
-              have a Supabase project yet,{" "}
+              You can configure Supabase to enable authentication and database features. If you
+              don't have a Supabase project yet,{" "}
               <Link href="https://supabase.com" target="_blank" rel="noopener">
                 create a free account
               </Link>
@@ -280,6 +315,181 @@ VITE_SUPABASE_ANON_KEY=${supabaseKey}`;
           </Box>
         )}
 
+        {activeStep === "airtable" && (
+          <Box>
+            <Typography variant="h5" gutterBottom>
+              Step 2: Configure Airtable (Optional)
+            </Typography>
+            <Typography variant="body2" color="text.secondary" paragraph>
+              You can configure Airtable as an alternative data backend. Airtable is data-only;
+              authentication still requires Supabase. If you don't have an Airtable account yet,{" "}
+              <Link href="https://airtable.com" target="_blank" rel="noopener">
+                create a free account
+              </Link>
+              . You can also skip this step and use Supabase or browser storage.
+            </Typography>
+
+            <Alert severity="info" sx={{ mb: 3 }}>
+              <Typography variant="body2">
+                <strong>Note:</strong> To use Airtable, you'll need:
+              </Typography>
+              <List dense>
+                <ListItem>
+                  <ListItemText primary="• Personal Access Token (from Airtable account settings)" />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="• Base ID (found in your base's API documentation)" />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="• Table ID (the name of your table, e.g., 'Todos')" />
+                </ListItem>
+              </List>
+            </Alert>
+
+            <Box sx={{ my: 3 }}>
+              <TextField
+                label="Airtable API Key"
+                value={airtableApiKey}
+                onChange={(e) => setAirtableApiKey(e.target.value)}
+                fullWidth
+                margin="normal"
+                type="password"
+                placeholder="pat..."
+                helperText="Personal Access Token from Airtable account settings"
+              />
+              <TextField
+                label="Airtable Base ID"
+                value={airtableBaseId}
+                onChange={(e) => setAirtableBaseId(e.target.value)}
+                fullWidth
+                margin="normal"
+                placeholder="app..."
+                helperText="Found in your base's API documentation"
+              />
+              <TextField
+                label="Airtable Table ID"
+                value={airtableTableId}
+                onChange={(e) => setAirtableTableId(e.target.value)}
+                fullWidth
+                margin="normal"
+                placeholder="Todos"
+                helperText="The name of your table (e.g., 'Todos')"
+              />
+            </Box>
+
+            {airtableTestResult && (
+              <Alert
+                severity={airtableTestResult.success ? "success" : "error"}
+                icon={airtableTestResult.success ? <CheckCircle /> : <ErrorIcon />}
+                sx={{ mb: 2 }}
+              >
+                {airtableTestResult.success
+                  ? "Connection successful! You can proceed to the next step."
+                  : `Connection failed: ${airtableTestResult.error}`}
+              </Alert>
+            )}
+
+            <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
+              <Button variant="contained" onClick={handleTestAirtableConnection} disabled={testing}>
+                {testing ? "Testing..." : "Test Connection"}
+              </Button>
+              <Button variant="outlined" onClick={() => setActiveStep("database")}>
+                Skip Airtable Setup
+              </Button>
+            </Box>
+
+            {airtableTestResult?.success && (
+              <Box sx={{ mt: 4 }}>
+                <Typography variant="h6" gutterBottom>
+                  Next: Add to .env file
+                </Typography>
+                <Typography variant="body2" color="text.secondary" paragraph>
+                  Copy these values to your{" "}
+                  <Typography
+                    component="code"
+                    sx={{ bgcolor: "grey.200", px: 0.5, borderRadius: 0.5 }}
+                  >
+                    .env
+                  </Typography>{" "}
+                  file in the project root:
+                </Typography>
+                <Card variant="outlined" sx={{ mb: 2 }}>
+                  <CardContent>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          component="code"
+                          sx={{
+                            display: "block",
+                            mb: 1,
+                            bgcolor: "grey.200",
+                            px: 0.5,
+                            borderRadius: 0.5,
+                          }}
+                        >
+                          VITE_AIRTABLE_API_KEY={airtableApiKey}
+                        </Typography>
+                        <Typography
+                          component="code"
+                          sx={{
+                            display: "block",
+                            mb: 1,
+                            bgcolor: "grey.200",
+                            px: 0.5,
+                            borderRadius: 0.5,
+                          }}
+                        >
+                          VITE_AIRTABLE_BASE_ID={airtableBaseId}
+                        </Typography>
+                        <Typography
+                          component="code"
+                          sx={{ display: "block", bgcolor: "grey.200", px: 0.5, borderRadius: 0.5 }}
+                        >
+                          VITE_AIRTABLE_TABLE_ID={airtableTableId}
+                        </Typography>
+                      </Box>
+                      <Button
+                        startIcon={<ContentCopy />}
+                        onClick={handleCopyAirtableEnv}
+                        variant="outlined"
+                        size="small"
+                      >
+                        {copied ? "Copied!" : "Copy"}
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+                <Alert severity="info" sx={{ mb: 2 }}>
+                  <Typography variant="body2">
+                    <strong>Important:</strong> After adding these to your{" "}
+                    <Typography
+                      component="code"
+                      sx={{ bgcolor: "grey.200", px: 0.5, borderRadius: 0.5 }}
+                    >
+                      .env
+                    </Typography>{" "}
+                    file, restart your development server for the changes to take effect.
+                  </Typography>
+                </Alert>
+                <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+                  <Button variant="outlined" onClick={() => setActiveStep("credentials")}>
+                    Back
+                  </Button>
+                  <Button variant="contained" onClick={() => setActiveStep("database")}>
+                    I've added the .env file
+                  </Button>
+                </Box>
+              </Box>
+            )}
+          </Box>
+        )}
+
         {activeStep === "database" && (
           <Box>
             <Typography variant="h5" gutterBottom>
@@ -391,7 +601,7 @@ CREATE POLICY "Users can manage their own todos"
             </Alert>
 
             <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
-              <Button variant="outlined" onClick={() => setActiveStep("credentials")}>
+              <Button variant="outlined" onClick={() => setActiveStep("airtable")}>
                 Back
               </Button>
               <Button variant="contained" onClick={() => setActiveStep("hosting")}>

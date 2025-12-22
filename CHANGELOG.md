@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-01-28
+
+### Added
+
+- Airtable integration as alternative data backend
+- Data provider abstraction layer using Strategy pattern
+- Airtable configuration step in setup wizard
+- Support for multiple data backends (Supabase, Airtable, Browser Storage)
+- Automatic provider selection based on configuration priority
+- Airtable field mapping utilities for Todo feature
+- Environment variables for Airtable configuration (`VITE_AIRTABLE_API_KEY`, `VITE_AIRTABLE_BASE_ID`, `VITE_AIRTABLE_TABLE_ID`)
+
+### Changed
+
+- Refactored todo service to use provider pattern for better extensibility
+- Data backend priority: Supabase → Airtable → Browser Storage
+- Setup wizard now includes optional Airtable configuration step
+- Improved code organization with provider abstraction layer
+
+### Technical
+
+- Added `airtable` npm package dependency
+- Created `DataProvider` interface for backend abstraction
+- Implemented `SupabaseProvider`, `AirtableProvider`, and `BrowserStorageProvider`
+- Provider factory pattern for automatic backend selection
+
 ## [0.2.0] - 2025-01-27
 
 ### Added

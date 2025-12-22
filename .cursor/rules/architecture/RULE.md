@@ -132,7 +132,11 @@ The best way to stop subjectivity is to automate the punishment for breaking rul
 - Use clear, descriptive section headings
 
 ### Documentation Location
-- Store architecture documentation in `documentation/architecture.md` (or project-specific location)
+- **ARCHITECTURE.md** and **CHANGELOG.md** must be in the project root directory (not in `documentation/` folder)
+- These files are project-wide references that need to be easily discoverable
+- The root location follows standard conventions (Keep a Changelog format) and ensures README references work correctly
+- **If these files are found in the wrong location (e.g., `documentation/` folder), they must be moved to the root directory**
+- Other project-specific documentation can be stored in `documentation/` folder (e.g., implementation plans, job-specific docs)
 - Document major architectural decisions and patterns
 - Include diagrams or visual representations when helpful
 - Keep documentation up to date with code changes

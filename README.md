@@ -22,42 +22,92 @@ A modern, production-ready boilerplate for building React applications with Type
 - **pnpm** 8.x or higher (recommended) or npm/yarn
 - **Supabase Account** (optional) - [Sign up here](https://supabase.com) if you want to use authentication and database features
 
-## Installation
+## Quick Start Guide
 
-1. Clone the repository:
+### Step 1: Clone and Install
+
 ```bash
 git clone <your-repo-url>
 cd vite-mui-supabase-starter
-```
-
-2. Install dependencies:
-```bash
 pnpm install
 ```
 
-3. Start the development server:
+### Step 2: Start the Development Server
+
 ```bash
 pnpm dev
 ```
 
-4. Complete the setup wizard:
-   - When you first run the app, a setup wizard will guide you through configuration
-   - **Supabase Setup (Optional)**: You can skip Supabase configuration if you want to start building frontend features first
-     - If skipped: Todos will be saved in your browser's local storage
-     - If configured: You'll get authentication and database features with cloud sync
-   - **Theme Customization**: Optional step to customize your app's theme
-   - Access the setup wizard anytime at `/setup` route
+The app will open at `http://localhost:5173/` and automatically redirect you to the setup wizard.
+
+### Step 3: Complete the Setup Wizard
+
+When you first run the app, a setup wizard will guide you through configuration. You have two options:
+
+#### Option A: Skip Supabase (Start Simple) ⚡
+
+- Click **"Skip Database Setup"** in the wizard
+- Todos will work using browser local storage
+- Perfect for frontend development and testing
+- You can configure Supabase later anytime
+
+**What works without Supabase:**
+- ✅ Todos feature (saved in browser)
+- ✅ All UI components and frontend features
+- ✅ Theme customization
+
+#### Option B: Configure Supabase (Full Features) 🚀
+
+1. **Get Supabase Credentials:**
+   - Create a free account at [supabase.com](https://supabase.com)
+   - Create a new project
+   - Go to **Project Settings → API**
+   - Copy your **Project URL** and **anon key**
+
+2. **In the Setup Wizard:**
+   - Enter your Supabase URL and anon key
+   - Click **"Test Connection"**
+   - Copy the environment variables shown
+   - Create a `.env` file in the project root:
+     ```
+     VITE_SUPABASE_URL=your-project-url
+     VITE_SUPABASE_ANON_KEY=your-anon-key
+     ```
+   - **Important:** Restart your dev server (`Ctrl+C` then `pnpm dev` again)
+
+3. **Set Up Database:**
+   - Go to Supabase Dashboard → **SQL Editor**
+   - Run the SQL provided in the wizard (creates the `todos` table)
+   - This enables cloud sync and authentication
+
+4. **Optional: Customize Theme:**
+   - Use the [MUI Theme Creator](https://bareynol.github.io/mui-theme-creator/) to generate a theme JSON
+   - Paste it in the theme step (or skip to use default)
+
+### Step 4: Access Your App
+
+- **Home:** `http://localhost:5173/`
+- **Setup:** `http://localhost:5173/setup` (accessible anytime)
+- **Login:** `http://localhost:5173/login` (if Supabase is configured)
+- **Todos:** `http://localhost:5173/todos`
+
+### That's It! 🎉
+
+Your app is ready to use. You can start building features or customize it to your needs.
+
+**Need to configure Supabase later?** Just navigate to `/setup` in your app and follow the steps.
+
+## Installation
+
+For detailed installation instructions, see the [Quick Start Guide](#quick-start-guide) above.
 
 ### Optional: Manual Supabase Setup
 
-If you prefer to set up Supabase manually instead of using the setup wizard:
+If you prefer to set up Supabase manually instead of using the setup wizard (recommended: use the [setup wizard](#step-3-complete-the-setup-wizard) instead):
 
-1. Create a `.env` file:
-```bash
-cp .env.example .env
-```
+1. Create a `.env` file in the project root directory
 
-2. Edit `.env` and add your Supabase credentials:
+2. Add your Supabase credentials to `.env`:
 ```
 VITE_SUPABASE_URL=your-project-url
 VITE_SUPABASE_ANON_KEY=your-anon-key
@@ -98,12 +148,30 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 
 If you skipped Supabase setup initially, you can configure it anytime:
 
-1. Navigate to `/setup` in your app, or
-2. Run the setup wizard from the app's navigation
-3. Follow the setup steps to configure Supabase credentials
-4. Restart your development server after adding `.env` file
+1. Navigate to `/setup` in your running app
+2. Follow the setup wizard steps to configure Supabase credentials
+3. Create the `.env` file with your credentials (see [Manual Supabase Setup](#optional-manual-supabase-setup))
+4. **Restart your development server** (`Ctrl+C` then `pnpm dev`)
 
 **Note**: Browser-stored todos and Supabase todos are stored separately. When you configure Supabase, you'll start with an empty todos list in the database.
+
+### Troubleshooting
+
+**Setup wizard not appearing?**
+- Make sure you're accessing `http://localhost:5173/` (or the port shown in your terminal)
+- Clear your browser's local storage and reload
+- Check that the dev server is running
+
+**Supabase connection failing?**
+- Verify your credentials are correct (check for typos)
+- Ensure your `.env` file is in the project root (not in `src/`)
+- Make sure you've restarted the dev server after creating `.env`
+- Check that your Supabase project is active and not paused
+
+**Environment variables not working?**
+- Vite requires environment variables to start with `VITE_`
+- Restart the dev server after changing `.env` file
+- Don't commit `.env` to git (it should be in `.gitignore`)
 
 ## Scripts
 

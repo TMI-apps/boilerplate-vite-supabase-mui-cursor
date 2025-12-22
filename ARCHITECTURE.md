@@ -25,7 +25,8 @@ src/
 ├── store/               # Global state management
 │   └── contexts/        # React contexts (AuthContext, etc.)
 ├── shared/              # Shared across features
-│   ├── services/        # Shared services (Supabase client, browser storage)
+│   ├── services/        # Shared services (Supabase client, Airtable client, data providers)
+│   │   └── dataProviders/  # Data provider implementations (Strategy pattern)
 │   ├── types/           # Shared types
 │   └── theme/           # MUI theme configuration
 │       ├── defaultTheme.ts    # Default theme (preserved)
@@ -136,7 +137,8 @@ export const LoginPage = () => {
 | Route-level component | `pages/` |
 | Layout wrapper | `layouts/` |
 | Global state (Context) | `store/contexts/` |
-| Shared service (Supabase, browser storage) | `shared/services/` |
+| Shared service (Supabase, Airtable, data providers) | `shared/services/` |
+| Data provider implementation | `shared/services/dataProviders/` |
 | Utility function | `utils/` |
 
 ### Examples
@@ -292,6 +294,51 @@ Path aliases are configured in `tsconfig.app.json` and `vite.config.ts`:
 - `@utils/*` → `src/utils/*`
 - `@shared/*` → `src/shared/*`
 
+## Data Provider Pattern
+
+The app uses a Strategy pattern for data backends, allowing multiple backend implementations (Supabase, Airtable, Browser Storage) to be used interchangeably.
+
+### Provider Structure
+
+```
+shared/services/
+├── supabaseService.ts          # Supabase client initialization
+├── airtableService.ts          # Airtable client initialization
+└── dataProviders/
+    ├── types.ts                # DataProvider interface
+    ├── providerFactory.ts      # Provider selection logic
+    ├── supabaseProvider.ts     # Supabase implementation
+    ├── airtableProvider.ts     # Airtable implementation
+    └── browserStorageProvider.ts # Browser storage implementation
+```
+
+### How It Works
+
+1. **DataProvider Interface**: Defines the contract all providers must implement
+2. **Provider Implementations**: Each backend (Supabase, Airtable, Browser Storage) implements the interface
+3. **Provider Factory**: Selects the appropriate provider based on configuration
+4. **Priority**: Supabase → Airtable → Browser Storage
+
+### Usage in Services
+
+```typescript
+// services/todoService.ts
+import { getDataProvider } from "@shared/services/dataProviders/providerFactory";
+
+const provider = getDataProvider();
+
+export const createTodo = async (input, userId) => {
+  return provider.createTodo(input, userId);
+};
+```
+
+### Adding a New Provider
+
+1. Create provider class implementing `DataProvider` interface
+2. Add configuration check function (e.g., `isNewBackendConfigured()`)
+3. Update `providerFactory.ts` to include new provider in priority chain
+4. Add environment variables if needed
+
 ## Best Practices
 
 1. **Keep services pure**: Services should be pure functions, no React hooks
@@ -300,6 +347,7 @@ Path aliases are configured in `tsconfig.app.json` and `vite.config.ts`:
 4. **Types in feature folders**: Keep types close to where they're used
 5. **Shared code in shared/**: Only put truly shared code here
 6. **Common components are reusable**: No business logic, just UI
+7. **Use provider pattern for data backends**: Abstract backend implementations behind DataProvider interface
 
 ## Adding a New Feature
 
