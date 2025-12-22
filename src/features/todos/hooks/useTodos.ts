@@ -18,8 +18,12 @@ export const useTodos = (userId: string | null): UseTodosReturn => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (userId) {
+    // For browser storage, userId can be null
+    if (userId !== null) {
       refreshTodos(userId);
+    } else {
+      // Load from browser storage if no userId (Supabase not configured)
+      refreshTodos("");
     }
   }, [userId]);
 
@@ -45,6 +49,12 @@ export const useTodos = (userId: string | null): UseTodosReturn => {
       setTodos([newTodo, ...todos]);
     }
     setLoading(false);
+    // Refresh todos to ensure consistency
+    if (userId !== null) {
+      await refreshTodos(userId);
+    } else {
+      await refreshTodos("");
+    }
   };
 
   const handleUpdateTodo = async (todoId: string, input: UpdateTodoInput) => {

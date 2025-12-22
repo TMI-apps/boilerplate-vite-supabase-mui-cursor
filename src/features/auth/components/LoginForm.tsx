@@ -3,12 +3,14 @@ import { Box, Typography, Alert } from "@mui/material";
 import { Button } from "@common/Button";
 import { Input } from "@common/Input";
 import { useAuthContext } from "@store/contexts/AuthContext";
+import { isSupabaseConfigured } from "@shared/services/supabaseService";
 import type { LoginCredentials } from "../types/auth.types";
 
 export const LoginForm = () => {
   const { login, loading, error } = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const supabaseConfigured = isSupabaseConfigured();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +23,22 @@ export const LoginForm = () => {
       <Typography variant="h5" component="h1" gutterBottom>
         Login
       </Typography>
+      {!supabaseConfigured && (
+        <Alert severity="info" sx={{ mb: 2 }}>
+          <Typography variant="body2">
+            <strong>Note:</strong> Authentication requires Supabase to be configured. Please set up
+            Supabase in the{" "}
+            <Typography
+              component="a"
+              href="/setup"
+              sx={{ color: "primary.main", textDecoration: "underline" }}
+            >
+              setup wizard
+            </Typography>
+            .
+          </Typography>
+        </Alert>
+      )}
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}

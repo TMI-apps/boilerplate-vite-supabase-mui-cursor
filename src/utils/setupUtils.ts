@@ -8,9 +8,23 @@ export const isSetupComplete = (): boolean => {
 };
 
 /**
+ * Check if Supabase setup was skipped
+ */
+export const isSupabaseSkipped = (): boolean => {
+  return localStorage.getItem("supabase_skipped") === "true";
+};
+
+/**
+ * Mark Supabase setup as skipped
+ */
+export const skipSupabaseSetup = (): void => {
+  localStorage.setItem("supabase_skipped", "true");
+};
+
+/**
  * Check if setup wizard should be shown
  */
 export const shouldShowSetup = (): boolean => {
-  // Show setup if not configured OR if setup is not marked as complete
-  return !isSupabaseConfigured() || !isSetupComplete();
+  // Show setup if not configured AND not skipped AND setup is not marked as complete
+  return !isSupabaseConfigured() && !isSupabaseSkipped() && !isSetupComplete();
 };

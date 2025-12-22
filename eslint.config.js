@@ -6,11 +6,19 @@ export default defineConfig([
   {ignores},
   ...gtsConfig,
   {
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json', './tsconfig.app.json'],
+      },
+    },
     rules: {
       // Override GTS's quote rule to match Prettier (double quotes)
       // GTS defaults to single quotes, but Prettier is configured for double quotes
       // This ensures ESLint doesn't conflict with Prettier's formatting
       quotes: ['warn', 'double', { avoidEscape: true }],
+      // Disable React import requirement (using new JSX transform with jsx: "react-jsx")
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
       // Prevent imports from wrong layers - Architecture enforcement
       'no-restricted-imports': [
         'error',

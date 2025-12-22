@@ -21,7 +21,7 @@ export const isSupabaseConfigured = (): boolean => {
  * Initialize Supabase client if configured
  */
 export const initSupabase = (): SupabaseClient | null => {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseConfigured() || !supabaseUrl || !supabaseAnonKey) {
     return null;
   }
 
@@ -36,7 +36,7 @@ export const initSupabase = (): SupabaseClient | null => {
  * Get Supabase client (throws if not configured)
  */
 export const getSupabase = (): SupabaseClient => {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseConfigured() || !supabaseUrl || !supabaseAnonKey) {
     throw new Error("Supabase is not configured. Please complete the setup wizard.");
   }
 

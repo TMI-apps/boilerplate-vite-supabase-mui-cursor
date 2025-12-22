@@ -7,19 +7,20 @@ A modern, production-ready boilerplate for building React applications with Type
 - ⚡️ **Vite** - Fast build tool and dev server
 - ⚛️ **React 19** - Latest React with TypeScript
 - 🎨 **Material-UI (MUI)** - Comprehensive UI component library
-- 🗄️ **Supabase** - Backend-as-a-Service for authentication and database
+- 🗄️ **Supabase** - Backend-as-a-Service for authentication and database (optional)
 - 🧭 **React Router** - Client-side routing
 - 📏 **ESLint + GTS + Prettier** - Code quality and style enforcement (see [ARCHITECTURE.md](./ARCHITECTURE.md#code-quality-tools))
 - 🧪 **Vitest** - Fast unit testing framework
 - 🏗️ **Strict Architecture** - Enforced folder structure and import rules
-- 🔒 **Authentication** - Complete auth flow (login, signup, logout)
-- ✅ **Todos Feature** - Example CRUD implementation
+- 🔒 **Authentication** - Complete auth flow (login, signup, logout) - requires Supabase
+- ✅ **Todos Feature** - Example CRUD implementation with browser storage fallback
+- 💾 **Browser Storage** - Todos work without Supabase using local storage
 
 ## Prerequisites
 
 - **Node.js** 20.x or higher
 - **pnpm** 8.x or higher (recommended) or npm/yarn
-- **Supabase Account** - [Sign up here](https://supabase.com)
+- **Supabase Account** (optional) - [Sign up here](https://supabase.com) if you want to use authentication and database features
 
 ## Installation
 
@@ -34,19 +35,35 @@ cd vite-mui-supabase-starter
 pnpm install
 ```
 
-3. Set up environment variables:
+3. Start the development server:
+```bash
+pnpm dev
+```
+
+4. Complete the setup wizard:
+   - When you first run the app, a setup wizard will guide you through configuration
+   - **Supabase Setup (Optional)**: You can skip Supabase configuration if you want to start building frontend features first
+     - If skipped: Todos will be saved in your browser's local storage
+     - If configured: You'll get authentication and database features with cloud sync
+   - **Theme Customization**: Optional step to customize your app's theme
+   - Access the setup wizard anytime at `/setup` route
+
+### Optional: Manual Supabase Setup
+
+If you prefer to set up Supabase manually instead of using the setup wizard:
+
+1. Create a `.env` file:
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` and add your Supabase credentials:
+2. Edit `.env` and add your Supabase credentials:
 ```
 VITE_SUPABASE_URL=your-project-url
 VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-4. Set up Supabase database:
-   - Create a `todos` table in your Supabase project:
+3. Create a `todos` table in your Supabase project:
    ```sql
    CREATE TABLE todos (
      id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -68,24 +85,57 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
      USING (auth.uid() = user_id);
    ```
 
-5. Start the development server:
-```bash
-pnpm dev
-```
+4. Restart the development server for environment variables to take effect
+
+### Features Without Supabase
+
+- ✅ **Todos**: Works with browser local storage (data saved in your browser)
+- ✅ **Frontend Development**: All UI components and features work independently
+- ❌ **Authentication**: Requires Supabase to be configured
+- ❌ **Cloud Sync**: Todos won't sync across devices without Supabase
+
+### Configuring Supabase Later
+
+If you skipped Supabase setup initially, you can configure it anytime:
+
+1. Navigate to `/setup` in your app, or
+2. Run the setup wizard from the app's navigation
+3. Follow the setup steps to configure Supabase credentials
+4. Restart your development server after adding `.env` file
+
+**Note**: Browser-stored todos and Supabase todos are stored separately. When you configure Supabase, you'll start with an empty todos list in the database.
 
 ## Scripts
 
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
 - `pnpm preview` - Preview production build
-- `pnpm lint` - Run ESLint
-- `pnpm lint:fix` - Fix ESLint errors
-- `pnpm format` - Format code with Prettier
-- `pnpm format:check` - Check code formatting
+- `pnpm lint` - Run ESLint (code quality checks)
+- `pnpm lint:fix` - Auto-fix ESLint errors
+- `pnpm format` - Format all code with Prettier
+- `pnpm format:check` - Check if code is formatted correctly
 - `pnpm type-check` - Run TypeScript type checking
 - `pnpm test` - Run tests
 - `pnpm test:ui` - Run tests with UI
 - `pnpm test:coverage` - Run tests with coverage
+
+### Code Quality Tools
+
+This project uses **GTS**, **ESLint**, and **Prettier** together for code quality and formatting:
+
+- **GTS** (Google TypeScript Style) - Provides pre-configured ESLint rules
+- **ESLint** - Catches bugs and enforces code quality (with custom architecture rules)
+- **Prettier** - Formats code automatically for consistency
+
+**Quick Start:**
+- Format code: `pnpm format`
+- Check for issues: `pnpm lint`
+- Auto-fix issues: `pnpm lint:fix`
+
+**Editor Setup:**
+- Configure your editor to format on save using Prettier
+- ESLint will provide real-time feedback in your IDE
+- See [ARCHITECTURE.md](./ARCHITECTURE.md#code-quality-tools) for detailed documentation
 
 ## Architecture
 

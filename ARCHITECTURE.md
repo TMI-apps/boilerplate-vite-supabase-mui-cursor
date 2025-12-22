@@ -25,7 +25,7 @@ src/
 ├── store/               # Global state management
 │   └── contexts/        # React contexts (AuthContext, etc.)
 ├── shared/              # Shared across features
-│   ├── services/        # Shared services (Supabase client)
+│   ├── services/        # Shared services (Supabase client, browser storage)
 │   ├── types/           # Shared types
 │   └── theme/           # MUI theme configuration
 │       ├── defaultTheme.ts    # Default theme (preserved)
@@ -136,7 +136,7 @@ export const LoginPage = () => {
 | Route-level component | `pages/` |
 | Layout wrapper | `layouts/` |
 | Global state (Context) | `store/contexts/` |
-| Shared service (Supabase) | `shared/services/` |
+| Shared service (Supabase, browser storage) | `shared/services/` |
 | Utility function | `utils/` |
 
 ### Examples
@@ -242,6 +242,9 @@ rules: {
 1. **During Development**: 
    - Your editor should format on save using Prettier
    - ESLint provides real-time feedback in your IDE
+   - **Editor Setup**: 
+     - **VS Code/Cursor**: Install "Prettier" and "ESLint" extensions, enable "Format on Save"
+     - **Other editors**: Configure Prettier and ESLint plugins to run on save
 
 2. **Before Committing**:
    - Run `pnpm format` to format all files with Prettier

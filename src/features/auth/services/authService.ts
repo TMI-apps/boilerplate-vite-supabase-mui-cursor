@@ -1,9 +1,18 @@
-import { getSupabase } from "@shared/services/supabaseService";
+import { getSupabase, isSupabaseConfigured } from "@shared/services/supabaseService";
 import type { User, LoginCredentials, SignUpCredentials } from "../types/auth.types";
 
 export const login = async (
   credentials: LoginCredentials
 ): Promise<{ user: User | null; error: Error | null }> => {
+  if (!isSupabaseConfigured()) {
+    return {
+      user: null,
+      error: new Error(
+        "Authentication requires Supabase to be configured. Please set up Supabase in the setup wizard."
+      ),
+    };
+  }
+
   try {
     const { data, error } = await getSupabase().auth.signInWithPassword({
       email: credentials.email,
@@ -34,6 +43,15 @@ export const login = async (
 export const signUp = async (
   credentials: SignUpCredentials
 ): Promise<{ user: User | null; error: Error | null }> => {
+  if (!isSupabaseConfigured()) {
+    return {
+      user: null,
+      error: new Error(
+        "Authentication requires Supabase to be configured. Please set up Supabase in the setup wizard."
+      ),
+    };
+  }
+
   try {
     const { data, error } = await getSupabase().auth.signUp({
       email: credentials.email,
@@ -62,6 +80,10 @@ export const signUp = async (
 };
 
 export const logout = async (): Promise<{ error: Error | null }> => {
+  if (!isSupabaseConfigured()) {
+    return { error: null }; // No-op when Supabase not configured
+  }
+
   try {
     const { error } = await getSupabase().auth.signOut();
     return { error: error || null };
@@ -76,6 +98,11 @@ export const getCurrentUser = async (): Promise<{
   user: User | null;
   error: Error | null;
 }> => {
+  if (!isSupabaseConfigured()) {
+    // Return no user when Supabase is not configured (no error)
+    return { user: null, error: null };
+  }
+
   try {
     const {
       data: { user: authUser },

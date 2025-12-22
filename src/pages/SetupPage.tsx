@@ -26,6 +26,7 @@ import {
   removeCustomTheme,
   getCustomTheme,
 } from "@shared/theme/theme";
+import { skipSupabaseSetup } from "@utils/setupUtils";
 
 type SetupStep = "credentials" | "hosting" | "database" | "theme" | "complete";
 
@@ -143,11 +144,12 @@ VITE_SUPABASE_ANON_KEY=${supabaseKey}`;
               Step 1: Configure Supabase Credentials
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              You need a Supabase project to use this boilerplate. If you don't have one yet,{" "}
+              You can configure Supabase to enable authentication and database features. If you don't
+              have a Supabase project yet,{" "}
               <Link href="https://supabase.com" target="_blank" rel="noopener">
                 create a free account
               </Link>
-              .
+              . You can also skip this step and configure it later.
             </Typography>
 
             <Box sx={{ my: 3 }}>
@@ -187,6 +189,15 @@ VITE_SUPABASE_ANON_KEY=${supabaseKey}`;
             <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
               <Button variant="contained" onClick={handleTestConnection} disabled={testing}>
                 {testing ? "Testing..." : "Test Connection"}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  skipSupabaseSetup();
+                  setActiveStep("theme");
+                }}
+              >
+                Skip Database Setup
               </Button>
             </Box>
 
