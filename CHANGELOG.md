@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2024-12-23
+
+### Added
+
+- Optional authentication when Supabase is not configured
+- Local storage mode with clear user messaging
+- Todos page accessible without login when Supabase is not configured
+- Info banners explaining local storage mode limitations
+- Navigation links for todos when Supabase is not configured
+
+### Changed
+
+- `ProtectedRoute` now allows access without authentication when Supabase is not configured
+- Home page shows "Go to Todos" button when Supabase is not configured (even without login)
+- Navigation bar shows "Todos" link when Supabase is not configured (even without login)
+- Enhanced todos page info message with setup wizard link
+- Authentication remains required when Supabase is configured (backward compatible)
+
+### Technical
+
+- Modified `ProtectedRoute` to check `isSupabaseConfigured()` before requiring auth
+- Updated `HomePage` and `MainLayout` to conditionally show todos links based on Supabase configuration
+- Enhanced user messaging throughout the app for local storage mode
+
 ## [0.3.2] - 2025-12-22
 
 ### Changed

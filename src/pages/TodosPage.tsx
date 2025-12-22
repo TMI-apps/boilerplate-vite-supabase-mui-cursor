@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Typography, Container, Alert } from "@mui/material";
 import { TodoForm } from "@features/todos/components/TodoForm";
 import { TodoList } from "@features/todos/components/TodoList";
@@ -24,8 +25,16 @@ export const TodosPage = () => {
       {!supabaseConfigured && (
         <Alert severity="info" sx={{ mb: 3 }}>
           <Typography variant="body2">
-            <strong>Note:</strong> Todos are saved in your browser. Connect Supabase to sync your
-            todos across devices.
+            <strong>Local Storage Mode:</strong> Your todos are saved in your browser's local
+            storage. They won't sync across devices or persist if you clear your browser data.{" "}
+            <Typography
+              component={Link}
+              to="/setup"
+              sx={{ color: "primary.main", textDecoration: "underline" }}
+            >
+              Configure Supabase
+            </Typography>{" "}
+            to enable cloud sync and authentication.
           </Typography>
         </Alert>
       )}
