@@ -19,7 +19,7 @@ export const getTodos = (): Todo[] => {
       return [];
     }
     return JSON.parse(stored) as Todo[];
-  } catch (error) {
+  } catch {
     // Silently fail and return empty array
     return [];
   }
@@ -31,7 +31,7 @@ export const getTodos = (): Todo[] => {
 const saveTodos = (todos: Todo[]): void => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-  } catch (error) {
+  } catch {
     // Silently fail - storage quota may be exceeded
   }
 };

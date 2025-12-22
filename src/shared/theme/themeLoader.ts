@@ -12,7 +12,7 @@ export const getCustomTheme = (): ThemeOptions | null => {
     if (stored) {
       return JSON.parse(stored) as ThemeOptions;
     }
-  } catch (error) {
+  } catch {
     // Silently fail and return null to use default theme
   }
   return null;
@@ -24,7 +24,7 @@ export const getCustomTheme = (): ThemeOptions | null => {
 export const saveCustomTheme = (themeOptions: ThemeOptions): void => {
   try {
     localStorage.setItem(CUSTOM_THEME_STORAGE_KEY, JSON.stringify(themeOptions));
-  } catch (error) {
+  } catch {
     // Silently fail - storage quota may be exceeded
   }
 };
