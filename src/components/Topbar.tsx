@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { useAuthContext } from "@store/contexts/AuthContext";
 import { ProfileMenu } from "@components/ProfileMenu";
@@ -9,6 +9,7 @@ import { ProfileMenu } from "@components/ProfileMenu";
  */
 export const Topbar = () => {
   const { user } = useAuthContext();
+  const location = useLocation();
 
   return (
     <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
@@ -18,7 +19,7 @@ export const Topbar = () => {
             component={Link}
             to="/"
             sx={{
-              color: "inherit",
+              color: location.pathname === "/" ? "primary.main" : "inherit",
               textDecoration: "none",
               "&:hover": {
                 textDecoration: "none",
@@ -32,11 +33,19 @@ export const Topbar = () => {
         {/* Navigation buttons */}
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           {user && (
-            <Button color="inherit" component={Link} to="/todos">
+            <Button
+              color={location.pathname === "/todos" ? "primary" : "inherit"}
+              component={Link}
+              to="/todos"
+            >
               Todos
             </Button>
           )}
-          <Button color="inherit" component={Link} to="/setup">
+          <Button
+            color={location.pathname === "/setup" ? "primary" : "inherit"}
+            component={Link}
+            to="/setup"
+          >
             Setup
           </Button>
           <ProfileMenu />

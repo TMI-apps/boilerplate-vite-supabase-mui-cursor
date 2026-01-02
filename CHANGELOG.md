@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.5.3] - 2026-01-02
 
+### Added
+
+- Active menu item highlighting in Topbar navigation
+- Navigation buttons now display primary color when on active route
+
 ### Changed
 
 - Refactored theme system to be the single source of truth for all app styling
@@ -15,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Theme now handles all global styles via `MuiCssBaseline` customization
 - Added `MuiLink` component styling to theme (handles link hover colors)
 - Improved theme documentation with usage examples and structure explanations
+- Topbar navigation buttons use conditional `color` prop for active state (leverages theme system)
 
 ### Removed
 
