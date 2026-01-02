@@ -45,6 +45,8 @@ export const SetupPage = () => {
     error?: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [envWritten, setEnvWritten] = useState(false);
+  const [writingEnv, setWritingEnv] = useState(false);
   const [themeJson, setThemeJson] = useState("");
   const [themeValidation, setThemeValidation] = useState<{ valid: boolean; error?: string } | null>(
     null
@@ -66,19 +68,60 @@ export const SetupPage = () => {
 
     setTesting(true);
     setTestResult(null);
+    setEnvWritten(false);
 
     const result = await testSupabaseConnection(supabaseUrl, supabaseKey);
     setTestResult(result);
     setTesting(false);
 
+    // If test succeeds, automatically write to .env file
     if (result.success) {
-      setActiveStep("airtable");
+      await handleWriteEnv();
+    }
+  };
+
+  const handleWriteEnv = async () => {
+    if (!supabaseUrl || !supabaseKey) {
+      return;
+    }
+
+    setWritingEnv(true);
+    try {
+      const response = await fetch("/api/write-env", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          VITE_SUPABASE_URL: supabaseUrl,
+          VITE_SUPABASE_PUBLISHABLE_KEY: supabaseKey,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setEnvWritten(true);
+      } else {
+        setTestResult({
+          success: false,
+          error: data.message || "Failed to write environment variables",
+        });
+      }
+    } catch (error) {
+      setTestResult({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to write environment variables",
+      });
+    } finally {
+      setWritingEnv(false);
     }
   };
 
   const handleCopyEnv = () => {
     const envContent = `VITE_SUPABASE_URL=${supabaseUrl}
-VITE_SUPABASE_ANON_KEY=${supabaseKey}`;
+VITE_SUPABASE_PUBLISHABLE_KEY=${supabaseKey}
+# Legacy: VITE_SUPABASE_ANON_KEY also works for backward compatibility`;
     void navigator.clipboard.writeText(envContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -198,14 +241,14 @@ VITE_AIRTABLE_TABLE_ID=${airtableTableId}`;
                 helperText="Find this in your Supabase project settings under API"
               />
               <TextField
-                label="Supabase Anon Key"
+                label="Supabase Publishable Key"
                 value={supabaseKey}
                 onChange={(e) => setSupabaseKey(e.target.value)}
                 fullWidth
                 margin="normal"
                 type="password"
-                placeholder="your-anon-key"
-                helperText="Find this in your Supabase project settings under API"
+                placeholder="your-publishable-key"
+                helperText="Find this in your Supabase project settings under API (previously called 'anon key')"
               />
             </Box>
 
@@ -216,14 +259,41 @@ VITE_AIRTABLE_TABLE_ID=${airtableTableId}`;
                 sx={{ mb: 2 }}
               >
                 {testResult.success
-                  ? "Connection successful! You can proceed to the next step."
+                  ? envWritten
+                    ? "Connection successful and environment variables saved!"
+                    : writingEnv
+                      ? "Writing environment variables..."
+                      : "Connection successful! Writing environment variables..."
                   : `Connection failed: ${testResult.error}`}
               </Alert>
             )}
 
+            {envWritten && (
+              <Alert severity="warning" sx={{ mb: 2 }}>
+                <Typography variant="body2">
+                  <strong>Important:</strong> Environment variables have been written to your{" "}
+                  <Typography
+                    component="code"
+                    sx={{ bgcolor: "grey.200", px: 0.5, borderRadius: 0.5 }}
+                  >
+                    .env
+                  </Typography>{" "}
+                  file. Please <strong>restart your development server</strong> for the changes to
+                  take effect.
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  Stop the server (Ctrl+C) and run <code>pnpm dev</code> again.
+                </Typography>
+              </Alert>
+            )}
+
             <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
-              <Button variant="contained" onClick={handleTestConnection} disabled={testing}>
-                {testing ? "Testing..." : "Test Connection"}
+              <Button
+                variant="contained"
+                onClick={handleTestConnection}
+                disabled={testing || writingEnv}
+              >
+                {testing ? "Testing..." : writingEnv ? "Saving..." : "Test Connection & Save"}
               </Button>
               <Button
                 variant="outlined"
@@ -236,7 +306,7 @@ VITE_AIRTABLE_TABLE_ID=${airtableTableId}`;
               </Button>
             </Box>
 
-            {testResult?.success && (
+            {testResult?.success && envWritten && (
               <Box sx={{ mt: 4 }}>
                 <Typography variant="h6" gutterBottom>
                   Next: Add to .env file
@@ -277,7 +347,21 @@ VITE_AIRTABLE_TABLE_ID=${airtableTableId}`;
                           component="code"
                           sx={{ display: "block", bgcolor: "grey.200", px: 0.5, borderRadius: 0.5 }}
                         >
-                          VITE_SUPABASE_ANON_KEY={supabaseKey}
+                          VITE_SUPABASE_PUBLISHABLE_KEY={supabaseKey}
+                        </Typography>
+                        <Typography
+                          component="code"
+                          sx={{
+                            display: "block",
+                            mt: 1,
+                            bgcolor: "grey.200",
+                            px: 0.5,
+                            borderRadius: 0.5,
+                            fontSize: "0.75rem",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          # Legacy: VITE_SUPABASE_ANON_KEY also works
                         </Typography>
                       </Box>
                       <Button
@@ -291,24 +375,13 @@ VITE_AIRTABLE_TABLE_ID=${airtableTableId}`;
                     </Box>
                   </CardContent>
                 </Card>
-                <Alert severity="info" sx={{ mb: 2 }}>
-                  <Typography variant="body2">
-                    <strong>Important:</strong> After adding these to your{" "}
-                    <Typography
-                      component="code"
-                      sx={{ bgcolor: "grey.200", px: 0.5, borderRadius: 0.5 }}
-                    >
-                      .env
-                    </Typography>{" "}
-                    file, restart your development server for the changes to take effect.
-                  </Typography>
-                </Alert>
                 <Button
                   variant="contained"
-                  onClick={() => setActiveStep("database")}
+                  onClick={() => setActiveStep("airtable")}
                   sx={{ mt: 2 }}
+                  disabled={!envWritten}
                 >
-                  I've added the .env file
+                  Continue to Next Step
                 </Button>
               </Box>
             )}
@@ -493,11 +566,12 @@ VITE_AIRTABLE_TABLE_ID=${airtableTableId}`;
         {activeStep === "database" && (
           <Box>
             <Typography variant="h5" gutterBottom>
-              Step 2: Set Up Database Schema
+              Step 2: Set Up Database Schema (Optional)
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              This boilerplate includes a todos feature that requires a database table. Run this SQL
-              in your Supabase SQL Editor:
+              This boilerplate includes a todos feature that requires a database table. If you only
+              want to test authentication, you can skip this step. Run this SQL in your Supabase SQL
+              Editor when you're ready to use the todos feature:
             </Typography>
 
             <Card variant="outlined" sx={{ my: 3 }}>
@@ -603,6 +677,9 @@ CREATE POLICY "Users can manage their own todos"
             <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
               <Button variant="outlined" onClick={() => setActiveStep("airtable")}>
                 Back
+              </Button>
+              <Button variant="outlined" onClick={() => setActiveStep("theme")}>
+                Skip Database Setup
               </Button>
               <Button variant="contained" onClick={() => setActiveStep("hosting")}>
                 I've created the table
@@ -734,7 +811,7 @@ CREATE POLICY "Users can manage their own todos"
                 sx={{ mt: 1, p: 1, bgcolor: "grey.100", borderRadius: 1, fontSize: "0.875rem" }}
               >
                 VITE_SUPABASE_URL={supabaseUrl || "your-project-url"}
-                VITE_SUPABASE_ANON_KEY={supabaseKey || "your-anon-key"}
+                VITE_SUPABASE_PUBLISHABLE_KEY={supabaseKey || "your-publishable-key"}
               </Box>
             </Alert>
 

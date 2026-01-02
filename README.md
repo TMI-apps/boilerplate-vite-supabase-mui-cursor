@@ -65,17 +65,18 @@ When you first run the app, a setup wizard will guide you through configuration.
    - Create a free account at [supabase.com](https://supabase.com)
    - Create a new project
    - Go to **Project Settings → API**
-   - Copy your **Project URL** and **anon key**
+   - Copy your **Project URL** and **Publishable Key** (previously called "anon key")
 
 2. **In the Setup Wizard:**
-   - Enter your Supabase URL and anon key
+   - Enter your Supabase URL and publishable key
    - Click **"Test Connection"**
    - Copy the environment variables shown
    - Create a `.env` file in the project root:
      ```
      VITE_SUPABASE_URL=your-project-url
-     VITE_SUPABASE_ANON_KEY=your-anon-key
+     VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
      ```
+   - **Note:** The legacy `VITE_SUPABASE_ANON_KEY` also works for backward compatibility
    - **Important:** Restart your dev server (`Ctrl+C` then `pnpm dev` again)
 
 3. **Set Up Database:**
@@ -113,8 +114,9 @@ If you prefer to set up Supabase manually instead of using the setup wizard (rec
 2. Add your Supabase credentials to `.env`:
 ```
 VITE_SUPABASE_URL=your-project-url
-VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 ```
+**Note:** The legacy `VITE_SUPABASE_ANON_KEY` also works for backward compatibility.
 
 3. Create a `todos` table in your Supabase project:
    ```sql

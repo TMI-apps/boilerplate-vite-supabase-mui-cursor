@@ -12,4 +12,5 @@ export default [
   'pnpm-lock.yaml',
   'public/',
   'documentation/',
+  'vite-plugin-*.ts', // Vite plugin files
 ];

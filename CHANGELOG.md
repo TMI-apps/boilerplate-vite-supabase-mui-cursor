@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Entreefederatie configuration file (`src/config/entreefederatie.ts`)
 - Real-time auth state management with `onAuthStateChange` listener
 - PKCE flow for enhanced security in Supabase client
+- Automatic `.env` file writing from setup wizard (dev mode only)
+- Support for Supabase publishable keys (backward compatible with anon keys)
+- Vite plugin for writing environment variables (`vite-plugin-env-writer.ts`)
+- "Skip Database Setup" button in setup wizard for auth-only testing
 
 ### Changed
 
@@ -26,6 +30,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced Supabase client configuration with proper auth options (persistSession, autoRefreshToken, detectSessionInUrl, PKCE)
 - Auth state now updates in real-time via Supabase auth state listener
 - Anonymous sessions are automatically created for unauthenticated visitors
+- Setup wizard now automatically writes environment variables to `.env` file
+- Setup wizard shows clear restart instructions after saving env variables
+- Updated terminology from "anon key" to "publishable key" (with backward compatibility)
+- Database setup step is now optional (can be skipped for auth-only testing)
 
 ### Technical
 
@@ -34,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `exchangeCodeForSession()` for OAuth/SAML callback handling
 - Updated `useAuth.ts` hook with `onAuthStateChange` listener
 - Added `@components` and `@config` path aliases
+- Added Vite plugin for dev-mode `.env` file writing
+- Supabase service now checks for both `VITE_SUPABASE_PUBLISHABLE_KEY` and `VITE_SUPABASE_ANON_KEY`
 - Removed temporary console logs (kept only essential error logging)
 - Fixed TypeScript type issues and linting errors
 

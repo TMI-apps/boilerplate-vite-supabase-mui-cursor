@@ -1,7 +1,9 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Support both publishable key (new) and anon key (legacy) for backward compatibility
+const supabaseAnonKey =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 let supabase: SupabaseClient | null = null;
 
@@ -13,7 +15,8 @@ export const isSupabaseConfigured = (): boolean => {
     supabaseUrl &&
     supabaseAnonKey &&
     supabaseUrl !== "your-project-url" &&
-    supabaseAnonKey !== "your-anon-key"
+    supabaseAnonKey !== "your-anon-key" &&
+    supabaseAnonKey !== "your-publishable-key"
   );
 };
 
