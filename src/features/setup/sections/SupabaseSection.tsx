@@ -8,8 +8,7 @@ import { SupabaseFormFields } from "../components/SupabaseFormFields";
 import { SupabaseDescription } from "../components/SupabaseDescription";
 import { useConnectionTest } from "../hooks/useConnectionTest";
 import { useEnvWriter } from "../hooks/useEnvWriter";
-import { isSupabaseConfigured } from "@shared/services/supabaseService";
-import { testSupabaseConnection } from "@shared/services/supabaseService";
+import { useSupabaseSetup } from "../hooks/useSupabaseSetup";
 import { updateSetupSectionStatus, getSetupSectionsState } from "@utils/setupUtils";
 import type { SetupStatus } from "@utils/setupUtils";
 
@@ -18,8 +17,9 @@ interface SupabaseSectionProps {
 }
 
 export const SupabaseCard = ({ onStatusChange }: SupabaseSectionProps) => {
+  const { isConfigured } = useSupabaseSetup();
   const state = getSetupSectionsState();
-  const status: SetupStatus = isSupabaseConfigured() ? "completed" : state.supabase;
+  const status: SetupStatus = isConfigured ? "completed" : state.supabase;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
@@ -48,6 +48,7 @@ interface SupabaseDialogProps {
 const SupabaseDialog = ({ open, onClose, onStatusChange }: SupabaseDialogProps) => {
   const [supabaseUrl, setSupabaseUrl] = useState("");
   const [supabaseKey, setSupabaseKey] = useState("");
+  const { testSupabaseConnection } = useSupabaseSetup();
 
   const testConnection = useConnectionTest({
     onTest: async () => {

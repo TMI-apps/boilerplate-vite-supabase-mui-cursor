@@ -1,7 +1,7 @@
 import React from "react";
 import { Menu } from "@mui/material";
 import { useAuthContext } from "@store/contexts/AuthContext";
-import { isSupabaseConfigured } from "@shared/services/supabaseService";
+import { useSupabaseConfig } from "@shared/hooks/useSupabaseConfig";
 import { useUserProfile } from "@features/auth/hooks/useUserProfile";
 import { ProfileMenuContent } from "./ProfileMenu/ProfileMenuContent";
 import { ProfileMenuTrigger } from "./ProfileMenu/ProfileMenuTrigger";
@@ -24,7 +24,7 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({
 }) => {
   const { user } = useAuthContext();
   const { profile, loading: profileLoading } = useUserProfile(user);
-  const supabaseConfigured = isSupabaseConfigured();
+  const { isConfigured: supabaseConfigured } = useSupabaseConfig();
 
   const { anchorEl, open, handleClick, handleClose } = useProfileMenuState({
     externalAnchorEl,

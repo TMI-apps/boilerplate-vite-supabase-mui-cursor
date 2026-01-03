@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-interface ConnectionTestResult {
+export interface ConnectionTestResult {
   success: boolean;
   error?: string;
 }

@@ -167,9 +167,33 @@ Projects may use different branch strategies based on their needs:
 
 ### Shell/PowerShell Handling
 
-**CRITICAL**: Always check `$LASTEXITCODE` after external commands to prevent Cursor crashes. PowerShell doesn't always propagate exit codes correctly, and Cursor crashes when it receives error output but thinks the command succeeded (exit code 0).
+**🚨 CRITICAL - Select-Object Piping Issue:**
 
-**IMPORTANT**: When piping to `Select-Object`, always use `Out-String` first to avoid VS Code/Cursor network errors. Direct piping to `Select-Object` triggers a network error in the IDE.
+**NEVER pipe directly to `Select-Object` without `Out-String` first!** This triggers VS Code/Cursor network errors that crash the IDE environment.
+
+**❌ WRONG (DO NOT USE - TRIGGERS NETWORK ERROR):**
+
+```powershell
+pnpm run lint 2>&1 | Select-Object -First 20  # ❌ TRIGGERS NETWORK ERROR
+npm run lint 2>&1 | Select-Object -First 50   # ❌ TRIGGERS NETWORK ERROR
+npm run test | Select-Object -First 10         # ❌ TRIGGERS NETWORK ERROR
+```
+
+**✅ CORRECT (ALWAYS USE ONE OF THESE):**
+
+```powershell
+# Option 1: Use Out-String before Select-Object (RECOMMENDED)
+pnpm run lint 2>&1 | Out-String | Select-Object -First 20  # ✅ Safe
+npm run lint 2>&1 | Out-String | Select-Object -First 50   # ✅ Safe
+
+# Option 2: Capture to variable first (also safe)
+$output = pnpm run lint 2>&1; $output | Select-Object -First 20  # ✅ Safe
+
+# Option 3: No output filtering (safest, but shows all output)
+pnpm run lint 2>&1  # ✅ Safe
+```
+
+**CRITICAL**: Always check `$LASTEXITCODE` after external commands to prevent Cursor crashes. PowerShell doesn't always propagate exit codes correctly, and Cursor crashes when it receives error output but thinks the command succeeded (exit code 0).
 
 **Required Pattern:**
 

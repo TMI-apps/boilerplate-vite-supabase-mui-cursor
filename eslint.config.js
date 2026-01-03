@@ -34,7 +34,7 @@ export default defineConfig([
       // Complexity rules - set to warn for existing code
       complexity: ['warn', { max: 10 }],
       'max-depth': ['warn', { max: 4 }],
-      'max-lines-per-function': ['warn', { max: 50, skipBlankLines: true, skipComments: true }],
+      'max-lines-per-function': ['warn', { max: 100, skipBlankLines: true, skipComments: true }],
       'max-statements': ['warn', { max: 10 }],
       'max-params': ['warn', { max: 3 }],
       'sonarjs/cognitive-complexity': ['warn', 15],

@@ -56,6 +56,7 @@ Quick reference guide to all rules and their relationships.
 - Development process
 - PR standards
 - Agent-specific behaviors
+- **🚨 CRITICAL: PowerShell/Select-Object piping rules** (prevents IDE crashes)
 - Deployment processes
 
 **Related to:** All other rules (references them in review process)

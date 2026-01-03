@@ -1,63 +1,19 @@
-import { useState, useEffect } from "react";
-import {
-  Container,
-  Box,
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-} from "@mui/material";
+import { Container, Box, Typography, Button } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
-import { migrateOldSetupState, getEnabledFeatures } from "@utils/setupUtils";
-import { SupabaseCard } from "./setup/sections/SupabaseSection";
-import { AirtableCard } from "./setup/sections/AirtableSection";
-import { HostingCard } from "./setup/sections/HostingSection";
-import { ThemeCard } from "./setup/sections/ThemeSection";
+import { SupabaseCard } from "@features/setup/sections/SupabaseSection";
+import { AirtableCard } from "@features/setup/sections/AirtableSection";
+import { HostingCard } from "@features/setup/sections/HostingSection";
+import { ThemeCard } from "@features/setup/sections/ThemeSection";
+import { useSetupFinish } from "@features/setup/hooks/useSetupFinish";
+import { FinishSetupDialog } from "@features/setup/components/FinishSetupDialog";
 
 export const SetupPage = () => {
-  const [finishDialogOpen, setFinishDialogOpen] = useState(false);
-  const [finishing, setFinishing] = useState(false);
-
-  // Migrate old state on mount
-  useEffect(() => {
-    migrateOldSetupState();
-  }, []);
+  const { finishDialogOpen, finishing, handleOpenDialog, handleCloseDialog, handleFinish } =
+    useSetupFinish();
 
   const handleStatusChange = () => {
     // Status change handler for setup cards
     // No state tracking needed since we removed the progress bar
-  };
-
-  const handleFinishSetup = async () => {
-    setFinishing(true);
-    try {
-      // Mark setup as complete
-      localStorage.setItem("setup_complete", "true");
-
-      // Call cleanup script endpoint
-      const response = await fetch("/api/finish-setup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          enabledFeatures: getEnabledFeatures(),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to finish setup");
-      }
-
-      // Reload page to apply changes
-      window.location.reload();
-    } catch {
-      alert("Failed to finish setup. Please try again.");
-      setFinishing(false);
-    }
   };
 
   return (
@@ -95,7 +51,7 @@ export const SetupPage = () => {
         <Button
           variant="contained"
           size="large"
-          onClick={() => setFinishDialogOpen(true)}
+          onClick={handleOpenDialog}
           startIcon={<CheckCircle />}
         >
           Finish Setup
@@ -103,50 +59,12 @@ export const SetupPage = () => {
       </Box>
 
       {/* Finish Setup Confirmation Dialog */}
-      <Dialog open={finishDialogOpen} onClose={() => !finishing && setFinishDialogOpen(false)}>
-        <DialogTitle>Finish Setup</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to finish setup? This action is <strong>irreversible</strong> and
-            will:
-          </DialogContentText>
-          <Box component="ul" sx={{ mt: 2, pl: 3 }}>
-            <li>
-              <DialogContentText component="span">
-                Delete all setup code (SetupPage, setupUtils, cleanup scripts)
-              </DialogContentText>
-            </li>
-            <li>
-              <DialogContentText component="span">
-                Delete all code for features that were <strong>not enabled</strong>
-              </DialogContentText>
-            </li>
-            <li>
-              <DialogContentText component="span">
-                Update App.tsx and other files to remove unused imports and routes
-              </DialogContentText>
-            </li>
-          </Box>
-          <Box sx={{ mt: 2, p: 2, bgcolor: "warning.light", borderRadius: 1 }}>
-            <DialogContentText>
-              <strong>Enabled features:</strong> {getEnabledFeatures().join(", ") || "None"}
-            </DialogContentText>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setFinishDialogOpen(false)} disabled={finishing}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleFinishSetup}
-            variant="contained"
-            color="error"
-            disabled={finishing}
-          >
-            {finishing ? "Finishing..." : "Finish Setup"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <FinishSetupDialog
+        open={finishDialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleFinish}
+        finishing={finishing}
+      />
     </Container>
   );
 };

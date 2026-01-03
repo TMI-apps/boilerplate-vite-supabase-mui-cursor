@@ -1,6 +1,6 @@
 import { NavigateFunction } from "react-router-dom";
 import { isSupabaseConfigured } from "@shared/services/supabaseService";
-import * as authService from "@features/auth/services/authService";
+import * as authService from "./authService";
 import { getAndClearRedirectPath } from "@utils/redirectUtils";
 
 export const checkSupabaseConfigured = (navigate: NavigateFunction): boolean => {

@@ -6,8 +6,8 @@ import {
   handleAuthError,
   handleCodeExchange,
   getRedirectPath,
-} from "./utils/authCallbackUtils";
-import { getAuthCallbackParams } from "./utils/authCallbackParams";
+} from "@features/auth/services/authCallbackService";
+import { getAuthCallbackParams } from "@features/auth/utils/authCallbackParams";
 
 /**
  * AuthCallbackPage handles OAuth/SAML redirects from Supabase.

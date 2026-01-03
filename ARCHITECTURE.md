@@ -19,12 +19,19 @@ src/
 │   │   ├── components/  # Feature-specific UI components
 │   │   ├── hooks/       # React hooks for feature logic
 │   │   ├── services/    # Pure functions, API calls
-│   │   └── types/       # TypeScript types for feature
+│   │   ├── types/       # TypeScript types for feature
+│   │   └── utils/       # Feature-specific utility functions
+│   ├── setup/
+│   │   ├── components/  # Setup wizard UI components
+│   │   ├── hooks/       # Setup-related hooks
+│   │   ├── services/    # Setup-related services (API calls)
+│   │   └── sections/   # Setup section components
 ├── layouts/             # Layout components (MainLayout, AuthLayout)
 ├── pages/               # Route-level page components
 ├── store/               # Global state management
 │   └── contexts/        # React contexts (AuthContext, etc.)
 ├── shared/              # Shared across features
+│   ├── hooks/           # Shared hooks (useSupabaseConfig, etc.)
 │   ├── services/        # Shared services (Supabase client, Airtable client)
 │   ├── types/           # Shared types
 │   └── theme/           # MUI theme configuration
@@ -139,7 +146,7 @@ export const LoginPage = () => {
 | Layout wrapper | `layouts/` |
 | Global state (Context) | `store/contexts/` |
 | Shared service (Supabase, Airtable, data providers) | `shared/services/` |
-| Data provider implementation | `shared/services/dataProviders/` |
+| API service implementations | `shared/services/` |
 | Utility function | `utils/` |
 
 ### Examples

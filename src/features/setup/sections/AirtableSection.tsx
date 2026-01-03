@@ -7,8 +7,7 @@ import { EnvVariablesDisplay } from "../components/EnvVariablesDisplay";
 import { AirtableFormFields } from "../components/AirtableFormFields";
 import { AirtableDescription } from "../components/AirtableDescription";
 import { useConnectionTest } from "../hooks/useConnectionTest";
-import { isAirtableConfigured } from "@shared/services/airtableService";
-import { testAirtableConnection } from "@shared/services/airtableService";
+import { useAirtableSetup } from "../hooks/useAirtableSetup";
 import { updateSetupSectionStatus, getSetupSectionsState } from "@utils/setupUtils";
 import type { SetupStatus } from "@utils/setupUtils";
 
@@ -17,8 +16,9 @@ interface AirtableSectionProps {
 }
 
 export const AirtableCard = ({ onStatusChange }: AirtableSectionProps) => {
+  const { isConfigured } = useAirtableSetup();
   const state = getSetupSectionsState();
-  const status: SetupStatus = isAirtableConfigured() ? "completed" : state.airtable;
+  const status: SetupStatus = isConfigured ? "completed" : state.airtable;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
@@ -48,6 +48,7 @@ const AirtableDialog = ({ open, onClose, onStatusChange }: AirtableDialogProps) 
   const [airtableApiKey, setAirtableApiKey] = useState("");
   const [airtableBaseId, setAirtableBaseId] = useState("");
   const [airtableTableId, setAirtableTableId] = useState("");
+  const { testAirtableConnection } = useAirtableSetup();
 
   const testConnection = useConnectionTest({
     onTest: async () => {

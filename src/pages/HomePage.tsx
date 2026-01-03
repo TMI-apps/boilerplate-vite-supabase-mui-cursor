@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { Box, Typography, Button, Container, Alert } from "@mui/material";
 import { useAuthContext } from "@store/contexts/AuthContext";
-import { isSupabaseConfigured } from "@shared/services/supabaseService";
+import { useSupabaseConfig } from "@shared/hooks/useSupabaseConfig";
 
 export const HomePage = () => {
   const { user } = useAuthContext();
-  const supabaseConfigured = isSupabaseConfigured();
+  const { isConfigured: supabaseConfigured } = useSupabaseConfig();
 
   return (
     <Container maxWidth="md">
