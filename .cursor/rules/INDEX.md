@@ -9,6 +9,7 @@ Quick reference guide to all rules and their relationships.
 - Formatting standards
 - Documentation requirements
 - Code organization
+- **Styling scope standards** (always ask scope before implementing styling changes)
 - **GTS linting** (default, with override option)
 - **TypeScript strict mode** (required)
 - **Complexity standards** (functions ≤ 10 cyclomatic, ≤ 15 cognitive, ≤ 100 lines)

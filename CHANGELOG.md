@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2026-01-12]
 
+### Added
+
+- **Styling Scope Standards Rule**: Added new cursor rule to prevent incorrect styling scope decisions
+  - Requires assistants to ask users about styling scope before implementing changes
+  - Defines three-level hierarchy: Instance → Component → Global Theme
+  - Prevents applying styling changes at wrong scope (e.g., instance when global intended)
+  - Includes decision tree for determining correct styling level
+  - Default assumption: Global Theme (most common intent)
+  - Ensures consistency with existing theme architecture (`defaultTheme.ts` as SSOT)
+
+### Changed
+
+- **Code Style Rule Optimization**: Streamlined `.cursor/rules/code-style/RULE.md` for better context efficiency
+  - Removed redundant sections (43% reduction: 525 → 297 lines)
+  - Removed extensive examples that overload context window
+  - Added SSOT references instead of duplicating content
+  - Formatting rules now reference Prettier config instead of duplicating
+  - Architecture layer rules now reference `architecture/RULE.md` instead of duplicating
+  - Complexity examples moved to referenced command file
+  - TypeScript rules consolidated to reference Quick Reference
+
+## [2026-01-12]
+
 ### Changed
 
 - **Centralized Button Styling**: Refactored button styling to be fully centralized in theme

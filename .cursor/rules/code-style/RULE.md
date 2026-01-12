@@ -5,10 +5,6 @@ alwaysApply: true
 
 # Code Style Standards
 
-## Purpose
-
-This rule defines consistent code style, naming conventions, and formatting standards that apply across all projects.
-
 ## Quick Reference: Critical Rules
 
 **CRITICAL**: These rules must be followed without exception:
@@ -49,46 +45,11 @@ See detailed sections below for complete guidance.
 
 ## Formatting
 
-### Quote Style
+**SSOT:** Formatting is handled by Prettier. See project `.prettierrc` configuration.
 
-**CRITICAL: Always Use Double Quotes**
-
-**ALWAYS use `"` not `'` for strings.**
-
-```typescript
-// ✅ CORRECT
-import { Button } from "@common/Button";
-const message = "Hello world";
-
-// ❌ WRONG
-import { Button } from '@common/Button';
-const message = 'Hello world';
-```
-
-### Prettier Configuration
-
-Standard formatting rules:
-- Double quotes (`"`), 100 char width, 2 spaces, semicolons, LF line endings
-- Arrow functions: `(x) => x` (always parentheses)
-
-```typescript
-export const Component = ({ title }: Props) => {
-  return <Box sx={{ p: 2 }}>{title}</Box>;
-};
-```
-
-### Indentation
-- Use 2 spaces for indentation (not tabs)
-- Maintain consistent indentation throughout files
-
-### Line Length
-- Maximum 100 characters per line
-- Break long lines at logical points
-
-### Spacing
-- Use single spaces around operators
-- No trailing whitespace
-- One blank line between logical sections
+**Critical exceptions** (not handled by Prettier):
+- **Double quotes**: ALWAYS use `"` not `'` (see Quick Reference)
+- **Arrow functions**: Always use parentheses: `(x) => x` (see Quick Reference)
 
 ### Line Endings
 - **IMPORTANT**: Always use Linux/Unix line endings: LF (`\n`)
@@ -97,15 +58,10 @@ export const Component = ({ title }: Props) => {
 
 ## Documentation
 
-### Comments
-- Write self-documenting code when possible
-- Use comments to explain "why", not "what"
-- Keep comments up to date with code changes
-
 ### JSDoc/TSDoc
 - Document all exported functions and classes
 - Include parameter descriptions and return types
-- Add examples for complex functions
+- Use comments to explain "why", not "what"
 
 ## Code Reuse
 
@@ -133,8 +89,7 @@ export const Component = ({ title }: Props) => {
 When adding external package imports:
 
 1. **Verify the package is installed**: Check `package.json` dependencies
-2. **Types may come from wrappers**: If using a library through a wrapper (e.g., TipTap through `mui-tiptap`), types often come from the wrapper, not the original package
-3. **When in doubt, use inline types**: Define types locally or use `any` with eslint-disable rather than importing from potentially unavailable packages
+2. **When in doubt, use inline types**: Define types locally or use `any` with eslint-disable rather than importing from potentially unavailable packages
 
 ## Code Organization
 
@@ -158,15 +113,102 @@ import { Button } from "../../components/common/Button"; // Use path alias inste
 import * as todoService from "../services/todoService"; // Components cannot import services directly
 ```
 
-**Architecture Layer Rules** (see `architecture/RULE.md` for details):
-- Components cannot import services (use hooks)
-- Hooks cannot import components
-- Common components cannot import features
-- Services cannot use React hooks
+**Architecture Layer Rules:** See `architecture/RULE.md` for import direction and layer boundaries.
 
 ### Exports
 - Use named exports over default exports when possible
 - Export types and interfaces explicitly
+
+## Styling Scope Standards
+
+### The Problem
+
+When a user requests a styling change (e.g., "change button color"), there are multiple places to apply it. Without asking, the assistant may apply the change at the wrong scope, leading to inconsistency and maintenance debt.
+
+### CRITICAL: Always Ask About Scope First
+
+**Before implementing any styling change, determine the appropriate scope by asking the user.**
+
+### Styling Hierarchy (most specific to most global):
+
+| Level | Location | Use For | Avoid |
+|-------|----------|---------|-------|
+| **Instance** | `sx` prop on specific usage | Layout/spacing (margins, padding, positioning) | Colors, typography, visual styling |
+| **Component** | Inside component file | Custom components with unique styling not in theme | Standard MUI components that should be consistent |
+| **Global Theme** | `src/shared/theme/defaultTheme.ts` | Colors, typography, component overrides, design tokens | One-off layout adjustments |
+
+### Decision Tree
+
+```
+Is this a design token change? (color, typography, spacing value, shadow, border)
+├─ YES → Global Theme (defaultTheme.ts)
+└─ NO → Is this a component variant? (all buttons of type X should look different)
+    ├─ YES → Theme Component Override (defaultTheme.ts → components.MuiButton.styleOverrides)
+    └─ NO → Is this layout/spacing for this specific instance?
+        ├─ YES → Instance Level (sx prop)
+        └─ NO → Is this a custom component with unique styling?
+            ├─ YES → Component Definition (inside component file)
+            └─ NO → Ask user for clarification
+```
+
+### Default Assumption
+
+When users request styling changes without specifying scope:
+- **Assume Global Theme** (most common intent)
+- **Always ask to confirm** before implementing
+- **Explain the hierarchy** so users can make informed decisions
+
+### When User Requests Styling Changes
+
+**Step 1: Identify the change type**
+- Design token (color, typography, shadow)? → Global Theme
+- Component appearance change? → Theme Component Override
+- Layout/spacing only? → Instance (`sx` prop)
+
+**Step 2: Ask the user** (required):
+
+> "At what level should this styling change be applied?
+> - **Instance level**: Only this specific usage
+> - **Component level**: All usages of this custom component
+> - **Global theme level**: All instances across the app (recommended for consistency)"
+
+**Step 3: Wait for confirmation** before implementing
+
+**Step 4: Implement at the correct level** per the decision tree
+
+### Implementation Rules
+
+```typescript
+// ✅ CORRECT: Theme file for colors, typography, component appearance
+// src/shared/theme/defaultTheme.ts
+MuiButton: {
+  styleOverrides: {
+    contained: {
+      background: "linear-gradient(...)",
+      color: "#ffffff",
+    },
+  },
+},
+
+// ✅ CORRECT: sx prop for layout/spacing only
+<Button sx={{ mt: 2, ml: 1 }}>Submit</Button>
+
+// ❌ WRONG: sx prop for colors/visual styling
+<Button sx={{ backgroundColor: "blue", color: "white" }}>Submit</Button>
+
+// ❌ WRONG: Inline styles for design tokens
+<Button style={{ backgroundColor: "blue" }}>Submit</Button>
+```
+
+### SSOT Reference
+
+The theme file (`src/shared/theme/defaultTheme.ts`) is the **Single Source of Truth** for:
+- All color definitions (palette)
+- Typography (font families, sizes, weights)
+- Component style overrides
+- Design tokens (spacing, shadows, borders)
+
+See the theme file header for detailed principles.
 
 ## Linting Standards
 
@@ -204,99 +246,20 @@ When writing code, adhere to these complexity limits to ensure maintainability:
 - Use options objects instead of many parameters
 - Split large functions by responsibility
 
-**Example - Before (too complex):**
-```typescript
-// ❌ Too many nested conditions
-function processOrder(order, user, config) {
-  if (order) {
-    if (user) {
-      if (config.enabled) {
-        if (order.items.length > 0) {
-          // deep nesting = hard to read
-        }
-      }
-    }
-  }
-}
-```
-
-**Example - After (clean):**
-```typescript
-// ✅ Early returns, clear flow
-function processOrder(order: Order, user: User, config: Config): void {
-  if (!order || !user || !config.enabled) return;
-  if (order.items.length === 0) return;
-  
-  // Process order - single level of logic
-  processOrderItems(order.items);
-}
-```
-
-**Reference:** See `.cursor/commands/complexity-reduce.md` for detailed refactoring workflow.
+**Reference:** See `.cursor/commands/complexity-reduce.md` for detailed refactoring workflow and examples.
 
 ### TypeScript Configuration
-- **REQUIRED**: All TypeScript projects must use strict mode
+- **REQUIRED**: All TypeScript projects must use strict mode (see Quick Reference)
 - Enable `strict: true` in `tsconfig.json`
-- Strict mode enforces:
-  - `strictNullChecks`
-  - `strictFunctionTypes`
-  - `strictBindCallApply`
-  - `strictPropertyInitialization`
-  - `noImplicitThis`
-  - `alwaysStrict`
 
 ### TypeScript Best Practices
-- **No `any`**: Explicit types required
-- **Use `const`/`let`**: Never use `var`
-- **Equality**: Use `===` (never `==`)
+See Quick Reference for critical rules. Additional guidelines:
 - **Explicit return types**: Required for async functions
 - **Services**: Pure functions only (no React hooks)
 
-```typescript
-export interface User {
-  id: string;
-  email: string;
-}
+## TypeScript/React Standards
 
-export const fetchData = async (id: string): Promise<User | null> => {
-  // Pure function, no hooks
-};
-```
-
-## Examples
-
-### ✅ Good Example
-
-```typescript
-/**
- * Calculates the total price including tax.
- * @param price - The base price before tax
- * @param taxRate - The tax rate as a decimal (e.g., 0.20 for 20%)
- * @returns The total price including tax
- */
-export function calculateTotalPrice(
-  price: number,
-  taxRate: number,
-): number {
-  if (price < 0) {
-    throw new Error("Price cannot be negative");
-  }
-  return price * (1 + taxRate);
-}
-```
-
-### ❌ Bad Example
-
-```typescript
-// Bad: unclear naming, no documentation, poor formatting
-export function calc(p: number, t: number) {
-return p*(1+t)
-}
-```
-
-## TypeScript/React Standards (GTS Compliant)
-
-When working with TypeScript and React, follow these GTS-compliant patterns:
+When working with TypeScript and React:
 
 ### Component Structure
 - Clear import order (external libraries first, then internal modules)
@@ -314,106 +277,6 @@ When working with TypeScript and React, follow these GTS-compliant patterns:
 - Catch errors with `unknown` type and check the type
 - Provide meaningful error messages
 - Handle loading and error states explicitly
-
-### Example: GTS-Compliant React Component
-
-```typescript
-// src/components/UserProfile.tsx
-import React, {useState, useEffect, useCallback} from "react";
-// Rule: Clear import order (external libraries first, then internal modules).
-
-/**
- * Represents the structure of a user profile.
- * Rule: JSDoc for exported interfaces.
- */
-export interface UserProfileData {
-  readonly id: number; // Rule: Use 'readonly' for props that must not change.
-  name: string;
-  email: string;
-}
-
-/**
- * Properties for the UserProfile component.
- * Rule: JSDoc for exported types.
- */
-export type UserProfileProps = {
-  /** The ID of the user to fetch. */
-  userId: number;
-};
-
-// A dummy API function to simulate data fetching.
-const fetchUserData = async (userId: number): Promise<UserProfileData> => {
-  const response = await fetch(`https://api.example.com/users/${userId}`);
-  if (!response.ok) {
-    throw new Error("Network response was not ok.");
-  }
-  // Rule: Explicit return type for Promise return values.
-  return response.json() as Promise<UserProfileData>;
-};
-
-/**
- * Fetches and displays a user profile.
- * Rule: JSDoc for main components, including @param and @returns.
- * @param props The properties for the component.
- * @returns A React element that displays the user profile.
- */
-export function UserProfile({
-  userId,
-}: UserProfileProps): React.ReactElement | null {
-  // Rule: Explicit typing of state, here derived via the generic <T | null>.
-  const [user, setUser] = useState<UserProfileData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  // Rule: Use useCallback for functions passed as dependencies.
-  const loadUser = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const userData = await fetchUserData(userId);
-      setUser(userData);
-    } catch (err: unknown) {
-      // Rule: Catch errors with the 'unknown' type and check the type.
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unknown error occurred.");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }, [userId]); // Dependency array is explicit.
-  
-  // Rule: Use useEffect for side-effects like data fetching.
-  useEffect(() => {
-    void loadUser(); // 'void' to indicate we're not awaiting the promise.
-  }, [loadUser]);
-  
-  if (isLoading) {
-    return <div>Loading profile...</div>;
-  }
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-  // Rule: Return null or a fragment if there's no data to render.
-  if (!user) {
-    return null;
-  }
-  // Rule: Formatting is handled by Prettier (e.g., indentation, quotes).
-  return (
-    <div>
-      <h2>User Profile</h2>
-      <p>
-        <strong>Name:</strong> {user.name}
-      </p>
-      <p>
-        <strong>Email:</strong> {user.email}
-      </p>
-      <button onClick={() => void loadUser()}>Refresh</button>
-    </div>
-  );
-}
-```
 
 ---
 
