@@ -16,46 +16,107 @@ import type {
   ConfigSetupStatus,
 } from "../types/config.types";
 import { getSetupSectionsState, getEnabledFeatures, isSetupComplete } from "@utils/setupUtils";
-import { isSupabaseConfigured } from "@shared/services/supabaseService";
-import { isAirtableConfigured } from "@shared/services/airtableService";
 import { getCustomTheme } from "@shared/theme/themeLoader";
+
+/**
+ * Read environment variables from .env file (server-side)
+ * This allows us to get current values without requiring a restart
+ */
+const readEnvFromFile = async (): Promise<Record<string, string>> => {
+  try {
+    const response = await fetch("/api/read-env");
+    const data = await response.json();
+    if (data.success && data.env) {
+      return data.env as Record<string, string>;
+    }
+  } catch {
+    // Fallback to import.meta.env if endpoint fails
+  }
+  return {};
+};
 
 /**
  * Build current configuration state from app state
  */
-const buildConfig = (): AppConfig => {
+const buildConfig = async (): Promise<AppConfig> => {
   const setupState = getSetupSectionsState();
   const enabledFeatures = getEnabledFeatures();
   const setupComplete = isSetupComplete();
 
-  // Get Supabase URL from env (without key for security)
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const supabaseConfigured = isSupabaseConfigured();
+  // Read env vars from .env file (server-side) to get latest values
+  const envVars = await readEnvFromFile();
 
-  // Get Airtable IDs from env (without key for security)
-  const airtableBaseId = import.meta.env.VITE_AIRTABLE_BASE_ID;
-  const airtableTableId = import.meta.env.VITE_AIRTABLE_TABLE_ID;
-  const airtableConfigured = isAirtableConfigured();
+  // Get Supabase URL from .env file (without key for security)
+  const supabaseUrl = envVars.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL;
+  const supabaseKey =
+    envVars.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    envVars.VITE_SUPABASE_ANON_KEY ||
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    import.meta.env.VITE_SUPABASE_ANON_KEY;
+  const supabaseConfigured = !!(supabaseUrl && supabaseKey && supabaseUrl !== "your-project-url");
+
+  // Get Airtable IDs from .env file (without key for security)
+  const airtableApiKey = envVars.VITE_AIRTABLE_API_KEY || import.meta.env.VITE_AIRTABLE_API_KEY;
+  const airtableBaseId = envVars.VITE_AIRTABLE_BASE_ID || import.meta.env.VITE_AIRTABLE_BASE_ID;
+  const airtableTableId = envVars.VITE_AIRTABLE_TABLE_ID || import.meta.env.VITE_AIRTABLE_TABLE_ID;
+  const airtableConfigured = !!(
+    airtableApiKey &&
+    airtableBaseId &&
+    airtableTableId &&
+    airtableApiKey !== "your-api-key" &&
+    airtableBaseId !== "your-base-id" &&
+    airtableTableId !== "your-table-id"
+  );
 
   // Check theme
   const customTheme = getCustomTheme();
   const hasCustomTheme = customTheme !== null;
 
+  // Check which Supabase key is set (prefer publishable key, fallback to anon key)
+  const supabasePublishableKey =
+    envVars.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  const supabaseAnonKey = envVars.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
+  const supabaseKeyName = supabasePublishableKey
+    ? "VITE_SUPABASE_PUBLISHABLE_KEY"
+    : "VITE_SUPABASE_ANON_KEY";
+  const supabaseKeySet = !!(supabasePublishableKey || supabaseAnonKey);
+
   const configurations: Configurations = {
     supabase: {
       configured: supabaseConfigured,
       url: supabaseConfigured && supabaseUrl ? supabaseUrl : undefined,
-      keyLocation: ".env",
+      urlKey: {
+        name: "VITE_SUPABASE_URL",
+        set: !!supabaseUrl,
+      },
+      keyKey: {
+        name: supabaseKeyName,
+        set: supabaseKeySet,
+      },
     },
     airtable: {
       configured: airtableConfigured,
       baseId: airtableConfigured && airtableBaseId ? airtableBaseId : undefined,
       tableId: airtableConfigured && airtableTableId ? airtableTableId : undefined,
-      keyLocation: ".env",
+      apiKey: {
+        name: "VITE_AIRTABLE_API_KEY",
+        set: !!airtableApiKey,
+      },
+      baseIdKey: {
+        name: "VITE_AIRTABLE_BASE_ID",
+        set: !!airtableBaseId,
+      },
+      tableIdKey: {
+        name: "VITE_AIRTABLE_TABLE_ID",
+        set: !!airtableTableId,
+      },
     },
     theme: {
       custom: hasCustomTheme,
       hasCustomTheme,
+    },
+    hosting: {
+      configured: setupState.hosting === "completed",
     },
   };
 
@@ -85,7 +146,7 @@ const buildConfig = (): AppConfig => {
  */
 export const syncConfiguration = async (): Promise<{ success: boolean; error?: string }> => {
   try {
-    const config = buildConfig();
+    const config = await buildConfig();
 
     const response = await fetch("/api/write-config", {
       method: "POST",

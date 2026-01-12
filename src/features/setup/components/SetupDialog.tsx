@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box } from "@mui/material";
 import { Save } from "@mui/icons-material";
 
 interface SetupDialogProps {
@@ -11,6 +11,7 @@ interface SetupDialogProps {
   saveButtonDisabled?: boolean;
   showCancel?: boolean;
   closeOnSave?: boolean;
+  additionalActions?: React.ReactNode;
 }
 
 export const SetupDialog = ({
@@ -23,6 +24,7 @@ export const SetupDialog = ({
   saveButtonDisabled = false,
   showCancel = true,
   closeOnSave = true,
+  additionalActions,
 }: SetupDialogProps) => {
   const handleSave = async () => {
     await onSave();
@@ -49,25 +51,26 @@ export const SetupDialog = ({
       }}
     >
       <DialogTitle sx={{ flexShrink: 0 }}>{title}</DialogTitle>
-      <DialogContent
-        sx={{ display: "flex", flexDirection: "column", minHeight: 0, flex: 1, overflow: "hidden" }}
-      >
+      <DialogContent sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
         {children}
       </DialogContent>
-      <DialogActions sx={{ flexShrink: 0 }}>
-        {showCancel && (
-          <Button onClick={onClose} color="inherit">
-            Cancel
+      <DialogActions sx={{ flexShrink: 0, justifyContent: "space-between", p: 2 }}>
+        <Box>{additionalActions}</Box>
+        <Box sx={{ display: "flex", gap: 1 }}>
+          {showCancel && (
+            <Button onClick={onClose} color="inherit">
+              Cancel
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            onClick={handleSave}
+            disabled={saveButtonDisabled}
+            startIcon={<Save />}
+          >
+            {saveButtonText}
           </Button>
-        )}
-        <Button
-          variant="contained"
-          onClick={handleSave}
-          disabled={saveButtonDisabled}
-          startIcon={<Save />}
-        >
-          {saveButtonText}
-        </Button>
+        </Box>
       </DialogActions>
     </Dialog>
   );

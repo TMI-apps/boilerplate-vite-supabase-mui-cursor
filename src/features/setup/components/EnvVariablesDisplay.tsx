@@ -60,7 +60,6 @@ export const EnvVariablesDisplay = ({
                   sx={{
                     display: "block",
                     mb: index < variables.length - 1 ? 1 : 0,
-                    bgcolor: "grey.200",
                     px: 0.5,
                     borderRadius: 0.5,
                   }}
@@ -84,7 +83,13 @@ export const EnvVariablesDisplay = ({
         <Box sx={{ mt: 2, p: 2, bgcolor: "warning.light", borderRadius: 1 }}>
           <Typography variant="body2">
             <strong>Important:</strong> Environment variables have been written to your{" "}
-            <Typography component="code" sx={{ bgcolor: "grey.200", px: 0.5, borderRadius: 0.5 }}>
+            <Typography
+              component="code"
+              sx={{
+                px: 0.5,
+                borderRadius: 0.5,
+              }}
+            >
               .env
             </Typography>{" "}
             file. Please <strong>restart your development server</strong> for the changes to take

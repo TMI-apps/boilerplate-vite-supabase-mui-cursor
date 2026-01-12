@@ -47,13 +47,31 @@ The file contains:
     "supabase": {
       "configured": true,
       "url": "https://xxx.supabase.co",
-      "keyLocation": ".env"
+      "urlKey": {
+        "name": "VITE_SUPABASE_URL",
+        "set": true
+      },
+      "keyKey": {
+        "name": "VITE_SUPABASE_PUBLISHABLE_KEY",
+        "set": true
+      }
     },
     "airtable": {
       "configured": true,
       "baseId": "appXXX",
       "tableId": "tblXXX",
-      "keyLocation": ".env"
+      "apiKey": {
+        "name": "VITE_AIRTABLE_API_KEY",
+        "set": true
+      },
+      "baseIdKey": {
+        "name": "VITE_AIRTABLE_BASE_ID",
+        "set": true
+      },
+      "tableIdKey": {
+        "name": "VITE_AIRTABLE_TABLE_ID",
+        "set": true
+      }
     },
     "theme": {
       "custom": true,
@@ -71,7 +89,7 @@ The file syncs when:
 1. **Setup Completed**: When finishing setup wizard (syncs before cleanup runs)
 2. **Manual Sync**: Call `syncConfiguration()` from any component/hook when needed
 
-Note: Config does NOT sync automatically on every status change to avoid circular dependencies. The sync happens at the end of setup when the configuration is finalized, which is the most useful time for Cursor agent to read it.
+**Important**: The config service reads environment variables directly from the `.env` file (via `/api/read-env` endpoint), so it reflects the current values immediately after they're written - **no server restart required**.
 
 ## How It Works
 
@@ -80,9 +98,11 @@ Note: Config does NOT sync automatically on every status change to avoid circula
 1. **Service Layer** (`src/features/setup/services/configService.ts`):
    - `syncConfiguration()`: Builds config from current app state and writes to file
    - Reads from localStorage and environment variables
+   - Calls `/api/read-env` to get current `.env` values (no restart needed)
    - Calls `/api/write-config` endpoint
 
-2. **API Endpoint** (`vite-plugin-dev-api.ts`):
+2. **API Endpoints** (`vite-plugin-dev-api.ts`):
+   - `/api/read-env`: Reads `.env` file server-side and returns VITE_ prefixed variables
    - `/api/write-config`: Dev-only endpoint that writes `app.config.json`
    - Only works in development mode (Vite dev server)
 
@@ -140,7 +160,12 @@ const config = JSON.parse(fs.readFileSync('app.config.json', 'utf-8'));
 - **Fields**:
   - `configured`: `boolean` - Whether Supabase is configured
   - `url`: `string | undefined` - Supabase project URL (if configured)
-  - `keyLocation`: `".env"` - Where the API key is stored
+  - `urlKey`: `EnvVariable` - Environment variable name and status for URL
+    - `name`: `"VITE_SUPABASE_URL"`
+    - `set`: `boolean` - Whether the variable is set
+  - `keyKey`: `EnvVariable` - Environment variable name and status for API key
+    - `name`: `"VITE_SUPABASE_PUBLISHABLE_KEY"` or `"VITE_SUPABASE_ANON_KEY"` (legacy)
+    - `set`: `boolean` - Whether the variable is set
 
 ### `configurations.airtable`
 - **Type**: `AirtableConfiguration`
@@ -148,7 +173,15 @@ const config = JSON.parse(fs.readFileSync('app.config.json', 'utf-8'));
   - `configured`: `boolean` - Whether Airtable is configured
   - `baseId`: `string | undefined` - Airtable Base ID (if configured)
   - `tableId`: `string | undefined` - Airtable Table ID (if configured)
-  - `keyLocation`: `".env"` - Where the API key is stored
+  - `apiKey`: `EnvVariable` - Environment variable for API key
+    - `name`: `"VITE_AIRTABLE_API_KEY"`
+    - `set`: `boolean`
+  - `baseIdKey`: `EnvVariable` - Environment variable for Base ID
+    - `name`: `"VITE_AIRTABLE_BASE_ID"`
+    - `set`: `boolean`
+  - `tableIdKey`: `EnvVariable` - Environment variable for Table ID
+    - `name`: `"VITE_AIRTABLE_TABLE_ID"`
+    - `set`: `boolean`
 
 ### `configurations.theme`
 - **Type**: `ThemeConfiguration`
@@ -169,7 +202,10 @@ const config = JSON.parse(fs.readFileSync('app.config.json', 'utf-8'));
 const config = JSON.parse(fs.readFileSync('app.config.json', 'utf-8'));
 if (config.configurations.supabase.configured) {
   console.log('Supabase URL:', config.configurations.supabase.url);
-  console.log('API key location:', config.configurations.supabase.keyLocation);
+  console.log('URL env var:', config.configurations.supabase.urlKey.name, 
+              '- Set:', config.configurations.supabase.urlKey.set);
+  console.log('Key env var:', config.configurations.supabase.keyKey.name, 
+              '- Set:', config.configurations.supabase.keyKey.set);
 }
 ```
 

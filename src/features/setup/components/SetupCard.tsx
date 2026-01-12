@@ -46,7 +46,7 @@ const statusConfig: Record<
     icon: <CheckCircle />,
     color: "success",
     label: "Completed",
-    buttonText: "Reconfigure",
+    buttonText: "View Configuration",
     avatarColor: "success.main",
   },
   skipped: {

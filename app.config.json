@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "setup": {
+    "completed": false,
+    "sections": {
+      "supabase": "not-started",
+      "airtable": "not-started",
+      "hosting": "not-started",
+      "theme": "not-started"
+    },
+    "enabledFeatures": []
+  },
+  "configurations": {
+    "supabase": {
+      "configured": true,
+      "url": "https://cfcwwyrjkhjdlljtwcwv.supabase.co",
+      "urlKey": {
+        "name": "VITE_SUPABASE_URL",
+        "set": true
+      },
+      "keyKey": {
+        "name": "VITE_SUPABASE_PUBLISHABLE_KEY",
+        "set": true
+      }
+    },
+    "airtable": {
+      "configured": true,
+      "baseId": "appcKCfS59kQIIPAW",
+      "tableId": "tblWljNHJ2wILb9Ig",
+      "apiKey": {
+        "name": "VITE_AIRTABLE_API_KEY",
+        "set": true
+      },
+      "baseIdKey": {
+        "name": "VITE_AIRTABLE_BASE_ID",
+        "set": true
+      },
+      "tableIdKey": {
+        "name": "VITE_AIRTABLE_TABLE_ID",
+        "set": true
+      }
+    },
+    "theme": {
+      "custom": false,
+      "hasCustomTheme": false
+    }
+  },
+  "lastUpdated": "2026-01-12T14:31:41.047Z"
+}

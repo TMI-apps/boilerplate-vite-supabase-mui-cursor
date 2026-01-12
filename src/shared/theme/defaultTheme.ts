@@ -15,7 +15,7 @@
  * - Use sx prop in components only for layout/spacing, not colors/styling
  */
 
-import { createTheme, ThemeOptions } from "@mui/material/styles";
+import { createTheme, ThemeOptions, Theme } from "@mui/material/styles";
 
 // Color constants - define once, reference everywhere
 const COLORS = {
@@ -187,9 +187,16 @@ export const defaultThemeOptions: ThemeOptions = {
     // CssBaseline customization - handles global styles
     MuiCssBaseline: {
       styleOverrides: {
-        code: {
+        code: ({ theme }: { theme: Theme }) => ({
           fontFamily: "source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace",
-        },
+          backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary,
+        }),
+        pre: ({ theme }: { theme: Theme }) => ({
+          fontFamily: "source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace",
+          backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary,
+        }),
         "*": {
           boxSizing: "border-box",
         },
@@ -199,6 +206,20 @@ export const defaultThemeOptions: ThemeOptions = {
           WebkitFontSmoothing: "antialiased",
           MozOsxFontSmoothing: "grayscale",
         },
+      },
+    },
+    // Typography component styling - handles code elements via component="code"
+    MuiTypography: {
+      styleOverrides: {
+        root: ({ theme }: { theme: Theme }) => ({
+          "& code": {
+            backgroundColor: theme.palette.background.default,
+            color: theme.palette.text.primary,
+            padding: "2px 4px",
+            borderRadius: 1,
+            fontSize: "0.875rem",
+          },
+        }),
       },
     },
   },

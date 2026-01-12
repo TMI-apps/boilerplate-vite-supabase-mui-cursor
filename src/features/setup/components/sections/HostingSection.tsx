@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Box, Alert, Typography, List, ListItem, ListItemText, Button } from "@mui/material";
 import { SetupCard } from "../SetupCard";
 import { SetupDialog } from "../SetupDialog";
+import { ConfigurationViewDialog } from "../ConfigurationViewDialog";
+import { HostingConfigView } from "../views/HostingConfigView";
+import { useConfigurationReset } from "../../hooks/useConfigurationReset";
 import { updateSetupSectionStatus, getSetupSectionsState } from "@utils/setupUtils";
 import type { SetupStatus } from "@utils/setupUtils";
 
@@ -13,6 +16,15 @@ export const HostingCard = ({ onStatusChange }: HostingSectionProps) => {
   const state = getSetupSectionsState();
   const status: SetupStatus = state.hosting;
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+
+  const handleCardClick = () => {
+    if (status === "completed") {
+      setViewDialogOpen(true);
+    } else {
+      setDialogOpen(true);
+    }
+  };
 
   return (
     <>
@@ -20,11 +32,16 @@ export const HostingCard = ({ onStatusChange }: HostingSectionProps) => {
         title="Configure Hosting"
         description="Learn how to configure environment variables on your hosting provider for production deployment."
         status={status}
-        onClick={() => setDialogOpen(true)}
+        onClick={handleCardClick}
       />
       <HostingDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
+        onStatusChange={onStatusChange}
+      />
+      <HostingViewDialog
+        open={viewDialogOpen}
+        onClose={() => setViewDialogOpen(false)}
         onStatusChange={onStatusChange}
       />
     </>
@@ -137,7 +154,12 @@ const HostingDialog = ({ open, onClose, onStatusChange }: HostingDialogProps) =>
           </Typography>
           <Box
             component="pre"
-            sx={{ mt: 1, p: 1, bgcolor: "grey.100", borderRadius: 1, fontSize: "0.875rem" }}
+            sx={{
+              mt: 1,
+              p: 1,
+              borderRadius: 1,
+              fontSize: "0.875rem",
+            }}
           >
             VITE_SUPABASE_URL=your-project-url{"\n"}
             VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
@@ -151,5 +173,30 @@ const HostingDialog = ({ open, onClose, onStatusChange }: HostingDialogProps) =>
         </Box>
       </Box>
     </SetupDialog>
+  );
+};
+
+interface HostingViewDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onStatusChange?: () => void;
+}
+
+const HostingViewDialog = ({ open, onClose, onStatusChange }: HostingViewDialogProps) => {
+  const { reset, resetting } = useConfigurationReset("hosting", () => {
+    onStatusChange?.();
+  });
+
+  return (
+    <ConfigurationViewDialog
+      open={open}
+      onClose={onClose}
+      title="Hosting Configuration"
+      sectionName="Hosting"
+      onReset={reset}
+      resetInProgress={resetting}
+    >
+      <HostingConfigView />
+    </ConfigurationViewDialog>
   );
 };

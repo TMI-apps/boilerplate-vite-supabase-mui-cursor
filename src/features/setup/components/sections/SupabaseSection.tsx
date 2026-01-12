@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import { SetupCard } from "../SetupCard";
 import { SetupDialog } from "../SetupDialog";
@@ -6,11 +6,16 @@ import { ConnectionTestResult } from "../ConnectionTestResult";
 import { EnvVariablesDisplay } from "../EnvVariablesDisplay";
 import { SupabaseFormFields } from "../SupabaseFormFields";
 import { SupabaseDescription } from "../SupabaseDescription";
+import { ConfigurationViewDialog } from "../ConfigurationViewDialog";
+import { SupabaseConfigView } from "../views/SupabaseConfigView";
 import { useConnectionTest } from "../../hooks/useConnectionTest";
 import { useEnvWriter } from "../../hooks/useEnvWriter";
 import { useSupabaseSetup } from "../../hooks/useSupabaseSetup";
+import { useConfigurationData } from "../../hooks/useConfigurationData";
+import { useConfigurationReset } from "../../hooks/useConfigurationReset";
 import { updateSetupSectionStatus, getSetupSectionsState } from "@utils/setupUtils";
 import type { SetupStatus } from "@utils/setupUtils";
+import type { SupabaseConfiguration } from "../../types/config.types";
 
 interface SupabaseSectionProps {
   onStatusChange?: () => void;
@@ -21,6 +26,15 @@ export const SupabaseCard = ({ onStatusChange }: SupabaseSectionProps) => {
   const state = getSetupSectionsState();
   const status: SetupStatus = isConfigured ? "completed" : state.supabase;
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+
+  const handleCardClick = () => {
+    if (status === "completed") {
+      setViewDialogOpen(true);
+    } else {
+      setDialogOpen(true);
+    }
+  };
 
   return (
     <>
@@ -28,11 +42,16 @@ export const SupabaseCard = ({ onStatusChange }: SupabaseSectionProps) => {
         title="Connect to Supabase"
         description="Enter your Supabase project credentials to enable authentication and cloud database features. This step is required before setting up database tables."
         status={status}
-        onClick={() => setDialogOpen(true)}
+        onClick={handleCardClick}
       />
       <SupabaseDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
+        onStatusChange={onStatusChange}
+      />
+      <SupabaseViewDialog
+        open={viewDialogOpen}
+        onClose={() => setViewDialogOpen(false)}
         onStatusChange={onStatusChange}
       />
     </>
@@ -142,5 +161,49 @@ const SupabaseDialog = ({ open, onClose, onStatusChange }: SupabaseDialogProps) 
         </Box>
       </Box>
     </SetupDialog>
+  );
+};
+
+interface SupabaseViewDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onStatusChange?: () => void;
+}
+
+const SupabaseViewDialog = ({ open, onClose, onStatusChange }: SupabaseViewDialogProps) => {
+  const { data, loading, error, refetch } = useConfigurationData<SupabaseConfiguration>("supabase");
+  const { reset, resetting } = useConfigurationReset("supabase", () => {
+    onStatusChange?.();
+  });
+
+  // Auto-sync configuration when dialog opens
+  useEffect(() => {
+    if (open) {
+      const syncConfig = async () => {
+        try {
+          const { syncConfiguration } = await import("../../services/configService");
+          const result = await syncConfiguration();
+          if (result.success) {
+            void refetch();
+          }
+        } catch {
+          // Silently handle sync errors - configuration will still be displayed
+        }
+      };
+      void syncConfig();
+    }
+  }, [open, refetch]);
+
+  return (
+    <ConfigurationViewDialog
+      open={open}
+      onClose={onClose}
+      title="Supabase Configuration"
+      sectionName="Supabase"
+      onReset={reset}
+      resetInProgress={resetting}
+    >
+      <SupabaseConfigView config={data} loading={loading} error={error} />
+    </ConfigurationViewDialog>
   );
 };

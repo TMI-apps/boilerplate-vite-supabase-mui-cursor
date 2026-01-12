@@ -3,6 +3,8 @@ import { Box, TextField, Alert, Typography, Button } from "@mui/material";
 import { CheckCircle, Error as ErrorIcon } from "@mui/icons-material";
 import { SetupCard } from "../SetupCard";
 import { SetupDialog } from "../SetupDialog";
+import { ConfigurationViewDialog } from "../ConfigurationViewDialog";
+import { ThemeConfigView } from "../views/ThemeConfigView";
 import {
   saveCustomTheme,
   validateThemeOptions,
@@ -10,8 +12,11 @@ import {
   getCustomTheme,
 } from "@shared/theme/themeLoader";
 import { defaultThemeOptions } from "@shared/theme/defaultTheme";
+import { useConfigurationData } from "../../hooks/useConfigurationData";
+import { useConfigurationReset } from "../../hooks/useConfigurationReset";
 import { updateSetupSectionStatus, getSetupSectionsState } from "@utils/setupUtils";
 import type { SetupStatus } from "@utils/setupUtils";
+import type { ThemeConfiguration } from "../../types/config.types";
 
 interface ThemeSectionProps {
   onStatusChange?: () => void;
@@ -21,6 +26,15 @@ export const ThemeCard = ({ onStatusChange }: ThemeSectionProps) => {
   const state = getSetupSectionsState();
   const status: SetupStatus = getCustomTheme() !== null ? "completed" : state.theme;
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+
+  const handleCardClick = () => {
+    if (status === "completed") {
+      setViewDialogOpen(true);
+    } else {
+      setDialogOpen(true);
+    }
+  };
 
   return (
     <>
@@ -28,11 +42,16 @@ export const ThemeCard = ({ onStatusChange }: ThemeSectionProps) => {
         title="Customize Theme"
         description="Customize your app's appearance with a custom MUI theme. Leave empty to use the default theme."
         status={status}
-        onClick={() => setDialogOpen(true)}
+        onClick={handleCardClick}
       />
       <ThemeDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
+        onStatusChange={onStatusChange}
+      />
+      <ThemeViewDialog
+        open={viewDialogOpen}
+        onClose={() => setViewDialogOpen(false)}
         onStatusChange={onStatusChange}
       />
     </>
@@ -224,5 +243,31 @@ const ThemeDialog = ({ open, onClose, onStatusChange }: ThemeDialogProps) => {
         onSkip={handleSkip}
       />
     </SetupDialog>
+  );
+};
+
+interface ThemeViewDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onStatusChange?: () => void;
+}
+
+const ThemeViewDialog = ({ open, onClose, onStatusChange }: ThemeViewDialogProps) => {
+  const { data, loading, error } = useConfigurationData<ThemeConfiguration>("theme");
+  const { reset, resetting } = useConfigurationReset("theme", () => {
+    onStatusChange?.();
+  });
+
+  return (
+    <ConfigurationViewDialog
+      open={open}
+      onClose={onClose}
+      title="Theme Configuration"
+      sectionName="Theme"
+      onReset={reset}
+      resetInProgress={resetting}
+    >
+      <ThemeConfigView config={data} loading={loading} error={error} />
+    </ConfigurationViewDialog>
   );
 };

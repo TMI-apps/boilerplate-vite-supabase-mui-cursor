@@ -7,12 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **View Configuration Feature**: Added read-only configuration view for all setup sections
+  - "View Configuration" button appears when a section is completed
+  - Displays configuration details from `app.config.json` in a dialog
+  - Shows non-sensitive data (Base ID, Table ID, URLs) with copy functionality
+  - Masks sensitive data (API keys, tokens) with "●●●●●●●●" and status indicators
+  - Includes "Reset Configuration" button to clear configuration and reset status
+  - Auto-syncs configuration when dialog opens to ensure latest data
+  - Implemented for Supabase, Airtable, Theme, and Hosting sections
+  - Created reusable components: `ConfigurationViewDialog`, `ConfigurationItem`, `SensitiveDataDisplay`, `ResetConfirmDialog`
+  - Added hooks: `useConfigurationData`, `useConfigurationReset`
+  - Added API endpoints: `/api/read-config`, `/api/remove-env-vars`
+- **Airtable Setup Improvements**: Enhanced Airtable configuration flow
+  - Combined PAT creation instructions with token input in single step
+  - Renamed "Enter credentials" to "Choose Base and Table"
+  - Streamlined text and removed redundant UI elements
+  - Single sequential list of steps for clarity
+  - Moved "Skip Airtable Setup" button to dialog actions area
+  - Fixed configuration sync to properly write env vars before marking as completed
+
 ### Fixed
 
 - **CI Build Failure**: Fixed pnpm version mismatch causing `--frozen-lockfile` to fail
   - Added `packageManager` field to `package.json` pinning pnpm to v9.15.4
   - Updated CI workflow to read pnpm version from `package.json` instead of hardcoding
   - Root cause: lockfile v9.0 format requires pnpm v9+, but CI was using v8
+- **Airtable Configuration Sync**: Fixed configuration not syncing to `app.config.json`
+  - Added `useEnvWriter` hook to AirtableSection to write env vars before completion
+  - Added auto-sync functionality when viewing configuration dialogs
+  - Configuration now properly reflects actual environment variable state
+- **Airtable Configuration View**: Removed duplicate information display
+  - Removed redundant "Base ID Key" and "Table ID Key" status indicators
+  - Configuration view now shows only Base ID, Table ID, and Personal Access Token
+- **Code Block Colors**: Fixed white-on-white text issue in code blocks
+  - Centralized code block styling in MUI theme via `MuiCssBaseline` and `MuiTypography`
+  - Code blocks now use `background.default` to match main page wrapper
+  - Removed manual color declarations from components (DRY principle)
+  - All code block colors now configurable from single theme file
+
+### Changed
+
+- **Theme System**: Enhanced code block styling defaults
+  - Added global defaults for `<code>` and `<pre>` elements via `MuiCssBaseline`
+  - Added defaults for `component="code"` via `MuiTypography` styleOverrides
+  - Code blocks automatically inherit theme colors without component-level overrides
+  - Components now only specify layout/spacing, not colors
 
 ### Added
 

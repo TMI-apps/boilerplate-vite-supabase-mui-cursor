@@ -622,6 +622,7 @@ module.exports = {
     },
     // Root config files - specific files only (no wildcards to prevent temporary/corrupted files)
     // JSON config files
+    { name: "app.config.json" },
     { name: ".dependency-cruiser-baseline.json" },
     { name: ".eslintrc.json" },
     { name: "cors.json" },
