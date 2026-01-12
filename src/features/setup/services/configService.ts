@@ -36,6 +36,103 @@ const readEnvFromFile = async (): Promise<Record<string, string>> => {
 };
 
 /**
+ * Read an environment variable from file or fallback to import.meta.env
+ */
+const readEnvVar = (envVars: Record<string, string>, key: string): string | undefined => {
+  return envVars[key] || import.meta.env[key];
+};
+
+/**
+ * Check if a value is a placeholder (not configured)
+ */
+const isPlaceholder = (value: string | undefined, placeholders: string[]): boolean => {
+  return value !== undefined && placeholders.includes(value);
+};
+
+/**
+ * Build Supabase configuration section
+ */
+const buildSupabaseConfig = (envVars: Record<string, string>): Configurations["supabase"] => {
+  const supabaseUrl = readEnvVar(envVars, "VITE_SUPABASE_URL");
+  const supabasePublishableKey = readEnvVar(envVars, "VITE_SUPABASE_PUBLISHABLE_KEY");
+  const supabaseAnonKey = readEnvVar(envVars, "VITE_SUPABASE_ANON_KEY");
+  const supabaseKey = supabasePublishableKey || supabaseAnonKey;
+
+  const supabaseConfigured = !!(
+    supabaseUrl &&
+    supabaseKey &&
+    !isPlaceholder(supabaseUrl, ["your-project-url"])
+  );
+
+  const supabaseKeyName = supabasePublishableKey
+    ? "VITE_SUPABASE_PUBLISHABLE_KEY"
+    : "VITE_SUPABASE_ANON_KEY";
+  const supabaseKeySet = !!(supabasePublishableKey || supabaseAnonKey);
+
+  return {
+    configured: supabaseConfigured,
+    url: supabaseConfigured && supabaseUrl ? supabaseUrl : undefined,
+    urlKey: {
+      name: "VITE_SUPABASE_URL",
+      set: !!supabaseUrl,
+    },
+    keyKey: {
+      name: supabaseKeyName,
+      set: supabaseKeySet,
+    },
+  };
+};
+
+/**
+ * Build Airtable configuration section
+ */
+const buildAirtableConfig = (envVars: Record<string, string>): Configurations["airtable"] => {
+  const airtableApiKey = readEnvVar(envVars, "VITE_AIRTABLE_API_KEY");
+  const airtableBaseId = readEnvVar(envVars, "VITE_AIRTABLE_BASE_ID");
+  const airtableTableId = readEnvVar(envVars, "VITE_AIRTABLE_TABLE_ID");
+
+  const airtableConfigured = !!(
+    airtableApiKey &&
+    airtableBaseId &&
+    airtableTableId &&
+    !isPlaceholder(airtableApiKey, ["your-api-key"]) &&
+    !isPlaceholder(airtableBaseId, ["your-base-id"]) &&
+    !isPlaceholder(airtableTableId, ["your-table-id"])
+  );
+
+  return {
+    configured: airtableConfigured,
+    baseId: airtableConfigured && airtableBaseId ? airtableBaseId : undefined,
+    tableId: airtableConfigured && airtableTableId ? airtableTableId : undefined,
+    apiKey: {
+      name: "VITE_AIRTABLE_API_KEY",
+      set: !!airtableApiKey,
+    },
+    baseIdKey: {
+      name: "VITE_AIRTABLE_BASE_ID",
+      set: !!airtableBaseId,
+    },
+    tableIdKey: {
+      name: "VITE_AIRTABLE_TABLE_ID",
+      set: !!airtableTableId,
+    },
+  };
+};
+
+/**
+ * Build theme configuration section
+ */
+const buildThemeConfig = (): Configurations["theme"] => {
+  const customTheme = getCustomTheme();
+  const hasCustomTheme = customTheme !== null;
+
+  return {
+    custom: hasCustomTheme,
+    hasCustomTheme,
+  };
+};
+
+/**
  * Build current configuration state from app state
  */
 const buildConfig = async (): Promise<AppConfig> => {
@@ -46,75 +143,10 @@ const buildConfig = async (): Promise<AppConfig> => {
   // Read env vars from .env file (server-side) to get latest values
   const envVars = await readEnvFromFile();
 
-  // Get Supabase URL from .env file (without key for security)
-  const supabaseUrl = envVars.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL;
-  const supabaseKey =
-    envVars.VITE_SUPABASE_PUBLISHABLE_KEY ||
-    envVars.VITE_SUPABASE_ANON_KEY ||
-    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
-    import.meta.env.VITE_SUPABASE_ANON_KEY;
-  const supabaseConfigured = !!(supabaseUrl && supabaseKey && supabaseUrl !== "your-project-url");
-
-  // Get Airtable IDs from .env file (without key for security)
-  const airtableApiKey = envVars.VITE_AIRTABLE_API_KEY || import.meta.env.VITE_AIRTABLE_API_KEY;
-  const airtableBaseId = envVars.VITE_AIRTABLE_BASE_ID || import.meta.env.VITE_AIRTABLE_BASE_ID;
-  const airtableTableId = envVars.VITE_AIRTABLE_TABLE_ID || import.meta.env.VITE_AIRTABLE_TABLE_ID;
-  const airtableConfigured = !!(
-    airtableApiKey &&
-    airtableBaseId &&
-    airtableTableId &&
-    airtableApiKey !== "your-api-key" &&
-    airtableBaseId !== "your-base-id" &&
-    airtableTableId !== "your-table-id"
-  );
-
-  // Check theme
-  const customTheme = getCustomTheme();
-  const hasCustomTheme = customTheme !== null;
-
-  // Check which Supabase key is set (prefer publishable key, fallback to anon key)
-  const supabasePublishableKey =
-    envVars.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  const supabaseAnonKey = envVars.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
-  const supabaseKeyName = supabasePublishableKey
-    ? "VITE_SUPABASE_PUBLISHABLE_KEY"
-    : "VITE_SUPABASE_ANON_KEY";
-  const supabaseKeySet = !!(supabasePublishableKey || supabaseAnonKey);
-
   const configurations: Configurations = {
-    supabase: {
-      configured: supabaseConfigured,
-      url: supabaseConfigured && supabaseUrl ? supabaseUrl : undefined,
-      urlKey: {
-        name: "VITE_SUPABASE_URL",
-        set: !!supabaseUrl,
-      },
-      keyKey: {
-        name: supabaseKeyName,
-        set: supabaseKeySet,
-      },
-    },
-    airtable: {
-      configured: airtableConfigured,
-      baseId: airtableConfigured && airtableBaseId ? airtableBaseId : undefined,
-      tableId: airtableConfigured && airtableTableId ? airtableTableId : undefined,
-      apiKey: {
-        name: "VITE_AIRTABLE_API_KEY",
-        set: !!airtableApiKey,
-      },
-      baseIdKey: {
-        name: "VITE_AIRTABLE_BASE_ID",
-        set: !!airtableBaseId,
-      },
-      tableIdKey: {
-        name: "VITE_AIRTABLE_TABLE_ID",
-        set: !!airtableTableId,
-      },
-    },
-    theme: {
-      custom: hasCustomTheme,
-      hasCustomTheme,
-    },
+    supabase: buildSupabaseConfig(envVars),
+    airtable: buildAirtableConfig(envVars),
+    theme: buildThemeConfig(),
     hosting: {
       configured: setupState.hosting === "completed",
     },

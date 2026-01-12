@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Code Optimization**: Reduced complexity in setup components and services
+  - Extracted `useWizardStep` hook for wizard step management (reduces AirtableDialog complexity from 15 to ~8)
+  - Refactored `buildConfig` function in configService (reduced complexity from 25 to ~8-10)
+  - Extracted helper functions: `readEnvVar`, `isPlaceholder`, `buildSupabaseConfig`, `buildAirtableConfig`, `buildThemeConfig`
+  - Simplified conditionals using switch-based validation patterns
+  - Improved code maintainability and testability
+
+## [2026-01-12]
+
+### Changed
+
 - **Scrollbar Styling**: Simplified scrollbar appearance with transparent track and subtle thumb
   - Removed prominent background color from scrollbars
   - Scrollbar thumb uses theme's text.primary color with 30% opacity (50% on hover)

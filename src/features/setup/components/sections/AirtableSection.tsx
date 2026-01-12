@@ -13,6 +13,7 @@ import { useAirtableSetup } from "../../hooks/useAirtableSetup";
 import { useConfigurationData } from "../../hooks/useConfigurationData";
 import { useConfigurationReset } from "../../hooks/useConfigurationReset";
 import { useEnvWriter } from "../../hooks/useEnvWriter";
+import { useWizardStep } from "../../hooks/useWizardStep";
 import { updateSetupSectionStatus, getSetupSectionsState } from "@utils/setupUtils";
 import type { SetupStatus } from "@utils/setupUtils";
 import type { AirtableConfiguration } from "../../types/config.types";
@@ -65,7 +66,6 @@ interface AirtableDialogProps {
 }
 
 const AirtableDialog = ({ open, onClose, onStatusChange }: AirtableDialogProps) => {
-  const [activeStep, setActiveStep] = useState(0);
   const [airtableApiKey, setAirtableApiKey] = useState("");
   const [airtableBaseId, setAirtableBaseId] = useState("");
   const [airtableTableId, setAirtableTableId] = useState("");
@@ -74,50 +74,56 @@ const AirtableDialog = ({ open, onClose, onStatusChange }: AirtableDialogProps) 
 
   const envWriter = useEnvWriter();
 
+  const TOTAL_STEPS = 4;
+  const wizard = useWizardStep({
+    totalSteps: TOTAL_STEPS,
+    onReset: resetStructure,
+  });
+
   // Reset state when dialog opens/closes
   useEffect(() => {
     if (!open) {
-      setActiveStep(0);
+      wizard.reset();
       setAirtableApiKey("");
       setAirtableBaseId("");
       setAirtableTableId("");
       resetStructure();
     }
-  }, [open, resetStructure]);
+  }, [open, resetStructure, wizard]);
 
   const handleNext = async () => {
+    const { activeStep, goToNext } = wizard;
+
+    // Step 0: Validate PAT is filled
     if (activeStep === 0) {
-      // Step 0: Validate PAT is filled
-      if (!airtableApiKey) {
-        return;
-      }
-      setActiveStep(1);
-    } else if (activeStep === 1) {
-      // Step 1: Validate base and table are filled
-      if (!airtableBaseId || !airtableTableId) {
-        return;
-      }
-      // Move to validation step and fetch structure
-      setActiveStep(2);
+      if (!airtableApiKey) return;
+      await goToNext();
+      return;
+    }
+
+    // Step 1: Validate base and table are filled, then fetch structure
+    if (activeStep === 1) {
+      if (!airtableBaseId || !airtableTableId) return;
+      await goToNext();
       await fetchTableStructure(airtableApiKey, airtableBaseId, airtableTableId);
-    } else if (activeStep === 2) {
-      // Step 2: Move to completion step
-      setActiveStep(3);
+      return;
+    }
+
+    // Step 2: Move to completion step
+    if (activeStep === 2) {
+      await goToNext();
     }
   };
 
   const handleBack = () => {
-    if (activeStep > 0) {
-      setActiveStep(activeStep - 1);
-      if (activeStep === 3) {
-        // Reset structure when going back from completion step
-        resetStructure();
-      }
-    }
+    wizard.goToPrevious();
   };
 
   const handleSave = async () => {
-    if (activeStep < 3) {
+    const { isLastStep } = wizard;
+
+    // If not on last step, advance to next step
+    if (!isLastStep) {
       await handleNext();
       return;
     }
@@ -143,25 +149,41 @@ const AirtableDialog = ({ open, onClose, onStatusChange }: AirtableDialogProps) 
     onClose();
   };
 
-  const canProceedFromStep0 = !!airtableApiKey;
-  const canProceedFromStep1 = airtableBaseId && airtableTableId;
-  const canProceedFromStep2 = tableStructure !== null && !loadingStructure && !structureError;
-
-  const getSaveButtonText = () => {
-    if (activeStep === 0) return "Next";
-    if (activeStep === 1) return "Next";
-    if (activeStep === 2) return canProceedFromStep2 ? "Next" : "Validating...";
-    return envWriter.envWritten ? "Finish Setup" : "Save to .env";
+  const getStepValidation = () => {
+    const { activeStep } = wizard;
+    switch (activeStep) {
+      case 0:
+        return { canProceed: !!airtableApiKey, buttonText: "Next" };
+      case 1:
+        return {
+          canProceed: !!(airtableBaseId && airtableTableId),
+          buttonText: "Next",
+        };
+      case 2:
+        return {
+          canProceed: tableStructure !== null && !loadingStructure && !structureError,
+          buttonText:
+            tableStructure !== null && !loadingStructure && !structureError
+              ? "Next"
+              : "Validating...",
+          disabled: loadingStructure,
+        };
+      case 3:
+        return {
+          canProceed: true,
+          buttonText: envWriter.envWritten ? "Finish Setup" : "Save to .env",
+          disabled: envWriter.writingEnv,
+        };
+      default:
+        return { canProceed: false, buttonText: "Next" };
+    }
   };
 
-  const getSaveButtonDisabled = () => {
-    if (activeStep === 0) return !canProceedFromStep0;
-    if (activeStep === 1) return !canProceedFromStep1;
-    if (activeStep === 2) return loadingStructure || !canProceedFromStep2;
-    return envWriter.writingEnv;
-  };
-
+  const stepValidation = getStepValidation();
   const steps = ["Create PAT", "Choose Base & Table", "Validate Connection", "Complete Setup"];
+
+  const { activeStep, isFirstStep, isLastStep } = wizard;
+  const showSkipButton = activeStep === 0 || activeStep === 1;
 
   return (
     <SetupDialog
@@ -169,12 +191,12 @@ const AirtableDialog = ({ open, onClose, onStatusChange }: AirtableDialogProps) 
       onClose={onClose}
       onSave={handleSave}
       title="Configure Airtable"
-      saveButtonText={getSaveButtonText()}
-      saveButtonDisabled={getSaveButtonDisabled()}
-      showCancel={activeStep === 0 || activeStep === 1}
-      closeOnSave={activeStep === 3}
+      saveButtonText={stepValidation.buttonText}
+      saveButtonDisabled={!stepValidation.canProceed || stepValidation.disabled}
+      showCancel={showSkipButton}
+      closeOnSave={isLastStep}
       additionalActions={
-        (activeStep === 0 || activeStep === 1) && (
+        showSkipButton && (
           <Button variant="outlined" onClick={handleSkip}>
             Skip Airtable Setup
           </Button>
@@ -276,7 +298,7 @@ const AirtableDialog = ({ open, onClose, onStatusChange }: AirtableDialogProps) 
       )}
 
       {/* Navigation buttons */}
-      {activeStep > 0 && activeStep < 3 && (
+      {!isFirstStep && !isLastStep && (
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
           <Button onClick={handleBack}>Back</Button>
           <Box />
