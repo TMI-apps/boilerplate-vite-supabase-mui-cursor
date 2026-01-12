@@ -14,17 +14,17 @@ export const AirtableDescription = () => {
         </Typography>
         <Typography variant="body2" component="div" sx={{ mt: 1 }}>
           <strong>Base ID:</strong> Found in your base's API documentation. Access it by going to
-          your base → Help → API documentation, or visit{" "}
+          your base → Help → API documentation, or check{" "}
           <Typography
             component="a"
-            href="https://airtable.com/appcKCfS59kQIIPAW/api/docs"
+            href="https://support.airtable.com/docs/finding-airtable-ids"
             target="_blank"
             rel="noopener"
             sx={{ color: "primary.main", textDecoration: "underline" }}
           >
-            airtable.com/[your-base-id]/api/docs
-          </Typography>{" "}
-          (replace [your-base-id] with your actual base ID). The Base ID is in the URL.
+            Airtable's guide
+          </Typography>
+          .
         </Typography>
         <Typography variant="body2" component="div" sx={{ mt: 1 }}>
           <strong>Table ID:</strong> The name of your table exactly as it appears in Airtable
