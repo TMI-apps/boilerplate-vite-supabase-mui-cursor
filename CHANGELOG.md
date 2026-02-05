@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Repository Ownership**: Updated repository references after transfer to TMI-apps organization
+  - Updated README.md clone URL from `TomFranse/boilerplate-vite-supabase-mui-cursor` to `TMI-apps/boilerplate-vite-supabase-mui-cursor`
+  - Updated local git remote URL to point to organization repository
+
 ## [0.7.0] - 2026-02-05
 
 ### Added

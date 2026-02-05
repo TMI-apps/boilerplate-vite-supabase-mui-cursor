@@ -38,7 +38,7 @@ See [this guide](https://stackoverflow.com/questions/71240918/how-to-set-default
 Open Cursor in the folder where you want to create your project, then run:
 
 ```bash
-git clone https://github.com/TomFranse/boilerplate-vite-supabase-mui-cursor .
+git clone https://github.com/TMI-apps/boilerplate-vite-supabase-mui-cursor .
 pnpm install
 ```
 
