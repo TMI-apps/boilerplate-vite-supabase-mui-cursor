@@ -220,6 +220,39 @@ See the theme file header for detailed principles.
 
 ## Linting Standards
 
+### ESLint Configuration (SSOT)
+
+**CRITICAL:** `.eslintrc.json` is the **Single Source of Truth** for all linting rules enforced by the pre-commit hook.
+
+ESLint enforces the following rules (in addition to complexity):
+
+- **Unused Variables/Imports**: 
+  - Unused imports are **errors** (`unused-imports/no-unused-imports: error`)
+  - Unused variables are **warnings** (`unused-imports/no-unused-vars: warn`)
+  - Prefix unused variables/parameters with `_` to suppress warnings (e.g., `_messageId`, `_isLoadingLimit`)
+  - **Always remove unused imports** - they add no value and clutter the code
+
+- **Import Order**:
+  - Enforced by `import/order` rule (error level)
+  - Groups: builtin → external → internal → parent → sibling → index → type
+  - React imports first, then `@/**` path aliases
+  - Alphabetical within groups
+
+- **Architecture Boundaries**:
+  - Enforced by `boundaries/element-types` rule (error level)
+  - Prevents importing from forbidden layers (see `architecture/RULE.md`)
+  - Use `eslint-disable` comments with justification for legitimate exceptions
+
+- **React Hooks**:
+  - Enforced by `react-hooks/exhaustive-deps` rule (warning level)
+  - All dependencies must be included in dependency arrays
+  - Use `user` not `user?.uid` if accessing `user` properties
+
+- **TypeScript Type Safety**:
+  - Enforced by TypeScript compiler (`tsc --noEmit` in pre-commit)
+  - All type errors must be fixed before commit
+  - Optional properties must be marked with `?` in interfaces
+
 ### Default Linting Tool: GTS (Google TypeScript Style)
 - **Default**: Use `npx gts lint --fix` for TypeScript projects
 - GTS provides consistent formatting and style enforcement

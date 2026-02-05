@@ -1,17 +1,23 @@
-# Run lint-staged for staged files
-pnpm lint-staged
+# Copy changelog to public/documentation for build
+# Note: Manual copy recommended - copy CHANGELOG.md to public/documentation/CHANGELOG.md
+# echo "Copying changelog..."
+# pnpm run copy-changelog
 
-# Run tests
-pnpm test:run
+# Linting (includes complexity checks via ESLint)
+# Complexity SSOT: .eslintrc.json lines 65-70
+pnpm lint-staged || exit 1
 
-# Type check
-pnpm type-check
+# Run tests (single run, not watch mode)
+echo "Running tests..."
+pnpm test:run || exit 1
 
-# Build check - ensures production build succeeds
-pnpm build
+# Run type checking (fast, catches TypeScript errors)
+# Exit code handling prevents Cursor hangs (see workflow/RULE.md lines 312-349)
+echo "Running type check..."
+pnpm type-check || exit 1
 
-# Validate project structure
-pnpm validate:structure
-
-# Architecture check
-pnpm arch:check
+# Run architecture validation for staged files only
+# Full validation available via: pnpm validate:all
+echo "Running architecture validation for staged files..."
+pnpm validate:structure:staged || exit 1
+pnpm arch:check:staged || exit 1

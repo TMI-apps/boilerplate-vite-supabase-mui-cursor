@@ -124,7 +124,9 @@ For each top priority violation (top 5-10), provide:
 
 ### Phase 6: Output Format
 
-Present findings as:
+**IMPORTANT:** Present findings directly in chat response. Do NOT create any files. The markdown format below is for chat output only.
+
+Present findings in chat as:
 
 ```
 # Architecture Repair Analysis
@@ -237,6 +239,10 @@ After significant architectural changes:
 - 🔍 **Move execution guidance** (step-by-step refactoring workflow)
 
 ## Example Output Structure
+
+**IMPORTANT:** This is an example of chat output format. Do NOT create files. Present analysis directly in chat response using this format.
+
+Example chat output:
 
 ```
 # Architecture Repair Analysis

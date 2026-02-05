@@ -26,7 +26,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
    - Types (`.ts`) → `src/shared/types/`
    - Edge Function → `supabase/functions/<name>/index.ts`
    - Cloud Function → `cloud-functions/<name>/`
-   - Docs (`.md`) → `documentation/`
+   - Docs (`.md`) → See Documentation Placement section below
    - Migration (`.sql`) → `supabase/migrations/` or `migrations/`
    - Layout hooks (`.ts`) → `src/shared/hooks/useLayout*.ts`
    - Route guards (`.tsx`) → `src/routes/guards/`
@@ -112,6 +112,63 @@ Examples:
 - Prevents temporary planning docs from cluttering permanent documentation
 - Easy to search/filter: `git ls-files | grep temp_`
 - Helps with cleanup: `find . -name "temp_*" -type f`
+
+## Documentation Placement
+
+**CRITICAL:** Documentation files have strict placement rules based on their permanence.
+
+### Temporary Documentation
+
+**ALL temporary documentation files MUST be created in subfolders with the `temp_job_` prefix:**
+
+- ✅ **CORRECT**: `documentation/jobs/temp_job_feature_name/ANALYSIS.md`
+- ✅ **CORRECT**: `documentation/jobs/temp_job_bug_fix/IMPLEMENTATION_PLAN.md`
+- ❌ **WRONG**: `documentation/bug-analysis.md` (directly in documentation folder)
+- ❌ **WRONG**: `documentation/temp_analysis.md` (missing `temp_job_` folder structure)
+
+**What qualifies as temporary documentation:**
+- 📋 Planning documents (implementation plans, analysis, design decisions)
+- 🔍 Investigation notes (bug analysis, debugging findings)
+- 📝 Draft documentation created during development
+- 🔄 Migration helpers and progress tracking files
+
+**Folder naming convention:**
+```
+documentation/jobs/temp_job_<descriptive-name>/
+  - IMPLEMENTATION_PLAN.md
+  - ANALYSIS.md
+  - etc.
+```
+
+### Permanent Documentation
+
+**Permanent documentation in the main `documentation/` folder REQUIRES EXPLICIT USER APPROVAL.**
+
+**DO NOT create files directly in `documentation/` without explicit user confirmation.**
+
+**What qualifies as permanent documentation:**
+- ✅ Architecture documentation (`architecture.md`, `ARCHITECTURE.md`)
+- ✅ Feature documentation (`documentation/features/*.md`)
+- ✅ Setup guides (`SETUP_GUIDE.md`, `QUICK_START.md`)
+- ✅ Project structure documentation (`PROJECT-STRUCTURE-VALIDATION.md`)
+
+**Workflow for permanent documentation:**
+1. **STOP** before creating any file in `documentation/`
+2. **ASK** the user: "Should this be permanent documentation in `documentation/`?"
+3. **WAIT** for explicit approval
+4. **ONLY THEN** create the file
+
+**If unsure, default to temporary placement:**
+- When in doubt, create in `documentation/jobs/temp_job_*/`
+- User can move it later if it should be permanent
+- Better to err on the side of temporary placement
+
+### Why This Matters
+
+- Makes it easy to identify temporary files for cleanup (`documentation/jobs/temp_job_*/`)
+- Prevents cluttering the main documentation folder with temporary files
+- Ensures permanent documentation is intentional and approved
+- Easy cleanup: `find documentation/jobs -type d -name "temp_job_*"`
 
 ## ⚠️ CRITICAL: NEVER Move Files Programmatically
 

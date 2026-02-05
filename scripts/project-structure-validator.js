@@ -2,7 +2,7 @@
 /**
  * Unified Project Structure Validator
  * 
- * Validates entire project structure against projectStructure.config.js
+ * Validates entire project structure against projectStructure.config.cjs
  * 
  * Handles all file types (parseable and non-parseable) and validates
  * the entire project structure recursively.
@@ -51,6 +51,8 @@ const DEFAULT_IGNORE_PATTERNS = [
   '.nyc_output',
   '.DS_Store',
   'Thumbs.db',
+  '.pnpm-store/**', // pnpm cache directory
+  '.pnpm-store',
   'supabase/.temp/**', // Supabase CLI temporary files
   'supabase/.temp',
   // Removed: 'backup/**', 'backup', 'backups/**', 'backups' - want to catch these as violations
@@ -407,7 +409,7 @@ function validateFile(filePath, lookupStructure, violations, cwd) {
       file: relativePath,
       type: 'file',
       message: `File "${fileName}" is in an unallowed location: "${dirPath}"`,
-      expected: 'File should be moved to an allowed directory or added to projectStructure.config.js',
+      expected: 'File should be moved to an allowed directory or added to projectStructure.config.cjs',
     });
     return;
   }
@@ -434,7 +436,7 @@ function validateFile(filePath, lookupStructure, violations, cwd) {
       file: relativePath,
       type: 'file',
       message: `File "${fileName}" is not allowed directly in "${matchingPath}" (only subfolders allowed)`,
-      expected: `Move file to an allowed subfolder (${config.allowedFolders.join(', ')}) or update projectStructure.config.js`,
+      expected: `Move file to an allowed subfolder (${config.allowedFolders.join(', ')}) or update projectStructure.config.cjs`,
     });
   } else {
     // No files or folders allowed - this shouldn't happen, but handle it
@@ -442,7 +444,7 @@ function validateFile(filePath, lookupStructure, violations, cwd) {
       file: relativePath,
       type: 'file',
       message: `File "${fileName}" is not allowed in "${matchingPath}"`,
-      expected: 'Update projectStructure.config.js to allow this file',
+      expected: 'Update projectStructure.config.cjs to allow this file',
     });
   }
 }
@@ -479,7 +481,7 @@ function validateDirectory(dirPath, lookupStructure, violations, cwd) {
         file: relativePath,
         type: 'directory',
         message: `Directory "${dirName}" is in an unallowed location: "${parentPath}"`,
-        expected: 'Directory should be moved to an allowed location or added to projectStructure.config.js',
+        expected: 'Directory should be moved to an allowed location or added to projectStructure.config.cjs',
       });
     }
     return;
@@ -507,7 +509,7 @@ function validateDirectory(dirPath, lookupStructure, violations, cwd) {
       file: relativePath,
       type: 'directory',
       message: `Directory "${dirName}" is not allowed in "${matchingPath}" (only files allowed)`,
-      expected: 'Remove directory or update projectStructure.config.js to allow subdirectories',
+      expected: 'Remove directory or update projectStructure.config.cjs to allow subdirectories',
     });
   }
 }
@@ -727,6 +729,7 @@ function validateProjectStructure(options = {}) {
     format = 'human',
     ignorePatterns = [],
     exitOnFirstViolation = false,
+    files = null, // Optional: specific files to check (comma-separated paths)
   } = options;
   
   const cwd = process.cwd();
@@ -748,8 +751,24 @@ function validateProjectStructure(options = {}) {
   const routesFilePath = path.join(cwd, 'src/routes/index.tsx');
   validateRoutePlacement(routesFilePath, violations, cwd);
   
-  // Scan project root
-  scanDirectory(cwd, lookupStructure, violations, shouldIgnore, exitOnFirstViolation, cwd);
+  // If specific files provided, validate only those
+  if (files && Array.isArray(files) && files.length > 0) {
+    for (const filePath of files) {
+      const fullPath = path.isAbsolute(filePath) ? filePath : path.join(cwd, filePath);
+      if (fs.existsSync(fullPath)) {
+        const stat = fs.statSync(fullPath);
+        if (stat.isDirectory()) {
+          validateDirectory(fullPath, lookupStructure, violations, cwd);
+          scanDirectory(fullPath, lookupStructure, violations, shouldIgnore, exitOnFirstViolation, cwd);
+        } else if (stat.isFile()) {
+          validateFile(fullPath, lookupStructure, violations, cwd);
+        }
+      }
+    }
+  } else {
+    // Scan project root (full validation)
+    scanDirectory(cwd, lookupStructure, violations, shouldIgnore, exitOnFirstViolation, cwd);
+  }
   
   // Output results
   if (violations.length > 0) {
@@ -803,7 +822,7 @@ function validateProjectStructure(options = {}) {
       console.error(`${routeViolations.length > 0 ? '3' : '1'}. Delete if temporary/corrupted file`);
       console.error(`${routeViolations.length > 0 ? '4' : '2'}. Move to appropriate directory`);
       console.error(`${routeViolations.length > 0 ? '5' : '3'}. Add to .gitignore if should be ignored`);
-      console.error(`${routeViolations.length > 0 ? '6' : '4'}. Update projectStructure.config.js if legitimate file\n`);
+      console.error(`${routeViolations.length > 0 ? '6' : '4'}. Update projectStructure.config.cjs if legitimate file\n`);
     }
     
     return { success: false, violations };
@@ -830,6 +849,12 @@ if (require.main === module) {
   const ignoreIndex = args.findIndex(arg => arg.startsWith('--ignore='));
   if (ignoreIndex !== -1) {
     options.ignorePatterns = args[ignoreIndex].split('=')[1].split(',').map(p => p.trim());
+  }
+  
+  // Parse --files option (comma-separated file paths)
+  const filesIndex = args.findIndex(arg => arg.startsWith('--files='));
+  if (filesIndex !== -1) {
+    options.files = args[filesIndex].split('=')[1].split(',').map(p => p.trim()).filter(Boolean);
   }
   
   const result = validateProjectStructure(options);

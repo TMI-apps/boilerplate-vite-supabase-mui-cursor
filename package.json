@@ -1,7 +1,7 @@
 {
   "name": "vite-mui-supabase-starter",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.6.0",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
@@ -30,7 +30,9 @@
     "arch:baseline": "depcruise --config .dependency-cruiser.cjs --output-type baseline src > .dependency-cruiser-baseline.json",
     "lint:arch": "eslint src --rule 'boundaries/element-types: error'",
     "validate:structure": "node scripts/project-structure-validator.js",
-    "validate:structure:json": "node scripts/project-structure-validator.js --format=json"
+    "validate:structure:json": "node scripts/project-structure-validator.js --format=json",
+    "validate:structure:staged": "node scripts/validate-staged.js",
+    "arch:check:staged": "node scripts/arch-check-staged.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

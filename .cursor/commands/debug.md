@@ -121,6 +121,60 @@ When symptoms match known patterns, prioritize these hypotheses first:
 - Key question: "Is the Webhook node's Response Mode set to 'Using Respond to Webhook node'?"
 - Debug approach: Check N8N workflow configuration, not code - verify Response Mode setting in Webhook node (N8N v1.114+ requires explicit configuration)
 
+**Auth Context Race Condition - Protected Route Redirects Before Role Loads:**
+- Symptom: Protected routes (e.g., admin pages) redirect to fallback route on page refresh, even though user has proper role. User sees redirect flash before staying on page, or gets redirected incorrectly.
+- Root cause: `loading` state becomes `false` before `userRole` is fetched. useEffect that fetches role runs on mount when `user` is `null` (initial state) and sets `loading: false` prematurely, allowing ProtectedRoute to render and redirect before role is available.
+- Key question: "Is the loading state being set to false before the initial session check completes?"
+- Debug approach: Track when `loading` changes to `false` relative to when `user` is set and when `userRole` is fetched. Use a ref to track if initial session check has completed before allowing `loading` to be set to `false` for null/anonymous users.
+
+**PowerShell Command Hangs - Long-Running Commands Get Stuck:**
+- Symptom: Commands like `pnpm type-check`, `pnpm lint`, or `pnpm test` appear to hang indefinitely in PowerShell/Cursor, especially in hooks or scripts
+- Root cause: PowerShell doesn't always propagate exit codes correctly. Commands may fail but PowerShell returns 0, causing Cursor to wait indefinitely for a clear termination signal
+- Key question: "Is the command actually hanging, or is Cursor waiting for an exit code that never comes?"
+- Debug approach: Check `.cursor/rules/workflow/RULE.md` for exit code handling patterns. Add explicit exit code handling: `command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }` for PowerShell, or `command || exit 1` for bash scripts
+
+**React Fast Refresh Context Provider Error During Hot Reload:**
+- Symptom: Context hook throws "must be used within Provider" error during hot reload, but works fine on full page refresh. Error disappears after refresh.
+- Root cause: React Fast Refresh temporarily unmounts providers during hot reload while components using the context are still rendering, causing context to be undefined
+- Key question: "Is this error only happening during hot reload in development mode, not on full refresh?"
+- Debug approach: Make context hook return a safe default in development mode instead of throwing. Check `import.meta.env?.MODE === 'development'` and return fallback context. Still throw in production to catch real bugs.
+
+**React State/URL Desynchronization - Component Checks Only State, Ignores URL Params:**
+- Symptom: Component creates new resources (conversations, items) on second action even though URL shows correct ID. State shows null/undefined but URL param exists.
+- Root cause: Component checks only state (`currentConversationId`) but ignores URL params (`paramConversationId`). Race condition where routing effect hasn't loaded resource yet but URL already indicates existing resource.
+- Key question: "Is the component checking both state AND URL params when determining resource context?"
+- Debug approach: Check if `paramConversationId` exists in URL but state is null - if so, use `paramConversationId` as fallback. Log both values to identify desynchronization. Use `effectiveId = stateId ?? (paramId && hasData ? paramId : null)` pattern.
+
+**Database UUID Type Error - Passing Array Index Instead of UUID:**
+- Symptom: Database error "invalid input syntax for type uuid: '1'" or similar when saving records with foreign key relationships. Error occurs when creating linked records (files, messages, etc.).
+- Root cause: Passing stringified array index (`String(index)`) instead of actual UUID from object. Common in `.map()` callbacks where index is mistakenly used instead of object ID property.
+- Key question: "Is the ID being passed the actual UUID property from the object, or a stringified array index?"
+- Debug approach: Check where ID is set in event handlers - verify it uses `(object as TypedObject).id` or `object.id`, not `String(index)`. Log the value being passed to identify if it's a numeric string vs UUID format.
+
+**localStorage Persistence Issue - Routing Data Cleared on Logout:**
+- Symptom: Feature works correctly on window close/reopen but fails after logout/login. Routing or state restoration doesn't work after login even though it works on refresh.
+- Root cause: `clearUserLocalStorage()` function clears localStorage keys that should persist across logout/login. Keys are user-specific but being cleared unnecessarily, breaking persistence.
+- Key question: "Is the localStorage clearing function removing keys that should persist across logout/login sessions?"
+- Debug approach: Check `clearUserLocalStorage()` function - verify which keys are cleared. User-specific keys (e.g., `lastOpenedChat:v1:{userId}`) should typically persist unless there's a security/privacy reason to clear them. Compare behavior: window close/reopen (keys persist) vs logout/login (keys cleared).
+
+**CORS Header Not Allowed - Generic "Failed" Error Message:**
+- Symptom: Browser console shows "Request header field X-Header-Name is not allowed by Access-Control-Allow-Headers in preflight response" but frontend only shows generic "I encountered an error: Failed" message. Request fails before reaching server.
+- Root cause: Edge function CORS configuration doesn't include custom headers being sent by frontend. Preflight OPTIONS request fails, causing fetch to throw generic error that gets truncated to just "Failed".
+- Key question: "Are all custom headers (x-title, http-referer, etc.) listed in the edge function's Access-Control-Allow-Headers?"
+- Debug approach: Check browser Network tab for OPTIONS preflight request - verify which headers are being sent vs allowed. Check edge function CORS configuration (`_shared/cors.ts`) - ensure all custom headers match exactly (case-sensitive). Improve frontend error handling to detect network/CORS errors and show clearer messages.
+
+**React State Synchronization Bug - Local Array Copy Not Updated:**
+- Symptom: Data appears in UI but disappears after save/reload, or save fails with validation errors. Only happens on first message or specific scenarios. Subsequent operations work fine.
+- Root cause: Async function creates local copy of state array (`let localArray = initialArray`), updates React state via callbacks (`setState`), but local copy isn't updated. When function returns, it returns stale local copy instead of updated state.
+- Key question: "Is the async function returning a local copy of state that was never updated, even though React state was updated via callbacks?"
+- Debug approach: Check if async function returns state - verify returned value matches React state. Look for `let localArray = initialArray` pattern followed by `setState` updates but no `localArray = updatedArray`. Fix: Update local copy before returning, or return updated state from callback.
+
+**Database Constraint Mismatch After Migration - ON CONFLICT References Old Primary Key:**
+- Symptom: Database error `42P10` "there is no unique or exclusion constraint matching the ON CONFLICT specification" when upserting/inserting records. Error occurs after database migrations that changed primary keys or unique constraints.
+- Root cause: Migration changed table constraints (e.g., primary key from `(assistant_id, tool_name)` to `(assistant_id, tool_id)`) but application code still references old constraint in `ON CONFLICT` clauses or queries.
+- Key question: "Did a recent migration change the primary key or unique constraint that this code references?"
+- Debug approach: Check migration files for table schema changes - verify current primary key/constraints match what code expects. Look for `ON CONFLICT` clauses, upsert operations, or unique constraint checks. Fix: Update code to use new constraint columns (may require lookup if old column is deprecated but kept for compatibility).
+
 **Add other patterns here as they're discovered.**
 
 ---

@@ -56,8 +56,8 @@ Quick reference guide to all rules and their relationships.
 ### Workflow (`workflow/RULE.md`)
 - Code review process
 - **Git workflow with changelog synchronization** (mandatory)
-- **Semantic versioning** (required: MAJOR.MINOR.PATCH)
-- **Commit message format** (version first, matches changelog)
+- **Semantic versioning** (SSOT: `.cursor/commands/finish.md`)
+- **Commit message format** (SSOT: `.cursor/commands/finish.md`)
 - **Branch protection** (experimental/main/feature branches with verification)
 - Development process
 - PR standards

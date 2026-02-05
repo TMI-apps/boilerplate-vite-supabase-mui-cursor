@@ -33,13 +33,10 @@ Development workflows, code review standards, and process requirements. Includes
 ### Version Control Standards
 
 #### Semantic Versioning
-All projects must follow semantic versioning (MAJOR.MINOR.PATCH):
-- MAJOR (X.0.0): Breaking changes
-  - Major version bumps require explicit user confirmation before proceeding
-  - Ask: "This is a MAJOR version bump (breaking change). Do you want to proceed?"
-  - Only proceed after explicit user confirmation
-- MINOR (0.X.0): New features (backwards compatible)
-- PATCH (0.0.X): Bug fixes (backwards compatible)
+
+**SSOT:** See `.cursor/commands/finish.md` for semantic versioning rules (MAJOR.MINOR.PATCH format, version bump criteria, and conventional commit type mappings).
+
+**Version Release Rule:**
 - One commit per released version: Each version release should be a single commit
 
 #### Changelog Synchronization
@@ -49,24 +46,16 @@ Commits and changelog must be synchronized:
 - Version number should be first in the commit message
 
 #### Commit Messages
-Format: `[VERSION] type: Feature/Change Title`
 
+**SSOT:** See `.cursor/commands/finish.md` for commit message format and standards.
+
+**Key Requirements:**
+- Format: `[VERSION] type: Feature/Change Title`
 - Version number must be first (e.g., `[3.19.0] feat: User Profile Settings`)
-- Use conventional commit format: `type: description`
 - Commit message subject must exactly match changelog feature title (with type prefix)
 - Commit body is required: Must include details about what changed
 - Reference issue/ticket numbers when applicable
 - Keep commits focused (one logical change per commit)
-
-**Conventional Commit Types:**
-- `feat:` - New feature (bumps MINOR version)
-- `fix:` - Bug fix (bumps PATCH version)
-- `docs:` - Documentation only changes
-- `style:` - Code style changes (formatting, no logic change)
-- `refactor:` - Code refactoring (no feature change)
-- `perf:` - Performance improvements
-- `test:` - Adding or updating tests
-- `chore:` - Maintenance tasks, dependency updates
 
 **Changelog Sections:**
 Changelog entries use Keep-a-Changelog style sections:
@@ -89,7 +78,7 @@ Changelog entries use Keep-a-Changelog style sections:
 
 **Example Workflow:**
 1. Update changelog: Add `## 3.19.0 - 2024-11-01` with feature description
-2. Commit with matching message: `[3.19.0] feat: User Profile Settings`
+2. Commit with matching message: `[3.19.0] feat: User Profile Settings` (see `.cursor/commands/finish.md` for format details)
 3. Verify: Changelog title matches commit subject (minus version prefix)
 
 #### Version Synchronization
@@ -227,7 +216,7 @@ Before editing code files:
 
 ## Agent-Specific Behaviors
 
-### Agent Role and Control
+### Agent Role and Control (When in agent mode)
 - The agent has complete control over the application codebase
 - The user is the tester and product-owner who provides user stories and tasks
 - The agent turns user stories into architecture, logic, and code implementation
@@ -238,6 +227,50 @@ Never claim success without a user test:
 - The user decides if an implementation is successful, not the agent
 - Always wait for user confirmation before marking tasks as complete
 - Avoid statements like "This should work" or "The implementation is complete"
+
+### Protected Files - Require Explicit User Consent
+
+**CRITICAL: Never modify these files without explicit user approval.**
+
+The agent must STOP and ASK the user before modifying any of the following file categories:
+
+**Configuration Files:**
+- `.gitignore`, `.gitattributes`
+- `projectStructure.config.cjs`
+- `.eslintrc.json`, `eslint.config.js`, `eslint.ignores.js`
+- `.dependency-cruiser.cjs`, `.dependency-cruiser-baseline.json`
+- `.prettierrc.json`, `.prettierrc.js`
+- `.editorconfig`
+- `tsconfig*.json`
+
+**Cursor Rules and Commands:**
+- `.cursor/rules/**`
+- `.cursor/commands/**`
+
+**Git Hooks:**
+- `.husky/**`
+
+**CI/CD:**
+- `.github/workflows/**`
+
+**Required Behavior:**
+
+1. **When a violation or issue requires modifying a protected file:**
+   - STOP immediately
+   - Inform user: "This requires modifying [file]. Options: [list options]"
+   - Present options clearly (e.g., "Add X to .gitignore?" or "Update config to allow this file?")
+   - WAIT for explicit user response
+   - Only proceed after user explicitly approves the specific change
+
+2. **Never assume consent:**
+   - Even if the fix seems obvious, always ask
+   - Even during automated workflows (like finish command), ask before modifying protected files
+   - "NEVER adjust rules without explicit user request" applies to ALL protected files
+
+3. **Examples of required behavior:**
+   - Pre-commit finds `temp-file.json` → Ask: "Should I add this to .gitignore, or update projectStructure.config.cjs?"
+   - Linting fails on new pattern → Ask: "Should I update .eslintrc.json to allow this?"
+   - Architecture check fails → Ask: "Should I update the baseline or fix the violation?"
 
 ### Reductive Strategy (Bugs and New Features)
 
@@ -256,7 +289,7 @@ See Branch Strategy section above for detailed branch protection rules and verif
 
 ### Commit and Push Workflow
 
-**Automated Workflow:** See `.cursor/commands/finish2.md` for the automated finish command that implements this workflow.
+**Automated Workflow:** See `.cursor/commands/finish.md` for the automated finish command that implements this workflow.
 
 #### Permission-Based Flow
 
@@ -309,12 +342,44 @@ Never pipe directly to `Select-Object` without `Out-String` first. This triggers
 - Option 2: Capture to variable first (also safe)
 - Option 3: No output filtering (safest, but shows all output)
 
-**Critical**: Always check `$LASTEXITCODE` after external commands to prevent Cursor crashes. PowerShell doesn't always propagate exit codes correctly, and Cursor crashes when it receives error output but thinks the command succeeded (exit code 0).
+**Critical - Exit Code Handling to Prevent Cursor Crashes:**
+
+Always check `$LASTEXITCODE` after external commands to prevent Cursor crashes. PowerShell doesn't always propagate exit codes correctly, and Cursor crashes when it receives error output but thinks the command succeeded (exit code 0).
+
+**Why This Pattern Prevents Crashes:**
+
+1. **Explicit Exit Code Propagation**: PowerShell doesn't always propagate exit codes from child processes. When a command fails, the exit code may not be set correctly, leaving Cursor waiting indefinitely. The explicit check ensures Cursor gets a clear failure signal.
+
+2. **Prevents Ambiguous States**: Without explicit handling, a command might fail but PowerShell returns 0, causing Cursor to treat it as success. This mismatch can cause crashes or hangs. The pattern forces an explicit `exit 1` on any non-zero exit code.
+
+3. **Large Output Serialization**: When commands produce large output, Cursor may struggle to serialize the response (e.g., "serialize binary: invalid int 32" errors). Explicit exit handling provides a clear termination point, preventing serialization issues.
+
+4. **PowerShell-Specific Behavior**: PowerShell's error handling differs from bash - exit codes aren't always propagated automatically. Explicit checks are more reliable for ensuring Cursor receives unambiguous termination signals.
 
 **Required Pattern:**
+
+```powershell
+command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }
+```
+
+- `command 2>&1` - Runs command, redirects stderr to stdout
+- `;` - Command separator (PowerShell equivalent of `&&`)
+- `$LASTEXITCODE` - PowerShell variable containing last command's exit code
+- `if ($LASTEXITCODE -ne 0)` - Check if command failed
+- `exit 1` - Force explicit failure exit code
+
+**When to Use This Pattern:**
+- Long-running commands (like `pnpm arch:check`, `pnpm lint`)
+- Commands that might fail silently
+- Commands producing large output
+- Any command where Cursor might hang or crash
+- npm/node commands (lint, test, build)
+- Commands with output filtering
+
+**Notes:**
 - Check `$LASTEXITCODE` (not `$?`) after commands
-- Use `exit $LASTEXITCODE` to preserve original exit code
-- Always check exit codes for: npm/node commands (lint, test, build), commands that might fail, commands with output filtering
+- Use `exit $LASTEXITCODE` to preserve original exit code (or `exit 1` for explicit failure)
+- This pattern gives Cursor a clear, unambiguous termination signal, reducing crashes and hangs
 
 ### Environment Variables and Configuration
 
@@ -384,11 +449,11 @@ Never pipe directly to `Select-Object` without `Out-String` first. This triggers
 - Entry: User Authentication with JWT token-based authentication system
 
 **Commit message:**
-- Format: `[3.19.0] feat: User Authentication`
+- Format: `[3.19.0] feat: User Authentication` (see `.cursor/commands/finish.md` for format SSOT)
 - Body includes: Implementation details, middleware updates, service changes, test coverage
 - References: Closes #123
 
-Note: Commit body is required and must include details about what changed. Version number is first, commit type and title match changelog exactly.
+Note: Commit body is required and must include details about what changed. Version number is first, commit type and title match changelog exactly. See `.cursor/commands/finish.md` for complete commit message standards.
 
 ### Bad Commit Message
 - Generic messages like "fix stuff" without version, type, or details

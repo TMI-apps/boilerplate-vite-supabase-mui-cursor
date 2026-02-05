@@ -21,16 +21,15 @@ A modern, production-ready boilerplate for building React applications with Type
 - **pnpm** 8.x or higher (recommended) or npm/yarn
 - **Supabase Account** (optional) - [Sign up here](https://supabase.com) if you want to use authentication and database features
 
-### Windows Users: Configure Line Endings
+### Configure Line Endings
 
-**IMPORTANT:** Configure Cursor to use Linux line endings!
+**IMPORTANT:** Before starting, configure Cursor to use Linux line endings (`\n`). This ensures consistent line endings across all files.
 
-This ensures that every new file you create uses Linux endings, and existing files don't get converted back to Windows endings when you save them.
+1. Press `Ctrl + ,` to open Settings
+2. Search for `files.eol`
+3. Change the setting to `\n`
 
-1. Open Cursor
-2. Press `Ctrl + ,` to open Settings
-3. Search for `files.eol`
-4. Change the setting from `auto` (or `\r\n`) to `\n`
+See [this guide](https://stackoverflow.com/questions/71240918/how-to-set-default-line-endings-in-visual-studio-code) for more details.
 
 ## Quick Start Guide
 

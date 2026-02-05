@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2026-02-05]
+
+### Added
+
+- **Staged File Validation**: Added support for validating only staged files in pre-commit hook
+  - Added `validate:structure:staged` npm script for validating staged file structure
+  - Added `arch:check:staged` npm script for checking staged TypeScript files architecture
+  - Created `scripts/validate-staged.js` wrapper script for staged structure validation
+  - Created `scripts/arch-check-staged.js` wrapper script for staged architecture checks
+  - Enhanced `project-structure-validator.js` with `--files` option to validate specific files
+  - Pre-commit hook now validates only staged files for faster commit times
+
+### Changed
+
+- **Cursor Rules and Commands**: Enhanced rule quality and command structure
+  - Enhanced `check.md` command with comprehensive information gathering checklists and completeness gates
+  - Added `feature.md` command with systematic engineering process and mandatory decision points
+  - Added `grade-rule.md` command for evaluating rule/command quality with rubric
+  - Replaced `finish2.md` with `finish.md` command with improved semantic versioning and commit message standards
+  - Enhanced `debug.md` command with additional error pattern recognition
+  - Improved workflow rule by referencing finish command as SSOT for versioning and commit standards
+  - Enhanced code-style rule with additional guidance
+  - Improved file-placement rule with better clarity
+  - Updated pre-commit hook with improved validation
+  - Updated README with latest information
+  - Added "Protected Files" section to workflow rule requiring explicit user consent before modifying configuration files
+
 ## [2026-01-17]
 
 ### Changed
