@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-02-05
+
+### Added
+
+- **Documentation Naming Convention**: Enforced `DOC_` prefix for permanent documentation files
+  - Root-level documentation files must use `DOC_*.md` naming pattern
+  - Created `documentation/temp/` folder for temporary documentation
+  - Updated `projectStructure.config.cjs` to enforce DOC_ prefix requirement
+  - Updated file-placement rule with comprehensive documentation placement guidelines
+
+### Changed
+
+- **Documentation Organization**: Renamed all permanent documentation files with DOC_ prefix
+  - `APP_CODE_MODIFICATION.md` → `DOC_APP_CODE_MODIFICATION.md`
+  - `APP_CONFIG_FILE.md` → `DOC_APP_CONFIG_FILE.md`
+  - `ARCHITECTURE-MIGRATION-INSTRUCTIONS.md` → `DOC_ARCHITECTURE_MIGRATION_INSTRUCTIONS.md`
+  - `BOILERPLATE_EXTRACTION_GUIDE.md` → `DOC_BOILERPLATE_EXTRACTION_GUIDE.md`
+  - `COMPLEXITY_REDUCTION_ANALYSIS.md` → `DOC_COMPLEXITY_REDUCTION_ANALYSIS.md`
+  - `CURSOR_EXIT_CODE_FIX.md` → `DOC_CURSOR_EXIT_CODE_FIX.md`
+  - `TESTING_APP_CONFIG.md` → `DOC_TESTING_APP_CONFIG.md`
+- Moved temporary plan file to `documentation/jobs/` folder
+- Updated references in `ARCHITECTURE.md` and `CHANGELOG.md` to reflect new file names
+
 ## [2026-02-05]
 
 ### Added
@@ -206,7 +229,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **App Code Modification Feature**: Formalized dev-only code modification capability
   - Renamed `vite-plugin-env-writer.ts` → `vite-plugin-dev-api.ts` for clarity
   - Extracted `envWriterService.ts` from `useEnvWriter` hook for better separation
-  - Added comprehensive documentation (`documentation/APP_CODE_MODIFICATION.md`)
+  - Added comprehensive documentation (`documentation/DOC_APP_CODE_MODIFICATION.md`)
   - Documented in `ARCHITECTURE.md` as a recognized feature
   - Feature enables UI to modify app source code and configuration files during development
   - Used by setup wizard for environment variable writing and code cleanup

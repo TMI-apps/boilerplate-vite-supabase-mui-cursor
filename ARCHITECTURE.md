@@ -404,8 +404,8 @@ This file is readable by Cursor agent and syncs when finishing setup (before cle
 **Security**: API keys are NOT stored in this file - they remain in `.env`. The config file only contains references and metadata.
 
 For more details, see:
-- `documentation/APP_CODE_MODIFICATION.md` - Code modification feature
-- `documentation/APP_CONFIG_FILE.md` - Configuration file documentation
+- `documentation/DOC_APP_CODE_MODIFICATION.md` - Code modification feature
+- `documentation/DOC_APP_CONFIG_FILE.md` - Configuration file documentation
 
 ## Best Practices
 

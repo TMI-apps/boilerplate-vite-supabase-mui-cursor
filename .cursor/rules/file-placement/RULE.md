@@ -119,12 +119,18 @@ Examples:
 
 ### Temporary Documentation
 
-**ALL temporary documentation files MUST be created in subfolders with the `temp_job_` prefix:**
+**Temporary documentation MUST be placed in one of these locations:**
 
+- `documentation/jobs/` - For job/feature-related temporary docs
+- `documentation/temp/` - For general temporary docs
+- `documentation/jobs/temp_job_<name>/` - For grouped temporary docs
+
+**Examples:**
 - ✅ **CORRECT**: `documentation/jobs/temp_job_feature_name/ANALYSIS.md`
-- ✅ **CORRECT**: `documentation/jobs/temp_job_bug_fix/IMPLEMENTATION_PLAN.md`
-- ❌ **WRONG**: `documentation/bug-analysis.md` (directly in documentation folder)
-- ❌ **WRONG**: `documentation/temp_analysis.md` (missing `temp_job_` folder structure)
+- ✅ **CORRECT**: `documentation/jobs/job_feature_implementation.md`
+- ✅ **CORRECT**: `documentation/temp/debugging_notes.md`
+- ❌ **WRONG**: `documentation/bug-analysis.md` (directly in documentation root)
+- ❌ **WRONG**: `documentation/MY_NOTES.md` (missing DOC_ prefix for root-level)
 
 **What qualifies as temporary documentation:**
 - 📋 Planning documents (implementation plans, analysis, design decisions)
@@ -132,43 +138,60 @@ Examples:
 - 📝 Draft documentation created during development
 - 🔄 Migration helpers and progress tracking files
 
-**Folder naming convention:**
+### Permanent Documentation (DOC_ Prefix Required)
+
+**CRITICAL: Root-level documentation files in `documentation/` MUST have the `DOC_` prefix.**
+
+This naming convention:
+- Enforces explicit approval for permanent documentation
+- Makes permanent docs easily identifiable
+- Prevents accidental creation of root-level docs
+- Is validated by `projectStructure.config.cjs` (hard enforcement)
+
+**Naming convention:**
 ```
-documentation/jobs/temp_job_<descriptive-name>/
-  - IMPLEMENTATION_PLAN.md
-  - ANALYSIS.md
-  - etc.
+documentation/DOC_<DESCRIPTIVE_NAME>.md
+
+Examples:
+- DOC_APP_CONFIG_FILE.md
+- DOC_ARCHITECTURE_MIGRATION.md
+- DOC_TESTING_GUIDE.md
 ```
-
-### Permanent Documentation
-
-**Permanent documentation in the main `documentation/` folder REQUIRES EXPLICIT USER APPROVAL.**
-
-**DO NOT create files directly in `documentation/` without explicit user confirmation.**
 
 **What qualifies as permanent documentation:**
-- ✅ Architecture documentation (`architecture.md`, `ARCHITECTURE.md`)
-- ✅ Feature documentation (`documentation/features/*.md`)
-- ✅ Setup guides (`SETUP_GUIDE.md`, `QUICK_START.md`)
-- ✅ Project structure documentation (`PROJECT-STRUCTURE-VALIDATION.md`)
+- ✅ Architecture documentation (`DOC_ARCHITECTURE_*.md`)
+- ✅ Feature documentation (`DOC_FEATURE_*.md`)
+- ✅ Setup guides (`DOC_SETUP_GUIDE.md`, `DOC_QUICK_START.md`)
+- ✅ Project guides (`DOC_CODE_MODIFICATION.md`)
 
 **Workflow for permanent documentation:**
-1. **STOP** before creating any file in `documentation/`
-2. **ASK** the user: "Should this be permanent documentation in `documentation/`?"
+1. **STOP** before creating any file directly in `documentation/`
+2. **ASK** the user: "Should this be permanent documentation with DOC_ prefix?"
 3. **WAIT** for explicit approval
-4. **ONLY THEN** create the file
+4. **USE** the `DOC_` prefix: `documentation/DOC_<name>.md`
 
 **If unsure, default to temporary placement:**
-- When in doubt, create in `documentation/jobs/temp_job_*/`
-- User can move it later if it should be permanent
+- When in doubt, create in `documentation/jobs/` or `documentation/temp/`
+- User can rename with DOC_ prefix later if it should be permanent
 - Better to err on the side of temporary placement
+
+### Subdirectories in Documentation
+
+Subdirectories in `documentation/` (e.g., `documentation/Authentication-main-app/`) are allowed for:
+- Reference material and code examples
+- Grouped documentation by topic
+- Legacy documentation folders
+
+Files within subdirectories do NOT require the DOC_ prefix.
 
 ### Why This Matters
 
-- Makes it easy to identify temporary files for cleanup (`documentation/jobs/temp_job_*/`)
+- **Hard enforcement**: `projectStructure.config.cjs` only allows `DOC_*.md` at root level
+- **Pre-commit validation**: Violations caught before commit via `pnpm validate:structure:staged`
+- Makes it easy to identify temporary files for cleanup (`documentation/jobs/`, `documentation/temp/`)
 - Prevents cluttering the main documentation folder with temporary files
 - Ensures permanent documentation is intentional and approved
-- Easy cleanup: `find documentation/jobs -type d -name "temp_job_*"`
+- Easy cleanup: `find documentation/jobs -name "temp_*"` or `find documentation/temp`
 
 ## ⚠️ CRITICAL: NEVER Move Files Programmatically
 

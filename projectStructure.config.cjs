@@ -421,10 +421,12 @@ module.exports = {
       ],
     },
     // Documentation
+    // IMPORTANT: Root-level .md files must have DOC_ prefix (permanent docs only)
+    // Temporary docs go in documentation/jobs/ or documentation/temp/
     {
       name: "documentation",
       children: [
-        // Specific subdirectories first (before wildcard)
+        // Jobs folder for feature implementation docs (temporary and permanent)
         {
           name: "jobs",
           children: [
@@ -435,14 +437,26 @@ module.exports = {
             },
           ],
         },
-        // Root-level files
-        { name: "*.md" },
+        // Temp folder for temporary documentation
+        {
+          name: "temp",
+          children: [
+            { name: "*.md" },
+            {
+              name: "*",
+              children: [{ name: "*.md" }],
+            },
+          ],
+        },
+        // Root-level files - ONLY DOC_ prefixed markdown files allowed
+        // This enforces explicit approval for permanent documentation
+        { name: "DOC_*.md" },
         { name: "*.dbml" },
         { name: "*.svg" },
         { name: "*.sql" }, // SQL documentation/queries
         { name: "*.html" }, // HTML documentation/examples
         { name: "*.xml" }, // XML reference files
-        // Wildcard subdirectories (after specific ones)
+        // Wildcard subdirectories for reference material (after specific ones)
         {
           name: "*",
           children: [
