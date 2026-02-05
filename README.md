@@ -17,9 +17,21 @@ A modern, production-ready boilerplate for building React applications with Type
 
 ## Prerequisites
 
-- **Node.js** 20.x or higher
-- **pnpm** 8.x or higher (recommended) or npm/yarn
+### Required
+
+- **Node.js** 20.x or higher - [Download here](https://nodejs.org/)
+- **pnpm** 9.15.4 or higher (recommended) or npm/yarn
+  - Install globally: `npm install -g pnpm`
+- **Git** - Required for cloning the repository and git hooks
+  - [Download here](https://git-scm.com/downloads)
+
+### Optional
+
 - **Supabase Account** (optional) - [Sign up here](https://supabase.com) if you want to use authentication and database features
+- **Graphviz** (optional) - Required only for generating architecture graph visualizations
+  - Install: `choco install graphviz` (Windows with Chocolatey) or [download installer](https://graphviz.org/download/)
+  - Only needed if you want to run `pnpm arch:graph` to visualize the architecture
+- **Airtable Account** (optional) - [Sign up here](https://airtable.com) if you want to use Airtable as a data source
 
 ### Configure Line Endings
 

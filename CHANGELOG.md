@@ -7,7 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-02-05
+
 ### Changed
+
+- **Prerequisites Documentation**: Enhanced prerequisites section in README.md
+  - Clarified required global installations (Node.js 20.x+, pnpm 9.15.4+, Git)
+  - Added installation instructions and download links for each prerequisite
+  - Improved formatting for better readability
+
+### Fixed
 
 - **Repository Ownership**: Updated repository references after transfer to TMI-apps organization
   - Updated README.md clone URL from `TomFranse/boilerplate-vite-supabase-mui-cursor` to `TMI-apps/boilerplate-vite-supabase-mui-cursor`
