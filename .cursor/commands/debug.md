@@ -181,6 +181,12 @@ When symptoms match known patterns, prioritize these hypotheses first:
 - Key question: "Does the commit work with full permissions (`all`) or from an external terminal (PowerShell, Windows Terminal)?"
 - Debug approach: For Cursor agent: use `required_permissions: ["all"]` when running git commit. For manual commits: use external terminal instead of Cursor's terminal. If still failing: check AV exclusions, Group Policy, try running Cursor as Administrator.
 
+**Vitest + MUI Material v7 ES Module Cycle Error:**
+- Symptom: Vitest tests fail with `Error: Cannot require() ES Module ... @mui/material/esm/index.js in a cycle` when testing components that import MUI Material v7. Tests work on some machines but fail on others.
+- Root cause: MUI Material v7 uses ESM-first exports with directory imports that Vitest cannot resolve. Vitest tries to use CommonJS `require()` for ESM modules, creating a cycle. May work on some machines due to different Node/pnpm versions, cache states, or dependency resolution.
+- Key question: "Does the test work on another machine or after clearing Vite cache (`rm -rf node_modules/.vite`)?"
+- Debug approach: Add `server.deps.inline: ["@mui/material", "@mui/icons-material"]` to `vitest.config.ts` to force pre-bundling. Also add `fallbackCJS: true` for ESM/CJS compatibility. Clear Vite cache if issue persists. Check Node/pnpm versions if working on other machines.
+
 **Add other patterns here as they're discovered.**
 
 ---

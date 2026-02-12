@@ -8,6 +8,12 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./tests/setup.ts",
+    server: {
+      deps: {
+        fallbackCJS: true,
+        inline: ["@mui/material", "@mui/icons-material"],
+      },
+    },
   },
   resolve: {
     alias: {
@@ -23,5 +29,3 @@ export default defineConfig({
     },
   },
 });
-
-

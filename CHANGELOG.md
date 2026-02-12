@@ -22,6 +22,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Explains why allowlist is needed (sandbox permission issues)
     - Prevents `env.exe: couldn't create signal pipe, Win32 error 5` errors when committing
 
+## [0.7.3] - 2026-02-12
+
+### Fixed
+
+- **Vitest + MUI Material v7 ES Module Compatibility**: Fixed test failures with ES Module cycle errors when testing components using MUI Material v7
+  - Added `server.deps.inline` configuration to `vitest.config.ts` to pre-bundle MUI packages
+  - Added `fallbackCJS: true` for ESM/CJS compatibility
+  - Resolves `Cannot require() ES Module ... @mui/material/esm/index.js in a cycle` errors
+  - Tests now pass consistently across different environments
+
 ## [0.7.2] - 2026-02-12
 
 ### Fixed
