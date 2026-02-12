@@ -176,10 +176,10 @@ When symptoms match known patterns, prioritize these hypotheses first:
 - Debug approach: Check migration files for table schema changes - verify current primary key/constraints match what code expects. Look for `ON CONFLICT` clauses, upsert operations, or unique constraint checks. Fix: Update code to use new constraint columns (may require lookup if old column is deprecated but kept for compatibility).
 
 **Git env.exe "couldn't create signal pipe" Win32 error 5 (Windows):**
-- Symptom: `git commit` fails with `env.exe: *** fatal error - couldn't create signal pipe, Win32 error 5` when run from Cursor's terminal, but works on another PC or from external terminal.
-- Root cause: Win32 error 5 = ACCESS_DENIED. Often caused by: (1) Cursor injecting `--trailer` which triggers extra Git subprocess spawning, (2) Cursor's terminal/sandbox restricting pipe creation, (3) Antivirus/security software blocking process spawn, (4) User account lacks "Create global objects" permission, (5) Git for Windows version/corruption.
-- Key question: "Does the same commit work from an external terminal (PowerShell, Windows Terminal) on the same machine?"
-- Debug approach: Test commit from external terminal without Cursor. If it works, bypass Cursor for commits or disable Cursor's co-author trailer. Check Group Policy, AV exclusions, try running Cursor as Administrator.
+- Symptom: `git commit` fails with `env.exe: *** fatal error - couldn't create signal pipe, Win32 error 5` when run from Cursor's terminal/agent, but works on another PC or from external terminal.
+- Root cause: Win32 error 5 = ACCESS_DENIED. Primary confirmed cause: Cursor's sandbox restricts pipe creation when running terminal commands, blocking env.exe from spawning. Other possible causes: (2) Antivirus/security software blocking process spawn, (3) User account lacks "Create global objects" permission, (4) Git for Windows version/corruption.
+- Key question: "Does the commit work with full permissions (`all`) or from an external terminal (PowerShell, Windows Terminal)?"
+- Debug approach: For Cursor agent: use `required_permissions: ["all"]` when running git commit. For manual commits: use external terminal instead of Cursor's terminal. If still failing: check AV exclusions, Group Policy, try running Cursor as Administrator.
 
 **Add other patterns here as they're discovered.**
 
