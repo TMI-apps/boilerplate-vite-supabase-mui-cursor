@@ -35,13 +35,65 @@ A modern, production-ready boilerplate for building React applications with Type
 
 ### Configure Line Endings
 
-**IMPORTANT:** Before starting, configure Cursor to use Linux line endings (`\n`). This ensures consistent line endings across all files.
+**IMPORTANT:** Before starting, configure VS Code/Cursor to use Linux line endings (`\n`). This ensures consistent line endings across all files and prevents linting errors.
+
+#### Editor Configuration (VS Code / Cursor)
+
+**Note:** Cursor uses VS Code settings. Configure the line ending setting in VS Code/Cursor settings:
 
 1. Press `Ctrl + ,` to open Settings
-2. Search for `files.eol`
-3. Change the setting to `\n`
+2. Search for `files.eol` or `line ending`
+3. Change the setting from `auto` to `\n` (Linux)
+   - The setting is: **"Files: Eol"** → Select `\n` from the dropdown
 
 See [this guide](https://stackoverflow.com/questions/71240918/how-to-set-default-line-endings-in-visual-studio-code) for more details.
+
+#### Git Configuration
+
+Configure Git to preserve LF line endings (the repository already includes `.gitattributes` to enforce this):
+
+```bash
+git config core.autocrlf false
+```
+
+This prevents Git from converting LF to CRLF on Windows systems.
+
+**Why this matters:** The repository uses LF line endings. Without proper configuration, Git on Windows may convert them to CRLF, causing thousands of Prettier/ESLint errors.
+
+### Linter Setup
+
+This project uses **ESLint** and **Prettier** for code quality and formatting. The linters are already configured and will run automatically.
+
+#### Verify Linter Installation
+
+After running `pnpm install`, verify that the linters work correctly:
+
+```bash
+# Check for linting issues
+pnpm lint
+
+# Check if code formatting is correct
+pnpm format:check
+```
+
+#### Common Linter Commands
+
+- `pnpm lint` - Check for code quality issues (ESLint)
+- `pnpm lint:fix` - Auto-fix ESLint errors
+- `pnpm format` - Format all code with Prettier
+- `pnpm format:check` - Check if code is formatted correctly
+
+#### Editor Integration
+
+**Recommended:** Configure VS Code/Cursor to:
+- Format on save using Prettier
+- Show ESLint errors in real-time
+- Install the ESLint and Prettier extensions
+
+**If you see many linting errors after cloning:**
+- This is usually due to line ending issues (see [Configure Line Endings](#configure-line-endings) above)
+- Run `pnpm format` to auto-fix formatting issues
+- Run `pnpm lint:fix` to auto-fix linting issues
 
 ## Quick Start Guide
 

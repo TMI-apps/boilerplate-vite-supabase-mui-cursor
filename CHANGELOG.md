@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Debug Pattern Refinement**: Updated Git env.exe error pattern in debug.md with confirmed root cause (Cursor sandbox restricting pipe creation) and correct debug approach
 
+### Added
+
+- **Setup Documentation**: Enhanced README.md with comprehensive setup instructions
+  - Expanded "Configure Line Endings" section with VS Code/Cursor editor configuration and Git configuration
+  - Added "Linter Setup" section with verification steps, common commands, and editor integration guidance
+  - Added troubleshooting for common linting errors after cloning
+
 ## [0.7.2] - 2026-02-12
 
 ### Fixed
