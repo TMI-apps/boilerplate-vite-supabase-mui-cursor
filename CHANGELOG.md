@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.2] - 2026-02-12
+
+### Fixed
+
+- **Line Endings Configuration**: Added `.gitattributes` to enforce LF line endings across all platforms
+  - Prevents Git from converting LF to CRLF on Windows systems
+  - Resolves 7824 prettier/prettier linting errors caused by inconsistent line endings
+  - Ensures consistent line endings for all developers regardless of local Git configuration
+  - Normalized all existing files to LF line endings
+
 ## [0.7.1] - 2026-02-05
 
 ### Changed

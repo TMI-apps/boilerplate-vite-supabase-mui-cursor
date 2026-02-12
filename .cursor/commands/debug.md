@@ -175,6 +175,12 @@ When symptoms match known patterns, prioritize these hypotheses first:
 - Key question: "Did a recent migration change the primary key or unique constraint that this code references?"
 - Debug approach: Check migration files for table schema changes - verify current primary key/constraints match what code expects. Look for `ON CONFLICT` clauses, upsert operations, or unique constraint checks. Fix: Update code to use new constraint columns (may require lookup if old column is deprecated but kept for compatibility).
 
+**Git env.exe "couldn't create signal pipe" Win32 error 5 (Windows):**
+- Symptom: `git commit` fails with `env.exe: *** fatal error - couldn't create signal pipe, Win32 error 5` when run from Cursor's terminal, but works on another PC or from external terminal.
+- Root cause: Win32 error 5 = ACCESS_DENIED. Often caused by: (1) Cursor injecting `--trailer` which triggers extra Git subprocess spawning, (2) Cursor's terminal/sandbox restricting pipe creation, (3) Antivirus/security software blocking process spawn, (4) User account lacks "Create global objects" permission, (5) Git for Windows version/corruption.
+- Key question: "Does the same commit work from an external terminal (PowerShell, Windows Terminal) on the same machine?"
+- Debug approach: Test commit from external terminal without Cursor. If it works, bypass Cursor for commits or disable Cursor's co-author trailer. Check Group Policy, AV exclusions, try running Cursor as Administrator.
+
 **Add other patterns here as they're discovered.**
 
 ---
