@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Expanded "Configure Line Endings" section with VS Code/Cursor editor configuration and Git configuration
   - Added "Linter Setup" section with verification steps, common commands, and editor integration guidance
   - Added troubleshooting for common linting errors after cloning
+  - Added "Using Cursor Agent" section with Command Allowlist configuration instructions
+    - Documents required commands to add to Cursor's allowlist for Git commits
+    - Explains why allowlist is needed (sandbox permission issues)
+    - Prevents `env.exe: couldn't create signal pipe, Win32 error 5` errors when committing
 
 ## [0.7.2] - 2026-02-12
 

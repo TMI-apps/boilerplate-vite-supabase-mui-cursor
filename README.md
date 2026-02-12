@@ -95,6 +95,26 @@ pnpm format:check
 - Run `pnpm format` to auto-fix formatting issues
 - Run `pnpm lint:fix` to auto-fix linting issues
 
+### Using Cursor Agent
+
+When using Cursor's AI agent to make commits, you may encounter permission issues. This section explains how to configure Cursor to allow Git commits. To allow the agent to perform Git commits automatically, configure the **Command Allowlist** in Cursor settings.
+
+#### Configure Command Allowlist
+
+1. Open Cursor Settings (`Ctrl + ,`)
+2. Search for "Command Allowlist" or "allowlist"
+3. Add the following commands to the allowlist:
+   - `powershell`
+   - `Set-Location`
+   - `git diff`
+   - `git commit`
+   - `cd`
+   - `git add`
+
+**Why this is needed:** By default, Cursor's agent runs in a sandboxed environment. Adding these commands to the allowlist allows Git operations to run outside the sandbox, preventing permission errors (like `env.exe: couldn't create signal pipe, Win32 error 5`) when committing.
+
+**Note:** After adding these commands to the allowlist, the Cursor agent can perform Git commits without requiring elevated permissions (`all`), making the workflow smoother.
+
 ## Quick Start Guide
 
 ### Step 1: Clone and Install
