@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.5] - 2026-02-22
+
+### Changed
+
+- **Hook Execution Timing**: Moved full test execution from commit-time to push-time for faster local commits
+  - Removed `pnpm test:run` from `.husky/pre-commit`
+  - Added `.husky/pre-push` to run `pnpm test:run` before any push
+  - Keeps CI test execution on push and pull requests unchanged
+
 ## [0.11.4] - 2026-02-22
 
 ### Changed

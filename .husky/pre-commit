@@ -15,10 +15,6 @@ pnpm validate:feature-docs:staged || exit 1
 echo "Running documentation reference validation..."
 pnpm validate:docs || exit 1
 
-# Run tests (single run, not watch mode)
-echo "Running tests..."
-pnpm test:run || exit 1
-
 # Run type checking (fast, catches TypeScript errors)
 # Exit code handling prevents Cursor hangs (see workflow/RULE.md lines 312-349)
 echo "Running type check..."
