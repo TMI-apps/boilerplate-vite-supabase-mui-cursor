@@ -97,6 +97,10 @@ The setup feature directory (`src/features/setup/`) is deleted in step 1, which 
 
 - `src/utils/setupUtils.test.ts` (tests deleted `setupUtils.ts`)
 
+### 11. Delete Start Command
+
+Delete `.cursor/commands/start.md` after setup-removal is complete. It is only needed while onboarding from the boilerplate.
+
 ## Notes
 
 - The setup wizard was the only consumer of `vite-plugin-dev-api.ts` (write-env, read-config, finish-setup, etc.). Removing the plugin is safe.

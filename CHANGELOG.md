@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.4] - 2026-02-22
+
+### Changed
+
+- **Onboarding Command Coverage**: Added a dedicated `start` command to guide first-time boilerplate setup with explicit gate checks
+  - Enforces prerequisite version verification for Node.js, pnpm, and Git before setup can continue
+  - Adds careful handoff instructions for required web-interface actions the assistant cannot complete directly
+  - Adds a full verification checklist for lint, format, type check, structure validation, tests, and build
+- **Setup Cleanup Completion**: Updated complete-setup command to remove onboarding-only command files when setup wizard is removed
+  - Added instruction to delete `.cursor/commands/start.md` after setup-removal completes
+
 ## [0.11.3] - 2026-02-22
 
 ### Changed
