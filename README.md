@@ -333,8 +333,11 @@ GitHub Actions workflow runs on every push/PR:
 
 ## Contributing
 
-1. Follow the architecture rules
-2. Write tests for new features
-3. Ensure all checks pass (`pnpm lint`, `pnpm format:check`, `pnpm test`)
-4. Update CHANGELOG.md for significant changes
+See [documentation/DOC_CONTRIBUTING.md](./documentation/DOC_CONTRIBUTING.md) for how to contribute safely. Key points:
+
+1. **Workflow & versioning** – Use [`.cursor/commands/finish.md`](./.cursor/commands/finish.md) before committing
+2. **Architecture** – Follow [`.cursor/rules/architecture/RULE.md`](./.cursor/rules/architecture/RULE.md)
+3. **Documentation index** – [documentation/DOC_INDEX.md](./documentation/DOC_INDEX.md) for all docs
+4. Ensure all checks pass (`pnpm lint`, `pnpm format:check`, `pnpm test:run`, `pnpm validate:version-sync`)
+5. Update CHANGELOG.md for significant changes
 

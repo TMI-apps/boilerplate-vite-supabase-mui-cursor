@@ -4,8 +4,8 @@
 This document provides step-by-step instructions for copying the full architectural restrictiveness system from this repository to another repository on the same machine.
 
 ## Prerequisites
-- Both repositories are located in `C:\Users\tomfr\Documents\app-development\`
-- Source repository: `chatgpt-clone-customcode` (this repo)
+- Both repositories are on the same machine (replace `[PROJECT_ROOT]` with your base path, e.g. `C:\Users\you\Documents\` or `/home/you/projects/`)
+- Source repository: this boilerplate (`boilerplate-vite-supabase-mui-cursor`)
 - Target repository: `[TARGET_REPO_NAME]` (to be specified)
 - Both repositories use Node.js/pnpm
 - Target repository has TypeScript configured
@@ -16,7 +16,7 @@ This document provides step-by-step instructions for copying the full architectu
 
 **Action:** Determine the target repository name and confirm its location.
 
-**Expected location:** `C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]\`
+**Expected location:** `[PROJECT_ROOT][TARGET_REPO_NAME]/`
 
 **Verification:**
 - Confirm the target repository exists
@@ -30,29 +30,26 @@ This document provides step-by-step instructions for copying the full architectu
 Copy these files from source to target repository:
 
 ### 2.1 ESLint Configuration
-**Source:** `C:\Users\tomfr\Documents\app-development\chatgpt-clone-customcode\.eslintrc.js`  
-**Destination:** `C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]\.eslintrc.js`
+**Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/eslint.config.js`  
+**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/eslint.config.js`
 
-**Note:** If target repo already has `.eslintrc.json`, you may need to:
-- Merge configurations, OR
-- Convert `.eslintrc.json` to `.eslintrc.js` format, OR
-- Keep both (ESLint will use `.eslintrc.js` if both exist)
+**Note:** This boilerplate uses ESLint flat config (`eslint.config.js`). If target repo uses legacy `.eslintrc.*`, migrate to flat config or merge rules accordingly.
 
 ### 2.2 Project Structure Configuration
-**Source:** `C:\Users\tomfr\Documents\app-development\chatgpt-clone-customcode\projectStructure.config.js`  
-**Destination:** `C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]\projectStructure.config.js`
+**Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/projectStructure.config.cjs`  
+**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/projectStructure.config.cjs`
 
 **Action Required:** This file MUST be customized for the target repository's folder structure (see Step 4).
 
 ### 2.3 Dependency Cruiser Configuration
-**Source:** `C:\Users\tomfr\Documents\app-development\chatgpt-clone-customcode\.dependency-cruiser.js`  
-**Destination:** `C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]\.dependency-cruiser.js`
+**Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/.dependency-cruiser.cjs`  
+**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/.dependency-cruiser.cjs`
 
 **Action Required:** Update path patterns to match target repository structure (see Step 5).
 
 ### 2.4 TypeScript Configuration (Update Existing)
-**Source:** `C:\Users\tomfr\Documents\app-development\chatgpt-clone-customcode\tsconfig.json`  
-**Destination:** `C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]\tsconfig.json`
+**Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/tsconfig.json`  
+**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/tsconfig.json`
 
 **Action Required:** Merge path aliases into existing `tsconfig.json` (see Step 6).
 
@@ -77,8 +74,8 @@ Copy these files from source to target repository:
 
 **Command:**
 ```powershell
-cd C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]
-pnpm add -D eslint-plugin-boundaries eslint-plugin-project-structure eslint-plugin-import eslint-plugin-unused-imports eslint-import-resolver-typescript dependency-cruiser
+cd [PROJECT_ROOT][TARGET_REPO_NAME]
+pnpm add -D eslint-plugin-boundaries eslint-plugin-import eslint-plugin-unused-imports eslint-import-resolver-typescript dependency-cruiser
 ```
 
 **Note:** If using npm or yarn, adjust the command accordingly.
@@ -87,7 +84,7 @@ pnpm add -D eslint-plugin-boundaries eslint-plugin-project-structure eslint-plug
 
 ## Step 4: Customize Project Structure Configuration
 
-**File:** `projectStructure.config.js`
+**File:** `projectStructure.config.cjs`
 
 **Action:** Update the `structure` array to match the target repository's actual folder structure.
 
@@ -131,7 +128,7 @@ module.exports = {
 
 ## Step 5: Customize Dependency Cruiser Configuration
 
-**File:** `.dependency-cruiser.js`
+**File:** `.dependency-cruiser.cjs`
 
 **Action:** Update path patterns to match target repository structure.
 
@@ -210,34 +207,9 @@ module.exports = {
 
 ## Step 7: Update ESLint Configuration
 
-**File:** `.eslintrc.js`
+**File:** `eslint.config.js` (flat config)
 
-**Action:** Update layer element patterns to match target repository structure.
-
-**Key Updates:**
-
-1. **Boundaries Elements:** Update `boundaries/elements` array:
-   ```javascript
-   "boundaries/elements": [
-     { "type": "pages", "pattern": "src/app/pages/**" },  // Update to match target
-     { "type": "components", "pattern": "src/app/components/**" },  // Update to match target
-     // ... update all patterns
-   ]
-   ```
-
-2. **Boundaries Include:** Update file patterns if target uses different extensions:
-   ```javascript
-   "boundaries/include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx"]
-   ```
-
-3. **Import Resolver:** Verify TypeScript resolver points to correct config:
-   ```javascript
-   "import/resolver": {
-     "typescript": {
-       "project": "./tsconfig.json"  // Verify this path
-     }
-   }
-   ```
+**Action:** Update layer element patterns to match target repository structure. This boilerplate uses ESLint flat config; adjust boundaries and import resolver to match target paths.
 
 ---
 
@@ -250,12 +222,12 @@ module.exports = {
 ```json
 {
   "scripts": {
-    "arch:check": "depcruise --config .dependency-cruiser.js src",
-    "arch:check:ci": "depcruise --config .dependency-cruiser.js --output-type err-long src",
-    "arch:graph": "depcruise --config .dependency-cruiser.js --output-type dot src | dot -T svg > architecture-graph.svg",
-    "arch:graph:html": "depcruise --config .dependency-cruiser.js --output-type html src > architecture-report.html",
+    "arch:check": "depcruise --config .dependency-cruiser.cjs src",
+    "arch:check:ci": "depcruise --config .dependency-cruiser.cjs --output-type err-long src",
+    "arch:graph": "depcruise --config .dependency-cruiser.cjs --output-type dot src | dot -T svg > architecture-graph.svg",
+    "arch:graph:html": "depcruise --config .dependency-cruiser.cjs --output-type html src > architecture-report.html",
     "arch:validate": "pnpm lint && pnpm arch:check",
-    "arch:baseline": "depcruise --config .dependency-cruiser.js --output-type baseline src > .dependency-cruiser-baseline.json",
+    "arch:baseline": "depcruise --config .dependency-cruiser.cjs --output-type baseline src > .dependency-cruiser-baseline.json",
     "lint:arch": "eslint src --rule 'boundaries/element-types: error'"
   }
 }
@@ -270,20 +242,20 @@ module.exports = {
 ## Step 9: Copy Documentation Files (Optional but Recommended)
 
 ### 9.1 Architecture Rules Documentation
-**Source:** `C:\Users\tomfr\Documents\app-development\chatgpt-clone-customcode\.cursor\rules\architecture\RULE.md`  
-**Destination:** `C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]\.cursor\rules\architecture\RULE.md`
+**Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/.cursor/rules/architecture/RULE.md`  
+**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/.cursor/rules/architecture/RULE.md`
 
 **Action:** Create `.cursor/rules/architecture/` directory if it doesn't exist.
 
-### 9.2 Architecture Enforcement Guide
-**Source:** `C:\Users\tomfr\Documents\app-development\chatgpt-clone-customcode\documentation\ARCHITECTURE-ENFORCEMENT.md`  
-**Destination:** `C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]\documentation\ARCHITECTURE-ENFORCEMENT.md`
+### 9.2 Architecture Guide
+**Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/ARCHITECTURE.md`  
+**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/documentation/ARCHITECTURE.md` (or root)
 
-**Action:** Create `documentation/` directory if it doesn't exist.
+**Action:** Use `ARCHITECTURE.md` as the user-facing architecture guide. Create `documentation/` directory if needed.
 
-### 9.3 Refactoring Checklist (Optional)
-**Source:** `C:\Users\tomfr\Documents\app-development\chatgpt-clone-customcode\documentation\REFACTORING-CHECKLIST.md`  
-**Destination:** `C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]\documentation\REFACTORING-CHECKLIST.md`
+### 9.3 Complexity Reduction Guide (Optional)
+**Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/documentation/DOC_COMPLEXITY_REDUCTION_ANALYSIS.md`  
+**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/documentation/DOC_COMPLEXITY_REDUCTION_ANALYSIS.md`
 
 ---
 
@@ -292,7 +264,7 @@ module.exports = {
 **Action:** If the target repository has existing code with violations, create a baseline:
 
 ```powershell
-cd C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]
+cd [PROJECT_ROOT][TARGET_REPO_NAME]
 pnpm arch:baseline
 ```
 
@@ -308,8 +280,8 @@ Run these commands to verify the setup:
 
 ### 11.1 Verify Dependencies Installed
 ```powershell
-cd C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]
-pnpm list eslint-plugin-boundaries eslint-plugin-project-structure dependency-cruiser
+cd [PROJECT_ROOT][TARGET_REPO_NAME]
+pnpm list eslint-plugin-boundaries dependency-cruiser
 ```
 
 ### 11.2 Test ESLint Architecture Rules
@@ -347,39 +319,36 @@ pnpm lint
 If target repo uses `app/` instead of `src/`:
 
 **Updates Needed:**
-- `.eslintrc.js`: Update all `src/**` patterns to `app/**`
-- `.dependency-cruiser.js`: Update all `^src/` patterns to `^app/`
+- `eslint.config.js`: Update all `src/**` patterns to `app/**`
+- `.dependency-cruiser.cjs`: Update all `^src/` patterns to `^app/`
 - `tsconfig.json`: Update path aliases (e.g., `"@/*": ["app/*"]`)
 - `package.json` scripts: Update `src` to `app` in arch commands
-- `projectStructure.config.js`: Change root folder from `src` to `app`
+- `projectStructure.config.cjs`: Change root folder from `src` to `app`
 
 ### Scenario B: Different Folder Names
 If target repo uses `features/` instead of `pages/`:
 
 **Updates Needed:**
-- `.eslintrc.js`: Add `features` as a new element type in boundaries
-- `.dependency-cruiser.js`: Add rules for `features` layer
-- `projectStructure.config.js`: Add `features` folder structure
+- `eslint.config.js`: Add `features` as a new element type in boundaries
+- `.dependency-cruiser.cjs`: Add rules for `features` layer
+- `projectStructure.config.cjs`: Add `features` folder structure
 - Update layer rules to include `features` in import hierarchy
 
 ### Scenario C: No Shared Folder
 If target repo doesn't have `src/shared/`:
 
 **Updates Needed:**
-- `.eslintrc.js`: Update patterns (e.g., `src/hooks/**` instead of `src/shared/hooks/**`)
-- `.dependency-cruiser.js`: Update path patterns
+- `eslint.config.js`: Update patterns (e.g., `src/hooks/**` instead of `src/shared/hooks/**`)
+- `.dependency-cruiser.cjs`: Update path patterns
 - `tsconfig.json`: Update path aliases (e.g., `"@/hooks/*": ["src/hooks/*"]`)
-- `projectStructure.config.js`: Update folder structure
+- `projectStructure.config.cjs`: Update folder structure
 
 ---
 
 ## Step 13: Troubleshooting
 
-### Issue: ESLint Can't Find projectStructure.config.js
-**Solution:** Ensure `.eslintrc.js` uses `require()` to load the config:
-```javascript
-const projectStructureConfig = require('./projectStructure.config.js');
-```
+### Issue: ESLint Can't Find projectStructure.config.cjs
+**Solution:** Ensure `eslint.config.js` or project structure validator loads the config correctly. Check `scripts/project-structure-validator.js` and `validate-staged.js` for correct paths.
 
 ### Issue: Path Aliases Not Resolving
 **Solution:** 
@@ -389,7 +358,7 @@ const projectStructureConfig = require('./projectStructure.config.js');
 
 ### Issue: Dependency Cruiser Fails
 **Solution:**
-1. Verify `tsconfig.json` path in `.dependency-cruiser.js` options
+1. Verify `tsconfig.json` path in `.dependency-cruiser.cjs` options
 2. Check that source directory exists
 3. Verify TypeScript is installed
 
@@ -407,10 +376,10 @@ Before considering migration complete:
 
 - [ ] All configuration files copied
 - [ ] Dependencies installed
-- [ ] `projectStructure.config.js` customized for target structure
-- [ ] `.dependency-cruiser.js` paths updated
+- [ ] `projectStructure.config.cjs` customized for target structure
+- [ ] `.dependency-cruiser.cjs` paths updated
 - [ ] `tsconfig.json` path aliases configured
-- [ ] `.eslintrc.js` layer patterns updated
+- [ ] `eslint.config.js` layer patterns updated
 - [ ] Package.json scripts added
 - [ ] Baseline created (if needed)
 - [ ] `pnpm lint:arch` runs successfully
@@ -422,31 +391,31 @@ Before considering migration complete:
 
 ## Quick Reference: File Locations
 
-### Source Repository (chatgpt-clone-customcode)
+### Source Repository (boilerplate-vite-supabase-mui-cursor)
 ```
-C:\Users\tomfr\Documents\app-development\chatgpt-clone-customcode\
-├── .eslintrc.js
-├── .dependency-cruiser.js
-├── projectStructure.config.js
+[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/
+├── eslint.config.js
+├── .dependency-cruiser.cjs
+├── projectStructure.config.cjs
 ├── tsconfig.json
-├── .cursor\rules\architecture\RULE.md
-└── documentation\
-    ├── ARCHITECTURE-ENFORCEMENT.md
-    └── REFACTORING-CHECKLIST.md
+├── .cursor/rules/architecture/RULE.md
+├── ARCHITECTURE.md
+└── documentation/
+    └── DOC_COMPLEXITY_REDUCTION_ANALYSIS.md
 ```
 
 ### Target Repository (to be created/updated)
 ```
-C:\Users\tomfr\Documents\app-development\[TARGET_REPO_NAME]\
-├── .eslintrc.js                    ← Copy & customize
-├── .dependency-cruiser.js           ← Copy & customize
-├── projectStructure.config.js      ← Copy & customize
+[PROJECT_ROOT][TARGET_REPO_NAME]/
+├── eslint.config.js                ← Copy & customize
+├── .dependency-cruiser.cjs         ← Copy & customize
+├── projectStructure.config.cjs     ← Copy & customize
 ├── tsconfig.json                   ← Merge path aliases
 ├── package.json                    ← Add scripts & deps
-├── .cursor\rules\architecture\RULE.md  ← Copy (optional)
-└── documentation\
-    ├── ARCHITECTURE-ENFORCEMENT.md    ← Copy (optional)
-    └── REFACTORING-CHECKLIST.md       ← Copy (optional)
+├── .cursor/rules/architecture/RULE.md  ← Copy (optional)
+└── documentation/
+    ├── ARCHITECTURE.md             ← Copy (optional)
+    └── DOC_COMPLEXITY_REDUCTION_ANALYSIS.md  ← Copy (optional)
 ```
 
 ---
@@ -467,14 +436,14 @@ When executing this migration:
 ## Support
 
 If issues arise during migration:
-1. Check `documentation/ARCHITECTURE-ENFORCEMENT.md` for detailed explanations
+1. Check `ARCHITECTURE.md` and `.cursor/rules/architecture/RULE.md` for detailed explanations
 2. Review source repository's working configuration
 3. Verify all paths match target repository structure
 4. Ensure all dependencies are installed correctly
 
 ---
 
-**Last Updated:** 2025-01-06  
-**Source Repository:** chatgpt-clone-customcode  
+**Last Updated:** 2026-02-22  
+**Source Repository:** boilerplate-vite-supabase-mui-cursor  
 **Target Repository:** [To be specified]
 

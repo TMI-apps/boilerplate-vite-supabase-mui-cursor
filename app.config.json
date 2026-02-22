@@ -13,7 +13,7 @@
   "configurations": {
     "supabase": {
       "configured": true,
-      "url": "https://cfcwwyrjkhjdlljtwcwv.supabase.co",
+      "url": "https://test-local.supabase.co",
       "urlKey": {
         "name": "VITE_SUPABASE_URL",
         "set": true
@@ -24,20 +24,18 @@
       }
     },
     "airtable": {
-      "configured": true,
-      "baseId": "appcKCfS59kQIIPAW",
-      "tableId": "tblWljNHJ2wILb9Ig",
+      "configured": false,
       "apiKey": {
         "name": "VITE_AIRTABLE_API_KEY",
-        "set": true
+        "set": false
       },
       "baseIdKey": {
         "name": "VITE_AIRTABLE_BASE_ID",
-        "set": true
+        "set": false
       },
       "tableIdKey": {
         "name": "VITE_AIRTABLE_TABLE_ID",
-        "set": true
+        "set": false
       }
     },
     "theme": {
@@ -48,5 +46,5 @@
       "configured": false
     }
   },
-  "lastUpdated": "2026-01-12T19:25:47.408Z"
+  "lastUpdated": "2026-02-22T08:40:35.467Z"
 }

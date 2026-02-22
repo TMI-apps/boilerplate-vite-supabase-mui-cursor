@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.8.1] - 2026-02-22
 
+### Added
+
+- **Boilerplate Hardening**: CI guardrails, setup tests, and documentation discoverability
+  - Version/changelog consistency check (`validate:version-sync`) and app config validation (`validate:app-config`) in CI
+  - Setup flow tests: setupUtils, useConnectionTest, useEnvWriter, envWriterService, configService
+  - Documentation index (`DOC_INDEX.md`), contributor guide (`DOC_CONTRIBUTING.md`), setup states doc (`DOC_SETUP_STATES_AND_TRANSITIONS.md`)
+  - SSOT map in workflow rule and reconciled path references across architecture docs
+
+### Changed
+
+- **CI Workflow**: Added version sync, app config, structure, and architecture checks to GitHub Actions
+- **Documentation**: Updated DOC_APP_CONFIG_FILE, migration instructions, testing docs with SSOT pointers
+
 ### Fixed
 
 - **Supabase Setup First-Save Completion**: Fixed setup flow requiring a second click to mark Supabase as complete

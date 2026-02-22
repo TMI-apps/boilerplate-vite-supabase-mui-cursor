@@ -34,8 +34,20 @@ jobs:
       - name: Format check
         run: pnpm format:check
 
+      - name: Version/changelog consistency
+        run: pnpm validate:version-sync
+
+      - name: App config validation
+        run: pnpm validate:app-config
+
+      - name: Structure validation
+        run: pnpm validate:structure
+
+      - name: Architecture check
+        run: pnpm arch:check:ci
+
       - name: Run tests
-        run: pnpm test
+        run: pnpm test:run
 
       - name: Build
         run: pnpm build

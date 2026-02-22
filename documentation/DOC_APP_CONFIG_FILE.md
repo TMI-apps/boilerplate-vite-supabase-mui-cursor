@@ -136,7 +136,9 @@ const config = JSON.parse(fs.readFileSync('app.config.json', 'utf-8'));
 
 ### `version`
 - **Type**: `string`
-- **Description**: Configuration file format version
+- **Description**: Configuration file format/schema version. **Not** the package release version.
+- **Policy**: Keep at `"1.0.0"` until the config schema changes. Do not sync with `package.json` version.
+- **SSOT for release version**: `package.json` and `CHANGELOG.md` (see `.cursor/rules/workflow/RULE.md`).
 - **Example**: `"1.0.0"`
 
 ### `setup.completed`

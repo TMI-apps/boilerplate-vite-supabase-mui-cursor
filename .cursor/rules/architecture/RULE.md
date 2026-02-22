@@ -217,9 +217,9 @@ Never import upward (e.g., hooks cannot import from components).
 
 ### Folder Structure Whitelist
 
-**Critical:** Project uses a whitelist approach for folder structure. Any folder or file not explicitly defined in `projectStructure.config.js` triggers an ESLint error.
+**Critical:** Project uses a whitelist approach for folder structure. Any folder or file not explicitly defined in `projectStructure.config.cjs` triggers an ESLint error.
 
-**Do not modify `projectStructure.config.js`** to accommodate existing violations. Fix the code structure instead, or follow the rule modification policy above if architectural changes are truly needed.
+**Do not modify `projectStructure.config.cjs`** to accommodate existing violations. Fix the code structure instead, or follow the rule modification policy above if architectural changes are truly needed.
 
 **What Gets Enforced:**
 - Root level folders: Only predefined folders (`src/`, `public/`, `documentation/`, etc.)
@@ -235,11 +235,11 @@ Use `pnpm validate:structure` to validate:
 - All file types (including files without extensions, binary files, etc.)
 - File extensions match allowed patterns per folder
 
-**Configuration:** See `projectStructure.config.js` for complete structure definition.
+**Configuration:** See `projectStructure.config.cjs` for complete structure definition.
 
 **Related Files:**
 - `scripts/project-structure-validator.js` - Main validator implementation
-- `projectStructure.config.js` - Structure configuration file
+- `projectStructure.config.cjs` - Structure configuration file
 - `package.json` - Scripts that call the validator
 - `documentation/PROJECT-STRUCTURE-VALIDATION.md` - User documentation
 - `architecture.md` - Architecture documentation
@@ -443,7 +443,7 @@ When reducing code complexity through refactoring, all changes must comply with 
 **Refactoring Workflow:**
 1. Identify complexity violations (cyclomatic > 10, cognitive > 15, nesting > 4, etc.)
 2. Determine target layer for extracted code (utils/services/hooks per architecture rules)
-3. Check folder whitelist - use existing folder or update `projectStructure.config.js` first
+3. Check folder whitelist - use existing folder or update `projectStructure.config.cjs` first
 4. Extract code using appropriate refactoring technique
 5. Use path aliases for all imports
 6. Verify layer boundaries after extraction
@@ -451,7 +451,7 @@ When reducing code complexity through refactoring, all changes must comply with 
 
 **For detailed guidance:** See `.cursor/commands/complexity-reduce.md` section 8 (Architecture Compliance)
 
-**For unified checklist:** See `documentation/REFACTORING-CHECKLIST.md`
+**For unified checklist:** See `documentation/DOC_COMPLEXITY_REDUCTION_ANALYSIS.md`
 
 ## Related Rules
 

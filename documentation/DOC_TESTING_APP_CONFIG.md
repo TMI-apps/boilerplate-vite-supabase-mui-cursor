@@ -1,5 +1,7 @@
 # Testing App Configuration File Feature
 
+For setup state transitions and testable scenarios, see [DOC_SETUP_STATES_AND_TRANSITIONS.md](./DOC_SETUP_STATES_AND_TRANSITIONS.md).
+
 ## Prerequisites
 
 1. **Start the dev server**:

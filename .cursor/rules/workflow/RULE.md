@@ -7,6 +7,18 @@ alwaysApply: true
 
 Development workflows, code review standards, and process requirements. Includes agent-specific behaviors and corrections to compensate for default agent behavior.
 
+## SSOT Map (Single Source of Truth)
+
+| Topic | SSOT Location |
+|-------|----------------|
+| Semantic versioning, commit format, conventional commit types | `.cursor/commands/finish.md` |
+| Changelog format, version sync workflow | `.cursor/commands/finish.md` (this rule references it) |
+| Branch strategy, protected files, agent behaviors | `.cursor/rules/workflow/RULE.md` (this file) |
+| Architecture patterns, layer rules, code placement | `.cursor/rules/architecture/RULE.md` |
+| Project structure, file whitelist | `projectStructure.config.cjs` |
+| Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
+| App config schema (setup state, not release version) | `documentation/DOC_APP_CONFIG_FILE.md` |
+
 ## Code Review Process
 
 ### Review Checklist
@@ -83,23 +95,19 @@ Changelog entries use Keep-a-Changelog style sections:
 
 #### Version Synchronization
 
-When updating the changelog with a new version, update three locations to maintain consistency:
+**SSOT for release version:** `package.json` and `CHANGELOG.md` are the canonical sources. See `.cursor/commands/finish.md` for the full workflow.
+
+When updating the changelog with a new version, update two locations to maintain consistency:
 
 1. **Update `package.json`**: Change the `version` field to match the new changelog version
    - File: `package.json` (root level)
-   - Ensures console output shows correct version when running `npm run dev`
+   - Ensures console output shows correct version when running `pnpm dev`
 
-2. **Update fallback version in UI**: Update the hardcoded fallback in ProfileMenu
-   - File: `src/components/chat/TopBar/ProfileMenu.tsx`
-   - Update the fallback value in `import.meta.env.VITE_APP_VERSION || 'X.Y.Z'`
-   - Ensures users see the correct version in the Profile Menu
+2. **Update changelog**: Add new entry at the top of `CHANGELOG.md` (root directory)
 
-3. **Update changelog**: Add new entry at the top of `CHANGELOG.md` (root directory)
+Both locations must use the same version number. If the app displays version in the UI (e.g. via `VITE_APP_VERSION`), update that location too; this boilerplate does not display version in ProfileMenu by default.
 
-All three locations must use the same version number to maintain consistency across:
-- NPM package version
-- Console dev server output
-- Browser UI display
+**Note:** `app.config.json` has its own `version` field for config schema compatibility; it is independent of release version. See `documentation/DOC_APP_CONFIG_FILE.md`.
 
 ### Branch Strategy
 

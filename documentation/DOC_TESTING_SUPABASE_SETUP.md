@@ -1,6 +1,6 @@
 # Testing Supabase Setup Without Real Credentials
 
-This guide explains how to test the Supabase setup flow (including the "Test & Save" completion fix) without using actual Supabase credentials.
+This guide explains how to test the Supabase setup flow (including the "Test & Save" completion fix) without using actual Supabase credentials. For setup states and transitions, see [DOC_SETUP_STATES_AND_TRANSITIONS.md](./DOC_SETUP_STATES_AND_TRANSITIONS.md).
 
 ## Option 1: Dev Bypass (Fastest – Manual Browser Test)
 

@@ -11,6 +11,17 @@ Complete the implementation by doing what you haven't done yet of these tasks:
   - Format: 2-4 bullet points max (symptom, common causes, key question, debug approach)
 - **MANDATORY:** Update version number in `package.json` to match changelog version
 - **MANDATORY:** Update changelog (fetch date if unsure of date) - see `.cursor/rules/workflow/RULE.md` for Keep a Changelog format
+- **MANDATORY: Staging Decision Gate before commit**
+  - Show both lists to the user:
+    - staged files (`git diff --name-only --cached`)
+    - unstaged files (`git diff --name-only`)
+  - If unstaged changes exist, do **not** auto-decide. Inform user and ask what to do.
+  - If unstaged changes overlap with staged/intended files, **STOP** and ask user to choose before committing.
+  - If unstaged changes are unrelated, ask user explicitly whether to:
+    - include them in this commit
+    - keep them out and commit staged files only
+    - abort finish for now
+  - Never stage all changes automatically when unrelated unstaged work exists without explicit user confirmation.
 - commit with proper message format (see commit message standards below)
 - fix any issues found by pre-commit hook
 - **CRITICAL:** If fixing requires modifying protected files (`.gitignore`, `projectStructure.config.cjs`, `.eslintrc.json`, `.cursor/**`, `.husky/**`, etc.), STOP and ASK the user first. See `workflow/RULE.md` § "Protected Files" for full list. NEVER modify these files without explicit user approval.

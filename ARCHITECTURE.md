@@ -2,6 +2,8 @@
 
 This document explains the architectural decisions and rules enforced in this boilerplate.
 
+**SSOT:** `.cursor/rules/architecture/RULE.md` is the canonical source for architecture rules. This guide is the user-facing overview. Structure enforcement: `projectStructure.config.cjs` and `.dependency-cruiser.cjs`.
+
 ## Folder Structure
 
 ```
