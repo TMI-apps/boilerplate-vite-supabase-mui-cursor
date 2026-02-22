@@ -6,6 +6,7 @@
 - [ ] Verify current git branch. If on `main`, **stop immediately** and instruct user to switch: `git checkout experimental`
 - [ ] Never develop on `main`. All feature work must be on `experimental` or feature branches (see `workflow/RULE.md` § Branch Strategy)
 - [ ] Proceed only after confirming branch is `experimental` or a feature branch
+- [ ] If starting a new feature branch, ensure base is fresh (`git fetch` + sync with latest `origin/experimental`) before planning implementation
 
 ### 1. **Gather Required Information**
 Collect ALL required info before proceeding. Use the checklists below to verify completeness.

@@ -115,16 +115,18 @@ Both locations must use the same version number. If the app displays version in 
 #### Project Branch Pattern
 
 Project supports:
-- `experimental` branch: Primary long-lived development/integration branch
+- `experimental` branch: Primary long-lived integration branch (protected)
 - `main` branch: Production branch (protected, **never develop on main**)
-- Feature branches (optional): Created from `experimental` for isolated feature work
+- Feature branches: Short-lived branches created from `experimental` for implementation work
+- Hotfix branches: `hotfix/*` branches created from `main` for production emergencies
 
 **Workflow:**
-- **Never develop directly on `main`.** All code changes must be made on `experimental` or feature branches.
-- Push completed work to `experimental` first.
-- Promote to `main` via Pull Request (`experimental` -> `main`) after checks are green.
+- **Never develop directly on `main`.** All non-emergency code changes must be made on feature branches or `experimental`.
+- Start feature work from the latest `experimental` state (`git switch experimental` + `git pull origin experimental`) to reduce stale-branch conflicts.
+- Preferred daily flow: `feature/*` -> `experimental` via Pull Request.
+- Release flow: `experimental` -> `main` via Pull Request after required checks are green.
 - Do not push directly to `main` except an explicit emergency override.
-- Feature branches merge to `experimental`, then `experimental` is promoted to `main` via PR.
+- Avoid direct pushes to long-lived branches (`experimental`, `main`) in shared workflows; use PRs whenever possible.
 - `experimental` is long-lived; do not rely on auto-deleting it after PR merge.
 
 #### Branch Protection
@@ -133,9 +135,10 @@ Project supports:
 
 The AI must verify the current git branch before editing any code file. **Development on `main` is prohibited.** `main` is for production-ready code only; all development happens on `experimental` or feature branches.
 
-**Protected Main Merge Model (Current Repo Decision):**
+**Protected Branch Merge Model (Current Repo Decision):**
 - Require Pull Request for `main` updates (no direct push flow).
-- Preferred merge method: **Squash merge** for PRs into `main`.
+- Require Pull Request for `experimental` updates in shared-team workflows.
+- Preferred merge method for `main`: **Squash merge** unless user explicitly requests otherwise.
 - Keep `experimental` as a persistent branch (do not auto-delete it as a default workflow behavior).
 
 ##### Verification Process
@@ -199,7 +202,7 @@ Before editing code files:
 
 **During Git Operations:**
 - Before providing commit instructions: Confirm correct branch
-- When user requests merge: Verify experimental → main flow
+- When user requests merge: Verify `feature/*` -> `experimental` for development, and `experimental` -> `main` for release
 - During changelog updates: Note which branch changes apply to
 
 ### Pull Requests
@@ -207,8 +210,10 @@ Before editing code files:
 - Include clear description of changes
 - Link related issues or tickets
 - Request reviews from appropriate team members
+- For development work, use PRs from `feature/*` -> `experimental`
 - For promotions to `main`, use PRs from `experimental` -> `main`
 - Wait for required GitHub checks to pass before merging
+- Ensure the PR branch is up to date with the target branch before merge
 - Use squash merge for `main` unless user explicitly requests a different merge strategy
 - If repository setting "Automatically delete head branches" is enabled, ensure it does not remove long-lived `experimental`
 
@@ -337,7 +342,8 @@ See Branch Strategy section above for detailed branch protection rules and verif
    - Must verify clean working tree and existing local commits
    - Must never run `git add` or `git commit`
    - Pushes only already committed work after explicit user confirmation
-   - Default push target is `experimental`; direct pushes to `main` are disallowed unless user explicitly requests an emergency override
+   - Default push target is the current non-`main` branch (typically `feature/*`); direct pushes to `main` are disallowed unless user explicitly requests an emergency override
+   - Before pushing shared-branch updates, verify branch freshness against remote and sync first when behind
    - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.cursor/commands/debug.md` § "Git env.exe couldn't create signal pipe")
 
 5. **General commit safety:**

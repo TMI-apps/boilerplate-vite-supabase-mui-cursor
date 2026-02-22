@@ -18,6 +18,7 @@ Systematic engineering process for new feature requests. Follow phases sequentia
 ### 1.1 Branch & Workflow Check
 - [ ] Verify current git branch. If on `main`, **stop immediately** and instruct: `git checkout experimental`
 - [ ] Never develop on `main`. Branch must be `experimental` or a feature branch (workflow/RULE.md § Branch Strategy)
+- [ ] If starting new work, sync with latest `origin/experimental` before creating `feature/*` to avoid stale-base conflicts
 
 ### 1.2 Rule Decision Tree
 Check each rule category systematically:

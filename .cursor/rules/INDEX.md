@@ -58,7 +58,7 @@ Quick reference guide to all rules and their relationships.
 - **Git workflow with changelog synchronization** (mandatory)
 - **Semantic versioning** (SSOT: `.cursor/commands/finish.md`)
 - **Commit message format** (SSOT: `.cursor/commands/finish.md`)
-- **Branch protection** (experimental/main/feature branches with verification)
+- **Branch and release strategy** (SSOT: `feature/*` -> `experimental` -> `main`, with protected long-lived branches)
 - Development process
 - PR standards
 - Agent-specific behaviors

@@ -117,70 +117,93 @@ When using Cursor's AI agent to make commits, you may encounter permission issue
 
 ## Quick Start Guide
 
-### Step 1: Clone and Install
+This guide uses **Option B (fork + clone)** so your project starts in your own GitHub repo.
 
-Open Cursor in the folder where you want to create your project, then run:
+### Step 1: Fork this boilerplate
+
+1. Open this repository on GitHub.
+2. Click **Fork**.
+3. Create the fork under your account or organization.
+
+### Step 2: Clone your fork and install dependencies
 
 ```bash
-git clone https://github.com/TMI-apps/boilerplate-vite-supabase-mui-cursor .
+git clone https://github.com/<your-org-or-username>/<your-repo-name>.git
+cd <your-repo-name>
 pnpm install
 ```
 
-**Note:** You may see TypeScript compilation errors during installation. These are normal and won't prevent the app from running. Vite transpiles TypeScript on the fly for the dev server.
+**Note:** You may see TypeScript type errors in tooling output during setup. Vite still runs the app in development mode.
 
-### Step 2: Start the Development Server
+### Step 3: Set up branch workflow for this repo
+
+Keep `main` as production/stable and use `experimental` as long-lived integration.
+
+```bash
+git switch -c experimental
+git push -u origin experimental
+```
+
+Then configure branch protection in GitHub:
+- `main`: require pull requests, require status checks, disallow force pushes
+- `experimental` (recommended): require pull requests, require status checks, disallow force pushes
+
+Recommended PR flow:
+- Daily work: `feature/*` -> `experimental`
+- Release: `experimental` -> `main`
+
+Optional (to pull future boilerplate updates):
+
+```bash
+git remote add upstream https://github.com/TMI-apps/boilerplate-vite-supabase-mui-cursor.git
+git fetch upstream
+```
+
+### Step 4: Start the development server
 
 ```bash
 pnpm dev
 ```
 
-The app will open at `http://localhost:5173/` (or another port if 5173 is in use) and automatically redirect you to the setup wizard.
+The app runs at `http://localhost:5173/` (or another port if 5173 is busy) and redirects to setup on first run.
 
-### Step 3: Complete the Setup Wizard
+### Step 5: Complete the setup wizard
 
-When you first run the app, a setup wizard will guide you through configuration. All sections are optional - configure what you need and skip the rest.
+All setup sections are optional. Configure what you need now and skip the rest.
 
-#### Configure Supabase (Authentication) 🔐
+#### Supabase (optional, needed for auth/database) 🔐
 
-1. **Get Supabase Credentials:**
-   - Create a free account at [supabase.com](https://supabase.com)
-   - Create a new project
-   - Go to **Project Settings → API**
-   - Copy your **Project URL** and **Publishable Key** (previously called "anon key")
+1. Create a project at [supabase.com](https://supabase.com).
+2. Go to **Project Settings -> API**.
+3. Copy your **Project URL** and **Publishable Key**.
+4. In the setup wizard, test the connection and create `.env` in project root:
 
-2. **In the Setup Wizard:**
-   - Enter your Supabase URL and publishable key
-   - Click **"Test Connection"**
-   - Copy the environment variables shown
-   - Create a `.env` file in the project root:
-     ```
-     VITE_SUPABASE_URL=your-project-url
-     VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
-     ```
-   - **Note:** The legacy `VITE_SUPABASE_ANON_KEY` also works for backward compatibility
-   - **Important:** Restart your dev server (`Ctrl+C` then `pnpm dev` again)
+```bash
+VITE_SUPABASE_URL=your-project-url
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+```
 
-#### Configure Airtable (Optional) 📊
+5. Restart dev server after `.env` changes (`Ctrl+C`, then `pnpm dev`).
 
-- Enter your Airtable API key, Base ID, and Table ID in the setup wizard
-- This enables you to connect to Airtable as a data source
+Legacy note: `VITE_SUPABASE_ANON_KEY` is still accepted for backward compatibility.
 
-#### Customize Theme (Optional) 🎨
+#### Airtable (optional) 📊
 
-   - Use the [MUI Theme Creator](https://bareynol.github.io/mui-theme-creator/) to generate a theme JSON
-   - Paste it in the theme step (or skip to use default)
+Enter API key, Base ID, and Table ID in setup to enable Airtable integration.
 
-### Step 4: Access Your App
+#### Theme customization (optional) 🎨
 
-- **Home:** `http://localhost:5173/`
-- **Setup:** `http://localhost:5173/setup` (accessible anytime)
-- **Login:** `http://localhost:5173/login` (if Supabase is configured)
+Use [MUI Theme Creator](https://bareynol.github.io/mui-theme-creator/) and paste the JSON in the theme step.
 
-### That's It! 🎉
+### Step 6: Verify app routes
 
-Your app is ready to use. You can start building features or customize it to your needs.
+- Home: `http://localhost:5173/`
+- Setup: `http://localhost:5173/setup`
+- Login (when Supabase configured): `http://localhost:5173/login`
 
-**Need to configure Supabase later?** Just navigate to `/setup` in your app and follow the steps.
+### You're ready
+
+Start building features on `feature/*` branches and merge through `experimental` before promoting to `main`.
 
 ## Installation
 
@@ -188,7 +211,7 @@ For detailed installation instructions, see the [Quick Start Guide](#quick-start
 
 ### Optional: Manual Supabase Setup
 
-If you prefer to set up Supabase manually instead of using the setup wizard (recommended: use the [setup wizard](#step-3-complete-the-setup-wizard) instead):
+If you prefer to set up Supabase manually instead of using the setup wizard (recommended: use the [setup wizard](#step-5-complete-the-setup-wizard) instead):
 
 1. Create a `.env` file in the project root directory
 

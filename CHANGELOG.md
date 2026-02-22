@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.3] - 2026-02-22
+
+### Changed
+
+- **Branch and Release Workflow Consistency**: Standardized branch/release guidance across rules, commands, CI, and contributor docs
+  - Aligned workflows to `feature/*` -> `experimental` -> `main` with explicit shared-branch freshness checks
+  - Updated CI branch triggers to `main` and `experimental` only
+  - Added release verification guidance for Edge Function-adjacent changes
+- **Quick Start Onboarding**: Rewrote Quick Start Guide in `README.md` into a single coherent fork-and-clone onboarding path
+  - Added concrete GitHub setup steps (fork, clone, branch setup, protection settings, PR flow)
+  - Removed contradictory clone guidance and refreshed setup step references
+
 ## [0.11.2] - 2026-02-22
 
 ### Changed

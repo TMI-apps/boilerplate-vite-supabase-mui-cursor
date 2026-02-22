@@ -173,12 +173,16 @@ When considering adding an Edge Function, ask:
 - Changes affect both experimental and main immediately
 - Consider impact before adding new functions
 - Deploy via `supabase functions deploy <function-name>`
+- Treat releases to `main` as a separate verification gate when function-adjacent frontend behavior changed
 
 **Frontend Logic Testing Considerations:**
 
 - Test on experimental branch
 - User testing before merging to main
 - Easy rollback if issues found
+
+**Release Gate Reminder:**
+- For `experimental` -> `main` releases, re-validate critical flows that depend on currently deployed Edge Functions before merge
 
 For complete testing guidelines and patterns, refer to `testing/RULE.md`.
 
