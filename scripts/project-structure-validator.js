@@ -30,6 +30,9 @@ const minimatchCache = new Map();
 // Default ignore patterns (common build artifacts and dependencies)
 // NOTE: We intentionally DO NOT ignore .tmp_*, backup/, backups/, or *-check.* files
 // so they get caught as violations by the validator
+// NOTE: .eslintcache is ignored because CI runs `pnpm lint` before `validate:structure`,
+// which creates it. Pre-commit uses validate:structure:staged (staged files only), so
+// .eslintcache is never validated locally (it's in .gitignore, so never staged).
 const DEFAULT_IGNORE_PATTERNS = [
   'node_modules/**',
   'node_modules',
@@ -51,6 +54,7 @@ const DEFAULT_IGNORE_PATTERNS = [
   '.nyc_output',
   '.DS_Store',
   'Thumbs.db',
+  '.eslintcache', // ESLint cache (auto-generated when lint runs)
   '.pnpm-store/**', // pnpm cache directory
   '.pnpm-store',
   'supabase/.temp/**', // Supabase CLI temporary files

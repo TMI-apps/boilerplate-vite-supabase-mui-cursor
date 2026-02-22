@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.1] - 2026-02-22
+
+### Fixed
+
+- **Structure Validation vs ESLint Cache**: Prevented CI-only structure validation failures caused by ESLint cache generation
+  - Added `.eslintcache` to default ignore patterns in `project-structure-validator.js`
+  - Clarified in-code rationale: CI runs lint before full structure validation, while pre-commit validates staged files only
+
 ## [0.11.0] - 2026-02-22
 
 ### Added
