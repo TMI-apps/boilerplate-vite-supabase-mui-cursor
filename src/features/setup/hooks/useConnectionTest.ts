@@ -14,7 +14,7 @@ export const useConnectionTest = ({ onTest, onSuccess }: UseConnectionTestOption
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<ConnectionTestResult | null>(null);
 
-  const runTest = async () => {
+  const runTest = async (): Promise<ConnectionTestResult> => {
     setTesting(true);
     setTestResult(null);
 
@@ -24,11 +24,14 @@ export const useConnectionTest = ({ onTest, onSuccess }: UseConnectionTestOption
       if (result.success && onSuccess) {
         onSuccess();
       }
+      return result;
     } catch (error) {
-      setTestResult({
+      const err: ConnectionTestResult = {
         success: false,
         error: error instanceof Error ? error.message : "Test failed",
-      });
+      };
+      setTestResult(err);
+      return err;
     } finally {
       setTesting(false);
     }

@@ -5,6 +5,10 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey =
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+/** Dev-only: bypass real connection for testing. See DOC_TESTING_SUPABASE_SETUP.md */
+const TEST_BYPASS_URL = "https://test-local.supabase.co";
+const TEST_BYPASS_KEY = "test-anon-key-for-local-testing";
+
 let supabase: SupabaseClient | null = null;
 
 /**
@@ -14,6 +18,8 @@ export const isSupabaseConfigured = (): boolean => {
   return !!(
     supabaseUrl &&
     supabaseAnonKey &&
+    supabaseUrl !== TEST_BYPASS_URL &&
+    supabaseAnonKey !== TEST_BYPASS_KEY &&
     supabaseUrl !== "your-project-url" &&
     supabaseAnonKey !== "your-anon-key" &&
     supabaseAnonKey !== "your-publishable-key"
@@ -73,6 +79,10 @@ export const testSupabaseConnection = async (
   url: string,
   key: string
 ): Promise<{ success: boolean; error?: string }> => {
+  if (import.meta.env.DEV && url === TEST_BYPASS_URL && key === TEST_BYPASS_KEY) {
+    return { success: true };
+  }
+
   try {
     const testClient = createClient(url, key, {
       auth: {

@@ -2,14 +2,14 @@ import { Box, TextField } from "@mui/material";
 
 interface SupabaseFormFieldsProps {
   url: string;
-  key: string;
+  apiKey: string;
   onUrlChange: (value: string) => void;
   onKeyChange: (value: string) => void;
 }
 
 export const SupabaseFormFields = ({
   url,
-  key,
+  apiKey,
   onUrlChange,
   onKeyChange,
 }: SupabaseFormFieldsProps) => {
@@ -26,7 +26,7 @@ export const SupabaseFormFields = ({
       />
       <TextField
         label="Supabase Publishable Key"
-        value={key}
+        value={apiKey}
         onChange={(e) => onKeyChange(e.target.value)}
         fullWidth
         margin="normal"

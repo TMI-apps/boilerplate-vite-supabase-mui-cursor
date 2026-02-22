@@ -86,21 +86,29 @@ const SupabaseDialog = ({ open, onClose, onStatusChange }: SupabaseDialogProps) 
 
   const handleSave = async () => {
     if (!testConnection.testResult?.success) {
-      await testConnection.runTest();
-      if (testConnection.testResult?.success) {
-        await envWriter.writeEnv({
+      const testResult = await testConnection.runTest();
+      if (testResult?.success) {
+        const writeResult = await envWriter.writeEnv({
           VITE_SUPABASE_URL: supabaseUrl,
           VITE_SUPABASE_PUBLISHABLE_KEY: supabaseKey,
         });
+        if (writeResult?.success) {
+          updateSetupSectionStatus("supabase", "completed");
+          onStatusChange?.();
+        }
       }
       return;
     }
 
     if (!envWriter.envWritten) {
-      await envWriter.writeEnv({
+      const writeResult = await envWriter.writeEnv({
         VITE_SUPABASE_URL: supabaseUrl,
         VITE_SUPABASE_PUBLISHABLE_KEY: supabaseKey,
       });
+      if (writeResult?.success) {
+        updateSetupSectionStatus("supabase", "completed");
+        onStatusChange?.();
+      }
       return;
     }
 
@@ -132,7 +140,7 @@ const SupabaseDialog = ({ open, onClose, onStatusChange }: SupabaseDialogProps) 
 
         <SupabaseFormFields
           url={supabaseUrl}
-          key={supabaseKey}
+          apiKey={supabaseKey}
           onUrlChange={setSupabaseUrl}
           onKeyChange={setSupabaseKey}
         />

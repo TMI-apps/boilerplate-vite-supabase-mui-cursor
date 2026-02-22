@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-02-22
+
+### Fixed
+
+- **Supabase Setup First-Save Completion**: Fixed setup flow requiring a second click to mark Supabase as complete
+  - Updated Supabase save flow to mark section completed immediately after successful test and env write
+  - Updated connection test hook to return test results directly, avoiding stale state checks in async save logic
+  - Fixed React special prop misuse by renaming `SupabaseFormFields` prop from `key` to `apiKey`
+  - Prevented dev test bypass credentials from being treated as a configured Supabase instance at app startup
+
 ## [0.8.0] - 2026-02-22
 
 ### Added
