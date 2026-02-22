@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.1] - 2026-02-22
+
+### Fixed
+
+- **Structure Validation vs ESLint Cache**: Prevented CI-only structure validation failures caused by ESLint cache generation
+  - Added `.eslintcache` to default ignore patterns in `project-structure-validator.js`
+  - Clarified in-code rationale: CI runs lint before full structure validation, while pre-commit validates staged files only
+
+## [0.11.0] - 2026-02-22
+
+### Added
+
+- **Documentation Governance Hardening**: Added automated checks to prevent stale documentation references
+  - Added `scripts/validate-markdown-links.js` for relative markdown link validation
+  - Added `scripts/validate-cursor-doc-references.js` for `.cursor/rules` and `.cursor/commands` reference checks
+  - Added `pnpm validate:docs` script suite and integrated it into `.husky/pre-commit`
+  - Added explicit minimal-doc governance language in rule and review guidance
+
+### Changed
+
+- **Documentation Placement and Maintenance Model**: Shifted to objective contract-doc obligations
+  - Reduced vague "update documentation" requirements in workflow/feature/check/finish flows
+  - Made deep docs opt-in with explicit user approval and prioritized source-adjacent comments/tests
+  - Moved setup deep docs to `src/features/setup/docs/` and converted root setup docs into lightweight pointers
+  - Updated migration/index references to remove stale links and align with architecture location rules
+
+## [0.10.0] - 2026-02-22
+
+### Added
+
+- **Challenge Command**: Added dedicated feature simplification command for targeted reduction
+  - New `.cursor/commands/challenge.md` for challenging overbuilt feature workflows
+  - Dual-mode default: runs flow simplification and code simplification together on features
+  - Includes mandatory progressive options (Trim, Streamline, Reframe) and decision gate before implementation
+  - Adds code audit lenses (data flow, control flow, sparseness, abstraction) and anti-code-golf guardrail
+
 ## [0.9.0] - 2026-02-22
 
 ### Added

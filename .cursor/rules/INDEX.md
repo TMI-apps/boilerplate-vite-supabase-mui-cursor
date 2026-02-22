@@ -27,7 +27,7 @@ Quick reference guide to all rules and their relationships.
 - Patterns and practices
 - Module organization
 - Layer boundaries and import direction
-- **Architecture documentation** (required maintenance)
+- **Architecture documentation** (minimal contract-doc maintenance)
 
 **Related to:** code-style, testing, security, workflow
 
@@ -62,6 +62,7 @@ Quick reference guide to all rules and their relationships.
 - Development process
 - PR standards
 - Agent-specific behaviors
+- **Minimal documentation promises** (objective docs only; avoid optional deep docs by default)
 - **🚨 CRITICAL: PowerShell/Select-Object piping rules** (prevents IDE crashes)
 - Deployment processes
 

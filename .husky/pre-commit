@@ -11,6 +11,10 @@ pnpm lint-staged || exit 1
 echo "Running feature documentation validation for staged files..."
 pnpm validate:feature-docs:staged || exit 1
 
+# Validate docs links and rule/command file references
+echo "Running documentation reference validation..."
+pnpm validate:docs || exit 1
+
 # Run tests (single run, not watch mode)
 echo "Running tests..."
 pnpm test:run || exit 1

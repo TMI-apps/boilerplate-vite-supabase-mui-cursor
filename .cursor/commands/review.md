@@ -165,6 +165,10 @@ At the end, sum the points and compute a percentage.
 - There is at least one example or Storybook story showing typical usage
 - If the component is part of a shared library, usage is discoverable by other devs
 
+**Documentation policy note (anti-staleness):**
+- Prefer source-adjacent comments/tests/examples over creating new standalone narrative docs
+- New deep docs are optional and should only be added with explicit user approval
+
 ---
 
 ## Section H – Requirements & Integration (max 20)
