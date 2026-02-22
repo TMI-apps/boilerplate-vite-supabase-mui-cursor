@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-02-22
+
+### Added
+
+- **Challenge Command**: Added dedicated feature simplification command for targeted reduction
+  - New `.cursor/commands/challenge.md` for challenging overbuilt feature workflows
+  - Dual-mode default: runs flow simplification and code simplification together on features
+  - Includes mandatory progressive options (Trim, Streamline, Reframe) and decision gate before implementation
+  - Adds code audit lenses (data flow, control flow, sparseness, abstraction) and anti-code-golf guardrail
+
 ## [0.9.0] - 2026-02-22
 
 ### Added
