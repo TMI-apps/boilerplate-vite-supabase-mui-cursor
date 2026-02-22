@@ -144,12 +144,13 @@ Examples:
 When documentation is about a specific feature's behavior, API, flows, or constraints, keep it colocated with the feature:
 
 - `src/features/<feature>/README.md` - Required feature overview and maintenance notes
-- `src/features/<feature>/docs/*.md` - Optional deep dives, ADRs, and edge-case guides
+- `src/features/<feature>/docs/*.md` - Optional deep dives, ADRs, and edge-case guides (explicit user approval required)
 - `src/features/<group>/<feature>/README.md` - Same rule for nested features
 
 **Maintenance rule:**
 - If feature code changes are staged, stage updates to that feature's `README.md` in the same commit
 - Pre-commit enforcement: `pnpm validate:feature-docs:staged`
+- Default: do not create new deep docs; prefer code comments/tests unless cross-file knowledge requires a doc
 
 **Use `documentation/` for cross-feature docs only:**
 - Global architecture guides
@@ -192,6 +193,7 @@ Examples:
 - When in doubt, create in `documentation/jobs/` or `documentation/temp/`
 - User can rename with DOC_ prefix later if it should be permanent
 - Better to err on the side of temporary placement
+- If uncertain whether a new deep doc is needed, ask the user first and avoid creating it by default
 
 ### Subdirectories in Documentation
 

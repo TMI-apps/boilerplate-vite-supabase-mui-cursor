@@ -50,6 +50,10 @@ Expose `isConfigured` and connection test helpers for their respective sections.
 
 ## Related
 
-- `documentation/DOC_APP_CODE_MODIFICATION.md` – full app code modification flow
-- `documentation/DOC_APP_CONFIG_FILE.md` – `app.config.json` structure
+- `docs/README.md` – setup feature deep-dive index
+- `docs/app-code-modification.md` – full app code modification flow
+- `docs/setup-states-and-transitions.md` – setup state and transition rules
+- `docs/testing-app-config.md` – `app.config.json` sync testing
+- `docs/testing-supabase-setup.md` – supabase setup test guide
+- `documentation/DOC_APP_CONFIG_FILE.md` – project-level `app.config.json` reference
 - `.cursor/commands/complete-setup.md` – removal of setup wizard when no longer needed

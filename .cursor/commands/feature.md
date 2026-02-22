@@ -421,7 +421,7 @@ If automated tests are approved:
 ### 7.2 Documentation Update
 - [ ] Update changelog if user-facing changes (`workflow/RULE.md`)
 - [ ] Update architecture docs if structural changes (`workflow/RULE.md`)
-- [ ] Update relevant documentation
+- [ ] Do not create new deep docs by default; only add with explicit user approval
 - [ ] If feature code changed, stage corresponding `src/features/*/README.md` updates
 
 ### 7.3 Code Review Checklist (`workflow/RULE.md`)
@@ -432,7 +432,7 @@ If automated tests are approved:
 - [ ] Architecture documentation updated (if structural changes)
 - [ ] Automated tests included and passing (if approved in 6.1)
 - [ ] Security considerations addressed (`security/RULE.md`)
-- [ ] Documentation updated
+- [ ] Documentation obligations met with objective contract docs only
 - [ ] No console.log or debug code left behind
 - [ ] Linting passes
 

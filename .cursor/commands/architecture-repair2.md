@@ -203,7 +203,8 @@ If multiple files should move together:
 After significant architectural changes:
 - Update `architecture.md` if it exists
 - Document the refactoring in `CHANGELOG.md`
-- Update any path references in documentation
+- Update path references only in affected contract docs (avoid broad doc rewrites)
+- Do not create new deep docs by default; require explicit user approval
 
 ## Important Notes
 

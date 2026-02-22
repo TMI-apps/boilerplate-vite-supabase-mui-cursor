@@ -394,9 +394,9 @@ When code doesn't clearly fit existing categories, use these guidelines:
 ## Architecture Documentation
 
 ### Documentation Maintenance
-- Maintain architecture documentation for all projects
-- Update architecture documentation after structural changes
-- Keep documentation in sync with actual implementation
+- Maintain only high-value architecture docs
+- Update architecture docs only when structural behavior changes
+- Prefer source-adjacent comments/tests over creating additional narrative docs
 - Use clear, descriptive section headings
 
 ### Documentation Location
@@ -404,18 +404,16 @@ When code doesn't clearly fit existing categories, use these guidelines:
 - These files are project-wide references that need to be easily discoverable
 - Root location follows standard conventions (Keep a Changelog format) and ensures README references work correctly
 - If these files are found in wrong location (e.g., `documentation/` folder), they must be moved to root directory
-- Feature-specific documentation should be colocated with code in `src/features/*/README.md` (and optionally `src/features/*/docs/*.md`)
+- Feature-specific documentation should be colocated with code in `src/features/*/README.md`
+- `src/features/*/docs/*.md` is optional and should be created only with explicit user approval
 - Temporary implementation planning docs can be stored in `documentation/jobs/` and `documentation/temp/`
 - Document major architectural decisions and patterns
 - Include diagrams or visual representations when helpful
-- Keep documentation up to date with code changes
+- Avoid broad "update all docs" expectations; keep documentation obligations objective
 
 ### When to Update Documentation
-- After adding new features or modules
-- After refactoring major components
-- After changing architectural patterns
-- After adding new dependencies or frameworks
-- When architectural decisions change
+- After structural architecture changes, update `ARCHITECTURE.md`
+- After user-facing behavior changes, update `CHANGELOG.md`
 - Whenever staged changes affect a feature, stage updates to that feature's `README.md`
 
 ## Examples
@@ -455,7 +453,7 @@ When reducing code complexity through refactoring, all changes must comply with 
 
 **For detailed guidance:** See `.cursor/commands/complexity-reduce.md` section 8 (Architecture Compliance)
 
-**For unified checklist:** See `documentation/DOC_COMPLEXITY_REDUCTION_ANALYSIS.md`
+**For unified checklist:** See `.cursor/commands/optimize2.md`
 
 ## Related Rules
 

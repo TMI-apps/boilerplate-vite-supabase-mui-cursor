@@ -249,13 +249,13 @@ module.exports = {
 
 ### 9.2 Architecture Guide
 **Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/ARCHITECTURE.md`  
-**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/documentation/ARCHITECTURE.md` (or root)
+**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/ARCHITECTURE.md` (root)
 
-**Action:** Use `ARCHITECTURE.md` as the user-facing architecture guide. Create `documentation/` directory if needed.
+**Action:** Keep `ARCHITECTURE.md` in project root (required by architecture rules).
 
 ### 9.3 Complexity Reduction Guide (Optional)
-**Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/documentation/DOC_COMPLEXITY_REDUCTION_ANALYSIS.md`  
-**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/documentation/DOC_COMPLEXITY_REDUCTION_ANALYSIS.md`
+**Source:** `[PROJECT_ROOT]boilerplate-vite-supabase-mui-cursor/.cursor/rules/architecture/RULE.md` (complexity section)  
+**Destination:** `[PROJECT_ROOT][TARGET_REPO_NAME]/.cursor/rules/architecture/RULE.md`
 
 ---
 
@@ -399,9 +399,7 @@ Before considering migration complete:
 ├── projectStructure.config.cjs
 ├── tsconfig.json
 ├── .cursor/rules/architecture/RULE.md
-├── ARCHITECTURE.md
-└── documentation/
-    └── DOC_COMPLEXITY_REDUCTION_ANALYSIS.md
+└── ARCHITECTURE.md
 ```
 
 ### Target Repository (to be created/updated)
@@ -413,9 +411,7 @@ Before considering migration complete:
 ├── tsconfig.json                   ← Merge path aliases
 ├── package.json                    ← Add scripts & deps
 ├── .cursor/rules/architecture/RULE.md  ← Copy (optional)
-└── documentation/
-    ├── ARCHITECTURE.md             ← Copy (optional)
-    └── DOC_COMPLEXITY_REDUCTION_ANALYSIS.md  ← Copy (optional)
+└── ARCHITECTURE.md                 ← Copy (optional)
 ```
 
 ---

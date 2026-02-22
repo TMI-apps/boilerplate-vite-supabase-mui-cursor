@@ -10,11 +10,11 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | **Architecture** | [ARCHITECTURE.md](../ARCHITECTURE.md) |
 | **Architecture migration** | [DOC_ARCHITECTURE_MIGRATION_INSTRUCTIONS.md](./DOC_ARCHITECTURE_MIGRATION_INSTRUCTIONS.md) |
 | **App config file** | [DOC_APP_CONFIG_FILE.md](./DOC_APP_CONFIG_FILE.md) |
-| **Setup states & transitions** | [DOC_SETUP_STATES_AND_TRANSITIONS.md](./DOC_SETUP_STATES_AND_TRANSITIONS.md) |
-| **Testing app config** | [DOC_TESTING_APP_CONFIG.md](./DOC_TESTING_APP_CONFIG.md) |
-| **Testing Supabase setup** | [DOC_TESTING_SUPABASE_SETUP.md](./DOC_TESTING_SUPABASE_SETUP.md) |
-| **App code modification** | [DOC_APP_CODE_MODIFICATION.md](./DOC_APP_CODE_MODIFICATION.md) |
-| **Complexity reduction** | [DOC_COMPLEXITY_REDUCTION_ANALYSIS.md](./DOC_COMPLEXITY_REDUCTION_ANALYSIS.md) |
+| **Setup states & transitions** | [src/features/setup/docs/setup-states-and-transitions.md](../src/features/setup/docs/setup-states-and-transitions.md) |
+| **Testing app config** | [src/features/setup/docs/testing-app-config.md](../src/features/setup/docs/testing-app-config.md) |
+| **Testing Supabase setup** | [src/features/setup/docs/testing-supabase-setup.md](../src/features/setup/docs/testing-supabase-setup.md) |
+| **App code modification** | [src/features/setup/docs/app-code-modification.md](../src/features/setup/docs/app-code-modification.md) |
+| **Complexity reduction** | See `.cursor/rules/architecture/RULE.md` complexity section |
 
 ## SSOT Map (Single Source of Truth)
 

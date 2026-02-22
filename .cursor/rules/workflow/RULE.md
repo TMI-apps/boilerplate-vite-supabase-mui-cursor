@@ -29,7 +29,7 @@ Development workflows, code review standards, and process requirements. Includes
 - [ ] Architecture documentation updated (if structural changes)
 - [ ] Tests are included and passing (`testing/RULE.md`)
 - [ ] Security considerations addressed (`security/RULE.md`)
-- [ ] Documentation is updated
+- [ ] Documentation changes are limited to required contract docs only
 - [ ] Feature-local README updated when `src/features/*` code changed
 - [ ] No console.log or debug code left behind
 - [ ] Linting passes (GTS or project-specified tool)
@@ -222,7 +222,11 @@ Before editing code files:
 - Run linters and fix all issues
 - Run tests and ensure they pass
 - Review your own code
-- Update documentation if needed
+- Update only required docs:
+  - `CHANGELOG.md` for user-facing changes
+  - `ARCHITECTURE.md` for structural changes
+  - `src/features/*/README.md` when feature code changes
+- Do not create new docs by default; only add deep docs with explicit user approval
 - If feature code changed, stage `src/features/*/README.md` updates and run `pnpm validate:feature-docs:staged`
 - Verify changelog and commit message match
 

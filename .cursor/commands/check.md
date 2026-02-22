@@ -137,6 +137,7 @@ Build phases based on **risk** and **dependency gates**. Do uncertain things fir
 **Output:** Create/update `/documentation/jobs/temp_job_[jobname]/IMPLEMENTATION_PLAN.md` with the plan. This file IS the deliverable - no separate documentation step.
 
 **Feature-local docs (required):** When the work targets `src/features/*`, include `src/features/*/README.md` in the plan's files-to-modify list and keep it updated as implementation evolves.
+**Deep docs (optional):** Add `src/features/*/docs/*.md` only with explicit user approval and only when cross-file behavior cannot be captured clearly in code/comments/tests.
 
 **Inform user of opinionated choices** and mention viable alternatives.
 
@@ -228,6 +229,7 @@ Before finalizing, check each phase:
 - [ ] Dependencies: new needed? existing sufficient?
 - [ ] Impact on existing functionality assessed
 - [ ] Feature-local documentation updated (`src/features/*/README.md`) when feature code changes
+- [ ] No new deep documentation files added unless explicitly approved by user
 
 Run `pnpm validate:structure` and `pnpm arch:check` to verify.
 

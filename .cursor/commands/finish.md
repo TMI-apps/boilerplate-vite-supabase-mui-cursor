@@ -28,6 +28,7 @@ Complete the implementation by doing what you haven't done yet of these tasks:
 - fix any issues found by pre-commit hook
 - **CRITICAL:** If fixing requires modifying protected files (`.gitignore`, `projectStructure.config.cjs`, `.eslintrc.json`, `.cursor/**`, `.husky/**`, etc.), STOP and ASK the user first. See `workflow/RULE.md` § "Protected Files" for full list. NEVER modify these files without explicit user approval.
 - check if architecture.md needs update
+- do not create new deep docs during finish unless user explicitly requests it
 - **Do NOT push in this command.** `finish` is local-only and ends at a successful commit.
 - After `finish` creates the commit(s), run `.cursor/commands/push.md` to handle remote verification and push.
 

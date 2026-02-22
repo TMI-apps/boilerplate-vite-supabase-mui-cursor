@@ -102,6 +102,19 @@ Rules should be:
 - **Up to date** - References should be current and accurate
 - **Consistently enforced** - Patterns should be applied uniformly
 
+### Minimal Documentation Promises Policy
+
+To reduce stale documentation risk:
+
+- Keep required docs objective and minimal:
+  - `CHANGELOG.md` for user-facing changes
+  - `ARCHITECTURE.md` for structural changes
+  - `src/features/*/README.md` when feature code changes
+- Treat deep docs (`src/features/*/docs/*.md`, additional `documentation/*.md`) as optional
+- Create new deep docs only with explicit user approval
+- Prefer source-adjacent comments/tests for implementation details
+- Validate references automatically via `pnpm validate:docs`
+
 ### Pattern Recognition Example
 
 ```typescript

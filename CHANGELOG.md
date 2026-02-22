@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-02-22
+
+### Added
+
+- **Documentation Governance Hardening**: Added automated checks to prevent stale documentation references
+  - Added `scripts/validate-markdown-links.js` for relative markdown link validation
+  - Added `scripts/validate-cursor-doc-references.js` for `.cursor/rules` and `.cursor/commands` reference checks
+  - Added `pnpm validate:docs` script suite and integrated it into `.husky/pre-commit`
+  - Added explicit minimal-doc governance language in rule and review guidance
+
+### Changed
+
+- **Documentation Placement and Maintenance Model**: Shifted to objective contract-doc obligations
+  - Reduced vague "update documentation" requirements in workflow/feature/check/finish flows
+  - Made deep docs opt-in with explicit user approval and prioritized source-adjacent comments/tests
+  - Moved setup deep docs to `src/features/setup/docs/` and converted root setup docs into lightweight pointers
+  - Updated migration/index references to remove stale links and align with architecture location rules
+
 ## [0.10.0] - 2026-02-22
 
 ### Added

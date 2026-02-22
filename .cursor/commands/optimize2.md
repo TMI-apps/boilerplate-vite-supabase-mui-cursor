@@ -590,7 +590,7 @@ Tests must cover:
 
 ## Example Sessions
 
-See [optimize-examples.md](./optimize-examples.md) for detailed examples showing:
+Detailed examples in this section show:
 - Example 1: Multi-level optimization (calculatePricing)
 - Example 2: When to accept complexity (4E)
 
