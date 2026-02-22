@@ -2,6 +2,11 @@
 
 ## When the user requests a feature or functionality, follow these steps:
 
+### 0. **Branch Verification (First Step)**
+- [ ] Verify current git branch. If on `main`, **stop immediately** and instruct user to switch: `git checkout experimental`
+- [ ] Never develop on `main`. All feature work must be on `experimental` or feature branches (see `workflow/RULE.md` § Branch Strategy)
+- [ ] Proceed only after confirming branch is `experimental` or a feature branch
+
 ### 1. **Gather Required Information**
 Collect ALL required info before proceeding. Use the checklists below to verify completeness.
 
@@ -263,6 +268,10 @@ Present the documented plan (link to file). Wait for explicit approval before pr
 ## Summary: The "Fail Fast" Flow
 
 ```
+┌─────────────────────────────────────┐
+│  0. Branch Check (never on main)     │
+└──────────────────┬──────────────────┘
+                   ▼
 ┌─────────────────────────────────────┐
 │  1. Gather Info (stay until done)   │
 └──────────────────┬──────────────────┘

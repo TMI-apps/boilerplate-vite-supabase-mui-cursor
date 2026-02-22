@@ -107,11 +107,11 @@ All three locations must use the same version number to maintain consistency acr
 
 Project supports:
 - `experimental` branch: Primary development branch for testing before production
-- `main` branch: Production branch (protected)
+- `main` branch: Production branch (protected, **never develop on main**)
 - Feature branches (optional): Created from `experimental` for isolated feature work
 
 **Workflow:**
-- All code changes should be made on `experimental` branch or feature branches
+- **Never develop directly on `main`.** All code changes must be made on `experimental` or feature branches.
 - Test changes on `experimental` branch first
 - Both `experimental` and `main` may share the same database
 - Merge `experimental` → `main` after validation
@@ -119,31 +119,31 @@ Project supports:
 
 #### Branch Protection
 
-**Critical Rule: Development Branch Enforcement**
+**Critical Rule: Never Develop on Main**
 
-The AI must verify the current git branch before editing any code file.
+The AI must verify the current git branch before editing any code file. **Development on `main` is prohibited.** `main` is for production-ready code only; all development happens on `experimental` or feature branches.
 
 ##### Verification Process
 
 1. Check the current branch at the start of code-related conversations
 2. If unsure, ask: "Which branch are you currently on?"
-3. Proceed only after confirming the branch
+3. Proceed only after confirming the branch is NOT `main` (for code changes)
 
 ##### Branch-Specific Rules
 
 - `experimental`: All code changes allowed (primary development branch)
 - Feature branches: All code changes allowed (created from experimental)
-- `main`: Code changes blocked (unless explicit emergency override)
+- `main`: **Code changes blocked.** Never develop on main. Emergency override only (see below).
 - Other branches: Ask user before proceeding
 
 ##### When User is on Main Branch
 
 If code changes are requested while on `main`:
 
-Stop immediately and display warning:
-- User is currently on the `main` branch
-- Code changes should only be made on `experimental` or feature branches
-- Please switch branches: `git checkout experimental`
+**Stop immediately.** Do not make any code changes. Display warning:
+- You are on the `main` branch. **Never develop on main.**
+- All code changes must be made on `experimental` or feature branches
+- Switch branches: `git checkout experimental`
 - Once switched, proceed with requested changes
 
 Do not make code changes until user confirms they've switched.
@@ -157,12 +157,14 @@ These files may be edited on any branch after user confirmation:
 - Cursor rules (`.cursor/rules/*.md`)
 - README files
 
-**Emergency Main Branch Changes**
+**Emergency Main Branch Changes (Rare Exception)**
 
-Only proceed with main branch code changes when:
+Only proceed with main branch code changes when ALL of the following are true:
 1. User explicitly states "emergency fix on main"
 2. User confirms with "yes, proceed on main"
 3. User acknowledges the risk
+
+Default: **Never develop on main.** When in doubt, require branch switch to `experimental`.
 
 ##### Implementation Checklist
 
@@ -261,6 +263,7 @@ The agent must STOP and ASK the user before modifying any of the following file 
    - Present options clearly (e.g., "Add X to .gitignore?" or "Update config to allow this file?")
    - WAIT for explicit user response
    - Only proceed after user explicitly approves the specific change
+   - After receiving explicit user approval, proceed to make the change yourself
 
 2. **Never assume consent:**
    - Even if the fix seems obvious, always ask
@@ -289,30 +292,32 @@ See Branch Strategy section above for detailed branch protection rules and verif
 
 ### Commit and Push Workflow
 
-**Automated Workflow:** See `.cursor/commands/finish.md` for the automated finish command that implements this workflow.
+**Automated Workflow:** Use `.cursor/commands/finish.md` and `.cursor/commands/push.md` as a split workflow.
 
-#### Permission-Based Flow
+#### Agent-Executed Flow
 
-1. **After completing changes**, the AI:
+1. **After completing changes**, the agent:
    - Summarizes what was changed
    - Shows the changelog entry that was added
    - Asks the user: "Are you ready to commit these changes?"
 
 2. **User responds** with explicit confirmation or denial
 
-3. **Only after user confirms**, the AI provides:
-   - The exact git commands to run
-   - Step-by-step instructions
+3. **Finish phase (`finish` command):**
+   - Runs local cleanup/check tasks
+   - Updates changelog/version as required
+   - Runs `git add` and `git commit` only after explicit user confirmation
+   - Never pushes during `finish`
 
-4. **The user executes** the commands in their terminal
+4. **Push phase (`push` command):**
+   - Must verify clean working tree and existing local commits
+   - Must never run `git add` or `git commit`
+   - Pushes only already committed work after explicit user confirmation
+   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.cursor/commands/debug.md` § "Git env.exe couldn't create signal pipe")
 
-#### Critical Rules
-
-- Never run `git commit`, `git push`, or any git command automatically
-- Never assume the user wants to commit just because changes are complete
-- Always ask "Would you like me to provide commit instructions?" or similar
-- Always wait for explicit user confirmation
-- Always require commit body - commit messages must include detailed body explaining changes
+5. **General commit safety:**
+   - Never assume the user wants to commit just because changes are complete
+   - Always require commit body - commit messages must include detailed body explaining changes
 
 ### Documentation Lookup
 - When needing documentation info from a URL, visit it programmatically using the actual browser tool
@@ -326,7 +331,7 @@ See Branch Strategy section above for detailed branch protection rules and verif
 **Command Rules:**
 - No Unix-style `&&` chaining
 - No Unix-only flags like `rm -rf`
-- Provide commands as separate lines, each run independently
+- Run commands as separate sequential calls (the agent executes them, not the user)
 
 ### Shell/PowerShell Handling
 

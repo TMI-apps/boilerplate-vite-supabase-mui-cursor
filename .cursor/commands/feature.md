@@ -16,7 +16,8 @@ Systematic engineering process for new feature requests. Follow phases sequentia
 ## Phase 1: Pre-Development Analysis
 
 ### 1.1 Branch & Workflow Check
-- [ ] Verify branch to be: `experimental` (workflow/RULE.md)
+- [ ] Verify current git branch. If on `main`, **stop immediately** and instruct: `git checkout experimental`
+- [ ] Never develop on `main`. Branch must be `experimental` or a feature branch (workflow/RULE.md § Branch Strategy)
 
 ### 1.2 Rule Decision Tree
 Check each rule category systematically:

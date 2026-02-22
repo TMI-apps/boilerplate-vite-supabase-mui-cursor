@@ -9,16 +9,14 @@ Complete the implementation by doing what you haven't done yet of these tasks:
   - A senior developer hint would have significantly accelerated the fix
   - The pattern is generalizable (not repo-specific)
   - Format: 2-4 bullet points max (symptom, common causes, key question, debug approach)
-- (Optional) Check staged files before committing using staged validation commands:
-  - `pnpm validate:structure:staged` - Check staged file structure
-  - `pnpm arch:check:staged` - Check staged architecture compliance
 - **MANDATORY:** Update version number in `package.json` to match changelog version
 - **MANDATORY:** Update changelog (fetch date if unsure of date) - see `.cursor/rules/workflow/RULE.md` for Keep a Changelog format
 - commit with proper message format (see commit message standards below)
 - fix any issues found by pre-commit hook
 - **CRITICAL:** If fixing requires modifying protected files (`.gitignore`, `projectStructure.config.cjs`, `.eslintrc.json`, `.cursor/**`, `.husky/**`, etc.), STOP and ASK the user first. See `workflow/RULE.md` § "Protected Files" for full list. NEVER modify these files without explicit user approval.
 - check if architecture.md needs update
-- push to experimental
+- **Do NOT push in this command.** `finish` is local-only and ends at a successful commit.
+- After `finish` creates the commit(s), run `.cursor/commands/push.md` to handle remote verification and push.
 
 ## Semantic Versioning (SSOT)
 

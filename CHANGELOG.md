@@ -7,12 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- **Debug Pattern Refinement**: Updated Git env.exe error pattern in debug.md with confirmed root cause (Cursor sandbox restricting pipe creation) and correct debug approach
+## [0.8.0] - 2026-02-22
 
 ### Added
 
+- **Push Command**: Added `.cursor/commands/push.md` to enforce push-only behavior after `finish`
+- **Complete Setup Command**: Added `.cursor/commands/complete-setup.md` for removing setup wizard functionality
 - **Setup Documentation**: Enhanced README.md with comprehensive setup instructions
   - Expanded "Configure Line Endings" section with VS Code/Cursor editor configuration and Git configuration
   - Added "Linter Setup" section with verification steps, common commands, and editor integration guidance
@@ -21,6 +21,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Documents required commands to add to Cursor's allowlist for Git commits
     - Explains why allowlist is needed (sandbox permission issues)
     - Prevents `env.exe: couldn't create signal pipe, Win32 error 5` errors when committing
+
+### Changed
+
+- **Finish Workflow Split**: Separated local completion from remote publishing
+  - Updated `finish` command to be local-only (cleanup, changelog/version sync, commit)
+  - Added cross-references between `finish` and `push` to enforce finish-first flow
+- **Workflow Rule Updates**: Strengthened branch safety and command execution guidance
+  - Expanded "never develop on main" protection language across workflow docs
+  - Updated agent git execution guidance for explicit command ownership
+- **Setup Completion Cleanup**: Removed in-app finish setup cleanup execution path
+  - Removed finish setup script and setup finish UI/service flow
+  - Removed `/api/finish-setup` endpoint from dev API plugin
+  - Removed obsolete `cleanup-setup` script from `package.json`
+- **Debug Pattern Refinement**: Updated Git env.exe error pattern in debug.md with confirmed root cause (Cursor sandbox restricting pipe creation) and correct debug approach
 
 ## [0.7.3] - 2026-02-12
 

@@ -3,6 +3,7 @@
 Use this workflow for any feature request:
 
 ### Preparation Steps
+0. **Branch check:** Verify not on `main`. Never develop on main. If on `main`, stop and instruct: `git checkout experimental` (see `workflow/RULE.md` § Branch Strategy).
 1. Review current state: summarize relevant functionality, limitations, and context.
 2. Identify expert role(s) needed, including cascading technical/architectural considerations.
 3. Ask targeted questions (numbered 1, 2, 3) with example answers (A, B, C, other) that enable confident transition to implementation.
