@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.2] - 2026-02-22
+
+### Changed
+
+- **Workflow Rule Alignment**: Updated workflow standards to match the protected-branch process currently used in this repository
+  - Clarified that experimental is the long-lived integration branch and promotion to main happens via PR
+  - Added explicit guidance to avoid direct pushes to main except emergency override
+  - Added PR merge guidance for main (squash preferred) and preserved long-lived experimental branch expectations
+
 ## [0.11.1] - 2026-02-22
 
 ### Fixed
