@@ -1,0 +1,3 @@
+# Run tests before pushing (single run, not watch mode)
+echo "Running tests before push..."
+pnpm test:run || exit 1

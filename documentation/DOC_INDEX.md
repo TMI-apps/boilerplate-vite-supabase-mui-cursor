@@ -21,7 +21,7 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | Topic | SSOT Location |
 |-------|----------------|
 | Workflow, versioning, changelog | `.cursor/commands/finish.md` |
-| Branch strategy, protected files | `.cursor/rules/workflow/RULE.md` |
+| Branch strategy, release promotion flow, protected files | `.cursor/rules/workflow/RULE.md` |
 | Architecture patterns | `.cursor/rules/architecture/RULE.md` |
 | Project structure | `projectStructure.config.cjs` |
 | Dependency rules | `.dependency-cruiser.cjs` |

@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.5] - 2026-02-22
+
+### Changed
+
+- **Hook Execution Timing**: Moved full test execution from commit-time to push-time for faster local commits
+  - Removed `pnpm test:run` from `.husky/pre-commit`
+  - Added `.husky/pre-push` to run `pnpm test:run` before any push
+  - Keeps CI test execution on push and pull requests unchanged
+
+## [0.11.4] - 2026-02-22
+
+### Changed
+
+- **Onboarding Command Coverage**: Added a dedicated `start` command to guide first-time boilerplate setup with explicit gate checks
+  - Enforces prerequisite version verification for Node.js, pnpm, and Git before setup can continue
+  - Adds careful handoff instructions for required web-interface actions the assistant cannot complete directly
+  - Adds a full verification checklist for lint, format, type check, structure validation, tests, and build
+- **Setup Cleanup Completion**: Updated complete-setup command to remove onboarding-only command files when setup wizard is removed
+  - Added instruction to delete `.cursor/commands/start.md` after setup-removal completes
+
+## [0.11.3] - 2026-02-22
+
+### Changed
+
+- **Branch and Release Workflow Consistency**: Standardized branch/release guidance across rules, commands, CI, and contributor docs
+  - Aligned workflows to `feature/*` -> `experimental` -> `main` with explicit shared-branch freshness checks
+  - Updated CI branch triggers to `main` and `experimental` only
+  - Added release verification guidance for Edge Function-adjacent changes
+- **Quick Start Onboarding**: Rewrote Quick Start Guide in `README.md` into a single coherent fork-and-clone onboarding path
+  - Added concrete GitHub setup steps (fork, clone, branch setup, protection settings, PR flow)
+  - Removed contradictory clone guidance and refreshed setup step references
+
 ## [0.11.2] - 2026-02-22
 
 ### Changed

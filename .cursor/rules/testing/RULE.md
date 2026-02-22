@@ -125,6 +125,7 @@ describe("test", () => {
 - Test thoroughly in development before deployment
 - Use manual testing workflows
 - Document test procedures for each function
+- Include explicit release validation before merging `experimental` -> `main` when Edge Function behavior changed
 
 **Frontend Logic Testing** (preferred when possible):
 
@@ -132,6 +133,13 @@ describe("test", () => {
 - User testing before merging to main
 - Easy rollback if issues found
 - Better isolation and testability
+
+### Release Validation Gate
+
+Before merging `experimental` -> `main`, verify:
+- Required CI checks are green
+- Manual happy-path and key error-path tests are completed
+- Any Edge Function-related behavior in scope has been re-tested against the currently deployed function version
 
 For Edge Functions architecture and when to use them, see `cloud-functions/RULE.md`.
 

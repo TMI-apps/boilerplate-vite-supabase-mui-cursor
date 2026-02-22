@@ -9,7 +9,7 @@ This guide points you to the canonical process documents. Follow these links for
    - Run this command before committing
 
 2. **Branch strategy & protected files** – [`.cursor/rules/workflow/RULE.md`](../.cursor/rules/workflow/RULE.md)  
-   - Branch naming, protected files, agent behaviors
+   - Branch naming, protected files, release flow (`feature/*` -> `experimental` -> `main`), agent behaviors
 
 3. **Architecture SSOT** – [`.cursor/rules/architecture/RULE.md`](../.cursor/rules/architecture/RULE.md)  
    - Layer rules, code placement, import patterns  
@@ -34,7 +34,13 @@ Before pushing, ensure these pass locally:
 | Tests | `pnpm test:run` |
 | Build | `pnpm build` |
 
-CI runs these on every push/PR to `main`, `develop`, and `experimental`.
+CI runs these on every push/PR to `main` and `experimental`.
+
+## Release Direction
+
+- Daily development flow: `feature/*` -> `experimental` (via PR)
+- Release flow: `experimental` -> `main` (via PR after checks and validation)
+- Avoid direct pushes to long-lived protected branches in shared workflows
 
 ## Finding Authoritative Rules
 

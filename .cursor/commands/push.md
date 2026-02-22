@@ -24,11 +24,16 @@ Push previously finished work to remote. This command is push-only.
 1. Verify branch (never push from `main` for development flow).
 2. Verify clean working tree.
 3. Verify commits exist to push.
-4. Confirm push target relevance:
-   - **Boilerplate-relevant changes:** push to `experimental` remote flow.
-   - **App-specific changes:** ensure remote points to app repo, not boilerplate repo.
-5. Ask user for explicit confirmation: "Ready to push these already-committed changes?"
-6. Execute push only after confirmation.
+4. Verify remote freshness before push:
+   - Run `git fetch origin`
+   - Check whether local branch is behind its remote counterpart
+   - If behind, STOP and sync first (rebase or merge) before pushing
+5. Confirm push target relevance:
+   - **Preferred**: push feature branch (`feature/*`) and merge via PR
+   - **Shared branches** (`experimental`): avoid direct push in shared workflows; prefer PR-based updates
+   - **App-specific changes**: ensure remote points to app repo, not boilerplate repo
+6. Ask user for explicit confirmation: "Ready to push these already-committed changes?"
+7. Execute push only after confirmation.
 
 ## Relationship with `finish`
 
