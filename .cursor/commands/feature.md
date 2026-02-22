@@ -329,6 +329,10 @@ Create/update `/documentation/jobs/temp_job_[jobname]` (create folder if needed)
 - Files to create/modify
 - **User approval confirmation** (from Phase 4.7)
 
+If implementation touches `src/features/*`, also create/update:
+- `src/features/<feature>/README.md` (or `src/features/<group>/<feature>/README.md` for nested features)
+- `src/features/<feature>/docs/*.md` when deeper reference material is needed
+
 ### 5.3 Execute Implementation
 - [ ] Follow implementation plan
 - [ ] Make minimal code changes (reductive strategy)
@@ -418,6 +422,7 @@ If automated tests are approved:
 - [ ] Update changelog if user-facing changes (`workflow/RULE.md`)
 - [ ] Update architecture docs if structural changes (`workflow/RULE.md`)
 - [ ] Update relevant documentation
+- [ ] If feature code changed, stage corresponding `src/features/*/README.md` updates
 
 ### 7.3 Code Review Checklist (`workflow/RULE.md`)
 - [ ] Changelog updated (if user-facing changes) and matches commit message

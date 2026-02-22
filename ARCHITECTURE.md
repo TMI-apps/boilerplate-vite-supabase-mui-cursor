@@ -83,6 +83,8 @@ Each feature follows this structure:
 
 ```
 features/[feature-name]/
+├── README.md          # Feature-local overview and maintenance notes
+├── docs/              # Optional feature-local deep documentation
 ├── components/      # UI components specific to this feature
 ├── hooks/          # React hooks that use services
 ├── services/       # Pure functions, API calls, business logic
@@ -146,6 +148,7 @@ export const HomePage = () => {
 | Pure function, API call | `features/[feature]/services/` |
 | TypeScript types | `features/[feature]/types/` |
 | Feature-specific utility function | `features/[feature]/utils/` |
+| Feature-local documentation | `features/[feature]/README.md` (+ optional `features/[feature]/docs/*.md`) |
 | Route-level component | `pages/` |
 | Layout wrapper | `layouts/` |
 | Global state (Context) | `store/contexts/` |

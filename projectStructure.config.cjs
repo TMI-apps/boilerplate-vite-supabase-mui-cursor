@@ -110,6 +110,17 @@ module.exports = {
                 {
                   name: "*",
                   children: [
+                    { name: "README.md" },
+                    {
+                      name: "docs",
+                      children: [
+                        { name: "*.md" },
+                        {
+                          name: "*",
+                          children: [{ name: "*.md" }],
+                        },
+                      ],
+                    },
                     {
                       name: "components",
                       children: [
@@ -175,6 +186,17 @@ module.exports = {
                     { name: "*.tsx" },
                     { name: "*.ts" },
                     { name: "index.ts" },
+                  ],
+                },
+                { name: "README.md" },
+                {
+                  name: "docs",
+                  children: [
+                    { name: "*.md" },
+                    {
+                      name: "*",
+                      children: [{ name: "*.md" }],
+                    },
                   ],
                 },
                 {

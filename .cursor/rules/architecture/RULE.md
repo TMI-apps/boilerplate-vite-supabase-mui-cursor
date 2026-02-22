@@ -98,6 +98,8 @@ src/
 │   └── common/   # "Dumb" UI components (Button, Input, Modal) - No business logic
 ├── features/     # Feature-based organization (grouped by domain)
 │   └── [feature-name]/
+│       ├── README.md    # Feature-local documentation (required for active features)
+│       ├── docs/        # Feature-local deep docs (optional)
 │       ├── components/  # Feature-specific UI
 │       ├── hooks/       # Feature-specific logic
 │       ├── services/    # Pure functions / API calls
@@ -402,7 +404,8 @@ When code doesn't clearly fit existing categories, use these guidelines:
 - These files are project-wide references that need to be easily discoverable
 - Root location follows standard conventions (Keep a Changelog format) and ensures README references work correctly
 - If these files are found in wrong location (e.g., `documentation/` folder), they must be moved to root directory
-- Other project-specific documentation can be stored in `documentation/` folder (e.g., implementation plans, job-specific docs)
+- Feature-specific documentation should be colocated with code in `src/features/*/README.md` (and optionally `src/features/*/docs/*.md`)
+- Temporary implementation planning docs can be stored in `documentation/jobs/` and `documentation/temp/`
 - Document major architectural decisions and patterns
 - Include diagrams or visual representations when helpful
 - Keep documentation up to date with code changes
@@ -413,6 +416,7 @@ When code doesn't clearly fit existing categories, use these guidelines:
 - After changing architectural patterns
 - After adding new dependencies or frameworks
 - When architectural decisions change
+- Whenever staged changes affect a feature, stage updates to that feature's `README.md`
 
 ## Examples
 

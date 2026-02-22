@@ -136,6 +136,8 @@ Build phases based on **risk** and **dependency gates**. Do uncertain things fir
 
 **Output:** Create/update `/documentation/jobs/temp_job_[jobname]/IMPLEMENTATION_PLAN.md` with the plan. This file IS the deliverable - no separate documentation step.
 
+**Feature-local docs (required):** When the work targets `src/features/*`, include `src/features/*/README.md` in the plan's files-to-modify list and keep it updated as implementation evolves.
+
 **Inform user of opinionated choices** and mention viable alternatives.
 
 ---
@@ -225,6 +227,7 @@ Before finalizing, check each phase:
 - [ ] Complexity thresholds won't be exceeded (`.eslintrc.json` lines 65-70)
 - [ ] Dependencies: new needed? existing sufficient?
 - [ ] Impact on existing functionality assessed
+- [ ] Feature-local documentation updated (`src/features/*/README.md`) when feature code changes
 
 Run `pnpm validate:structure` and `pnpm arch:check` to verify.
 

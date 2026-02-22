@@ -17,7 +17,7 @@ Development workflows, code review standards, and process requirements. Includes
 | Architecture patterns, layer rules, code placement | `.cursor/rules/architecture/RULE.md` |
 | Project structure, file whitelist | `projectStructure.config.cjs` |
 | Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
-| App config schema (setup state, not release version) | `documentation/DOC_APP_CONFIG_FILE.md` |
+| App config schema (boilerplate only; removed by complete-setup) | `documentation/DOC_APP_CONFIG_FILE.md` |
 
 ## Code Review Process
 
@@ -30,6 +30,7 @@ Development workflows, code review standards, and process requirements. Includes
 - [ ] Tests are included and passing (`testing/RULE.md`)
 - [ ] Security considerations addressed (`security/RULE.md`)
 - [ ] Documentation is updated
+- [ ] Feature-local README updated when `src/features/*` code changed
 - [ ] No console.log or debug code left behind
 - [ ] Linting passes (GTS or project-specified tool)
 
@@ -107,7 +108,7 @@ When updating the changelog with a new version, update two locations to maintain
 
 Both locations must use the same version number. If the app displays version in the UI (e.g. via `VITE_APP_VERSION`), update that location too; this boilerplate does not display version in ProfileMenu by default.
 
-**Note:** `app.config.json` has its own `version` field for config schema compatibility; it is independent of release version. See `documentation/DOC_APP_CONFIG_FILE.md`.
+**Note:** When the setup wizard exists, `app.config.json` has its own `version` field for config schema compatibility; it is independent of release version. See `documentation/DOC_APP_CONFIG_FILE.md`. After running complete-setup, configuration lives in `.env` only.
 
 ### Branch Strategy
 
@@ -222,6 +223,7 @@ Before editing code files:
 - Run tests and ensure they pass
 - Review your own code
 - Update documentation if needed
+- If feature code changed, stage `src/features/*/README.md` updates and run `pnpm validate:feature-docs:staged`
 - Verify changelog and commit message match
 
 ## Agent-Specific Behaviors

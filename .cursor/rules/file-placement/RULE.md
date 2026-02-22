@@ -26,6 +26,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
    - Types (`.ts`) → `src/shared/types/`
    - Edge Function → `supabase/functions/<name>/index.ts`
    - Cloud Function → `cloud-functions/<name>/`
+   - Feature docs (`.md`) → `src/features/*/README.md` or `src/features/*/docs/*.md`
    - Docs (`.md`) → See Documentation Placement section below
    - Migration (`.sql`) → `supabase/migrations/` or `migrations/`
    - Layout hooks (`.ts`) → `src/shared/hooks/useLayout*.ts`
@@ -138,6 +139,23 @@ Examples:
 - 📝 Draft documentation created during development
 - 🔄 Migration helpers and progress tracking files
 
+### Feature-Local Documentation (Preferred for Feature Work)
+
+When documentation is about a specific feature's behavior, API, flows, or constraints, keep it colocated with the feature:
+
+- `src/features/<feature>/README.md` - Required feature overview and maintenance notes
+- `src/features/<feature>/docs/*.md` - Optional deep dives, ADRs, and edge-case guides
+- `src/features/<group>/<feature>/README.md` - Same rule for nested features
+
+**Maintenance rule:**
+- If feature code changes are staged, stage updates to that feature's `README.md` in the same commit
+- Pre-commit enforcement: `pnpm validate:feature-docs:staged`
+
+**Use `documentation/` for cross-feature docs only:**
+- Global architecture guides
+- Multi-feature migration plans
+- Temporary planning docs (`documentation/jobs/`, `documentation/temp/`)
+
 ### Permanent Documentation (DOC_ Prefix Required)
 
 **CRITICAL: Root-level documentation files in `documentation/` MUST have the `DOC_` prefix.**
@@ -153,16 +171,16 @@ This naming convention:
 documentation/DOC_<DESCRIPTIVE_NAME>.md
 
 Examples:
-- DOC_APP_CONFIG_FILE.md
 - DOC_ARCHITECTURE_MIGRATION.md
 - DOC_TESTING_GUIDE.md
+- DOC_FEATURE_*.md
 ```
 
 **What qualifies as permanent documentation:**
 - ✅ Architecture documentation (`DOC_ARCHITECTURE_*.md`)
 - ✅ Feature documentation (`DOC_FEATURE_*.md`)
-- ✅ Setup guides (`DOC_SETUP_GUIDE.md`, `DOC_QUICK_START.md`)
-- ✅ Project guides (`DOC_CODE_MODIFICATION.md`)
+- ✅ Project guides (`DOC_ARCHITECTURE_MIGRATION.md`, etc.)
+- ⚠️ Boilerplate-only docs (e.g. DOC_APP_CONFIG_FILE, DOC_SETUP_*) are removed by complete-setup
 
 **Workflow for permanent documentation:**
 1. **STOP** before creating any file directly in `documentation/`

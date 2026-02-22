@@ -16,7 +16,7 @@ Delete all starter setup files and update references. The AI must trace imports 
 - `src/features/setup/` (all files: components, hooks, services, types, views)
 
 **Scripts:**
-- `scripts/finish-setup.js`
+- `scripts/validate-app-config.js`
 
 **Config & plugin:**
 - `app.config.json`
@@ -57,6 +57,45 @@ Fix any broken imports or references. Search for remaining references to: `setup
 ### 5. projectStructure.config.cjs (Protected File)
 
 Remove `app.config.json` and `vite-plugin-dev-api.ts` from the root-level whitelist in `projectStructure.config.cjs`. See workflow/RULE.md § Protected Files — **ASK user for approval before modifying** this file.
+
+### 6. Remove App Config Validation
+
+- Remove `validate:app-config` script from `package.json`
+- Remove the "App config validation" step from `.github/workflows/ci.yml`
+- Delete `scripts/validate-app-config.js`
+
+### 7. Delete Boilerplate-Only Documentation
+
+Delete these docs (they reference setup wizard, app.config.json, or finish-setup flow):
+
+- `documentation/DOC_APP_CONFIG_FILE.md`
+- `documentation/DOC_SETUP_STATES_AND_TRANSITIONS.md`
+- `documentation/DOC_TESTING_SUPABASE_SETUP.md`
+- `documentation/DOC_TESTING_APP_CONFIG.md`
+- `documentation/DOC_APP_CODE_MODIFICATION.md`
+
+### 8. Update Remaining Docs
+
+**`documentation/DOC_INDEX.md`:**
+- Remove links to the deleted docs (DOC_APP_CONFIG_FILE, DOC_SETUP_STATES_AND_TRANSITIONS, DOC_TESTING_SUPABASE_SETUP, DOC_TESTING_APP_CONFIG, DOC_APP_CODE_MODIFICATION)
+- Remove "App config schema" from the SSOT Map table
+
+**`documentation/DOC_CONTRIBUTING.md`:**
+- Remove the "App config" row from the CI Gate Expectations table
+
+### 9. Repo-Wide Reference Sweep (Mandatory)
+
+After deleting docs, run a repository-wide search and remove or update references to deleted files:
+
+- Search for: `DOC_APP_CONFIG_FILE.md`, `DOC_SETUP_STATES_AND_TRANSITIONS.md`, `DOC_TESTING_SUPABASE_SETUP.md`, `DOC_TESTING_APP_CONFIG.md`, `DOC_APP_CODE_MODIFICATION.md`
+- Update links in remaining docs (README, ARCHITECTURE, documentation/*) so there are no dead links
+- If any hits appear under protected files (e.g. `.cursor/**`), do not auto-edit; ask the user first per workflow protected-file rules
+
+### 10. Remove Setup Tests
+
+The setup feature directory (`src/features/setup/`) is deleted in step 1, which includes its tests. Additionally delete:
+
+- `src/utils/setupUtils.test.ts` (tests deleted `setupUtils.ts`)
 
 ## Notes
 

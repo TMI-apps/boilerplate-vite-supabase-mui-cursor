@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-02-22
+
+### Added
+
+- **Feature-Local Documentation**: Colocate docs with features and enforce freshness
+  - `src/features/*/README.md` and `src/features/*/docs/*.md` allowed in project structure
+  - Pre-commit validation: staged feature code changes require staged feature README updates
+  - New script `scripts/validate-feature-docs-staged.js` and `pnpm validate:feature-docs:staged`
+  - Updated architecture, file-placement, workflow rules and feature/check/finish commands
+  - Initial feature READMEs for auth and setup
+
 ## [0.8.1] - 2026-02-22
 
 ### Added

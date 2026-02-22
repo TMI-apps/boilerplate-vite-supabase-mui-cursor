@@ -11,6 +11,8 @@ Complete the implementation by doing what you haven't done yet of these tasks:
   - Format: 2-4 bullet points max (symptom, common causes, key question, debug approach)
 - **MANDATORY:** Update version number in `package.json` to match changelog version
 - **MANDATORY:** Update changelog (fetch date if unsure of date) - see `.cursor/rules/workflow/RULE.md` for Keep a Changelog format
+- **MANDATORY:** If staged changes include `src/features/*` code, stage matching feature README updates (`src/features/*/README.md`)
+- **MANDATORY:** Run feature-doc validation for staged files (`pnpm validate:feature-docs:staged`)
 - **MANDATORY: Staging Decision Gate before commit**
   - Show both lists to the user:
     - staged files (`git diff --name-only --cached`)

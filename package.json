@@ -1,7 +1,7 @@
 {
   "name": "vite-mui-supabase-starter",
   "private": true,
-  "version": "0.8.1",
+  "version": "0.9.0",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
@@ -33,6 +33,7 @@
     "validate:version-sync": "node scripts/validate-version-sync.js",
     "validate:app-config": "node scripts/validate-app-config.js",
     "validate:structure:staged": "node scripts/validate-staged.js",
+    "validate:feature-docs:staged": "node scripts/validate-feature-docs-staged.js",
     "arch:check:staged": "node scripts/arch-check-staged.js"
   },
   "dependencies": {

@@ -7,6 +7,10 @@
 # Complexity SSOT: .eslintrc.json lines 65-70
 pnpm lint-staged || exit 1
 
+# Enforce feature-local README updates when feature code changes
+echo "Running feature documentation validation for staged files..."
+pnpm validate:feature-docs:staged || exit 1
+
 # Run tests (single run, not watch mode)
 echo "Running tests..."
 pnpm test:run || exit 1
