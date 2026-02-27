@@ -165,6 +165,10 @@ module.exports = {
                       name: "store",
                       children: [{ name: "*.ts" }, { name: "index.ts" }],
                     },
+                    {
+                      name: "api",
+                      children: [{ name: "*.ts" }],
+                    },
                   ],
                 },
                 // Support flat features (e.g., chat, assistants) - comes after nested
@@ -222,6 +226,10 @@ module.exports = {
                 {
                   name: "store",
                   children: [{ name: "*.ts" }, { name: "index.ts" }],
+                },
+                {
+                  name: "api",
+                  children: [{ name: "*.ts" }],
                 },
               ],
             },

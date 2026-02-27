@@ -1,6 +1,7 @@
 import gtsConfig from './node_modules/gts/build/src/index.js';
 import ignores from './eslint.ignores.js';
 import {defineConfig} from 'eslint/config';
+import tanstackQuery from '@tanstack/eslint-plugin-query';
 import sonarjs from 'eslint-plugin-sonarjs';
 
 export default defineConfig([
@@ -14,6 +15,7 @@ export default defineConfig([
   ...gtsConfig,
   {
     plugins: {
+      "@tanstack/query": tanstackQuery,
       sonarjs,
     },
     languageOptions: {
@@ -38,6 +40,8 @@ export default defineConfig([
       'max-statements': ['warn', { max: 15 }], // Increased to accommodate standard async patterns with error handling
       'max-params': ['warn', { max: 3 }],
       'sonarjs/cognitive-complexity': ['warn', 15],
+      // TanStack Query: enforce exhaustive deps in query keys
+      '@tanstack/query/exhaustive-deps': 'warn',
     },
   },
   // Prevent feature components from importing hooks or services

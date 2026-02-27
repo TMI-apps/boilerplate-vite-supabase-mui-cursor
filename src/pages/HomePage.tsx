@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import { Box, Typography, Button, Container, Alert } from "@mui/material";
 import { useAuthContext } from "@/shared/context/AuthContext";
 import { useSupabaseConfig } from "@shared/hooks/useSupabaseConfig";
+import { usePrefetch } from "@shared/hooks/usePrefetch";
 
 export const HomePage = () => {
   const { user } = useAuthContext();
   const { isConfigured: supabaseConfigured } = useSupabaseConfig();
+  const { prefetchSetup } = usePrefetch();
 
   return (
     <Container maxWidth="md">
@@ -23,6 +25,7 @@ export const HomePage = () => {
               <Typography
                 component={Link}
                 to="/setup"
+                onMouseEnter={prefetchSetup}
                 sx={{ color: "primary.main", textDecoration: "underline" }}
               >
                 Configure Supabase
@@ -44,7 +47,13 @@ export const HomePage = () => {
                 Use the profile icon in the topbar to sign in.
               </Typography>
             ) : (
-              <Button variant="contained" size="large" component={Link} to="/setup">
+              <Button
+                variant="contained"
+                size="large"
+                component={Link}
+                to="/setup"
+                onMouseEnter={prefetchSetup}
+              >
                 Configure Supabase
               </Button>
             )}

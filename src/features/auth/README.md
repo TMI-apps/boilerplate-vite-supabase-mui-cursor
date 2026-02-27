@@ -14,7 +14,9 @@ User authentication and session management via Supabase.
 
 | Layer | Path | Purpose |
 |-------|------|---------|
-| Hooks | `hooks/` | `useAuth`, `useAuthSession`, `useAuthRedirect`, `useUserProfile`, `useProfileMenuState`, `useProfileMenuHandlers` |
+| Hooks | `hooks/` | `useAuth`, `useAuthSession`, `useAuthRedirect`, `useUserProfile` / `useUserProfileQuery`, `useProfileMenuState`, `useProfileMenuHandlers` |
+
+**TanStack Query:** `useUserProfileQuery` is the primary hook for user profile data (caching, deduplication). `useUserProfile` is a thin wrapper for backward compatibility.
 | Services | `services/` | `authService`, `authCallbackService` – Supabase auth calls |
 | Components | `components/` | `LoginForm` |
 | Types | `types/` | `User`, `LoginCredentials`, `SignUpCredentials`, `AuthState` |

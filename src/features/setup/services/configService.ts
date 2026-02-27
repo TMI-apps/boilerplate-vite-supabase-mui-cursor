@@ -172,6 +172,22 @@ const buildConfig = async (): Promise<AppConfig> => {
 };
 
 /**
+ * Fetch a configuration section from app.config.json via API.
+ * Used by useConfigurationQuery for TanStack Query caching.
+ */
+export const fetchConfigSection = async <T>(section: ConfigSetupSectionId): Promise<T> => {
+  const response = await fetch("/api/read-config");
+  const result = await response.json();
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.error || "Failed to fetch configuration");
+  }
+
+  const config = result.config as AppConfig;
+  return config.configurations[section] as T;
+};
+
+/**
  * Write configuration to app.config.json via API endpoint
  *
  * @returns Promise resolving to success/error

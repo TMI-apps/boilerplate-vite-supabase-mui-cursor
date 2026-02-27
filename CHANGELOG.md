@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-02-26
+
+### Added
+
+- **TanStack Query Integration**: Server state management with caching, deduplication, and stale-while-revalidate
+  - Query keys: shared keys (user, config) in `src/shared/utils/queryKeys.ts`, feature keys in `features/*/api/keys.ts`
+  - QueryClient with 5 min stale / 30 min gc defaults, auth-boundary (cache clear on logout)
+  - `useUserProfileQuery` / `useConfigurationQuery` as primary hooks; legacy wrappers kept for backward compatibility
+  - Mutations: `useUpdateUserProfile` with invalidation on success
+  - Prefetching: `usePrefetch` with `prefetchSetup` on hover over Setup links
+  - Lazy loading: HomePage and SetupPage with Suspense fallback (`PageLoadingState`)
+  - `QueryErrorBoundary` for route-level error handling
+  - Test utilities: `createTestQueryClient`, `createQueryClientWrapper` in `tests/test-utils.tsx`
+  - Documentation: `documentation/DOC_TANSTACK_QUERY.md`, ARCHITECTURE.md Server State section
+
 ## [0.11.5] - 2026-02-22
 
 ### Changed
