@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **TanStack Query Implementation Plan**: Added comprehensive implementation plan in `documentation/jobs/implementation-plan-tanstack-query.md` for integrating TanStack Query with the boilerplate
+  - Feature-based query keys, shared keys for user/config
+  - QueryClient defaults, auth-boundary (cache clear on logout)
+  - Mutations with invalidation patterns, optional prefetching and lazy+Suspense
+  - Query Error Boundary, test utilities, boilerplate-specific validation checklist
+  - Appendix with generic patterns (useEntityList, useEntityDetail)
+
 ## [0.11.5] - 2026-02-22
 
 ### Changed
