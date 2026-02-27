@@ -1,4 +1,5 @@
 import { getSupabase, isSupabaseConfigured } from "@shared/services/supabaseService";
+import { queryClient } from "@shared/utils/queryClient";
 import { getEntreefederatieDomain } from "@config/entreefederatie";
 import type { User, LoginCredentials, SignUpCredentials } from "../types/auth.types";
 import { supabaseUserToUser } from "@/shared/utils/userUtils";
@@ -77,6 +78,7 @@ export const logout = async (): Promise<{ error: Error | null }> => {
   }
 
   try {
+    queryClient.clear();
     const { error } = await getSupabase().auth.signOut();
     return { error: error || null };
   } catch (error) {

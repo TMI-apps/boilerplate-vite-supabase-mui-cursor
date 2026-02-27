@@ -1,7 +1,7 @@
 {
   "name": "vite-mui-supabase-starter",
   "private": true,
-  "version": "0.11.5",
+  "version": "0.12.0",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
@@ -40,6 +40,7 @@
     "arch:check:staged": "node scripts/arch-check-staged.js"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.62.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.6",
@@ -51,6 +52,8 @@
     "react-router-dom": "^7.11.0"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.62.0",
+    "@tanstack/react-query-devtools": "^5.62.0",
     "@eslint/js": "^9.39.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",

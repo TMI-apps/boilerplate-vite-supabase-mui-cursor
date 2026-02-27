@@ -10,6 +10,7 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | **Architecture** | [ARCHITECTURE.md](../ARCHITECTURE.md) |
 | **Architecture migration** | [DOC_ARCHITECTURE_MIGRATION_INSTRUCTIONS.md](./DOC_ARCHITECTURE_MIGRATION_INSTRUCTIONS.md) |
 | **App config file** | [DOC_APP_CONFIG_FILE.md](./DOC_APP_CONFIG_FILE.md) |
+| **TanStack Query** | [DOC_TANSTACK_QUERY.md](./DOC_TANSTACK_QUERY.md) |
 | **Setup states & transitions** | [src/features/setup/docs/setup-states-and-transitions.md](../src/features/setup/docs/setup-states-and-transitions.md) |
 | **Testing app config** | [src/features/setup/docs/testing-app-config.md](../src/features/setup/docs/testing-app-config.md) |
 | **Testing Supabase setup** | [src/features/setup/docs/testing-supabase-setup.md](../src/features/setup/docs/testing-supabase-setup.md) |

@@ -45,6 +45,20 @@ src/
 └── utils/               # Utility functions
 ```
 
+## Server State Management (TanStack Query)
+
+Server state (user profiles, config, API data) is managed by **TanStack Query**. It provides caching, deduplication, and stale-while-revalidate. The app wraps content in `QueryProvider` (see `App.tsx`).
+
+**Provider hierarchy:** `QueryProvider` → `AuthProvider` → `BrowserRouter` → routes
+
+**Key conventions:**
+
+- **Query keys:** Shared keys in `src/shared/utils/queryKeys.ts` – feature keys in `features/[feature]/api/keys.ts`
+- **Auth boundary:** On logout, `queryClient.clear()` in `authService.logout` (before `signOut()`)
+- **Features:** `useUserProfileQuery` (auth), `useConfigurationQuery` (setup) – legacy wrappers (`useUserProfile`, `useConfigurationData`) remain for backward compatibility
+
+See `documentation/DOC_TANSTACK_QUERY.md` for full reference.
+
 ## Layer Rules
 
 ### Dependency Hierarchy
@@ -85,6 +99,7 @@ Each feature follows this structure:
 features/[feature-name]/
 ├── README.md          # Feature-local overview and maintenance notes
 ├── docs/              # Optional feature-local deep documentation
+├── api/               # TanStack Query keys (optional, for features with server data)
 ├── components/      # UI components specific to this feature
 ├── hooks/          # React hooks that use services
 ├── services/       # Pure functions, API calls, business logic
