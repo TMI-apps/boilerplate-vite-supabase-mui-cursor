@@ -53,12 +53,12 @@ Only invalidate directly related keys. Avoid broad `invalidateQueries({ queryKey
 
 ### Patterns per mutation type
 
-| Mutation | Invalidate | Do not invalidate |
-|----------|------------|-------------------|
-| Create project | `projectKeys.lists()` | Detail (not yet existing) |
-| Update project | `projectKeys.detail(id)`, `projectKeys.lists()` | Other features |
-| Delete project | `projectKeys.detail(id)`, `projectKeys.lists()` | User, config |
-| Update user profile | `sharedQueryKeys.user.profile(userId)` | Config, projects |
+| Mutation            | Invalidate                                      | Do not invalidate         |
+| ------------------- | ----------------------------------------------- | ------------------------- |
+| Create project      | `projectKeys.lists()`                           | Detail (not yet existing) |
+| Update project      | `projectKeys.detail(id)`, `projectKeys.lists()` | Other features            |
+| Delete project      | `projectKeys.detail(id)`, `projectKeys.lists()` | User, config              |
+| Update user profile | `sharedQueryKeys.user.profile(userId)`          | Config, projects          |
 
 ### Example: useUpdateUserProfile
 
@@ -102,18 +102,26 @@ onError: (_err, _vars, context) => {
 
 On logout: `queryClient.clear()` in `authService.logout`, before `signOut()`. Prevents user A's data from being visible after user B logs in.
 
+## User-Specific Data (RLS + Cache)
+
+Supabase uses Row Level Security (RLS). Always include `userId` in the query key for user-specific data. Otherwise the cache may incorrectly treat User A's data as valid for User B.
+
+- **Rule:** `userId` must be part of the query key for any RLS-protected data.
+- **Example:** `sharedQueryKeys.user.profile(userId)` – already correct.
+- **Cache clear on logout** (Auth Boundary) handles switching users; correct keys prevent cache collisions.
+
 ## Stale/gc Times
 
 - Defaults: 5 min stale, 30 min gc (in `queryClient.ts`)
 - Override per query when needed (e.g. `staleTime: 0` for realtime data)
 
-| Data type | staleTime | gcTime | Notes |
-|-----------|----------|--------|-------|
-| User profile | 5 min (default) | 30 min (default) | Invalidated on profile update |
-| Config sections | 10 min | 1 hour | Setup wizard data, rarely changes |
-| Lists (e.g. projects) | 5 min | 30 min | Invalidate on create/update/delete |
-| Detail (e.g. project) | 2–5 min | 30 min | Invalidate on update/delete |
-| Realtime data | 0 | 5 min | Polling or websocket-driven |
+| Data type             | staleTime       | gcTime           | Notes                              |
+| --------------------- | --------------- | ---------------- | ---------------------------------- |
+| User profile          | 5 min (default) | 30 min (default) | Invalidated on profile update      |
+| Config sections       | 10 min          | 1 hour           | Setup wizard data, rarely changes  |
+| Lists (e.g. projects) | 5 min           | 30 min           | Invalidate on create/update/delete |
+| Detail (e.g. project) | 2–5 min         | 30 min           | Invalidate on update/delete        |
+| Realtime data         | 0               | 5 min            | Polling or websocket-driven        |
 
 ## Testing
 
@@ -163,7 +171,9 @@ See `documentation/jobs/implementation-plan-tanstack-query.md` – Step 9 "Not c
 
 ```tsx
 const { prefetchSetup } = usePrefetch();
-<Link to="/setup" onMouseEnter={prefetchSetup}>Setup</Link>
+<Link to="/setup" onMouseEnter={prefetchSetup}>
+  Setup
+</Link>;
 ```
 
 ## Lazy loading + Suspense
@@ -171,6 +181,19 @@ const { prefetchSetup } = usePrefetch();
 - Lazy load heavy pages: `lazy(() => import("@pages/SetupPage"))`
 - Wrap routes in `<Suspense fallback={<PageLoadingState />}>`
 - Cached query data + code splitting = fast navigation on return visits
+
+## Supabase Realtime (Optional)
+
+When using Supabase Realtime (INSERT/UPDATE broadcasts via WebSockets), TanStack Query cache does not update automatically. Add a listener that calls `queryClient.invalidateQueries()` when the channel receives a change:
+
+```typescript
+// Example: features/projects/hooks/useProjectsRealtime.ts
+supabase.channel('projects').on('postgres_changes', { event: '*', schema: 'public', table: 'projects' }, () => {
+  queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
+}).subscribe();
+```
+
+Place this in a hook or effect that runs when the relevant data is in scope.
 
 ## Error Boundary
 
@@ -187,6 +210,8 @@ Configured in `queryClient.ts`:
 - **Queries:** Retry up to 2 times, exponential backoff (1s, 2s, max 30s). No retry on 404.
 - **Mutations:** No retry (default).
 - **Tests:** `createTestQueryClient()` uses `retry: false` for deterministic tests.
+
+**Supabase:** When using Supabase, use `PostgrestError` from `@supabase/supabase-js` for type-safe error handling. Check `error.code` (e.g. `PGRST116` for 404, `23503` for foreign key violations) instead of generic `"status" in error`. Improves retry logic and QueryErrorBoundary handling.
 
 ## Migration Strategy for New Features
 
