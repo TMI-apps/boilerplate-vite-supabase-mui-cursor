@@ -7,6 +7,12 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | Topic | Document |
 |-------|----------|
 | **How to contribute safely** | [DOC_CONTRIBUTING.md](./DOC_CONTRIBUTING.md) |
+| **Agent: session context (prime)** | [`.cursor/commands/prime.md`](../.cursor/commands/prime.md) |
+| **Agent: development plan (plan)** | [`.cursor/commands/plan.md`](../.cursor/commands/plan.md) |
+| **Agent: execute plan (implement)** | [`.cursor/commands/implement.md`](../.cursor/commands/implement.md) |
+| **Agent: validate plan or implementation** | [`.cursor/commands/validate.md`](../.cursor/commands/validate.md) |
+| **Agent: lightweight PIV (quick-piv)** | [`.cursor/commands/quick-piv.md`](../.cursor/commands/quick-piv.md) |
+| **Agent skill: persist lessons (learn)** | [`.cursor/skills/learn/SKILL.md`](../.cursor/skills/learn/SKILL.md) |
 | **Architecture** | [ARCHITECTURE.md](../ARCHITECTURE.md) |
 | **Architecture migration** | [DOC_ARCHITECTURE_MIGRATION_INSTRUCTIONS.md](./DOC_ARCHITECTURE_MIGRATION_INSTRUCTIONS.md) |
 | **App config file** | [DOC_APP_CONFIG_FILE.md](./DOC_APP_CONFIG_FILE.md) |

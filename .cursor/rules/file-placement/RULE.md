@@ -35,6 +35,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
    - Feature state slice (`.ts`) → `src/features/*/store/`
    - Validation schema (`.ts`) → `src/features/*/types/*.schema.ts` or `src/shared/utils/validation/`
    - Data transformer (`.ts`) → Consumer's `services/` or `src/shared/utils/transformers/`
+   - Agent project skill → `.cursor/skills/<name>/SKILL.md` (one `SKILL.md` per folder per `projectStructure.config.cjs`)
 3. **Validate**: Directory exists in config, file pattern allowed, matches whitelist
 4. **If invalid**: Identify violation, suggest correct location, explain why, offer to create
 
@@ -127,11 +128,11 @@ Examples:
 - `documentation/jobs/temp_job_<name>/` - For grouped temporary docs
 
 **Examples:**
-- ✅ **CORRECT**: `documentation/jobs/temp_job_feature_name/ANALYSIS.md`
-- ✅ **CORRECT**: `documentation/jobs/job_feature_implementation.md`
-- ✅ **CORRECT**: `documentation/temp/debugging_notes.md`
-- ❌ **WRONG**: `documentation/bug-analysis.md` (directly in documentation root)
-- ❌ **WRONG**: `documentation/MY_NOTES.md` (missing DOC_ prefix for root-level)
+- ✅ **CORRECT**: `documentation/jobs/temp_job_<name>/ANALYSIS.md`
+- ✅ **CORRECT**: `documentation/jobs/<feature-slug>_implementation.md`
+- ✅ **CORRECT**: `documentation/temp/<topic>_notes.md`
+- ❌ **WRONG:** ad-hoc **bug-analysis.md** (or similar) placed directly in `documentation/` root instead of `documentation/jobs/` or `documentation/temp/`
+- ❌ **WRONG:** **MY_NOTES.md** (or similar) at `documentation/` root without **DOC_** prefix for permanent root-level docs
 
 **What qualifies as temporary documentation:**
 - 📋 Planning documents (implementation plans, analysis, design decisions)

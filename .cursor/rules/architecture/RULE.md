@@ -451,7 +451,7 @@ When reducing code complexity through refactoring, all changes must comply with 
 6. Verify layer boundaries after extraction
 7. Run `pnpm lint:arch` to verify architecture compliance
 
-**For detailed guidance:** See `.cursor/commands/complexity-reduce.md` section 8 (Architecture Compliance)
+**For detailed guidance:** See `.cursor/commands/optimize2.md` (unified checklist and architecture compliance during refactors)
 
 **For unified checklist:** See `.cursor/commands/optimize2.md`
 
@@ -463,7 +463,7 @@ When reducing code complexity through refactoring, all changes must comply with 
 - `security/RULE.md` - Security boundaries and architectural patterns
 - `workflow/RULE.md` - Code review standards for architecture
 - `cloud-functions/RULE.md` - Function organization patterns
-- `.cursor/commands/complexity-reduce.md` - Complexity reduction (must comply with architecture rules)
+- `.cursor/commands/optimize2.md` - Complexity reduction / optimization workflow (must comply with architecture rules)
 
 **SSOT Status:**
 - This rule is the SSOT for:
@@ -478,4 +478,4 @@ When reducing code complexity through refactoring, all changes must comply with 
 **Rules that reference this rule:**
 - All other rules may reference architectural patterns
 - `cloud-functions/RULE.md` - References this rule as SSOT for function location
-- `.cursor/commands/complexity-reduce.md` - References this rule for architecture compliance during refactoring
+- `.cursor/commands/optimize2.md` - References this rule for architecture compliance during refactoring

@@ -1,18 +1,35 @@
 #!/usr/bin/env node
 /**
- * Validate file references inside .cursor/rules and .cursor/commands markdown files.
+ * Validate file references inside .cursor/rules, .cursor/commands, and .cursor/skills markdown files.
  *
  * Goal:
- * Catch stale references early (e.g. deleted docs still referenced by rules/commands).
+ * Catch stale references early (e.g. deleted docs still referenced by rules/commands/skills).
+ *
+ * Parsing notes:
+ * - Strips ``` fenced blocks first so diagram/ASCII fences do not break inline `...` pairing.
+ * - Resets the global regex lastIndex per file; skips multi-line backtick spans (invalid path refs).
  */
 
 const fs = require("fs");
 const path = require("path");
 
 const ROOT = process.cwd();
-const TARGET_DIRS = [path.join(".cursor", "rules"), path.join(".cursor", "commands")];
+const TARGET_DIRS = [
+  path.join(".cursor", "rules"),
+  path.join(".cursor", "commands"),
+  path.join(".cursor", "skills"),
+];
 
 const CODE_REF_REGEX = /`([^`]+)`/g;
+
+/**
+ * Remove fenced code blocks (``` ... ```) before scanning inline backticks.
+ * Prevents spurious multi-line `...` spans from diagram/ASCII blocks pairing
+ * with later prose backticks and hiding real repo-path references.
+ */
+function stripMarkdownFencedCodeBlocks(content) {
+  return content.replace(/```[\s\S]*?```/g, "\n");
+}
 
 const ALLOWED_MISSING = new Set([
   "architecture.md",
@@ -100,9 +117,11 @@ function looksLikeRepoPath(value) {
 function resolveCandidatePath(refPath, sourceFilePath) {
   // Shorthand rule ref like architecture/RULE.md or cloud-functions/RULE.md
   if (/^[a-z0-9-]+\/RULE\.md$/i.test(refPath)) {
-    const inRules = toPosix(sourceFilePath).includes("/.cursor/rules/");
-    const inCommands = toPosix(sourceFilePath).includes("/.cursor/commands/");
-    if (inRules || inCommands) {
+    const posix = toPosix(sourceFilePath);
+    const inRules = posix.includes("/.cursor/rules/");
+    const inCommands = posix.includes("/.cursor/commands/");
+    const inSkills = posix.includes("/.cursor/skills/");
+    if (inRules || inCommands || inSkills) {
       return path.join(ROOT, ".cursor", "rules", refPath);
     }
   }
@@ -126,11 +145,17 @@ function resolveCandidatePath(refPath, sourceFilePath) {
 function validateFile(filePath) {
   const relFile = toPosix(path.relative(ROOT, filePath));
   const content = fs.readFileSync(filePath, "utf8");
+  const scanContent = stripMarkdownFencedCodeBlocks(content);
   const issues = [];
 
+  CODE_REF_REGEX.lastIndex = 0;
   let match;
-  while ((match = CODE_REF_REGEX.exec(content)) !== null) {
+  while ((match = CODE_REF_REGEX.exec(scanContent)) !== null) {
     const raw = (match[1] || "").trim();
+    // Repo paths in references are always single-line; skip broken pairings.
+    if (raw.includes("\n")) {
+      continue;
+    }
     if (!looksLikeRepoPath(raw)) {
       continue;
     }

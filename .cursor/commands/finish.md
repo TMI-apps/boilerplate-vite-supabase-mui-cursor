@@ -4,11 +4,17 @@ Complete the implementation by doing what you haven't done yet of these tasks:
 - remove temporary console logs
 - remove instrumentation
 - remove redundant/legacy code
-- **If this was a debugging session:** Check if a new error pattern was discovered that should be added to `.cursor/commands/debug.md` § "Common Error Pattern Recognition". Add it if:
-  - The root cause was non-obvious and took multiple iterations to find
-  - A senior developer hint would have significantly accelerated the fix
-  - The pattern is generalizable (not repo-specific)
-  - Format: 2-4 bullet points max (symptom, common causes, key question, debug approach)
+- **If this was a debugging session that resulted in a fix:** update `.cursor/commands/debug.md` § "Common Error Pattern Recognition" **only** when the insight is reusable.
+  - Capture the pattern at the level of a **bug class**, not a single incident.
+  - Use format: **Symptom class -> Likely cause classes -> Discriminator question -> First diagnostic move**.
+  - Prefer cross-feature language (e.g. race conditions, stale state, config drift, schema mismatch, effect dependency loops).
+  - Avoid incident-only details (exact variable names, one endpoint, one literal, one file) unless they represent a broader class.
+  - Add a pattern only if it would likely help in future unrelated debug sessions (rule of thumb: useful in >= 20% of similar bug reports).
+  - Keep it concise: max 4 bullets; each bullet should be actionable.
+  - **Pattern quality gate (must pass all):**
+    - Can this be recognized from symptoms before reading this repo's specific code?
+    - Does it suggest at least one falsifiable check?
+    - Would a different team/project still benefit from this guidance?
 - **MANDATORY:** Update version number in `package.json` to match changelog version
 - **MANDATORY:** Update changelog (fetch date if unsure of date) - see `.cursor/rules/workflow/RULE.md` for Keep a Changelog format
 - **MANDATORY:** If staged changes include `src/features/*` code, stage matching feature README updates (`src/features/*/README.md`)

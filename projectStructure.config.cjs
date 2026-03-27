@@ -625,6 +625,15 @@ module.exports = {
           ],
         },
         {
+          name: "skills",
+          children: [
+            {
+              name: "*",
+              children: [{ name: "SKILL.md" }],
+            },
+          ],
+        },
+        {
           name: "plans",
           children: [{ name: "*.md" }],
         },
