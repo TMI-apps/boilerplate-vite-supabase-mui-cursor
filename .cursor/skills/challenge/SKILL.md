@@ -1,3 +1,9 @@
+---
+name: challenge
+description: "challenge"
+disable-model-invocation: true
+---
+
 # challenge
 
 Challenge and simplify a specific feature to reduce steps, clicks, and cognitive load.

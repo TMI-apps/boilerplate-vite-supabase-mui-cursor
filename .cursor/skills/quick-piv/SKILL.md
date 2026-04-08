@@ -1,10 +1,16 @@
+---
+name: quick-piv
+description: "quick-piv"
+disable-model-invocation: true
+---
+
 # quick-piv
 
 Lightweight Plan → Implement → Validate in one workflow. Use for small, well-scoped tasks when the full formal PIV flow is overkill.
 
-**Critical:** Still follow repo rules. No changelog updates (`.cursor/commands/finish.md` handles that).
+**Critical:** Still follow repo rules. No changelog updates (`.cursor/skills/finish/SKILL.md` handles that).
 
-**Related:** Full formal cycle: `.cursor/commands/plan.md` → `.cursor/commands/implement.md` → `.cursor/commands/validate.md`. Session context: `.cursor/commands/prime.md`. Requirement depth before coding: `.cursor/commands/check.md`.
+**Related:** Full formal cycle: `.cursor/skills/plan/SKILL.md` → `.cursor/skills/implement/SKILL.md` → `.cursor/skills/validate/SKILL.md`. Session context: `.cursor/skills/prime/SKILL.md`. Requirement depth before coding: `.cursor/skills/check/SKILL.md`.
 
 ---
 
@@ -81,7 +87,7 @@ After implementation:
 3. `pnpm type-check` — report failures.
 4. `pnpm arch:check` — report failures (dependency-cruiser; defined in `package.json`).
 5. **Report:** Brief summary: “✅ All checks pass” or list findings with severity (blocker / warning / suggestion).
-6. **If failures:** Ask: “Fix these? (all / specific / skip)” — only fix after the user chooses (same spirit as `.cursor/commands/validate.md`, compressed).
+6. **If failures:** Ask: “Fix these? (all / specific / skip)” — only fix after the user chooses (same spirit as `.cursor/skills/validate/SKILL.md`, compressed).
 
 ---
 

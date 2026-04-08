@@ -1,3 +1,9 @@
+---
+name: review
+description: "review"
+disable-model-invocation: true
+---
+
 # review
 
 Fill in this rubric to review a component in your TypeScript + MUI full-stack app.

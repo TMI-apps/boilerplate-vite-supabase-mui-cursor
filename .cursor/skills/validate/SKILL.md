@@ -1,10 +1,16 @@
+---
+name: validate
+description: "validate"
+disable-model-invocation: true
+---
+
 # validate
 
 Validate either (1) the plan document, or (2) the implementation of an executed plan. In both cases: investigate against rules, best practices, and project structure; report findings and suggestions; ask for feedback; **only then** optionally apply fixes.
 
 **Critical:** Validation does **not** change the repo by default. First report, then wait for user direction, then optionally act.
 
-**Related:** Create plans with `.cursor/commands/plan.md`. Execute with `.cursor/commands/implement.md`. Small scoped PIV in one go: `.cursor/commands/quick-piv.md`. Session context: `.cursor/commands/prime.md`. Commits and changelog: `.cursor/commands/finish.md`.
+**Related:** Create plans with `.cursor/skills/plan/SKILL.md`. Execute with `.cursor/skills/implement/SKILL.md`. Small scoped PIV in one go: `.cursor/skills/quick-piv/SKILL.md`. Session context: `.cursor/skills/prime/SKILL.md`. Commits and changelog: `.cursor/skills/finish/SKILL.md`.
 
 ---
 
@@ -106,4 +112,4 @@ Optional **severity:** Blocker | Warning | Suggestion.
 1. Present the report.
 2. Ask: “What do you want me to do with these findings — fix all, specific items, or nothing?”
 3. Wait for the answer.
-4. If the user wants fixes: apply them (plan markdown and/or source). Changelog remains the responsibility of `.cursor/commands/finish.md` unless the user explicitly includes it in the requested fixes.
+4. If the user wants fixes: apply them (plan markdown and/or source). Changelog remains the responsibility of `.cursor/skills/finish/SKILL.md` unless the user explicitly includes it in the requested fixes.

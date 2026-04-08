@@ -1,10 +1,16 @@
+---
+name: finish
+description: "finish"
+disable-model-invocation: true
+---
+
 # finish
 
 Complete the implementation by doing what you haven't done yet of these tasks: 
 - remove temporary console logs
 - remove instrumentation
 - remove redundant/legacy code
-- **If this was a debugging session that resulted in a fix:** update `.cursor/commands/debug.md` § "Common Error Pattern Recognition" **only** when the insight is reusable.
+- **If this was a debugging session that resulted in a fix:** update `.cursor/skills/debug/SKILL.md` § "Common Error Pattern Recognition" **only** when the insight is reusable.
   - Capture the pattern at the level of a **bug class**, not a single incident.
   - Use format: **Symptom class -> Likely cause classes -> Discriminator question -> First diagnostic move**.
   - Prefer cross-feature language (e.g. race conditions, stale state, config drift, schema mismatch, effect dependency loops).
@@ -36,7 +42,7 @@ Complete the implementation by doing what you haven't done yet of these tasks:
 - check if architecture.md needs update
 - do not create new deep docs during finish unless user explicitly requests it
 - **Do NOT push in this command.** `finish` is local-only and ends at a successful commit.
-- After `finish` creates the commit(s), run `.cursor/commands/push.md` to handle remote verification and push.
+- After `finish` creates the commit(s), run `.cursor/skills/push/SKILL.md` to handle remote verification and push.
 
 ## Semantic Versioning (SSOT)
 

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-04-08
+
+### Changed
+
+- **Cursor**: Migrated project slash commands from `.cursor/commands/*.md` to Agent Skills at `.cursor/skills/<name>/SKILL.md` (same names; `disable-model-invocation: true` on command-originated skills). Doc links and rule references updated accordingly.
+
 ## [0.13.0] - 2026-03-26
 
 ### Added

@@ -7,11 +7,11 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | Topic | Document |
 |-------|----------|
 | **How to contribute safely** | [DOC_CONTRIBUTING.md](./DOC_CONTRIBUTING.md) |
-| **Agent: session context (prime)** | [`.cursor/commands/prime.md`](../.cursor/commands/prime.md) |
-| **Agent: development plan (plan)** | [`.cursor/commands/plan.md`](../.cursor/commands/plan.md) |
-| **Agent: execute plan (implement)** | [`.cursor/commands/implement.md`](../.cursor/commands/implement.md) |
-| **Agent: validate plan or implementation** | [`.cursor/commands/validate.md`](../.cursor/commands/validate.md) |
-| **Agent: lightweight PIV (quick-piv)** | [`.cursor/commands/quick-piv.md`](../.cursor/commands/quick-piv.md) |
+| **Agent: session context (prime)** | [`.cursor/skills/prime/SKILL.md`](../.cursor/skills/prime/SKILL.md) |
+| **Agent: development plan (plan)** | [`.cursor/skills/plan/SKILL.md`](../.cursor/skills/plan/SKILL.md) |
+| **Agent: execute plan (implement)** | [`.cursor/skills/implement/SKILL.md`](../.cursor/skills/implement/SKILL.md) |
+| **Agent: validate plan or implementation** | [`.cursor/skills/validate/SKILL.md`](../.cursor/skills/validate/SKILL.md) |
+| **Agent: lightweight PIV (quick-piv)** | [`.cursor/skills/quick-piv/SKILL.md`](../.cursor/skills/quick-piv/SKILL.md) |
 | **Agent skill: persist lessons (learn)** | [`.cursor/skills/learn/SKILL.md`](../.cursor/skills/learn/SKILL.md) |
 | **Architecture** | [ARCHITECTURE.md](../ARCHITECTURE.md) |
 | **Architecture migration** | [DOC_ARCHITECTURE_MIGRATION_INSTRUCTIONS.md](./DOC_ARCHITECTURE_MIGRATION_INSTRUCTIONS.md) |
@@ -27,7 +27,7 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 
 | Topic | SSOT Location |
 |-------|----------------|
-| Workflow, versioning, changelog | `.cursor/commands/finish.md` |
+| Workflow, versioning, changelog | `.cursor/skills/finish/SKILL.md` |
 | Branch strategy, release promotion flow, protected files | `.cursor/rules/workflow/RULE.md` |
 | Architecture patterns | `.cursor/rules/architecture/RULE.md` |
 | Project structure | `projectStructure.config.cjs` |

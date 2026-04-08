@@ -1,9 +1,15 @@
+---
+name: prime
+description: "prime"
+disable-model-invocation: true
+---
+
 # prime
 
 Load project context at the start of a new session. Build an understanding of this boilerplate’s structure, governance, and active state before tackling tasks.
 
 **When to use:** New chat, ambiguous task, or before larger refactors.  
-**Related:** For feature requests and completeness gates, use `.cursor/commands/check.md`. For onboarding a human, use `.cursor/commands/start.md`.
+**Related:** For feature requests and completeness gates, use `.cursor/skills/check/SKILL.md`. For onboarding a human, use `.cursor/skills/start/SKILL.md`.
 
 ## Objective
 

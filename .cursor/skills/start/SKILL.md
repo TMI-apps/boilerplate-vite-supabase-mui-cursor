@@ -1,3 +1,9 @@
+---
+name: start
+description: "start"
+disable-model-invocation: true
+---
+
 # start
 
 Guide a new user through first-time setup of this boilerplate by following the README flow end-to-end, validating each step, and only moving forward when each gate passes.

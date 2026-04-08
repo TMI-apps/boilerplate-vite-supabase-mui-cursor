@@ -1,3 +1,9 @@
+---
+name: implement
+description: "implement"
+disable-model-invocation: true
+---
+
 # implement
 
 Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guide, run gates, and update the same document with progress, decisions, and notes.
@@ -6,7 +12,7 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 **Do NOT update the changelog.** Changelog updates are done in the finish command, not during implementation.
 
-**Related:** Create or refresh plans with `.cursor/commands/plan.md`. For small tasks in one pass, `.cursor/commands/quick-piv.md`. After phases, use `.cursor/commands/validate.md` for a rules-and-tooling review before finish. For session context, `.cursor/commands/prime.md`. For commits and changelog, `.cursor/commands/finish.md`.
+**Related:** Create or refresh plans with `.cursor/skills/plan/SKILL.md`. For small tasks in one pass, `.cursor/skills/quick-piv/SKILL.md`. After phases, use `.cursor/skills/validate/SKILL.md` for a rules-and-tooling review before finish. For session context, `.cursor/skills/prime/SKILL.md`. For commits and changelog, `.cursor/skills/finish/SKILL.md`.
 
 ---
 

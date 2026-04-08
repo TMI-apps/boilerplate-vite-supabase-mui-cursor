@@ -1,3 +1,9 @@
+---
+name: optimize2
+description: "Analyze and optimize code across design, approach, efficiency, and complexity."
+disable-model-invocation: true
+---
+
 # optimize
 
 ## Purpose

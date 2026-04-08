@@ -1,3 +1,9 @@
+---
+name: push
+description: "push"
+disable-model-invocation: true
+---
+
 # push
 
 Push previously finished work to remote. This command is push-only.

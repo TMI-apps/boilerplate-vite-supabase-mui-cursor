@@ -1,3 +1,9 @@
+---
+name: improve-rule
+description: "Improve the appended rule using quality standards."
+disable-model-invocation: true
+---
+
 # Rule Improvement
 **Task:** Improve the appended rule using these quality standards.
 

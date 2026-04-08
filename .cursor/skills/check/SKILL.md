@@ -1,3 +1,9 @@
+---
+name: check
+description: "check"
+disable-model-invocation: true
+---
+
 # check
 
 ## When the user requests a feature or functionality, follow these steps:

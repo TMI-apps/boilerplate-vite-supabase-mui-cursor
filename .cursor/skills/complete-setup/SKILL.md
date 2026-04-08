@@ -1,3 +1,9 @@
+---
+name: complete-setup
+description: "complete-setup"
+disable-model-invocation: true
+---
+
 # complete-setup
 
 Remove all setup wizard files and functionality from the boilerplate. Use when the app has been configured and the setup wizard is no longer needed.
@@ -99,7 +105,7 @@ The setup feature directory (`src/features/setup/`) is deleted in step 1, which 
 
 ### 11. Delete Start Command
 
-Delete `.cursor/commands/start.md` after setup-removal is complete. It is only needed while onboarding from the boilerplate.
+Delete `.cursor/skills/start/SKILL.md` after setup-removal is complete. It is only needed while onboarding from the boilerplate.
 
 ## Notes
 

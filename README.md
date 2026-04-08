@@ -358,7 +358,7 @@ GitHub Actions workflow runs on every push/PR:
 
 See [documentation/DOC_CONTRIBUTING.md](./documentation/DOC_CONTRIBUTING.md) for how to contribute safely. Key points:
 
-1. **Workflow & versioning** – Use [`.cursor/commands/finish.md`](./.cursor/commands/finish.md) before committing
+1. **Workflow & versioning** – Use [`.cursor/skills/finish/SKILL.md`](./.cursor/skills/finish/SKILL.md) before committing
 2. **Architecture** – Follow [`.cursor/rules/architecture/RULE.md`](./.cursor/rules/architecture/RULE.md)
 3. **Documentation index** – [documentation/DOC_INDEX.md](./documentation/DOC_INDEX.md) for all docs
 4. Ensure all checks pass (`pnpm lint`, `pnpm format:check`, `pnpm test:run`, `pnpm validate:version-sync`)

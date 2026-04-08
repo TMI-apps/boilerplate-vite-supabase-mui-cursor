@@ -1,3 +1,9 @@
+---
+name: feature
+description: "feature"
+disable-model-invocation: true
+---
+
 # feature
 
 Systematic engineering process for new feature requests. Follow phases sequentially. 
@@ -427,7 +433,7 @@ If automated tests are approved:
 
 ### 7.3 Code Review Checklist (`workflow/RULE.md`)
 - [ ] Changelog updated (if user-facing changes) and matches commit message
-- [ ] Commit message follows format from `.cursor/commands/finish.md` (version first, matches changelog)
+- [ ] Commit message follows format from `.cursor/skills/finish/SKILL.md` (version first, matches changelog)
 - [ ] Code follows style guidelines (`code-style/RULE.md`)
 - [ ] Architecture patterns followed (`architecture/RULE.md`)
 - [ ] Architecture documentation updated (if structural changes)

@@ -1,3 +1,9 @@
+---
+name: plan
+description: "plan"
+disable-model-invocation: true
+---
+
 # plan
 
 Create a development plan for a feature or job. Research how best to implement it, check repo rules, and produce `DEVELOPMENT_PLAN.md` in `documentation/jobs/temp_job_<name>/`.
@@ -6,7 +12,7 @@ Create a development plan for a feature or job. Research how best to implement i
 
 **Do NOT update the changelog.** Changelog updates are done in the finish command, not during planning.
 
-**Related:** For session context, use `.cursor/commands/prime.md`. For requirement gates before building, use `.cursor/commands/check.md`. For small scoped work without a full plan file, use `.cursor/commands/quick-piv.md`. To execute this plan phase by phase, use `.cursor/commands/implement.md`. To review the plan or resulting code without changing anything first, use `.cursor/commands/validate.md`. For commits and changelog, use `.cursor/commands/finish.md`.
+**Related:** For session context, use `.cursor/skills/prime/SKILL.md`. For requirement gates before building, use `.cursor/skills/check/SKILL.md`. For small scoped work without a full plan file, use `.cursor/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.cursor/skills/implement/SKILL.md`. To review the plan or resulting code without changing anything first, use `.cursor/skills/validate/SKILL.md`. For commits and changelog, use `.cursor/skills/finish/SKILL.md`.
 
 ---
 
@@ -118,7 +124,7 @@ During planning, work through (using the rules reference above):
 - [ ] Identify applicable rules (architecture, file-placement, database, security, code-style, testing, workflow, etc.).
 - [ ] Validate planned file paths against `projectStructure.config.cjs` (whitelist); run `pnpm validate:structure` after structural additions if unsure.
 - [ ] Check architecture compliance: feature vs `src/shared/` vs `src/components/common/`, layer boundaries, import direction (pages → hooks → services).
-- [ ] Estimate complexity (cyclomatic ≤10, cognitive ≤15, functions ≤100 lines per `.cursor/rules/code-style/RULE.md`); plan extractions if needed (see `.cursor/commands/optimize2.md` for refactoring workflow).
+- [ ] Estimate complexity (cyclomatic ≤10, cognitive ≤15, functions ≤100 lines per `.cursor/rules/code-style/RULE.md`); plan extractions if needed (see `.cursor/skills/optimize2/SKILL.md` for refactoring workflow).
 - [ ] Note database impact if applicable (migrations under `supabase/migrations/`, idempotent, safe for fresh and existing DB).
 - [ ] Note security impact if applicable (auth, RLS, validation, secrets in `.env` only).
 - [ ] Document conflicts with existing code (pattern mismatches, breaking changes).

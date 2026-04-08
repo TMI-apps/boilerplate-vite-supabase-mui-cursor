@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validate file references inside .cursor/rules, .cursor/commands, and .cursor/skills markdown files.
+ * Validate file references inside .cursor/rules and .cursor/skills markdown files.
  *
  * Goal:
  * Catch stale references early (e.g. deleted docs still referenced by rules/commands/skills).
@@ -16,7 +16,6 @@ const path = require("path");
 const ROOT = process.cwd();
 const TARGET_DIRS = [
   path.join(".cursor", "rules"),
-  path.join(".cursor", "commands"),
   path.join(".cursor", "skills"),
 ];
 
@@ -119,9 +118,8 @@ function resolveCandidatePath(refPath, sourceFilePath) {
   if (/^[a-z0-9-]+\/RULE\.md$/i.test(refPath)) {
     const posix = toPosix(sourceFilePath);
     const inRules = posix.includes("/.cursor/rules/");
-    const inCommands = posix.includes("/.cursor/commands/");
     const inSkills = posix.includes("/.cursor/skills/");
-    if (inRules || inCommands || inSkills) {
+    if (inRules || inSkills) {
       return path.join(ROOT, ".cursor", "rules", refPath);
     }
   }

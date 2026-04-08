@@ -1,4 +1,8 @@
-# debug
+---
+name: debug
+description: "debug"
+disable-model-invocation: true
+---
 
 # debug
 
@@ -62,10 +66,29 @@ For each issue propose 2–3 hypotheses:
 Hypotheses must be designed so that logs or observations can **decide between them**.
 
 ---
-### 5. Console log changes
-- All hypotheseses must be verifyable by the user by simply performing an action and sharing the (filtered) console log output. 
+### 5. Instrumentation
+
+All hypotheses must be verifiable through logs captured after the user reproduces the issue.
+Logs should include all information needed for hypothesis falsification/verification.
+For API calls, raw API input and output can be needed (take simple security measures to avoid exposing secrets).
+
+**When Cursor Debug Mode is active** (system reminder contains "DEBUG MODE" with a provisioned server endpoint, log path, and session ID):
+- Use the provisioned logging infrastructure instead of `console.log`. The agent reads the log file directly — the user does not need to copy/paste logs.
+- Each log entry must be a structured JSON payload with these fields:
+  - `sessionId` — from the provisioned session
+  - `runId` — to distinguish initial run vs post-fix verification (e.g. `"run1"`, `"post-fix"`)
+  - `hypothesisId` — which hypothesis this log tests (e.g. `"A"`, `"B"`)
+  - `location` — file and line (`"useChat.ts:142"`)
+  - `message` — short description
+  - `data` — relevant values
+  - `timestamp` — `Date.now()`
+- Wrap each debug log in a collapsible code region (`// #region agent log` / `// #endregion`) to keep the editor clean.
+- Aim for 2–6 log points (minimum 1, maximum 10). If you think you need more than 10, narrow your hypotheses first.
+- Delete the log file before each reproduction run (clean slate).
+
+**When Cursor Debug Mode is NOT active** (default):
+- All hypotheses must be verifiable by the user by simply performing an action and sharing the (filtered) console log output.
 - Console logs should include all possibly needed information for hypothesis falsification/verification.
-- For API calls, raw API input an output can be needed. If so, log that to the console (take simple security measures to avoid exposing secrets)
 ---
 
 ### 6. Unified Diagnostic Steps (Single Ordered List)
@@ -83,11 +106,14 @@ Avoid category labels; all steps belong to one unified list.
 ---
 
 ### 7. Iterative Evidence Loop
-When the user returns with logs or data:
-1. Update the event chain using the new evidence.  
-2. Mark each hypothesis as **supported**, **refuted**, or **uncertain**, and briefly **explain why**.  
-3. Form a smaller, more precise hypothesis set.  
-4. Provide the next unified action list.
+When new evidence is available (user returns with logs, or agent reads the debug log file in Cursor Debug Mode):
+1. Update the event chain using the new evidence.
+2. Mark each hypothesis as **supported**, **refuted**, or **uncertain**, and briefly **explain why** — citing specific log entries or console output as evidence.
+3. **Revert code changes from rejected hypotheses.** Do not let defensive guards, speculative fixes, or unproven changes accumulate in the codebase. Only keep modifications supported by runtime evidence.
+4. Form a smaller, more precise hypothesis set.
+5. Provide the next unified action list.
+
+When verifying a fix, compare **before and after** log entries for the same code path. Cite specific log lines showing the behavior change. Do not claim a fix works without this evidence.
 
 Repeat until only the user declares the issue resolved.
 
@@ -187,6 +213,24 @@ When symptoms match known patterns, prioritize these hypotheses first:
 - Key question: "Does the test work on another machine or after clearing Vite cache (`rm -rf node_modules/.vite`)?"
 - Debug approach: Add `server.deps.inline: ["@mui/material", "@mui/icons-material"]` to `vitest.config.ts` to force pre-bundling. Also add `fallbackCJS: true` for ESM/CJS compatibility. Clear Vite cache if issue persists. Check Node/pnpm versions if working on other machines.
 
+**Stale closure / setState callback race:**
+- Value read from a closure or computed inside an async callback is used before it runs; or Handler A sets state, Handler B runs before React flushes and reads stale state.
+- Key question: "Is the value built synchronously and passed in, or only available inside a callback? Does the next handler receive the updated value or a stale snapshot?"
+- Debug approach: Build values synchronously before async calls; pass updated data forward explicitly; use refs for cross-handler communication. In loops, pass a getter (`getX: () => liveValue`) instead of a snapshot.
+- Examples: Form submit clears values; earlier messages disappear on save; data disappears after save; sequential operations revert earlier status.
+
+**Code vs DB schema mismatch:**
+- Code expects a column, constraint, or table name that no longer exists (or vice versa), usually after a migration.
+- Key question: "Did migrations run on this environment? Do column names, constraint names, and ON CONFLICT clauses match the current DB schema?"
+- Debug approach: Check migration files; query `information_schema.columns` for the affected table; verify constraint names with `\d+ <table>`; run missing migrations. Watch for staging/production drift where migrations ran in different order.
+- Examples: `ON CONFLICT` 42P10 after a migration; "column X does not exist" in one environment but not another; trigger references a dropped column.
+
+**Order of operations (async sequencing):**
+- Client or server performs step B before step A has persisted, causing a foreign key violation, missing record, or stale read.
+- Key question: "Is the dependent operation guaranteed to run after the prerequisite has fully committed, not just after the async call returns?"
+- Examples: insert of a child record before parent is saved; invoking a function with an ID before the row exists; clearing dirty state after navigation instead of before.
+- Debug approach: Defer dependent calls until after the prerequisite's success callback; return the DB-generated ID from create operations and thread it forward rather than using a client-generated ID.
+
 **Add other patterns here as they're discovered.**
 
 ---
@@ -197,7 +241,7 @@ When symptoms match known patterns, prioritize these hypotheses first:
 3. Event Chain  
 4. Pattern Match Check (does this match a known pattern from §9?)
 5. Hypotheses (with predictions + falsification conditions)  
-6. Console log changes to verify/falsify all hypotheses
+6. Instrumentation changes to verify/falsify all hypotheses
 7. Unified Action Steps and code changes
 8. What to Return  
 9. Next Narrowing Step  

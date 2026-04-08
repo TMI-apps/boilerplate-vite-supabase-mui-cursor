@@ -1,3 +1,9 @@
+---
+name: check-simple
+description: "check-simple"
+disable-model-invocation: true
+---
+
 # check-simple
 
 Use this workflow for any feature request:
