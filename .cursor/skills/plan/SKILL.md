@@ -12,7 +12,7 @@ Create a development plan for a feature or job. Research how best to implement i
 
 **Do NOT update the changelog.** Changelog updates are done in the finish command, not during planning.
 
-**Related:** For session context, use `.cursor/skills/prime/SKILL.md`. For requirement gates before building, use `.cursor/skills/check/SKILL.md`. For small scoped work without a full plan file, use `.cursor/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.cursor/skills/implement/SKILL.md`. To review the plan or resulting code without changing anything first, use `.cursor/skills/validate/SKILL.md`. For commits and changelog, use `.cursor/skills/finish/SKILL.md`.
+**Related:** For session context, use `.cursor/skills/prime/SKILL.md`. For architecture/quality gate before merging, use `.cursor/skills/check/SKILL.md`. For small scoped work without a full plan file, use `.cursor/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.cursor/skills/implement/SKILL.md`. To review the plan or resulting code without changing anything first, use `.cursor/skills/validate/SKILL.md`. For commits and changelog, use `.cursor/skills/finish/SKILL.md`.
 
 ---
 
@@ -31,12 +31,36 @@ Create a development plan for a feature or job. Research how best to implement i
 - Continue until scope is clear.
 - Only proceed to investigation once scope is clear.
 
+#### Optional: Requirements depth (complex or unfamiliar features)
+
+For features involving external APIs, database changes, auth, or novel logic, gather typed requirements before investigating:
+
+| Feature type | Key info to confirm |
+|---|---|
+| **API integration** | Docs/URL, auth method, request/response format (real example), rate limits |
+| **Database change** | Relevant schemas, related data patterns, RLS needs |
+| **UI component** | Design ref or description, placement, responsive needs, interactive states |
+| **Business logic** | Concrete input → output examples, edge cases |
+| **Auth/authorization** | Affected roles, per-role visibility/actions, existing auth patterns |
+
+**Completeness gate:** Can you describe the exact expected behavior with concrete examples? If not, keep asking.
+
 ### 3. Investigate
 
 - [ ] Search the codebase for existing functionality to reuse (features under `src/features/`, shared under `src/shared/`, `src/components/common/`).
 - [ ] Identify relevant rules from `.cursor/rules/` (start at `.cursor/rules/INDEX.md`).
 - [ ] For server-cached data, check `documentation/DOC_TANSTACK_QUERY.md` and existing `api/keys.ts` patterns in features.
 - [ ] Determine scope and boundaries (in-scope vs out-of-scope).
+
+#### Optional: Foundation validation (high-risk features)
+
+If the feature depends on an unproven assumption (new API, untested algorithm, novel integration):
+
+1. **Identify** the riskiest assumption — what could invalidate the entire approach?
+2. **Test** with a minimal POC (smallest possible proof: one API call, one query, one algorithm run).
+3. **Gate:** Foundation works → proceed to plan. Foundation fails → report to user, investigate alternatives before planning.
+
+Do **not** invest in full planning until the foundation is proven.
 
 ### 4. Create plan
 

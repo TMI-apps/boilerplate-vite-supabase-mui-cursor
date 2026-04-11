@@ -1,6 +1,6 @@
 ---
-description: Architecture and code-quality validation gate
-argument-hint: <optional scope hint>
+description: Architecture and code-quality gate
+argument-hint: <optional scope hint — files, feature, or branch diff>
 ---
 
 # /check
@@ -11,6 +11,6 @@ $ARGUMENTS
 
 That file is the single source of truth. Follow it verbatim.
 
-`/check` is a **requirement gate** — typically run before building, before merging, or as a pre-commit sanity pass. It is stricter than `/validate` and more focused on architecture compliance and structural correctness.
+`/check` is an **architecture gate** — run before merging, before finishing, or when you need confidence that the codebase is structurally sound. It runs tooling (`pnpm lint`, `type-check`, `arch:check`, `validate:structure`) plus deeper architecture spot-checks (layer direction, path aliases, feature boundaries, complexity).
 
-If `/check` reveals violations, surface them to the user with the relevant rule path (e.g. `.cursor/rules/architecture/RULE.md` § Layer boundaries). Do not silently fix architectural violations — they often need user judgment.
+Report findings grouped by severity (blocker / warning / suggestion). Do not auto-fix — surface issues so the user can decide.

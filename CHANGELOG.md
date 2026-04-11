@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-04-11
+
+### Changed
+
+- **Agent workflow**: Rewrote `.cursor/skills/check/SKILL.md` as an architecture and code-quality gate (tooling pass + spot-checks); moved requirement-depth and foundation-POC guidance into `.cursor/skills/plan/SKILL.md`.
+- **Claude commands**: Updated `.claude/commands/check.md` and `.claude/commands/review.md` to match skills (`/review` documents the 170-point component rubric).
+- **Cross-references**: Updated `.cursor/skills/plan/SKILL.md`, `quick-piv/SKILL.md`, and `prime/SKILL.md` for the new `check` role.
+- **Project memory**: Trimmed `CLAUDE.md` and `.claude/rules/file-placement.md` / `git-workflow.md` to reduce duplication with `.cursor/rules/` (SSOT pointers only).
+
+### Removed
+
+- **check-simple skill**: Removed `.cursor/skills/check-simple/` (overlapped plan and check).
+
 ## [0.15.0] - 2026-04-08
 
 ### Added

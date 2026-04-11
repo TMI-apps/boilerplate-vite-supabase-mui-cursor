@@ -10,7 +10,7 @@ Lightweight Plan → Implement → Validate in one workflow. Use for small, well
 
 **Critical:** Still follow repo rules. No changelog updates (`.cursor/skills/finish/SKILL.md` handles that).
 
-**Related:** Full formal cycle: `.cursor/skills/plan/SKILL.md` → `.cursor/skills/implement/SKILL.md` → `.cursor/skills/validate/SKILL.md`. Session context: `.cursor/skills/prime/SKILL.md`. Requirement depth before coding: `.cursor/skills/check/SKILL.md`.
+**Related:** Full formal cycle: `.cursor/skills/plan/SKILL.md` → `.cursor/skills/implement/SKILL.md` → `.cursor/skills/validate/SKILL.md`. Session context: `.cursor/skills/prime/SKILL.md`. Architecture/quality gate: `.cursor/skills/check/SKILL.md`.
 
 ---
 

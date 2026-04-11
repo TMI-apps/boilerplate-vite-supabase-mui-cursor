@@ -9,7 +9,7 @@ disable-model-invocation: true
 Load project context at the start of a new session. Build an understanding of this boilerplate’s structure, governance, and active state before tackling tasks.
 
 **When to use:** New chat, ambiguous task, or before larger refactors.  
-**Related:** For feature requests and completeness gates, use `.cursor/skills/check/SKILL.md`. For onboarding a human, use `.cursor/skills/start/SKILL.md`.
+**Related:** For architecture/quality gate, use `.cursor/skills/check/SKILL.md`. For planning features, use `.cursor/skills/plan/SKILL.md`. For onboarding a human, use `.cursor/skills/start/SKILL.md`.
 
 ## Objective
 
