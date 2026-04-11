@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-04-08
+
+### Added
+
+- **Claude command wrappers**: Added `CLAUDE.md` and `.claude/commands/*` wrappers (`check`, `finish`, `implement`, `plan`, `review`, `validate`) that delegate execution to the corresponding Cursor skills for consistent workflow behavior.
+- **Claude-side workflow reminders**: Added `.claude/rules/file-placement.md` and `.claude/rules/git-workflow.md` to mirror load-bearing project constraints and protected-file handling.
+
+### Changed
+
+- **Feature workflow decision gate**: Updated `.cursor/skills/feature/SKILL.md` to replace generic A/B/C/D option prompts with concrete codebase-derived approaches and a product-owner-friendly value-priority decision point.
+- **Feature planning traceability**: Phase 4 and implementation-document requirements now explicitly carry the chosen approach's concrete scope and rationale through planning and execution.
+- **Structure whitelist**: Updated `projectStructure.config.cjs` to allow `.claude/commands/*.md`, `.claude/rules/*.md`, `.claude/settings*.json`, and `CLAUDE.md`.
+
 ## [0.14.0] - 2026-04-08
 
 ### Changed

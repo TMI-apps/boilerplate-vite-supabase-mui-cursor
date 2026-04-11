@@ -645,6 +645,22 @@ module.exports = {
         { name: "*.log" },
       ],
     },
+    // Claude config and slash command wrappers
+    {
+      name: ".claude",
+      children: [
+        {
+          name: "commands",
+          children: [{ name: "*.md" }],
+        },
+        {
+          name: "rules",
+          children: [{ name: "*.md" }],
+        },
+        { name: "settings.json" },
+        { name: "settings.local.json" },
+      ],
+    },
     // GitHub workflows (if exists)
     {
       name: ".github",
@@ -712,6 +728,7 @@ module.exports = {
     // Note: Add specific TOML files here if needed (e.g., netlify.toml)
     // Markdown documentation files - ONLY README, architecture, and CHANGELOG allowed in root
     { name: "README.md" },
+    { name: "CLAUDE.md" },
     { name: "architecture.md" },
     { name: "ARCHITECTURE.md" }, // Allow uppercase variant
     { name: "CHANGELOG.md" },

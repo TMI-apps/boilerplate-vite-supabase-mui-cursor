@@ -123,34 +123,31 @@ Categorize missing info:
 - **WAIT** for user answer
 - Document answer before proceeding
 
-### 2.4 Design Options (Progressive Complexity)
-Present options from simplest to most complex:
+### 2.4 Concrete Implementation Approaches (Progressive Complexity)
+Using the existing functionality found in 2.2, present **2-4 concrete approaches** ordered from simplest to most complex. Each approach must include:
 
-**Option A: Simplification**
-- Achieve by removing/simplifying existing code
-- Minimal changes, maximum leverage
+- **What changes:** Specific files, components, and functions affected
+- **What's new vs modified vs removed:** Scope of the change
+- **How it uses existing code:** Which patterns, components, utilities from 2.2
+- **Tradeoffs:** Effort, flexibility, maintenance implications
+- **Value profile:** Which product value it optimizes first (delivery speed, stability/risk reduction, UX quality, future extensibility, or maintenance cost)
 
-**Option B: Refactoring**
-- Achieve by refactoring existing code
-- Reuse patterns, extend components
+Do NOT use fixed abstract categories (like A/B/C/D labels). Derive each approach from actual codebase analysis. Some features may only have one viable approach; others may have three. Present only approaches that genuinely apply.
 
-**Option C: Minimal Addition**
-- Achieve with minimal new code leveraging existing patterns
-- New components/files only where necessary
-
-**Option D: New Implementation** 
-- New implementation required, but still uses existing functionality where possible
-- hook into existing functionality from 2.2
-- follow existing patterns, components, and design standards
-- reuse existing utilities, hooks, services where applicable
+Use product-owner language first, technical mapping second:
+- Lead with outcome/value framing understandable without coding knowledge
+- Then add technical scope details for traceability
 
 **🔴 DECISION POINT:** 
 - **STOP** implementation activities
-- Present ALL options (A, B, C, D) with analysis
-- Include existing functionality that supports each option
-- Ask: "Which approach should I use: A, B, C, or D?"
+- Present ALL concrete approaches with value profiles
+- Ask the user in non-technical terms:
+  - "Which value should we optimize for first?"
+  - "Choose a primary priority: fastest delivery, lowest regression risk, strongest user experience, easiest future expansion, or lowest maintenance overhead."
+- If needed, ask for a secondary priority to break ties
+- Map the chosen priority back to the corresponding concrete approach
 - **WAIT** for user's explicit choice
-- Document chosen option before proceeding
+- Document chosen priority and mapped approach before proceeding
 
 ### 2.5 Decision Point Matrix
 Identify **subjective** choices requiring user input.
@@ -240,6 +237,8 @@ Identify **subjective** choices requiring user input.
 
 ## Phase 4: Implementation Plan
 
+**Scope:** Detail the specific approach chosen by the user in 2.4. Every section below must describe what happens under that chosen approach, not generic possibilities.
+
 ### 4.1 Component/API Design
 - [ ] Leveraged existing functionality (from 2.2)
 - [ ] Props interface (types, defaults)
@@ -292,7 +291,7 @@ Verify the PLAN complies before implementation:
 - **STOP** all implementation activities
 - Present complete implementation plan summary:
   - User stories and acceptance criteria
-  - Chosen design approach
+  - Chosen approach with concrete scope (from 2.4)
   - User journey map (from 2.1.1)
   - All subjective decisions made (from 2.5)
   - Architecture decisions
@@ -327,7 +326,7 @@ Create/update `/documentation/jobs/temp_job_[jobname]` (create folder if needed)
 - **User journey & state transition map** (from 2.1.1)
 - **All user questions and answers** (from 2.5, formatted as Q/A pairs)
 - Chosen implementation plan
-- Chosen design approach (A/B/C/D from 2.4)
+- Chosen approach with concrete scope and rationale (from 2.4)
 - Component/API design decisions
 - State management approach
 - File placements (validated)
