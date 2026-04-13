@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.1] - 2026-04-13
+
+### Changed
+
+- **Claude Code local permissions allowlist**: Extended `.claude/settings.local.json` `permissions.allow` with git workspace commands, a skills-plugin read path, and Bash entries for pandoc / `scripts/office/unpack.py` against a local `.docx` (machine-specific paths; local Claude only — does not affect CI, builds, or runtime app behavior).
+
 ## [0.18.0] - 2026-04-13
 
 ### Added
