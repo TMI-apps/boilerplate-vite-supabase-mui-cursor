@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.3] - 2026-04-15
+
+### Changed
+
+- **Setup feature structure**: Extracted Airtable wizard orchestration into `useAirtableDialogFlow`, step validation helpers, and `AirtableSetupWizardPanel`; moved configuration reset to `configurationResetService` with per-section strategy and a thin `useConfigurationReset` hook. Added unit tests for the reset pipeline and Airtable flow. Updated `src/features/setup/README.md`.
+
 ## [0.18.2] - 2026-04-14
 
 ### Documentation

@@ -403,6 +403,7 @@ The feature consists of three main components:
 2. **Services** (`src/features/setup/services/`):
    - `envWriterService.ts`: Handles environment variable writing API calls
    - `configService.ts`: Handles app configuration file (`app.config.json`) syncing
+   - `configurationResetService.ts`: Section reset pipeline (env removal API, cleanup, status, sync)
 
 ### Security
 
