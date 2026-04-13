@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-04-13
+
+### Added
+
+- **Feature-local README enforcement (Option 1)**: Shared `scripts/feature-readme-lib.js`; full-repo checks via `scripts/validate-feature-docs.js` with `pnpm validate:feature-docs`, `pnpm validate:feature-docs:strict`, and `pnpm validate:feature-docs:json`; pre-commit still runs `pnpm validate:feature-docs:staged`. CI runs `validate:feature-docs:strict` after install. Maintainer doc `documentation/DOC_FEATURE_LOCAL_README.md` (indexed in `documentation/DOC_INDEX.md`). Rules and `.claude` validate command updated accordingly.
+
 ## [0.17.0] - 2026-04-13
 
 ### Added

@@ -7,3 +7,5 @@ SSOT: `.cursor/rules/file-placement/RULE.md` + `projectStructure.config.cjs`.
 1. Is the target directory in the structure whitelist? If unsure, run `pnpm validate:structure`.
 2. Does the location respect layer boundaries (`pages → components → hooks → services`)?
 3. If the location is invalid, **suggest the correct one** — do not silently modify `projectStructure.config.cjs` (protected file).
+
+Feature README enforcement (commands, CI, strict headings): SSOT `documentation/DOC_FEATURE_LOCAL_README.md`.

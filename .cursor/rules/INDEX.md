@@ -114,6 +114,7 @@ Quick reference guide to all rules and their relationships.
 - Project structure validation using `projectStructure.config.js`
 - Architecture compliance verification
 - Guidance for correct file/folder locations
+- **Feature-local README (Option 1):** SSOT `documentation/DOC_FEATURE_LOCAL_README.md`; `pnpm validate:feature-docs` / `validate:feature-docs:strict` / `validate:feature-docs:staged`
 
 **Related to:** architecture, workflow
 
