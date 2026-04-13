@@ -1,0 +1,58 @@
+# Keeps the long-lived development branch in sync with main after each merge to main.
+# Rename DEV_BRANCH below if your repo uses develop, staging, etc.
+#
+# Requires: branch protection must allow GITHUB_TOKEN to push to the dev branch
+# (Settings → Actions → General → Workflow permissions: Read and write).
+
+name: Sync experimental with main
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-experimental-with-main
+  cancel-in-progress: true
+
+env:
+  DEV_BRANCH: experimental
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ${{ env.DEV_BRANCH }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.DEV_BRANCH }}
+          fetch-depth: 0
+
+      - name: Configure bot identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch main
+        run: git fetch origin main
+
+      - name: Merge main into ${{ env.DEV_BRANCH }}
+        env:
+          DEV_BRANCH: ${{ env.DEV_BRANCH }}
+        run: |
+          set -e
+          if git merge-base --is-ancestor origin/main HEAD; then
+            echo "${DEV_BRANCH} already contains origin/main; nothing to do."
+            exit 0
+          fi
+          if git merge --ff-only origin/main; then
+            echo "Fast-forwarded ${DEV_BRANCH} to origin/main."
+          else
+            git merge origin/main -m "chore: sync ${DEV_BRANCH} with main (auto-merge)"
+            echo "Merged origin/main into ${DEV_BRANCH} (merge commit)."
+          fi
+
+      - name: Push ${{ env.DEV_BRANCH }}
+        run: git push origin "HEAD:refs/heads/${{ env.DEV_BRANCH }}"

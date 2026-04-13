@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-04-13
+
+### Added
+
+- **GitHub Actions sync for experimental**: Workflow `.github/workflows/sync-experimental-with-main.yml` runs on push to `main`, merges `origin/main` into `experimental` (fast-forward when possible; otherwise a merge commit with message `chore: sync experimental with main (auto-merge)`), and pushes. Keeps the integration branch aligned with production history. Requires repository Actions workflow permissions set to read and write.
+
 ## [0.16.0] - 2026-04-11
 
 ### Changed
