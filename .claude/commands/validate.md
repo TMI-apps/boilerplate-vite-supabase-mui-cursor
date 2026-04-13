@@ -19,6 +19,7 @@ pnpm type-check
 pnpm test:run
 pnpm arch:check
 pnpm validate:structure
+pnpm validate:feature-docs:strict
 ```
 
 Report findings to the user in a concise summary: what passed, what failed, and what (if anything) is worth opening an `/implement` or `/finish` step for. Do **not** auto-fix — surface issues so the user can decide.

@@ -9,46 +9,15 @@
  * Supports both:
  * - Flat features: src/features/<feature>/
  * - Nested features: src/features/<group>/<feature>/
+ *
+ * Feature root detection SSOT: scripts/feature-readme-lib.js
  */
 
 const { execSync } = require("child_process");
-
-const FEATURE_LAYER_FOLDERS = new Set([
-  "components",
-  "hooks",
-  "services",
-  "types",
-  "context",
-  "store",
-  "docs",
-]);
+const { getFeatureRootFromRelativePath } = require("./feature-readme-lib.js");
 
 function normalizePath(filePath) {
   return filePath.replace(/\\/g, "/");
-}
-
-function getFeatureRoot(filePath) {
-  const normalized = normalizePath(filePath);
-  if (!normalized.startsWith("src/features/")) {
-    return null;
-  }
-
-  const parts = normalized.split("/");
-  // ["src", "features", ...]
-  if (parts.length < 4) {
-    return null;
-  }
-
-  const first = parts[2];
-  const second = parts[3];
-
-  // Flat feature: src/features/<feature>/<layer-or-file>
-  if (FEATURE_LAYER_FOLDERS.has(second) || second === "README.md") {
-    return `src/features/${first}`;
-  }
-
-  // Nested feature: src/features/<group>/<feature>/...
-  return `src/features/${first}/${second}`;
 }
 
 function isDocOnlyChange(filePath, featureRoot) {
@@ -93,7 +62,7 @@ function main() {
   const featureChanges = new Map();
 
   for (const filePath of stagedFiles) {
-    const featureRoot = getFeatureRoot(filePath);
+    const featureRoot = getFeatureRootFromRelativePath(filePath);
     if (!featureRoot) {
       continue;
     }

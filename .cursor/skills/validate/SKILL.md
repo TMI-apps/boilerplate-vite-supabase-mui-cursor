@@ -63,6 +63,7 @@ Validate either (1) the plan document, or (2) the implementation of an executed 
 **Commands** (run and summarize failures; do not “fix” until user agrees):
 
 - `pnpm validate:structure`
+- `pnpm validate:feature-docs:strict` (feature-local README presence + required headings; see `documentation/DOC_FEATURE_LOCAL_README.md`)
 - `pnpm lint`
 - `pnpm type-check`
 - `pnpm arch:check` (dependency-cruiser; script: `arch:check` in `package.json`)

@@ -151,6 +151,7 @@ When documentation is about a specific feature's behavior, API, flows, or constr
 **Maintenance rule:**
 - If feature code changes are staged, stage updates to that feature's `README.md` in the same commit
 - Pre-commit enforcement: `pnpm validate:feature-docs:staged`
+- Full-repository enforcement: `pnpm validate:feature-docs` (presence) or `pnpm validate:feature-docs:strict` (required `## Purpose`, `## Structure`, `## Dependencies`); CI runs strict after install (see `documentation/DOC_FEATURE_LOCAL_README.md`)
 - Default: do not create new deep docs; prefer code comments/tests unless cross-file knowledge requires a doc
 
 **Use `documentation/` for cross-feature docs only:**
@@ -260,6 +261,8 @@ Always validate placement before creating. If invalid, suggest correct location 
 
 When updating this rule, also check:
 - `scripts/project-structure-validator.js` - Main validator implementation
+- `scripts/feature-readme-lib.js` / `scripts/validate-feature-docs.js` / `scripts/validate-feature-docs-staged.js` - Feature-local README enforcement
+- `documentation/DOC_FEATURE_LOCAL_README.md` - Option 1 contract and pipeline
 - `projectStructure.config.js` - Structure configuration file
 - `package.json` - Scripts that call the validator (validate:structure)
 - `documentation/PROJECT-STRUCTURE-VALIDATION.md` - User documentation

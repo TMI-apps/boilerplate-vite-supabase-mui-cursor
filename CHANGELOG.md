@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.3] - 2026-04-15
+
+### Changed
+
+- **Setup feature structure**: Extracted Airtable wizard orchestration into `useAirtableDialogFlow`, step validation helpers, and `AirtableSetupWizardPanel`; moved configuration reset to `configurationResetService` with per-section strategy and a thin `useConfigurationReset` hook. Added unit tests for the reset pipeline and Airtable flow. Updated `src/features/setup/README.md`.
+
+## [0.18.2] - 2026-04-14
+
+### Documentation
+
+- **Align ARCHITECTURE.md with enforced path aliases**: Import examples and the path-alias section use `@/` per `.cursor/rules/architecture/RULE.md`; placement table uses explicit `src/...` paths; correct/incorrect import examples updated; complexity limits match `eslint.config.js`; route registration notes point to `src/App.tsx`; legacy Vite/tsconfig shortcuts called out separately.
+
+## [0.18.1] - 2026-04-13
+
+### Changed
+
+- **Claude Code local permissions allowlist**: Extended `.claude/settings.local.json` `permissions.allow` with git workspace commands, a skills-plugin read path, and Bash entries for pandoc / `scripts/office/unpack.py` against a local `.docx` (machine-specific paths; local Claude only — does not affect CI, builds, or runtime app behavior).
+
+## [0.18.0] - 2026-04-13
+
+### Added
+
+- **Feature-local README enforcement (Option 1)**: Shared `scripts/feature-readme-lib.js`; full-repo checks via `scripts/validate-feature-docs.js` with `pnpm validate:feature-docs`, `pnpm validate:feature-docs:strict`, and `pnpm validate:feature-docs:json`; pre-commit still runs `pnpm validate:feature-docs:staged`. CI runs `validate:feature-docs:strict` after install. Maintainer doc `documentation/DOC_FEATURE_LOCAL_README.md` (indexed in `documentation/DOC_INDEX.md`). Rules and `.claude` validate command updated accordingly.
+
 ## [0.17.0] - 2026-04-13
 
 ### Added

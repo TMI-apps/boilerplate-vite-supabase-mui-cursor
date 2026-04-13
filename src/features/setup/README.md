@@ -13,11 +13,11 @@ Configuration wizard for Supabase, Airtable, hosting, and theme. Dev-only capabi
 
 | Layer | Path | Purpose |
 |-------|------|---------|
-| Hooks | `hooks/` | `useEnvWriter`, `useSupabaseSetup`, `useAirtableSetup`, `useWizardStep`, `useConfigurationData` / `useConfigurationQuery`, `useConfigurationReset`, `useConnectionTest` |
+| Hooks | `hooks/` | `useEnvWriter`, `useSupabaseSetup`, `useAirtableSetup`, `useAirtableDialogFlow` / `useAirtableDialogStepValidation`, `airtableDialogFlowActions`, `airtableWizardStepValidation`, `useWizardStep`, `useConfigurationData` / `useConfigurationQuery`, `useConfigurationReset`, `useConnectionTest` |
 
 **TanStack Query:** `useConfigurationQuery` is the primary hook for config section data (caching, deduplication). `useConfigurationData` is a thin wrapper for backward compatibility.
-| Services | `services/` | `envWriterService`, `configService` – dev API calls, config sync |
-| Components | `components/` | `SetupDialog`, `SetupCard`, sections (Supabase, Airtable, Hosting, Theme), config views |
+| Services | `services/` | `envWriterService`, `configService`, `configurationResetService` (`resetSetupSection`, env removal API) – dev API calls, config sync, section reset |
+| Components | `components/` | `SetupDialog`, `SetupCard`, `AirtableSetupWizardPanel`, sections (Supabase, Airtable, Hosting, Theme), config views |
 | Types | `types/` | `AppConfig`, `Configurations`, `SetupConfig`, `ConfigSetupSectionId` |
 
 ## Main APIs

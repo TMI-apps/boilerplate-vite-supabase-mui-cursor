@@ -18,6 +18,7 @@ Development workflows, code review standards, and process requirements. Includes
 | Project structure, file whitelist | `projectStructure.config.cjs` |
 | Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
 | App config schema (boilerplate only; removed by complete-setup) | `documentation/DOC_APP_CONFIG_FILE.md` |
+| Feature-local README enforcement (Option 1), scripts, CI placement | `documentation/DOC_FEATURE_LOCAL_README.md` |
 
 ## Code Review Process
 

@@ -2,7 +2,7 @@
 
 This document explains the architectural decisions and rules enforced in this boilerplate.
 
-**SSOT:** `.cursor/rules/architecture/RULE.md` is the canonical source for architecture rules. This guide is the user-facing overview. Structure enforcement: `projectStructure.config.cjs` and `.dependency-cruiser.cjs`.
+**SSOT:** `.cursor/rules/architecture/RULE.md` is the canonical source for architecture rules. This guide is the user-facing overview. Structure enforcement: `projectStructure.config.cjs` and `.dependency-cruiser.cjs`. Feature-local `README.md` policy and validation commands: `documentation/DOC_FEATURE_LOCAL_README.md`.
 
 ## Folder Structure
 
@@ -78,16 +78,16 @@ Pages → Components → Hooks → Services → Shared Services
 
 ### Import Patterns
 
-Use path aliases for clean imports:
+Use **`@/`** path aliases only — never relative parent imports (`../`). Full mapping: `.cursor/rules/architecture/RULE.md`.
 
 ```typescript
 // ✅ Good
-import { Button } from "@common/Button";
-import { useAuth } from "@features/auth/hooks/useAuth";
-import { supabase } from "@shared/services/supabaseService";
+import { Button } from "@/components/common/Button";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { supabase } from "@/services/supabaseService";
 
 // ❌ Bad
-import { Button } from "../../../common/Button";
+import { Button } from "../../../components/common/Button";
 import { useAuth } from "../../hooks/useAuth";
 ```
 
@@ -157,43 +157,44 @@ export const HomePage = () => {
 
 | What | Where |
 |------|-------|
-| Reusable UI component (no logic) | `common/` |
-| Feature-specific UI component | `features/[feature]/components/` |
-| React hook with state | `features/[feature]/hooks/` |
-| Pure function, API call | `features/[feature]/services/` |
-| TypeScript types | `features/[feature]/types/` |
-| Feature-specific utility function | `features/[feature]/utils/` |
-| Feature-local documentation | `features/[feature]/README.md` (+ optional `features/[feature]/docs/*.md`) |
-| Route-level component | `pages/` |
-| Layout wrapper | `layouts/` |
-| Global state (Context) | `store/contexts/` |
-| Shared service (Supabase, Airtable, data providers) | `shared/services/` |
-| API service implementations | `shared/services/` |
-| Utility function | `utils/` |
+| Reusable UI component (no logic) | `src/components/common/` |
+| Feature-specific UI component | `src/features/[feature]/components/` |
+| React hook with state | `src/features/[feature]/hooks/` or `src/shared/hooks/` |
+| Pure function, API call | `src/features/[feature]/services/` |
+| TypeScript types | `src/features/[feature]/types/` |
+| Feature-specific utility function | `src/features/[feature]/services/` or `src/shared/utils/` |
+| Feature-local documentation | `src/features/[feature]/README.md` (+ optional `src/features/[feature]/docs/*.md`) |
+| Route-level component | `src/pages/` |
+| Layout wrapper | `src/layouts/` |
+| Global state (Context) | `src/shared/context/` |
+| Shared service (Supabase, Airtable, data providers) | `src/shared/services/` |
+| Root-level utility (`src/utils/`) | `src/utils/` |
 
 ### Examples
 
 **✅ Correct:**
 
 ```typescript
-// features/todos/components/TodoItem.tsx
-import { useTodos } from "../hooks/useTodos";  // ✅ Same feature
-import { Button } from "@common/Button";        // ✅ Common component
+// src/features/todos/components/TodoItem.tsx
+import { useTodos } from "@/features/todos/hooks/useTodos";
+import { Button } from "@/components/common/Button";
 
-// features/todos/hooks/useTodos.ts
-import * as todoService from "../services/todoService";  // ✅ Same feature
-import { supabase } from "@shared/services/supabaseService";  // ✅ Shared
+// src/features/todos/hooks/useTodos.ts
+import * as todoService from "@/features/todos/services/todoService";
+import { supabase } from "@/services/supabaseService";
 ```
 
 **❌ Incorrect:**
 
 ```typescript
-// features/todos/components/TodoItem.tsx
-import * as todoService from "../services/todoService";  // ❌ Component importing service
-import { useAuth } from "@features/auth/hooks/useAuth";  // ❌ Cross-feature import (use context instead)
+// src/features/todos/components/TodoItem.tsx
+import * as todoService from "@/features/todos/services/todoService";  // ❌ Component importing service (use a hook)
 
-// common/Button/Button.tsx
-import { useTodos } from "@features/todos/hooks/useTodos";  // ❌ Common importing feature
+// src/features/todos/components/TodoItem.tsx
+import { useAuth } from "@/features/auth/hooks/useAuth";  // ❌ Cross-feature import (use shared context instead)
+
+// src/components/common/Button/Button.tsx
+import { useTodos } from "@/features/todos/hooks/useTodos";  // ❌ Common component importing a feature
 ```
 
 ## Code Quality Tools
@@ -207,9 +208,11 @@ The project enforces complexity thresholds to maintain code maintainability:
 - **Cyclomatic Complexity**: ≤ 10 per function (ESLint `complexity`)
 - **Cognitive Complexity**: ≤ 15 per function (`sonarjs/cognitive-complexity`)
 - **Nesting Depth**: ≤ 4 levels (ESLint `max-depth`)
-- **Function Length**: ≤ 50 lines (ESLint `max-lines-per-function`)
-- **Statements**: ≤ 10 per function (ESLint `max-statements`)
-- **Parameters**: ≤ 3 per function (ESLint `max-params`)
+- **Function Length**: ≤ 100 lines (ESLint `max-lines-per-function`; see `eslint.config.js`)
+- **Statements**: ≤ 15 per function (ESLint `max-statements`)
+- **Parameters**: ≤ 3 per function (ESLint `max-params`; use an options object when more are needed)
+
+Exact thresholds live in `eslint.config.js` and `.cursor/rules/code-style/RULE.md` if this list drifts.
 
 **Refactoring Patterns Used:**
 - **Extract Method/Function**: Break long functions into smaller, focused functions
@@ -349,18 +352,28 @@ These rules are defined in `eslint.config.js` using GTS's flat config format.
 
 ## TypeScript Path Aliases
 
-Path aliases are configured in `tsconfig.app.json` and `vite.config.ts`:
+**Canonical (use for new code):** `.cursor/rules/architecture/RULE.md` — the **`@/`** prefix maps under `src/` and is the enforced style (no `../` chains).
 
-- `@/*` → `src/*`
-- `@common/*` → `src/common/*`
-- `@components/*` → `src/components/*`
-- `@config/*` → `src/config/*`
-- `@features/*` → `src/features/*`
-- `@layouts/*` → `src/layouts/*`
-- `@pages/*` → `src/pages/*`
-- `@store/*` → `src/store/*`
-- `@utils/*` → `src/utils/*`
-- `@shared/*` → `src/shared/*`
+| Pattern | Resolves to |
+|---------|-------------|
+| `@/components/*` | `src/components/*` |
+| `@/pages/*` | `src/pages/*` |
+| `@/hooks/*` | `src/shared/hooks/*` |
+| `@/services/*` | `src/shared/services/*` |
+| `@/utils/*` | `src/shared/utils/*` |
+| `@/types/*` | `src/shared/types/*` |
+| `@/config/*` | `src/config/*` |
+| `@/context/*` | `src/shared/context/*` |
+| `@/theme/*` | `src/shared/theme/*` |
+| `@/routes/*` | `src/routes/*` |
+| `@/lib/*` | `src/lib/*` |
+| `@/ai-capabilities/*` | `src/ai-capabilities/*` |
+
+**Feature modules:** import with `@/features/<feature>/...` (e.g. `@/features/auth/hooks/useAuth`).
+
+**Also:** `tsconfig.app.json` / `vite.config.ts` define legacy shortcuts (`@features/*`, `@shared/*`, `@pages/*`, `@utils/*` → `src/utils`, etc.). Existing files may still use them; **prefer `@/`** for new work so imports match the architecture rule and reviews.
+
+**Note:** Root-level helpers under `src/utils/` are imported as `@/utils/...` via the `src/*` base (e.g. `@/utils/setupUtils`). Shared utilities belong in `src/shared/utils/` when used across features.
 
 ## API Integration
 
@@ -390,6 +403,7 @@ The feature consists of three main components:
 2. **Services** (`src/features/setup/services/`):
    - `envWriterService.ts`: Handles environment variable writing API calls
    - `configService.ts`: Handles app configuration file (`app.config.json`) syncing
+   - `configurationResetService.ts`: Section reset pipeline (env removal API, cleanup, status, sync)
 
 ### Security
 
@@ -434,7 +448,7 @@ For more details, see:
 2. Create subfolders: `components/`, `hooks/`, `services/`, `types/`
 3. Start with types, then services, then hooks, then components
 4. Create page in `src/pages/[FeatureName]Page.tsx`
-5. Add route in `src/App.tsx`
+5. Register the route in `src/App.tsx` (this boilerplate defines `<Routes>` there)
 6. Write tests alongside your code
 
 ## Example: Adding a "Notes" Feature
@@ -445,17 +459,17 @@ For more details, see:
 3. Create hook: src/features/notes/hooks/useNotes.ts
 4. Create components: src/features/notes/components/NoteList.tsx, NoteForm.tsx
 5. Create page: src/pages/NotesPage.tsx
-6. Add route: src/App.tsx
-7. Write tests: src/features/notes/services/__tests__/notesService.test.ts
+6. Add route in `src/App.tsx`
+7. Write tests: e.g. `src/features/notes/services/notesService.test.ts` (colocated)
 ```
 
 ## Questions?
 
 If you're unsure where to put code:
-1. Is it reusable UI? → `common/`
-2. Is it feature-specific? → `features/[feature]/`
-3. Is it shared across features? → `shared/`
-4. Is it a route? → `pages/`
-5. Is it a layout? → `layouts/`
+1. Is it reusable UI? → `src/components/common/`
+2. Is it feature-specific? → `src/features/[feature]/`
+3. Is it shared across features? → `src/shared/` (or `src/utils/` only when appropriate)
+4. Is it a route screen? → `src/pages/`
+5. Is it a layout? → `src/layouts/`
 
 

@@ -195,6 +195,7 @@ Project uses automated architecture enforcement via ESLint + Dependency-Cruiser.
 | `eslint-plugin-boundaries` | Layer boundary enforcement | Real-time (IDE + pre-commit) |
 | `eslint-plugin-import` | Circular dependency prevention, import ordering | Real-time (IDE + pre-commit) |
 | `dependency-cruiser` | Deep analysis, stakeholder reports, CI validation | CI/CD + on-demand |
+| `validate-feature-docs.js` (+ `feature-readme-lib.js`) | Feature-local `README.md` presence (and optional strict headings) | CLI; CI (`validate:feature-docs:strict`); pre-commit (`validate:feature-docs:staged`) |
 
 ### Import Direction (Downward Only)
 
