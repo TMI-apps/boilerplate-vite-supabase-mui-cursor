@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.2] - 2026-04-14
+
+### Documentation
+
+- **Align ARCHITECTURE.md with enforced path aliases**: Import examples and the path-alias section use `@/` per `.cursor/rules/architecture/RULE.md`; placement table uses explicit `src/...` paths; correct/incorrect import examples updated; complexity limits match `eslint.config.js`; route registration notes point to `src/App.tsx`; legacy Vite/tsconfig shortcuts called out separately.
+
 ## [0.18.1] - 2026-04-13
 
 ### Changed
