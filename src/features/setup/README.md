@@ -58,4 +58,4 @@ Expose `isConfigured` and connection test helpers for their respective sections.
 - `docs/testing-app-config.md` – `app.config.json` sync testing
 - `docs/testing-supabase-setup.md` – supabase setup test guide
 - `documentation/DOC_APP_CONFIG_FILE.md` – project-level `app.config.json` reference
-- `.cursor/commands/complete-setup.md` – removal of setup wizard when no longer needed
+- `.cursor/skills/complete-setup/SKILL.md` – removal of setup wizard when no longer needed

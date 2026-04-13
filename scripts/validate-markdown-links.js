@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Validate local markdown links in docs/rules/commands.
+ * Validate local markdown links in docs/rules/skills.
  *
  * Scope:
  * - documentation markdown files
  * - src/features README and docs markdown files
  * - .cursor/rules markdown files
- * - .cursor/commands markdown files
+ * - .cursor/skills markdown files
  *
  * Checks only relative links:
  * - [label](./path)
@@ -28,7 +28,7 @@ const SEARCH_DIRS = [
   "documentation",
   path.join("src", "features"),
   path.join(".cursor", "rules"),
-  path.join(".cursor", "commands"),
+  path.join(".cursor", "skills"),
 ];
 
 const MARKDOWN_EXT = ".md";

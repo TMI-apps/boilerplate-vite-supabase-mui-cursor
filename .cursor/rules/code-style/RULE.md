@@ -287,7 +287,7 @@ When writing code, adhere to these complexity limits to ensure maintainability:
 - Use options objects instead of many parameters
 - Split large functions by responsibility
 
-**Reference:** See `.cursor/commands/optimize2.md` for detailed refactoring workflow and examples.
+**Reference:** See `.cursor/skills/optimize2/SKILL.md` for detailed refactoring workflow and examples.
 
 ### TypeScript Configuration
 - **REQUIRED**: All TypeScript projects must use strict mode (see Quick Reference)
@@ -339,7 +339,7 @@ When working with TypeScript and React:
 - `architecture/RULE.md` - May reference naming conventions for architectural patterns
 - `testing/RULE.md` - May reference code style for test files
 - `workflow/RULE.md` - May reference formatting standards in review process
-- `.cursor/commands/optimize2.md` - Detailed complexity reduction / optimization workflow
+- `.cursor/skills/optimize2/SKILL.md` - Detailed complexity reduction / optimization workflow
 
 **Rules that reference this rule:**
 - All other rules may reference code style standards

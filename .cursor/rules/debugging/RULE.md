@@ -78,7 +78,7 @@ This rule defines debugging strategies, logging practices, and issue analysis pa
 
 ## Scientific Method Debugging
 
-**SSOT:** See `.cursor/commands/debug.md` for the complete Scientific Method Debugging process.
+**SSOT:** See `.cursor/skills/debug/SKILL.md` for the complete Scientific Method Debugging process.
 
 ### Core Principle
 
@@ -234,5 +234,5 @@ Provide specific checks and exact values the user should verify.
 
 **Rules that reference this rule:**
 - `workflow/RULE.md` - References debugging strategy
-- `.cursor/commands/debug.md` - Complete Scientific Method Debugging process (SSOT for debugging commands)
+- `.cursor/skills/debug/SKILL.md` - Complete Scientific Method Debugging process (SSOT for debugging commands)
 

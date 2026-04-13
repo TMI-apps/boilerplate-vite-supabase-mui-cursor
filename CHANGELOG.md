@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-04-13
+
+### Added
+
+- **GitHub Actions sync for experimental**: Workflow `.github/workflows/sync-experimental-with-main.yml` runs on push to `main`, merges `origin/main` into `experimental` (fast-forward when possible; otherwise a merge commit with message `chore: sync experimental with main (auto-merge)`), and pushes. Keeps the integration branch aligned with production history. Requires repository Actions workflow permissions set to read and write.
+
+## [0.16.0] - 2026-04-11
+
+### Changed
+
+- **Agent workflow**: Rewrote `.cursor/skills/check/SKILL.md` as an architecture and code-quality gate (tooling pass + spot-checks); moved requirement-depth and foundation-POC guidance into `.cursor/skills/plan/SKILL.md`.
+- **Claude commands**: Updated `.claude/commands/check.md` and `.claude/commands/review.md` to match skills (`/review` documents the 170-point component rubric).
+- **Cross-references**: Updated `.cursor/skills/plan/SKILL.md`, `quick-piv/SKILL.md`, and `prime/SKILL.md` for the new `check` role.
+- **Project memory**: Trimmed `CLAUDE.md` and `.claude/rules/file-placement.md` / `git-workflow.md` to reduce duplication with `.cursor/rules/` (SSOT pointers only).
+
+### Removed
+
+- **check-simple skill**: Removed `.cursor/skills/check-simple/` (overlapped plan and check).
+
+## [0.15.0] - 2026-04-08
+
+### Added
+
+- **Claude command wrappers**: Added `CLAUDE.md` and `.claude/commands/*` wrappers (`check`, `finish`, `implement`, `plan`, `review`, `validate`) that delegate execution to the corresponding Cursor skills for consistent workflow behavior.
+- **Claude-side workflow reminders**: Added `.claude/rules/file-placement.md` and `.claude/rules/git-workflow.md` to mirror load-bearing project constraints and protected-file handling.
+
+### Changed
+
+- **Feature workflow decision gate**: Updated `.cursor/skills/feature/SKILL.md` to replace generic A/B/C/D option prompts with concrete codebase-derived approaches and a product-owner-friendly value-priority decision point.
+- **Feature planning traceability**: Phase 4 and implementation-document requirements now explicitly carry the chosen approach's concrete scope and rationale through planning and execution.
+- **Structure whitelist**: Updated `projectStructure.config.cjs` to allow `.claude/commands/*.md`, `.claude/rules/*.md`, `.claude/settings*.json`, and `CLAUDE.md`.
+
+## [0.14.0] - 2026-04-08
+
+### Changed
+
+- **Cursor**: Migrated project slash commands from `.cursor/commands/*.md` to Agent Skills at `.cursor/skills/<name>/SKILL.md` (same names; `disable-model-invocation: true` on command-originated skills). Doc links and rule references updated accordingly.
+
 ## [0.13.0] - 2026-03-26
 
 ### Added

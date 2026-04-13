@@ -4,7 +4,7 @@ This guide points you to the canonical process documents. Follow these links for
 
 ## Before You Start
 
-1. **Workflow SSOT** – [`.cursor/commands/finish.md`](../.cursor/commands/finish.md)  
+1. **Workflow SSOT** – [`.cursor/skills/finish/SKILL.md`](../.cursor/skills/finish/SKILL.md)  
    - Commit format, versioning, changelog sync  
    - Run this command before committing
 
@@ -15,7 +15,7 @@ This guide points you to the canonical process documents. Follow these links for
    - Layer rules, code placement, import patterns  
    - See also: [ARCHITECTURE.md](../ARCHITECTURE.md), [projectStructure.config.cjs](../projectStructure.config.cjs), [.dependency-cruiser.cjs](../.dependency-cruiser.cjs)
 
-4. **Release & changelog SSOT** – [`.cursor/commands/finish.md`](../.cursor/commands/finish.md)  
+4. **Release & changelog SSOT** – [`.cursor/skills/finish/SKILL.md`](../.cursor/skills/finish/SKILL.md)  
    - Version bump rules, changelog format, version sync
 
 ## CI Gate Expectations
