@@ -51,6 +51,8 @@ pnpm test:run   # when scoped changes touch tested logic
 
 For each file in scope, verify against `.cursor/rules/architecture/RULE.md`:
 
+- [ ] **Responsibility level:** logic lives in the correct layer per § Code Placement Rules — UI-only in components, lifecycle orchestration in hooks, pure logic in services/utils. Apply the § Logic Decision Flowchart to each piece of non-trivial logic. For edge cases, consult § Edge Case Placement Guide.
+- [ ] **Scope level:** feature-specific code in `features/*/`, cross-feature code in `shared/`, presentation-only reusables in `components/common/`. If a page grew its own hooks/services, it should be a feature (§ Page Complexity Threshold).
 - [ ] **Layer direction:** imports flow `pages → components → hooks → services`. No reverse imports.
 - [ ] **Path aliases:** uses `@common/*`, `@features/*`, `@shared/*`, etc. — no bare `../../` crossing layer boundaries.
 - [ ] **Feature boundaries:** feature code stays in its feature folder; shared code lives in `src/shared/` or `src/components/common/`.

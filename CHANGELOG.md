@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.4] - 2026-04-15
+
+### Added
+
+- **Consolidate skill**: `.cursor/skills/consolidate/SKILL.md` — cross-codebase redundancy audit (discover, classify, prioritize; execution only after user approval). Wired as `/consolidate` in `CLAUDE.md` and `.claude/commands/consolidate.md`.
+
+### Changed
+
+- **Check skill**: Architecture spot-checks explicitly reference `.cursor/rules/architecture/RULE.md` for responsibility level (component vs hook vs service), scope level (feature vs shared vs common), plus Code Placement Rules, Logic Decision Flowchart, and Edge Case Placement Guide.
+
 ## [0.18.3] - 2026-04-15
 
 ### Changed
