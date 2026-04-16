@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-04-16
+
+### Added
+
+- **Airtable agent skills**: `.cursor/skills/airtable-schema-structure/SKILL.md` (Meta/schema, no row data) and `.cursor/skills/airtable-data-sample/SKILL.md` (small Data API samples with `returnFieldsByFieldId=true`). Fork-friendly; optional `tbl`/`fld` SSOT lives in product code per architecture rules.
+- **Airtable CLI helpers**: `scripts/load-airtable-env.js`, `scripts/airtable-meta-dump.js`, `scripts/airtable-sample-records.js` (default table from `VITE_AIRTABLE_TABLE_ID` when `--table` / `--table-name` omitted). `pnpm airtable:meta-dump` and `pnpm airtable:sample` in `package.json`.
+- **Setup docs**: `src/features/setup/README.md` — “Airtable CLI / agent tools” with commands and skill paths.
+
 ## [0.18.4] - 2026-04-15
 
 ### Added

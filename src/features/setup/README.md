@@ -50,6 +50,15 @@ Expose `isConfigured` and connection test helpers for their respective sections.
 - `@shared/theme/themeLoader` – `getCustomTheme`
 - `vite-plugin-dev-api.ts` – dev API plugin
 
+## Airtable CLI / agent tools (optional)
+
+Read-only Node scripts (same `VITE_AIRTABLE_*` vars as the wizard; see `scripts/load-airtable-env.js`):
+
+- **Meta (schema):** `pnpm airtable:meta-dump -- --pretty` or `node scripts/airtable-meta-dump.js --pretty --out <path>`
+- **Sample rows:** `pnpm airtable:sample -- --max-records 2` (uses `VITE_AIRTABLE_TABLE_ID` when `--table` / `--table-name` omitted) or `node scripts/airtable-sample-records.js --table <tblId> --max-records 1`
+
+Agent workflows: `.cursor/skills/airtable-schema-structure/SKILL.md`, `.cursor/skills/airtable-data-sample/SKILL.md`. Do not commit API keys or unsolicited PII dumps.
+
 ## Related
 
 - `docs/README.md` – setup feature deep-dive index
