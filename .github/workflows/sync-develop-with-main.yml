@@ -4,7 +4,7 @@
 # Requires: branch protection must allow GITHUB_TOKEN to push to the dev branch
 # (Settings → Actions → General → Workflow permissions: Read and write).
 
-name: Sync experimental with main
+name: Sync develop with main
 
 on:
   push:
@@ -14,11 +14,11 @@ permissions:
   contents: write
 
 concurrency:
-  group: sync-experimental-with-main
+  group: sync-develop-with-main
   cancel-in-progress: true
 
 env:
-  DEV_BRANCH: experimental
+  DEV_BRANCH: develop
 
 jobs:
   sync:

@@ -1,7 +1,7 @@
 {
   "name": "vite-mui-supabase-starter",
   "private": true,
-  "version": "0.18.3",
+  "version": "0.19.1",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
@@ -40,7 +40,9 @@
     "validate:feature-docs:strict": "node scripts/validate-feature-docs.js --strict",
     "validate:feature-docs:json": "node scripts/validate-feature-docs.js --format=json",
     "validate:feature-docs:staged": "node scripts/validate-feature-docs-staged.js",
-    "arch:check:staged": "node scripts/arch-check-staged.js"
+    "arch:check:staged": "node scripts/arch-check-staged.js",
+    "airtable:meta-dump": "node scripts/airtable-meta-dump.js",
+    "airtable:sample": "node scripts/airtable-sample-records.js"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.0",

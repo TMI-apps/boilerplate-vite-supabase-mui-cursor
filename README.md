@@ -137,20 +137,20 @@ pnpm install
 
 ### Step 3: Set up branch workflow for this repo
 
-Keep `main` as production/stable and use `experimental` as long-lived integration.
+Keep `main` as production/stable and use `develop` as long-lived integration.
 
 ```bash
-git switch -c experimental
-git push -u origin experimental
+git switch -c develop
+git push -u origin develop
 ```
 
 Then configure branch protection in GitHub:
 - `main`: require pull requests, require status checks, disallow force pushes
-- `experimental` (recommended): require pull requests, require status checks, disallow force pushes
+- `develop` (recommended): require pull requests, require status checks, disallow force pushes
 
 Recommended PR flow:
-- Daily work: `feature/*` -> `experimental`
-- Release: `experimental` -> `main`
+- Daily work: `feature/*` -> `develop`
+- Release: `develop` -> `main`
 
 Optional (to pull future boilerplate updates):
 
@@ -203,7 +203,7 @@ Use [MUI Theme Creator](https://bareynol.github.io/mui-theme-creator/) and paste
 
 ### You're ready
 
-Start building features on `feature/*` branches and merge through `experimental` before promoting to `main`.
+Start building features on `feature/*` branches and merge through `develop` before promoting to `main`.
 
 ## Installation
 

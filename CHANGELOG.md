@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.1] - 2026-04-19
+
+### Changed
+
+- **Git branch rename**: Long-lived integration branch `experimental` renamed to **`develop`** (Git Flow convention). Renamed on GitHub via branch rename API (protection rules transferred, open PRs retargeted). Updated rules, skills, CI (`main` + `develop` triggers), and docs (`README.md`, `documentation/DOC_CONTRIBUTING.md`).
+- **GitHub Actions**: Workflow file renamed to `.github/workflows/sync-develop-with-main.yml` (`DEV_BRANCH: develop`, concurrency group `sync-develop-with-main`).
+- **Bug dashboard plan**: Environment-tag value `experimental` renamed to **`develop`** in `documentation/jobs/temp_job_bug_dashboard/IMPLEMENTATION_PLAN.md` (aligned with branch name).
+- **Claude Code**: `.claude/settings.local.json` allowlist updated for `git checkout develop`.
+
+## [0.19.0] - 2026-04-16
+
+### Added
+
+- **Airtable agent skills**: `.cursor/skills/airtable-schema-structure/SKILL.md` (Meta/schema, no row data) and `.cursor/skills/airtable-data-sample/SKILL.md` (small Data API samples with `returnFieldsByFieldId=true`). Fork-friendly; optional `tbl`/`fld` SSOT lives in product code per architecture rules.
+- **Airtable CLI helpers**: `scripts/load-airtable-env.js`, `scripts/airtable-meta-dump.js`, `scripts/airtable-sample-records.js` (default table from `VITE_AIRTABLE_TABLE_ID` when `--table` / `--table-name` omitted). `pnpm airtable:meta-dump` and `pnpm airtable:sample` in `package.json`.
+- **Setup docs**: `src/features/setup/README.md` — “Airtable CLI / agent tools” with commands and skill paths.
+
+## [0.18.4] - 2026-04-15
+
+### Added
+
+- **Consolidate skill**: `.cursor/skills/consolidate/SKILL.md` — cross-codebase redundancy audit (discover, classify, prioritize; execution only after user approval). Wired as `/consolidate` in `CLAUDE.md` and `.claude/commands/consolidate.md`.
+
+### Changed
+
+- **Check skill**: Architecture spot-checks explicitly reference `.cursor/rules/architecture/RULE.md` for responsibility level (component vs hook vs service), scope level (feature vs shared vs common), plus Code Placement Rules, Logic Decision Flowchart, and Edge Case Placement Guide.
+
 ## [0.18.3] - 2026-04-15
 
 ### Changed

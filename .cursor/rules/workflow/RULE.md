@@ -116,31 +116,31 @@ Both locations must use the same version number. If the app displays version in 
 #### Project Branch Pattern
 
 Project supports:
-- `experimental` branch: Primary long-lived integration branch (protected)
+- `develop` branch: Primary long-lived integration branch (protected)
 - `main` branch: Production branch (protected, **never develop on main**)
-- Feature branches: Short-lived branches created from `experimental` for implementation work
+- Feature branches: Short-lived branches created from `develop` for implementation work
 - Hotfix branches: `hotfix/*` branches created from `main` for production emergencies
 
 **Workflow:**
-- **Never develop directly on `main`.** All non-emergency code changes must be made on feature branches or `experimental`.
-- Start feature work from the latest `experimental` state (`git switch experimental` + `git pull origin experimental`) to reduce stale-branch conflicts.
-- Preferred daily flow: `feature/*` -> `experimental` via Pull Request.
-- Release flow: `experimental` -> `main` via Pull Request after required checks are green.
+- **Never develop directly on `main`.** All non-emergency code changes must be made on feature branches or `develop`.
+- Start feature work from the latest `develop` state (`git switch develop` + `git pull origin develop`) to reduce stale-branch conflicts.
+- Preferred daily flow: `feature/*` -> `develop` via Pull Request.
+- Release flow: `develop` -> `main` via Pull Request after required checks are green.
 - Do not push directly to `main` except an explicit emergency override.
-- Avoid direct pushes to long-lived branches (`experimental`, `main`) in shared workflows; use PRs whenever possible.
-- `experimental` is long-lived; do not rely on auto-deleting it after PR merge.
+- Avoid direct pushes to long-lived branches (`develop`, `main`) in shared workflows; use PRs whenever possible.
+- `develop` is long-lived; do not rely on auto-deleting it after PR merge.
 
 #### Branch Protection
 
 **Critical Rule: Never Develop on Main**
 
-The AI must verify the current git branch before editing any code file. **Development on `main` is prohibited.** `main` is for production-ready code only; all development happens on `experimental` or feature branches.
+The AI must verify the current git branch before editing any code file. **Development on `main` is prohibited.** `main` is for production-ready code only; all development happens on `develop` or feature branches.
 
 **Protected Branch Merge Model (Current Repo Decision):**
 - Require Pull Request for `main` updates (no direct push flow).
-- Require Pull Request for `experimental` updates in shared-team workflows.
+- Require Pull Request for `develop` updates in shared-team workflows.
 - Preferred merge method for `main`: **Squash merge** unless user explicitly requests otherwise.
-- Keep `experimental` as a persistent branch (do not auto-delete it as a default workflow behavior).
+- Keep `develop` as a persistent branch (do not auto-delete it as a default workflow behavior).
 
 ##### Verification Process
 
@@ -150,8 +150,8 @@ The AI must verify the current git branch before editing any code file. **Develo
 
 ##### Branch-Specific Rules
 
-- `experimental`: All code changes allowed (primary development branch)
-- Feature branches: All code changes allowed (created from experimental)
+- `develop`: All code changes allowed (primary development branch)
+- Feature branches: All code changes allowed (created from develop)
 - `main`: **Code changes blocked.** Never develop on main. Emergency override only (see below).
 - Other branches: Ask user before proceeding
 
@@ -161,8 +161,8 @@ If code changes are requested while on `main`:
 
 **Stop immediately.** Do not make any code changes. Display warning:
 - You are on the `main` branch. **Never develop on main.**
-- All code changes must be made on `experimental` or feature branches
-- Switch branches: `git checkout experimental`
+- All code changes must be made on `develop` or feature branches
+- Switch branches: `git checkout develop`
 - Once switched, proceed with requested changes
 
 Do not make code changes until user confirms they've switched.
@@ -183,13 +183,13 @@ Only proceed with main branch code changes when ALL of the following are true:
 2. User confirms with "yes, proceed on main"
 3. User acknowledges the risk
 
-Default: **Never develop on main.** When in doubt, require branch switch to `experimental`.
+Default: **Never develop on main.** When in doubt, require branch switch to `develop`.
 
 ##### Implementation Checklist
 
 Before editing code files:
 - [ ] Verify current branch (ask user if unsure)
-- [ ] Confirm branch is `experimental`, a feature branch, OR user gave explicit override
+- [ ] Confirm branch is `develop`, a feature branch, OR user gave explicit override
 - [ ] If on `main`, show warning and wait for branch switch
 - [ ] Proceed with changes only after confirmation
 
@@ -198,12 +198,12 @@ Before editing code files:
 **During Development:**
 - Start of session: "Which branch are you working on?"
 - Before first code edit: Verify branch
-- After user mentions testing: Confirm experimental branch
+- After user mentions testing: Confirm develop branch
 - Before deployment: Remind about branch-specific deploys
 
 **During Git Operations:**
 - Before providing commit instructions: Confirm correct branch
-- When user requests merge: Verify `feature/*` -> `experimental` for development, and `experimental` -> `main` for release
+- When user requests merge: Verify `feature/*` -> `develop` for development, and `develop` -> `main` for release
 - During changelog updates: Note which branch changes apply to
 
 ### Pull Requests
@@ -211,12 +211,12 @@ Before editing code files:
 - Include clear description of changes
 - Link related issues or tickets
 - Request reviews from appropriate team members
-- For development work, use PRs from `feature/*` -> `experimental`
-- For promotions to `main`, use PRs from `experimental` -> `main`
+- For development work, use PRs from `feature/*` -> `develop`
+- For promotions to `main`, use PRs from `develop` -> `main`
 - Wait for required GitHub checks to pass before merging
 - Ensure the PR branch is up to date with the target branch before merge
 - Use squash merge for `main` unless user explicitly requests a different merge strategy
-- If repository setting "Automatically delete head branches" is enabled, ensure it does not remove long-lived `experimental`
+- If repository setting "Automatically delete head branches" is enabled, ensure it does not remove long-lived `develop`
 
 ## Development Process
 

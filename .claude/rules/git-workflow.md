@@ -4,7 +4,7 @@ SSOT: `.cursor/rules/workflow/RULE.md` for branch strategy, protected files, and
 
 **Key behavioral reminders:**
 
-- **Branch model:** `feature/*` → `experimental` → `main`. Never commit to `main` directly. Never force-push protected branches.
+- **Branch model:** `feature/*` → `develop` → `main`. Never commit to `main` directly. Never force-push protected branches.
 - **Commits happen in `/finish` only** — never during `/plan` or `/implement`.
 - **Staging gate:** Before committing, show staged + unstaged lists. If unstaged work exists, **stop and ask**.
 - **Pre-commit hooks:** Never use `--no-verify`. Fix the underlying issue instead.

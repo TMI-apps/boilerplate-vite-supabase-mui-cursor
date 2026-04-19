@@ -60,11 +60,11 @@ If assistant cannot perform the fork UI step, instruct user exactly what to clic
 
 Set up long-lived integration branch:
 ```bash
-git switch -c experimental
-git push -u origin experimental
+git switch -c develop
+git push -u origin develop
 ```
 
-Then guide user to configure GitHub branch protection rules for `main` and `experimental` (PRs required, status checks required, force-push disabled). If this is web-UI only, provide exact steps and wait for user confirmation.
+Then guide user to configure GitHub branch protection rules for `main` and `develop` (PRs required, status checks required, force-push disabled). If this is web-UI only, provide exact steps and wait for user confirmation.
 
 ### 5) Dev server gate
 

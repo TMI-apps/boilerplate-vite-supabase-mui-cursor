@@ -33,9 +33,9 @@ For complete project structure guidelines, refer to `architecture/RULE.md`.
 
 ## Critical Context: Deployment Model
 
-**This project has experimental and main branches that share ONE Supabase project.**
+**This project has develop and main branches that share ONE Supabase project.**
 
-- Frontend code deploys separately per branch (experimental vs main)
+- Frontend code deploys separately per branch (develop vs main)
 - Edge Functions deploy ONCE and affect BOTH branches
 - No staging environment for Edge Functions
 - No automated testing or rollback for functions
@@ -87,7 +87,7 @@ Use Edge Functions ONLY when absolutely necessary:
 3. **Transformations**
    - ❌ Bad: Edge Function to transform/validate data on write
    - ✅ Good: Frontend transforms before writing, RLS policies validate
-   - Reason: Logic changes can be tested on experimental branch first
+   - Reason: Logic changes can be tested on develop branch first
 
 4. **Notification Logic**
    - ❌ Bad: Edge Function to send notifications on events
@@ -122,7 +122,7 @@ await supabase
 ```
 
 **Why this is better than an Edge Function trigger:**
-- ✅ Testable on experimental branch first
+- ✅ Testable on develop branch first
 - ✅ Atomic via PostgreSQL (no race conditions)
 - ✅ Fails gracefully (doesn't block conversation save)
 - ✅ Easy rollback (git revert)
@@ -154,7 +154,7 @@ When considering adding an Edge Function, ask:
    - Yes → Edge Function needed
    - No → Use frontend
 
-3. **Testability:** Can I test this safely on experimental branch?
+3. **Testability:** Can I test this safely on develop branch?
    - Yes → Prefer frontend
    - No → Consider if the feature is worth the risk
 
@@ -170,19 +170,19 @@ When considering adding an Edge Function, ask:
 **Edge Functions Testing Considerations:**
 
 - Manual testing only (no staging environment)
-- Changes affect both experimental and main immediately
+- Changes affect both develop and main immediately
 - Consider impact before adding new functions
 - Deploy via `supabase functions deploy <function-name>`
 - Treat releases to `main` as a separate verification gate when function-adjacent frontend behavior changed
 
 **Frontend Logic Testing Considerations:**
 
-- Test on experimental branch
+- Test on develop branch
 - User testing before merging to main
 - Easy rollback if issues found
 
 **Release Gate Reminder:**
-- For `experimental` -> `main` releases, re-validate critical flows that depend on currently deployed Edge Functions before merge
+- For `develop` -> `main` releases, re-validate critical flows that depend on currently deployed Edge Functions before merge
 
 For complete testing guidelines and patterns, refer to `testing/RULE.md`.
 
@@ -190,7 +190,7 @@ For complete testing guidelines and patterns, refer to `testing/RULE.md`.
 
 If an existing Edge Function could be replaced with frontend logic:
 
-1. Implement frontend version on experimental branch
+1. Implement frontend version on develop branch
 2. Test thoroughly
 3. Deploy frontend changes to main
 4. Monitor for issues
@@ -314,7 +314,7 @@ When Edge Functions are required, organize them by business capability for bette
 
 **This project previously used Firebase Cloud Functions that shared ONE Firebase project.**
 
-- Frontend code deployed separately per branch (experimental vs main)
+- Frontend code deployed separately per branch (develop vs main)
 - Cloud Functions deployed ONCE and affected BOTH branches
 - No staging environment for Cloud Functions
 - No automated testing or rollback for functions

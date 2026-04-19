@@ -36,7 +36,7 @@ Push previously finished work to remote. This command is push-only.
    - If behind, STOP and sync first (rebase or merge) before pushing
 5. Confirm push target relevance:
    - **Preferred**: push feature branch (`feature/*`) and merge via PR
-   - **Shared branches** (`experimental`): avoid direct push in shared workflows; prefer PR-based updates
+   - **Shared branches** (`develop`): avoid direct push in shared workflows; prefer PR-based updates
    - **App-specific changes**: ensure remote points to app repo, not boilerplate repo
 6. Ask user for explicit confirmation: "Ready to push these already-committed changes?"
 7. Execute push only after confirmation.

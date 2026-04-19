@@ -19,6 +19,7 @@ Each slash command reads and executes a `.cursor/skills/<name>/SKILL.md` file.
 | `/implement` | `.cursor/skills/implement/SKILL.md`| Execute the plan phase by phase |
 | `/validate` | `.cursor/skills/validate/SKILL.md` | Rules + tooling review (read-only by default) |
 | `/check` | `.cursor/skills/check/SKILL.md` | Architecture and code-quality gate |
+| `/consolidate` | `.cursor/skills/consolidate/SKILL.md` | Cross-feature duplication and consolidation audit |
 | `/review` | `.cursor/skills/review/SKILL.md` | Component review (170-point rubric) |
 | `/finish` | `.cursor/skills/finish/SKILL.md` | Pre-commit: version, changelog, staging gate, commit |
 
