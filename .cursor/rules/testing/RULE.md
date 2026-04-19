@@ -114,7 +114,7 @@ describe("test", () => {
 
 **Edge Functions have unique testing constraints:**
 
-- **No staging environment**: Edge Functions deploy once and affect both experimental and main branches
+- **No staging environment**: Edge Functions deploy once and affect both develop and main branches
 - **Manual testing only**: No automated testing or rollback for functions
 - **High impact**: Bugs in Edge Functions impact the entire app across all branches
 - **Deployment**: Deploy via `supabase functions deploy <function-name>`
@@ -125,18 +125,18 @@ describe("test", () => {
 - Test thoroughly in development before deployment
 - Use manual testing workflows
 - Document test procedures for each function
-- Include explicit release validation before merging `experimental` -> `main` when Edge Function behavior changed
+- Include explicit release validation before merging `develop` -> `main` when Edge Function behavior changed
 
 **Frontend Logic Testing** (preferred when possible):
 
-- Test on experimental branch first
+- Test on develop branch first
 - User testing before merging to main
 - Easy rollback if issues found
 - Better isolation and testability
 
 ### Release Validation Gate
 
-Before merging `experimental` -> `main`, verify:
+Before merging `develop` -> `main`, verify:
 - Required CI checks are green
 - Manual happy-path and key error-path tests are completed
 - Any Edge Function-related behavior in scope has been re-tested against the currently deployed function version

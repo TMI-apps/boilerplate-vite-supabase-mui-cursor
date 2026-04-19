@@ -33,7 +33,7 @@ Determine what to check:
 
 ### 2. Branch verification
 
-Verify not on `main`. If on `main`, **stop** — instruct: `git checkout experimental` (see `.cursor/rules/workflow/RULE.md` § Branch Strategy).
+Verify not on `main`. If on `main`, **stop** — instruct: `git checkout develop` (see `.cursor/rules/workflow/RULE.md` § Branch Strategy).
 
 ### 3. Tooling pass
 

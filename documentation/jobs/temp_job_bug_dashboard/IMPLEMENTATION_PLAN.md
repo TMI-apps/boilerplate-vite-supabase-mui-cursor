@@ -1,6 +1,6 @@
 ---
 name: App Error Logging System
-overview: "Streamline-plan: log bestaande app-errors naar Supabase met hash-deduplicatie voor local dev + experimental + staging + production (met environment-tag), toon een actiegerichte triage-view in /admin/debug, en gebruik handmatig Cursor command /bugs om open bug-clusters in mensentaal te prioriteren en direct te fixen."
+overview: "Streamline-plan: log bestaande app-errors naar Supabase met hash-deduplicatie voor local dev + develop + staging + production (met environment-tag), toon een actiegerichte triage-view in /admin/debug, en gebruik handmatig Cursor command /bugs om open bug-clusters in mensentaal te prioriteren en direct te fixen."
 todos:
   - id: migration
     content: Schrijf Supabase migratie voor error_logs en bugs tabellen met RLS policies
@@ -83,7 +83,7 @@ Drie nieuwe tabellen via een migratie in `supabase/migrations/`:
 
 `**error_logs**` — dedup-clusters + telling:
 
-- `id`, `hash` (uniek), `message`, `stack`, `context`, `type`, `route`, `user_id`, `browser_info`, `count`, `first_seen_at`, `last_seen_at`, `app_version`, `environment` (`local_dev` / `experimental` / `staging` / `production`), `status` (open / muted / resolved), `resolved` (boolean)
+- `id`, `hash` (uniek), `message`, `stack`, `context`, `type`, `route`, `user_id`, `browser_info`, `count`, `first_seen_at`, `last_seen_at`, `app_version`, `environment` (`local_dev` / `develop` / `staging` / `production`), `status` (open / muted / resolved), `resolved` (boolean)
 
 `**bugs**` — gegroepeerde / bevestigde bugs (beheerd door Cursor):
 
@@ -93,7 +93,7 @@ Drie nieuwe tabellen via een migratie in `supabase/migrations/`:
 
 - `id`, `bug_id` (FK), `error_log_id` (FK), `created_at`
 
-RLS + write-pad: clients schrijven niet direct naar `error_logs`, maar via een `SECURITY DEFINER` RPC (`upsert_error_log`) die alleen voor `authenticated` executebaar is. Zo werkt logging voor alle ingelogde users in local dev, experimental, staging en production. Admin-users kunnen `bugs` lezen en updaten.
+RLS + write-pad: clients schrijven niet direct naar `error_logs`, maar via een `SECURITY DEFINER` RPC (`upsert_error_log`) die alleen voor `authenticated` executebaar is. Zo werkt logging voor alle ingelogde users in local dev, develop, staging en production. Admin-users kunnen `bugs` lezen en updaten.
 
 Retentie: `error_logs` records ouder dan **90 dagen** worden verwijderd via scheduled cleanup.
 
@@ -106,8 +106,8 @@ Nieuw bestand: `src/shared/services/errorLoggingService.ts`
 - Doet een Supabase **upsert op hash**: als de error al bestaat → `count++` en `last_seen_at` updaten; nieuw → insert
 - Voegt toe: huidige route (`window.location.pathname`), `user_id` uit Supabase auth, browser info
 - Faalt **stilletjes** (geen recursieve logging) — wrap in `try/catch` zonder re-throw
-- Conditie: loggen in alle omgevingen (local dev + experimental + staging + production), maar met expliciete `environment` waarde in de DB per logregel
-- Bepaal `environment` in client op basis van hostname/build constants (bijv. `localhost` => `local_dev`, `--experimental` host => `experimental`, staging build => `staging`, anders `production`)
+- Conditie: loggen in alle omgevingen (local dev + develop + staging + production), maar met expliciete `environment` waarde in de DB per logregel
+- Bepaal `environment` in client op basis van hostname/build constants (bijv. `localhost` => `local_dev`, develop-deploy hostname => `develop`, staging build => `staging`, anders `production`)
 
 ## Fase 3 — Error Sources aansluiten (bestaande bronnen eerst)
 
@@ -178,7 +178,7 @@ Dit is een **Cursor Slash Command** instructie die de developer handmatig aanroe
 - Verifieer na deploy dat:
   - `error_logs.environment` gevuld wordt
   - `resolved` booleans op `bugs` en `error_logs` bestaan en synchroniseren met status-updates
-  - local dev en experimental writes daadwerkelijk in de DB landen met de juiste `environment` tag
+  - local dev en develop writes daadwerkelijk in de DB landen met de juiste `environment` tag
 
 ## Finish regel (nieuwe functionaliteit check, verplicht)
 

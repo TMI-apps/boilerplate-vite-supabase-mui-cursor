@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.1] - 2026-04-19
+
+### Changed
+
+- **Git branch rename**: Long-lived integration branch `experimental` renamed to **`develop`** (Git Flow convention). Renamed on GitHub via branch rename API (protection rules transferred, open PRs retargeted). Updated rules, skills, CI (`main` + `develop` triggers), and docs (`README.md`, `documentation/DOC_CONTRIBUTING.md`).
+- **GitHub Actions**: Workflow file renamed to `.github/workflows/sync-develop-with-main.yml` (`DEV_BRANCH: develop`, concurrency group `sync-develop-with-main`).
+- **Bug dashboard plan**: Environment-tag value `experimental` renamed to **`develop`** in `documentation/jobs/temp_job_bug_dashboard/IMPLEMENTATION_PLAN.md` (aligned with branch name).
+- **Claude Code**: `.claude/settings.local.json` allowlist updated for `git checkout develop`.
+
 ## [0.19.0] - 2026-04-16
 
 ### Added

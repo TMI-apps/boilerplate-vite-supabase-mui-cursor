@@ -14,7 +14,7 @@
 
 ## Source / context
 
-- User request: adapt **`airtable-schema-structure`** and **`airtable-data-sample`** from **`project-alpha`** (`project-alpha/experimental`) into this boilerplate, with **more abstract Airtable** guidance than the Alpha app.
+- User request: adapt **`airtable-schema-structure`** and **`airtable-data-sample`** from **`project-alpha`** (`project-alpha/develop`) into this boilerplate, with **more abstract Airtable** guidance than the Alpha app.
 - Investigation: two explore subagents (boilerplate layout vs alpha `git show` inventory) + local rules/config read.
 
 ---
@@ -64,7 +64,7 @@
 | `.cursor/rules/file-placement/RULE.md` + `projectStructure.config.cjs` | `.cursor/skills/* /SKILL.md` whitelisted; `scripts/*.js` whitelisted; `documentation/jobs/temp_job_*/DEVELOPMENT_PLAN.md` whitelisted. **No** `projectStructure.config.cjs` change required for standard additions. |
 | `.cursor/rules/security/RULE.md` | Never echo API keys; skills must state redaction / low `maxRecords` / `--fields` allowlist; warn about PII in sample output. |
 | `.cursor/rules/code-style/RULE.md` | Keep each script focused; avoid >100-line functions where reasonable; use small helpers in one file or split only if needed. |
-| `.cursor/rules/workflow/RULE.md` | Implement on `experimental`, not `main`. Changelog only in **finish**, not in this job. |
+| `.cursor/rules/workflow/RULE.md` | Implement on `develop`, not `main`. Changelog only in **finish**, not in this job. |
 | `scripts/validate-cursor-doc-references.js` | All **file paths** cited inside new `SKILL.md` files must exist in the repo after implementation (or use phrasing “optional if you add …” without fake paths). |
 
 ### Planned placements
@@ -116,7 +116,7 @@ Ship `load-airtable-env.js`, `airtable-meta-dump.js`, and `airtable-sample-recor
 
 ### Steps
 
-1. Port **`load-airtable-env.js`** from `project-alpha/experimental` with minimal edits (comments: boilerplate, reject placeholders consistent with `isAirtableConfigured` semantics where practical).
+1. Port **`load-airtable-env.js`** from `project-alpha/develop` with minimal edits (comments: boilerplate, reject placeholders consistent with `isAirtableConfigured` semantics where practical).
 2. Port **`airtable-meta-dump.js`**: `GET …/meta/bases/{baseId}/tables`, write JSON or stdout; no imports from `src/`.
 3. Port **`airtable-sample-records.js`**: Data API with `returnFieldsByFieldId=true`, resolve `--table-name` via Meta when needed. **Default table:** if neither `--table` nor `--table-name` is passed, use **`VITE_AIRTABLE_TABLE_ID`** (required non-placeholder); otherwise require explicit `--table` / `--table-name`.
 4. Add **file header comments**: security reminders, no committed `meta.json` with secrets (output is schema-only but still operational metadata).
