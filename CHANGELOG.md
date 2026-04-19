@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.2] - 2026-04-19
+
+### Documentation
+
+- **Workflow rule**: Added PR merge troubleshooting — when `mergeable: MERGEABLE` but `mergeStateStatus: BLOCKED`, treat pending required checks as the default cause; use `gh pr view` / `gh pr checks --watch`. Documented that `main` uses GitHub **Rulesets** (not classic branch protection), so `branches/main/protection` may 404 while `rules/branches/main` shows active rules.
+
 ## [0.19.1] - 2026-04-19
 
 ### Changed

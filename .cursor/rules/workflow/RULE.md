@@ -218,6 +218,18 @@ Before editing code files:
 - Use squash merge for `main` unless user explicitly requests a different merge strategy
 - If repository setting "Automatically delete head branches" is enabled, ensure it does not remove long-lived `develop`
 
+#### Diagnosing "merge blocked" / "rule violation"
+
+When a user reports a merge was blocked, do not assume the ruleset is broken. First inspect PR state:
+
+- `gh pr view <N> --json mergeable,mergeStateStatus,statusCheckRollup`
+- `mergeable: MERGEABLE` + `mergeStateStatus: BLOCKED` almost always means a **required status check is still `IN_PROGRESS` or missing** — wait with `gh pr checks <N> --watch`, then re-check.
+- Only investigate deeper (stale branch, missing approval, signed-commits, etc.) once `statusCheckRollup` is fully green but state is still `BLOCKED`.
+
+This repo enforces merge requirements via GitHub **Rulesets**, not classic branch protection:
+- Classic endpoint `gh api repos/OWNER/REPO/branches/main/protection` returns `404 Branch not protected` — that is **not** evidence that `main` is unprotected.
+- Use `gh api repos/OWNER/REPO/rules/branches/main` to list the active rules (required checks, PR requirements, deletion/non-fast-forward guards).
+
 ## Development Process
 
 ### Before Starting Work
