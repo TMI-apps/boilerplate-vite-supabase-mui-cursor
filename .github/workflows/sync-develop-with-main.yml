@@ -1,8 +1,13 @@
 # Keeps the long-lived development branch in sync with main after each merge to main.
 # Rename DEV_BRANCH below if your repo uses develop, staging, etc.
 #
-# Requires: branch protection must allow GITHUB_TOKEN to push to the dev branch
-# (Settings → Actions → General → Workflow permissions: Read and write).
+# Requires:
+# - Settings → Actions → General → Workflow permissions: Read and write (for GITHUB_TOKEN).
+# - Repository **Rulesets** (or branch protection) must allow this workflow to push to the
+#   dev branch. If pushes fail with GH013 / "repository rule violations", add a **bypass**
+#   for GitHub Actions (or github-actions[bot]) on the ruleset that targets `refs/heads/develop`,
+#   or the bot cannot push past "pull request required" / required-check gates.
+#   Review rules at: Repo → Settings → Rules → Rulesets (see GitHub docs: rulesets bypass list).
 
 name: Sync develop with main
 
