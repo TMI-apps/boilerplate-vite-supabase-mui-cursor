@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.4] - 2026-04-20
+
+### Removed
+
+- **CI**: Deleted `.github/workflows/sync-develop-with-main.yml`. The workflow pushed directly to `develop`, which conflicts with the repo ruleset (PR required + required `test` check) and fails with GH013. `main` → `develop` sync after a squash merge is now handled manually via a PR when needed (rare; almost always cosmetic divergence).
+
 ## [0.19.3] - 2026-04-20
 
 ### Documentation
