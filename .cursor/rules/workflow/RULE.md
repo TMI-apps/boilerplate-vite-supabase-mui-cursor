@@ -357,7 +357,7 @@ See Branch Strategy section above for detailed branch protection rules and verif
    - Pushes only already committed work after explicit user confirmation
    - Default push target is the current non-`main` branch (typically `feature/*`); direct pushes to `main` are disallowed unless user explicitly requests an emergency override
    - Before pushing shared-branch updates, verify branch freshness against remote and sync first when behind
-   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.cursor/skills/debug/SKILL.md` § "Git env.exe couldn't create signal pipe")
+   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.cursor/skills/debug/patterns.md` — **Git on Windows: env.exe signal pipe Win32 error 5**)
 
 5. **General commit safety:**
    - Never assume the user wants to commit just because changes are complete

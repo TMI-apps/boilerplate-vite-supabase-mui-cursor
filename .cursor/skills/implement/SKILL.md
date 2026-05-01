@@ -109,8 +109,10 @@ See `.cursor/rules/INDEX.md` for the full set.
 
 1. **STOP** implementation
 2. **ASK** the user explicitly
-3. **WAIT** for an answer
-4. **DOCUMENT** in Decisions made
+3. If the issue is ambiguity, ask about the user's intended app usage or product vision so the answer determines the decision
+4. If the issue is a diversion from industry standards, framework best practices, or repo conventions, ask whether that diversion is intentional or whether to align with best practices
+5. **WAIT** for an answer
+6. **DOCUMENT** in Decisions made
 
 **Format:**
 
@@ -129,6 +131,8 @@ If something is not covered by the plan:
 
 - Add an entry under **Notes during development**
 - **STOP** and ask the user: “I hit [X]. The plan does not cover this. How should we proceed?”
+- If the gap is unresolved ambiguity, ask a specific app-usage or product-vision question.
+- If the gap reveals an undocumented standards diversion, ask whether to keep the diversion or realign with best practices.
 - Wait for an answer, then continue and record any decision
 
 ---

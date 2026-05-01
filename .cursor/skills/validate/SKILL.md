@@ -53,6 +53,8 @@ Validate either (1) the plan document, or (2) the implementation of an executed 
 - **Completeness:** Summary, Phase overview (every phase has a gate), Conflict & compliance, Notes during development, Decisions made sections; phases have Goal, Steps, Gate.
 - **Consistency:** Steps match Conflict & compliance; layer boundaries and import direction described correctly; complexity expectations align with `.cursor/rules/code-style/RULE.md`.
 - **Boilerplate fit:** References to TanStack Query / features / shared layers match `ARCHITECTURE.md` and `documentation/DOC_TANSTACK_QUERY.md` when the plan touches server state.
+- **Ambiguity:** The plan does not hide assumptions where the user's app-usage vision is needed; unresolved ambiguity is listed as an open question or answered in Decisions made.
+- **Standards divergence:** Any diversion from industry standards, framework best practices, or established repo conventions is documented and user-confirmed.
 
 **Output:** Structured report only. No file changes.
 

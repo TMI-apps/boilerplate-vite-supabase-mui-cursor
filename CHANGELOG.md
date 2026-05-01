@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.5] - 2026-05-01
+
+### Changed
+
+- **Agent skills refresh: router, debug patterns, and ambiguity gates**: Add `.cursor/skills/router/SKILL.md` for skill selection with goal/scope gates. Rewrites `.cursor/skills/debug/SKILL.md`, adds `.cursor/skills/debug/patterns.md`, and whitelists optional skill-level `patterns.md` in `projectStructure.config.cjs`. Updates `.cursor/skills/finish/SKILL.md`, `.cursor/rules/file-placement/RULE.md`, `.cursor/rules/workflow/RULE.md`, and `.cursor/skills/learn/SKILL.md` for cross-references. Extends `.cursor/skills/plan/SKILL.md`, `feature/SKILL.md`, `consolidate/SKILL.md`, `implement/SKILL.md`, `quick-piv/SKILL.md`, `validate/SKILL.md`, and `prime/SKILL.md` with ambiguity removal (app-usage or product-vision questions) and explicit user confirmation for diversions from standards or repo conventions.
+
 ## [0.19.4] - 2026-04-20
 
 ### Removed

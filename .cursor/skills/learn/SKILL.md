@@ -79,7 +79,7 @@ Pick **one primary** location. Cross-link elsewhere in one line if needed — ne
 | Folder placement, imports, layers, path aliases | `.cursor/rules/architecture/RULE.md` or `.cursor/rules/file-placement/RULE.md` |
 | Vitest, coverage, test layout | `.cursor/rules/testing/RULE.md` |
 | Changelog, version, finish / branch strategy | `.cursor/rules/workflow/RULE.md` or `.cursor/skills/finish/SKILL.md` |
-| Known symptom → fix pattern (repeatable) | `.cursor/skills/debug/SKILL.md` § **Common Error Pattern Recognition** |
+| Known symptom → fix pattern (repeatable) | `.cursor/skills/debug/patterns.md` |
 | Edge Functions vs frontend | `.cursor/rules/cloud-functions/RULE.md` |
 | TanStack Query, server state | `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`, or feature `api/` keys patterns (one primary) |
 | Long procedural workflow | Relevant `.cursor/skills/<name>/SKILL.md` |

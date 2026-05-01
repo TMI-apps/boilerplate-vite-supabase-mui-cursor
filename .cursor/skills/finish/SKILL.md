@@ -10,7 +10,7 @@ Complete the implementation by doing what you haven't done yet of these tasks:
 - remove temporary console logs
 - remove instrumentation
 - remove redundant/legacy code
-- **If this was a debugging session that resulted in a fix:** update `.cursor/skills/debug/SKILL.md` § "Common Error Pattern Recognition" **only** when the insight is reusable.
+- **If this was a debugging session that resulted in a fix:** update `.cursor/skills/debug/patterns.md` (the debug pattern library) **only** when the insight is reusable.
   - Capture the pattern at the level of a **bug class**, not a single incident.
   - Use format: **Symptom class -> Likely cause classes -> Discriminator question -> First diagnostic move**.
   - Prefer cross-feature language (e.g. race conditions, stale state, config drift, schema mismatch, effect dependency loops).

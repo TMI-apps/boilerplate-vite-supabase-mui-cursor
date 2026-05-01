@@ -71,6 +71,7 @@ Deliver a concise, scannable summary:
 ### Actionable insights
 
 - Mismatches vs rules, missing optional docs, or tech debt called out in repo docs.
+- Active plans with unresolved app-usage ambiguity or undocumented standards/best-practice diversions, when visible from `documentation/jobs/`.
 
 ---
 

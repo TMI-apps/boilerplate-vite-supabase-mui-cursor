@@ -60,11 +60,12 @@ If unclear, **ask** which branch applies.
 
 **Process:**
 
-1. If the request is vague → ask 1–2 clarifying questions, then proceed.
+1. If the request is vague, or ambiguity appears during quick investigation, stop and ask 1–2 clarifying questions about the user's vision for how the app will be used. Do not choose between plausible interpretations silently.
 2. Quick investigation: search codebase; skim `.cursor/rules/INDEX.md` for applicable rules; use `documentation/DOC_TANSTACK_QUERY.md` if server state / queries are involved.
 3. Sanity-check file placement against `.cursor/rules/file-placement/RULE.md` and `projectStructure.config.cjs`.
-4. **Branch B:** Output the quick plan in chat (vital). **Branch A:** Optionally extend the plan document.
-5. Proceed to implementation (no separate approval wait unless the user stops you).
+4. Check whether the quick plan would diverge from industry standards, framework best practices, or established repo conventions. If yes, ask whether the diversion is intentional or whether to align with best practices before implementing.
+5. **Branch B:** Output the quick plan in chat (vital). **Branch A:** Optionally extend the plan document.
+6. Proceed to implementation (no separate approval wait unless the user stops you).
 
 ---
 

@@ -35,7 +35,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
    - Feature state slice (`.ts`) → `src/features/*/store/`
    - Validation schema (`.ts`) → `src/features/*/types/*.schema.ts` or `src/shared/utils/validation/`
    - Data transformer (`.ts`) → Consumer's `services/` or `src/shared/utils/transformers/`
-   - Agent project skill → `.cursor/skills/<name>/SKILL.md` (one `SKILL.md` per folder per `projectStructure.config.cjs`)
+   - Agent project skill → `.cursor/skills/<name>/SKILL.md` (one `SKILL.md` per folder per `projectStructure.config.cjs`; optional `patterns.md` only where whitelisted, e.g. debug skill pattern library)
 3. **Validate**: Directory exists in config, file pattern allowed, matches whitelist
 4. **If invalid**: Identify violation, suggest correct location, explain why, offer to create
 
