@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-05-05
+
+### Changed
+
+- **Validate and check skills: parallel rule-shaped audit**: Rewrite `.cursor/skills/validate/SKILL.md` and `.cursor/skills/check/SKILL.md` so every invocation fans out one read-only subagent per applicable rule in `.cursor/rules/` (called via `Task` with `subagent_type: explore`, `readonly: true`, narrow scope, and a required structured output schema — `severity`, `file:line`, `rule_section`, `ambiguity`, `question`). The parent dedupes cross-rule overlaps, surfaces failed subagents as "not audited — rerun recommended", and runs a batched ambiguity-question gate before the report. Implementation review additionally runs the tooling pass (parent-executed `pnpm validate:structure / lint / type-check / arch:check / test:run` plus optional `format:check`) and a plan-compliance subagent in parallel. `check` reuses the contract with a smaller default rule set (architecture, file-placement, code-style; security/database/testing/workflow only when scope touches them), no plan-compliance pass, and defers the schema to `validate/SKILL.md` as the single source of truth.
+
 ## [0.19.5] - 2026-05-01
 
 ### Changed
