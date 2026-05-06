@@ -25,6 +25,7 @@ Quick reference guide to all rules and their relationships.
 - **Project structure** (SSOT for folder organization)
 - **Path aliases** (SSOT for `@/hooks/*`, `@/components/*`, etc. mappings)
 - Patterns and practices
+- **TanStack Query: plain optimistic + server-canonical response** (SSOT playbook—cache merge on success; avoid happy-path `invalidateQueries` for the same keys)
 - Module organization
 - Layer boundaries and import direction
 - **Architecture documentation** (minimal contract-doc maintenance)
