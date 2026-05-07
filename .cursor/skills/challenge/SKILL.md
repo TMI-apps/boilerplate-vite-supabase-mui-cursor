@@ -1,7 +1,6 @@
 ---
 name: challenge
 description: "challenge"
-disable-model-invocation: true
 ---
 
 # challenge

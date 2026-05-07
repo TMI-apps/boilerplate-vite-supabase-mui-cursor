@@ -1,7 +1,6 @@
 ---
 name: feature
 description: "feature"
-disable-model-invocation: true
 ---
 
 # feature

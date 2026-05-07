@@ -1,7 +1,6 @@
 ---
 name: quick-piv
 description: "quick-piv"
-disable-model-invocation: true
 ---
 
 # quick-piv

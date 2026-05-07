@@ -4,7 +4,6 @@ description: >-
   Turns recent code changes, failures, and conversation mistakes into durable guidance.
   Use when the user runs /learn, asks for a retrospective or to sharpen rules, or after
   resolving a multi-turn struggle (e.g. 3+ failed attempts, critical CI fix).
-disable-model-invocation: true
 ---
 
 # Learn from changes and sharpen rules

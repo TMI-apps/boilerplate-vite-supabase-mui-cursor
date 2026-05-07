@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Finish skill**: Parallel-thread concurrent-work gate — smoke signals (unstable tree, drifting status/diff, scope mismatch, version/changelog oddities, hook failures outside thread scope, non-fast-forward push, other agent on same checkout) block version bump, changelog, commit, and push until the user picks a path via structured **AskQuestion** (pause finish, bundle finish, stash lane when the other agent is paused, or wait-and-re-check with a single ~3 minute delay).
 - **Architecture rule**: Plain optimistic + server-canonical response playbook for TanStack Query (canonical mutation payloads, `onMutate`/`setQueryData`, avoid happy-path `invalidateQueries` for the same keys; anti-patterns; repo pointers). `.cursor/rules/INDEX.md` and SSOT list updated.
 
+## [0.20.1] - 2026-05-07
+
+### Changed
+
+- **Cursor agent skills**: Removed `disable-model-invocation` from project `.cursor/skills/**/SKILL.md` files so descriptions can drive agent discovery; repaired YAML frontmatter on `airtable-data-sample` and `airtable-schema-structure` skills.
+- **Router skill**: After routing, the agent must **invoke** the chosen skill (read its `SKILL.md` and execute the workflow in the same turn), not only list paths. Bare `/router` with no substantive task routes to **finish**.
+
 ## [0.20.0] - 2026-05-05
 
 ### Changed

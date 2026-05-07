@@ -1,7 +1,6 @@
 ---
 name: start
 description: "start"
-disable-model-invocation: true
 ---
 
 # start

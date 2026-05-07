@@ -1,7 +1,6 @@
 ---
 name: validate
 description: "validate"
-disable-model-invocation: true
 ---
 
 # validate

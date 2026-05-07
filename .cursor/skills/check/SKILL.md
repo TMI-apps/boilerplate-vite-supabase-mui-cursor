@@ -1,7 +1,6 @@
 ---
 name: check
 description: "check"
-disable-model-invocation: true
 ---
 
 # check

@@ -1,7 +1,6 @@
 ---
 name: plan
 description: "plan"
-disable-model-invocation: true
 ---
 
 # plan

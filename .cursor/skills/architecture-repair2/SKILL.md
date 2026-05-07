@@ -1,7 +1,6 @@
 ---
 name: architecture-repair2
 description: "Semantic architecture repair complementing automated checks."
-disable-model-invocation: true
 ---
 
 # architecture-repair

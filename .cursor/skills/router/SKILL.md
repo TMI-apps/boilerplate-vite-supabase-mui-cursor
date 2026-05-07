@@ -1,15 +1,19 @@
 ---
 name: router
 description: >-
-  Chooses which skill to load for a task. Maps situations to project, user, and
-  plugin skills; resolves overlaps. Use when the user asks which skill to use,
-  when starting ambiguous work, or when routing from slash commands to SKILL.md files.
-disable-model-invocation: true
+  Chooses which skill applies, then invokes it (read that SKILL.md and execute the workflow
+  in the same turn). Maps situations to project, user, and plugin skills; resolves overlaps.
+  Use when the user asks which skill to use, types /router, starts ambiguous work, or routes
+  from slash commands to SKILL.md files. Bare /router (no task text) defaults to finish.
 ---
 
 # Skill router
 
-Use this file to pick **one primary skill** (sometimes two in sequence). Read the linked `SKILL.md` before executing that workflow.
+Use this file to pick **one primary skill** (sometimes two in sequence).
+
+**Invocation contract (always):** After you decide the primary skill — and any secondary skill that must run **next** in order — **read that skill’s `SKILL.md` and execute its workflow starting in this same turn.** Invoking means load + follow steps, not naming a path or asking the user which skill file to open. If two skills apply sequentially (for example `plan` → `implement`), finish the first’s applicable step or hand off explicitly per that skill, then read and run the second without ending on a static routing table alone.
+
+**Bare `/router`:** If the user message is only `/router` (optional whitespace) and carries **no substantive task or question**, the primary skill is **finish** — read `.cursor/skills/finish/SKILL.md` immediately and run it on the current working tree.
 
 **Quality bar:** Listed skills were reviewed for actionable structure (clear triggers, steps, or rubrics). Very thin prompts (e.g. `stepback`) are called out as minimal.
 
@@ -102,6 +106,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 
 | Situation | Skill |
 |-----------|--------|
+| User sends **only** `/router` (no substantive task); see **Bare `/router`** above | `.cursor/skills/finish/SKILL.md` |
 | New chat / ambiguous task; map repo rules and recent git state | `.cursor/skills/prime/SKILL.md` |
 | **Goal and scope clear**; non-trivial job needing phased written plan + compliance | `.cursor/skills/plan/SKILL.md` |
 | Goal or scope **not** ready — questions only, no plan file yet | `.agents/skills/grill-me/SKILL.md` and/or `.cursor/skills/plan/SKILL.md` **§ Refine** (see Decision model above) |

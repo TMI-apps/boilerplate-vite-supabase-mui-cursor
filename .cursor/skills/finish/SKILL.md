@@ -1,7 +1,6 @@
 ---
 name: finish
 description: "finish"
-disable-model-invocation: true
 ---
 
 # finish

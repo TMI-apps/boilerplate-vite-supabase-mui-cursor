@@ -1,7 +1,6 @@
 ---
 name: debug
 description: Structured scientific debugging for runtime bugs, regressions, flaky behavior, frontend/backend failures, Supabase/RLS/Auth/Storage issues, and user-reported errors. Use when the user invokes /debug, asks to debug, reports an error, or describes inconsistent behavior.
-disable-model-invocation: true
 ---
 
 # debug

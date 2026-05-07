@@ -1,7 +1,6 @@
 ---
 name: prime
 description: "prime"
-disable-model-invocation: true
 ---
 
 # prime

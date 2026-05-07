@@ -5,7 +5,6 @@ description: >-
   removal opportunities across features. Use when the user asks to find duplication,
   consolidate code, audit for redundancy, reduce repetition, or identify shared
   patterns that should be unified.
-disable-model-invocation: true
 ---
 
 # Consolidate - Cross-Codebase Redundancy Audit

@@ -1,7 +1,6 @@
 ---
 name: implement
 description: "implement"
-disable-model-invocation: true
 ---
 
 # implement
