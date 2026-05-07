@@ -30,6 +30,7 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 ### 1. Load plan
 
 - [ ] Read `DEVELOPMENT_PLAN.md` for the resolved job folder.
+- [ ] If the plan’s **Summary** or acceptance criteria imply user-facing product change, skim `documentation/DOC_APP_VISION.md` for consistency; if **`DRAFT`**, flag to the user before heavy implementation.
 - [ ] Verify mandatory sections exist: Summary, Phase overview, Conflict & compliance, Notes during development, Decisions made.
 - [ ] Find the first phase in the overview that is not done (e.g. status `Pending`, empty, or not marked ✅).
 

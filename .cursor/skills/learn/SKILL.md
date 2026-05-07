@@ -82,6 +82,7 @@ Pick **one primary** location. Cross-link elsewhere in one line if needed — ne
 | Edge Functions vs frontend | `.cursor/rules/cloud-functions/RULE.md` |
 | TanStack Query, server state | `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`, or feature `api/` keys patterns (one primary) |
 | Long procedural workflow | Relevant `.cursor/skills/<name>/SKILL.md` |
+| **Product problem, persona, app role (fillable template)** | `documentation/DOC_APP_VISION.md` (onboarding: `.cursor/skills/start/SKILL.md`) |
 | Reusable multi-step procedure (not a one-line rule) | New or existing `.cursor/skills/<name>/SKILL.md` in this repo, or a user-level skill outside the repo |
 
 Confirm ownership via `.cursor/rules/INDEX.md`.

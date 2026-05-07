@@ -52,7 +52,7 @@ If unclear, **ask** which branch applies.
 ```markdown
 **Quick plan**
 
-- **Goal:** [1 sentence]
+- **Goal:** [1 sentence — align with `documentation/DOC_APP_VISION.md` when the change touches product meaning; if vision is `DRAFT`, pause for fill or explicit deferral]
 - **Steps:** [3–5 bullet points, rules-compliant]
 - **Gate:** [How we verify it works]
 ```

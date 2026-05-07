@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-05-07
+
+### Added
+
+- **App vision & goals**: Fillable product brief `documentation/DOC_APP_VISION.md` (problem statement, user persona, app’s role; `DRAFT` → `ACTIVE` gate).
+
+### Changed
+
+- **Onboarding and agent workflows**: `start` requires the vision doc before fork/clone (unless user defers); `prime`, `plan`, `feature`, `quick-piv`, `implement`, `validate`, `learn`, and `router` reference the vision SSOT; `documentation/DOC_INDEX.md`, `.cursor/rules/workflow/RULE.md`, `.cursor/rules/INDEX.md`, and `CLAUDE.md` updated.
+
 ## [0.20.1] - 2026-05-07
 
 ### Changed

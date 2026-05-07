@@ -3,8 +3,9 @@ name: router
 description: >-
   Chooses which skill applies, then invokes it (read that SKILL.md and execute the workflow
   in the same turn). Maps situations to project, user, and plugin skills; resolves overlaps.
-  Use when the user asks which skill to use, types /router, starts ambiguous work, or routes
-  from slash commands to SKILL.md files. Bare /router (no task text) defaults to finish.
+  Product context SSOT: documentation/DOC_APP_VISION.md. Use when the user asks which skill
+  to use, types /router, starts ambiguous work, or routes from slash commands to SKILL.md
+  files. Bare /router (no task text) defaults to finish.
 ---
 
 # Skill router
@@ -32,7 +33,7 @@ Route work in **three gates**. Answer in order; **do not skip gate 1 or 2** to r
 | **Clear** | Intended behavior or artifact is agreed; success is falsifiable. |
 | **Unclear** | Wish or direction only; conflicting interpretations possible; “make it better” with no bar. |
 
-If unclear, ask about the user's intended app usage, product vision, priorities, or real user journey. Do not route into full planning until the answer removes ambiguity.
+If unclear, ask about the user's intended app usage, product vision, priorities, or real user journey. **First read** `documentation/DOC_APP_VISION.md` when it may already answer “who / why / what the app is for”; if it is still **`DRAFT`**, route the user to complete it (`.cursor/skills/start/SKILL.md` § App vision) or treat lack of vision as ambiguity until they defer in writing. Do not route into full planning until the answer removes ambiguity.
 
 ### Gate 2 — Scope / requirements
 
@@ -117,7 +118,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Component-level rubric (props, MUI, a11y, tests) | `.cursor/skills/review/SKILL.md` |
 | Version, changelog, staging gate, **local** commit | `.cursor/skills/finish/SKILL.md` |
 | Push already committed work (after `finish`) | `.cursor/skills/push/SKILL.md` |
-| Human onboarding; README quick start | `.cursor/skills/start/SKILL.md` |
+| Human onboarding; README quick start | `.cursor/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
 | Remove setup wizard after app is configured | `.cursor/skills/complete-setup/SKILL.md` |
 
 ### This repo — product & codebase shape
@@ -289,6 +290,7 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 ### Project (this repo)
 
 - `.cursor/skills/router/SKILL.md` — this file
+- `documentation/DOC_APP_VISION.md` — product SSOT (problem, persona, app’s role)
 - `.cursor/skills/plan/SKILL.md`
 - `.cursor/skills/implement/SKILL.md`
 - `.cursor/skills/validate/SKILL.md`

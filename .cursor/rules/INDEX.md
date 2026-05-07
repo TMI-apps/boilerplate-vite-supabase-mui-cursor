@@ -64,6 +64,7 @@ Quick reference guide to all rules and their relationships.
 - PR standards
 - Agent-specific behaviors
 - **Minimal documentation promises** (objective docs only; avoid optional deep docs by default)
+- **App vision & goals** (SSOT: `documentation/DOC_APP_VISION.md` — problem, persona, app’s role; onboard via `.cursor/skills/start/SKILL.md`)
 - **🚨 CRITICAL: PowerShell/Select-Object piping rules** (prevents IDE crashes)
 - Deployment processes
 

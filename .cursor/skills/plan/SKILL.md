@@ -27,7 +27,8 @@ Create a development plan for a feature or job. Research how best to implement i
 **If the request is vague or unclear, do NOT write a plan yet.**
 
 - Ask clarifying questions (scope, context, constraints).
-- Remove all ambiguity before planning. If multiple interpretations are possible, ask a question about the user's vision for how the app will be used, so the answer clears the ambiguity and drives the decision.
+- Remove all ambiguity before planning. If multiple interpretations are possible, read **`documentation/DOC_APP_VISION.md`** first when the answer is about **who** the user is building for or **why** — if that file is still **`DRAFT`**, pause and have the user fill it (or confirm deferral) before locking scope.
+- Ask a question about the user's vision for how the app will be used, so the answer clears the ambiguity and drives the decision.
 - Continue until scope is clear.
 - Only proceed to investigation once scope is clear.
 
@@ -49,6 +50,7 @@ For features involving external APIs, database changes, auth, or novel logic, ga
 
 - [ ] Search the codebase for existing functionality to reuse (features under `src/features/`, shared under `src/shared/`, `src/components/common/`).
 - [ ] Identify relevant rules from `.cursor/rules/` (start at `.cursor/rules/INDEX.md`).
+- [ ] Align narrative with **`documentation/DOC_APP_VISION.md`** when the plan changes user-facing behavior (problem, persona, app role); if **`DRAFT`**, pause for fill or explicit deferral.
 - [ ] For server-cached data, check `documentation/DOC_TANSTACK_QUERY.md` and existing `api/keys.ts` patterns in features.
 - [ ] Determine scope and boundaries (in-scope vs out-of-scope).
 

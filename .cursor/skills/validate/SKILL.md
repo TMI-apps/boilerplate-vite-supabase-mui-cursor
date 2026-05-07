@@ -43,7 +43,7 @@ Every rule subagent is invoked the same way. The parent calls the `Task` tool wi
 - **Rule file** — exactly one (e.g. `.cursor/rules/architecture/RULE.md`).
 - **Output schema** — every subagent returns the structure below.
 
-**Allowed reads:** the rule file, the scope, and configs the rule itself references (e.g. `projectStructure.config.cjs`, `.dependency-cruiser.cjs`, `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`, `documentation/DOC_FEATURE_LOCAL_README.md`). Do **not** read other rule files; cross-rule overlap is handled by the parent.
+**Allowed reads:** the rule file, the scope, and configs the rule itself references (e.g. `projectStructure.config.cjs`, `.dependency-cruiser.cjs`, `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`, `documentation/DOC_FEATURE_LOCAL_README.md`, `documentation/DOC_APP_VISION.md`). Do **not** read other rule files; cross-rule overlap is handled by the parent.
 
 **Output schema (required):**
 

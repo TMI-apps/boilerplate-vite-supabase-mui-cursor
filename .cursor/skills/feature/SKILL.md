@@ -20,6 +20,10 @@ Systematic engineering process for new feature requests. Follow phases sequentia
 
 ## Phase 1: Pre-Development Analysis
 
+### 1.0 App vision (product SSOT)
+
+- [ ] Read `documentation/DOC_APP_VISION.md`. If vision status is **`DRAFT`**, **STOP** and direct the user to fill it (see `.cursor/skills/start/SKILL.md` § App vision) or obtain explicit written deferral before Phase 1 coding. Feature specs must not invent product scope when this file is empty of real prose.
+
 ### 1.1 Branch & Workflow Check
 - [ ] Verify current git branch. If on `main`, **stop immediately** and instruct: `git checkout develop`
 - [ ] Never develop on `main`. Branch must be `develop` or a feature branch (workflow/RULE.md § Branch Strategy)

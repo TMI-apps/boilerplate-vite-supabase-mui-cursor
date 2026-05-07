@@ -13,6 +13,8 @@ Project memory for Claude Code. Keep under 100 lines — the imported rule files
 
 Each slash command reads and executes a `.cursor/skills/<name>/SKILL.md` file.
 
+**Product context:** Fill `documentation/DOC_APP_VISION.md` (see `.cursor/skills/start/SKILL.md`) so planning and feature work align with your fork’s problem, persona, and app role.
+
 | Slash command | Wraps | Purpose |
 | ------------- | ---------------------------------- | --------------------------------------------------------- |
 | `/plan` | `.cursor/skills/plan/SKILL.md` | Produce a `DEVELOPMENT_PLAN.md` |
