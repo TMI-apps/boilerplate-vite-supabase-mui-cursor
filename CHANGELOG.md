@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.2] - 2026-05-15
+
+### Changed
+
+- **Workflow rule**: Document **Decision Questioning Protocol** in `.cursor/rules/workflow/RULE.md` (ask in plain text before multiple-choice UI; research codebase-consistent options; label alignment; include omnipresent UX impact research path; order options from mild to stronger).
+
+### Documentation
+
+- **`documentation/jobs/research-the-skills-in-replicated-porcupine.md`**: Research note on high-meaning vocabulary across rules/skills and a priming-effectiveness rubric (top-10 terms).
+
 ## [0.21.1] - 2026-05-15
 
 ### Fixed

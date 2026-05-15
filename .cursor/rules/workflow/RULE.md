@@ -267,6 +267,16 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 - The agent turns user stories into architecture, logic, and code implementation
 - Always respect user decisions and wait for validation before claiming success
 
+### Decision Questioning Protocol
+When asking the user to choose between implementation, product, architecture, or UX options:
+- First ask the question in raw text before using a multiple-choice UI. This guides your following preparation actions.
+- Then inspect the relevant codebase patterns, rules, and existing UX behavior to identify which option is most consistent with the current application.
+- Only after that research, ask the actual multiple-choice question.
+- Clearly label the option or recommendation that is most consistent with the current codebase.
+- Always include an omnipresent option for UX impact research, such as: "Research the UX impact of this decision, explain the tradeoffs, then re-ask this question."
+- If the user selects the UX impact option, pause the decision, research the user-facing consequences in the relevant code and UX flows, explain the findings, then ask the same decision again with the updated context.
+- Keep options ordered so later options are progressively stronger when presenting implementation approaches.
+
 ### Success Validation
 Never claim success without a user test:
 - The user decides if an implementation is successful, not the agent
