@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.1] - 2026-05-15
+
+### Fixed
+
+- Raise vitest `testTimeout` to 10000ms (and `hookTimeout` likewise) so the Husky pre-push suite does not flake on fresh Windows clones: cumulative JSDOM + MUI (`ProfileMenu`) render cost under full-file order can exceed the Vitest default 5000ms while the component and tests behave correctly.
+
 ## [0.21.0] - 2026-05-07
 
 ### Added
