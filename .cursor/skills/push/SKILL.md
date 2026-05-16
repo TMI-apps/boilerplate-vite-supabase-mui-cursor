@@ -1,7 +1,6 @@
 ---
 name: push
 description: "push"
-disable-model-invocation: true
 ---
 
 # push

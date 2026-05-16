@@ -2,6 +2,8 @@
 
 This document answers questions about the authentication implementation in this codebase.
 
+**Dashboard setup (Google + Supabase):** Step-by-step Google Cloud and Supabase provider configuration is **not** duplicated here. Use **[`documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`](../DOC_SUPABASE_GOOGLE_OAUTH.md)** as the SSOT; this file focuses on **code** behavior.
+
 ---
 
 ## 1. SAML/SSO Configuration
@@ -90,6 +92,8 @@ Key exports:
 ---
 
 ## 2. Google OAuth Implementation
+
+**Dashboard (Supabase + Google Cloud):** [`documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`](../DOC_SUPABASE_GOOGLE_OAUTH.md) — SSOT for provider setup. This section covers **application code** only.
 
 **Question:** Show me the code where Google OAuth sign-in is triggered.
 

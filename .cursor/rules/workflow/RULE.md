@@ -18,6 +18,8 @@ Development workflows, code review standards, and process requirements. Includes
 | Project structure, file whitelist | `projectStructure.config.cjs` |
 | Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
 | App config schema (boilerplate only; removed by complete-setup) | `documentation/DOC_APP_CONFIG_FILE.md` |
+| **App vision & goals** (problem, persona, app’s role; fillable template) | `documentation/DOC_APP_VISION.md` |
+| **Supabase + Google OAuth** (dashboard / Google Cloud Console setup checklist) | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |
 | Feature-local README enforcement (Option 1), scripts, CI placement | `documentation/DOC_FEATURE_LOCAL_README.md` |
 
 ## Code Review Process
@@ -266,6 +268,16 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 - The agent turns user stories into architecture, logic, and code implementation
 - Always respect user decisions and wait for validation before claiming success
 
+### Decision Questioning Protocol
+When asking the user to choose between implementation, product, architecture, or UX options:
+- First ask the question in raw text before using a multiple-choice UI. This guides your following preparation actions.
+- Then inspect the relevant codebase patterns, rules, and existing UX behavior to identify which option is most consistent with the current application.
+- Only after that research, ask the actual multiple-choice question.
+- Clearly label the option or recommendation that is most consistent with the current codebase.
+- Always include an omnipresent option for UX impact research, such as: "Research the UX impact of this decision, explain the tradeoffs, then re-ask this question."
+- If the user selects the UX impact option, pause the decision, research the user-facing consequences in the relevant code and UX flows, explain the findings, then ask the same decision again with the updated context.
+- Keep options ordered so later options are progressively stronger when presenting implementation approaches.
+
 ### Success Validation
 Never claim success without a user test:
 - The user decides if an implementation is successful, not the agent
@@ -357,7 +369,7 @@ See Branch Strategy section above for detailed branch protection rules and verif
    - Pushes only already committed work after explicit user confirmation
    - Default push target is the current non-`main` branch (typically `feature/*`); direct pushes to `main` are disallowed unless user explicitly requests an emergency override
    - Before pushing shared-branch updates, verify branch freshness against remote and sync first when behind
-   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.cursor/skills/debug/SKILL.md` § "Git env.exe couldn't create signal pipe")
+   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.cursor/skills/debug/patterns.md` — **Git on Windows: env.exe signal pipe Win32 error 5**)
 
 5. **General commit safety:**
    - Never assume the user wants to commit just because changes are complete

@@ -1,7 +1,6 @@
 ---
 name: stepback
 description: "stepback"
-disable-model-invocation: true
 ---
 
 # stepback

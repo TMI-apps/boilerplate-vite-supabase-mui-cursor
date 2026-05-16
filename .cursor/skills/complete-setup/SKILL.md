@@ -1,7 +1,6 @@
 ---
 name: complete-setup
 description: "complete-setup"
-disable-model-invocation: true
 ---
 
 # complete-setup

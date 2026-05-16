@@ -629,7 +629,7 @@ module.exports = {
           children: [
             {
               name: "*",
-              children: [{ name: "SKILL.md" }],
+              children: [{ name: "SKILL.md" }, { name: "patterns.md" }],
             },
           ],
         },

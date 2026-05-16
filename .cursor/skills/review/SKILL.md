@@ -1,7 +1,6 @@
 ---
 name: review
 description: "review"
-disable-model-invocation: true
 ---
 
 # review

@@ -1,13 +1,11 @@
 ---
-
-## name: airtable-data-sample
-
+name: airtable-data-sample
 description: >-
   Fetch a few Airtable rows to inspect cell shapes (attachments, rich text, URLs,
   linked-record ids) with fld… keys. Requires schema skill first. Safe defaults:
   low maxRecords, optional fields allowlist, redact PII in chat. Triggers: sample
   rows, cell shape, returnFieldsByFieldId, verify wire JSON vs app normalization.
-disable-model-invocation: true
+---
 
 # Airtable: data (sample rows)
 

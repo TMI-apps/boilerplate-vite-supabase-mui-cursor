@@ -1,7 +1,6 @@
 ---
 name: plan
 description: "plan"
-disable-model-invocation: true
 ---
 
 # plan
@@ -28,6 +27,8 @@ Create a development plan for a feature or job. Research how best to implement i
 **If the request is vague or unclear, do NOT write a plan yet.**
 
 - Ask clarifying questions (scope, context, constraints).
+- Remove all ambiguity before planning. If multiple interpretations are possible, read **`documentation/DOC_APP_VISION.md`** first when the answer is about **who** the user is building for or **why** — if that file is still **`DRAFT`**, pause and have the user fill it (or confirm deferral) before locking scope.
+- Ask a question about the user's vision for how the app will be used, so the answer clears the ambiguity and drives the decision.
 - Continue until scope is clear.
 - Only proceed to investigation once scope is clear.
 
@@ -49,6 +50,7 @@ For features involving external APIs, database changes, auth, or novel logic, ga
 
 - [ ] Search the codebase for existing functionality to reuse (features under `src/features/`, shared under `src/shared/`, `src/components/common/`).
 - [ ] Identify relevant rules from `.cursor/rules/` (start at `.cursor/rules/INDEX.md`).
+- [ ] Align narrative with **`documentation/DOC_APP_VISION.md`** when the plan changes user-facing behavior (problem, persona, app role); if **`DRAFT`**, pause for fill or explicit deferral.
 - [ ] For server-cached data, check `documentation/DOC_TANSTACK_QUERY.md` and existing `api/keys.ts` patterns in features.
 - [ ] Determine scope and boundaries (in-scope vs out-of-scope).
 
@@ -148,6 +150,7 @@ During planning, work through (using the rules reference above):
 - [ ] Identify applicable rules (architecture, file-placement, database, security, code-style, testing, workflow, etc.).
 - [ ] Validate planned file paths against `projectStructure.config.cjs` (whitelist); run `pnpm validate:structure` after structural additions if unsure.
 - [ ] Check architecture compliance: feature vs `src/shared/` vs `src/components/common/`, layer boundaries, import direction (pages → hooks → services).
+- [ ] Identify any planned diversion from industry standards, framework best practices, or established repo conventions. If found, ask the user whether the diversion is intentional or whether the plan should align with best practices.
 - [ ] Estimate complexity (cyclomatic ≤10, cognitive ≤15, functions ≤100 lines per `.cursor/rules/code-style/RULE.md`); plan extractions if needed (see `.cursor/skills/optimize2/SKILL.md` for refactoring workflow).
 - [ ] Note database impact if applicable (migrations under `supabase/migrations/`, idempotent, safe for fresh and existing DB).
 - [ ] Note security impact if applicable (auth, RLS, validation, secrets in `.env` only).
@@ -162,6 +165,7 @@ During planning, work through (using the rules reference above):
 - Planned file placements and validation status (confirmed vs needs config change — config changes require explicit approval per architecture rule).
 - Known risks / attention points.
 - Open questions for the user.
+- Confirmed standards diversions, including whether the user chose to keep the diversion or align with best practices.
 
 ---
 
@@ -225,7 +229,9 @@ Each phase must have a gate.
 ## Key principles
 
 1. **Refine first:** If the request is vague, ask questions before writing the plan.
-2. **Phases are workable:** Each phase is a logical, testable chunk.
-3. **Gates are mandatory:** Every phase has a gate.
-4. **Compliance first:** Conflict & compliance before detailed steps; steps must be rules-compliant.
-5. **Empty sections:** Notes during development and Decisions made start empty.
+2. **Ambiguity is not allowed:** If ambiguity appears, ask about intended app usage or product vision before choosing.
+3. **Standards diversions are explicit:** If a plan diverges from industry standards, best practices, or repo conventions, ask whether that is intentional before proceeding.
+4. **Phases are workable:** Each phase is a logical, testable chunk.
+5. **Gates are mandatory:** Every phase has a gate.
+6. **Compliance first:** Conflict & compliance before detailed steps; steps must be rules-compliant.
+7. **Empty sections:** Notes during development and Decisions made start empty.

@@ -1,7 +1,6 @@
 ---
 name: prime
 description: "prime"
-disable-model-invocation: true
 ---
 
 # prime
@@ -24,6 +23,7 @@ Align with project rules and architecture so work does not violate enforced boun
 - **Tracked files:** Run `git ls-files` (large repos: in PowerShell use `git ls-files | Select-Object -First 150` instead of `head`).
 - **Architecture overview:** Read `ARCHITECTURE.md` (folder layout, TanStack Query, layers, path aliases).
 - **Doc index:** Read `documentation/DOC_INDEX.md` (SSOT map, quick links).
+- **App vision (product SSOT):** Read `documentation/DOC_APP_VISION.md`. If the vision status line is still **`DRAFT`**, state in **Actionable insights** that feature/plan ambiguity should be resolved by filling that file (or running `.cursor/skills/start/SKILL.md` § App vision) before major product decisions.
 - **Features (discover, do not assume):** List `src/features/` — this boilerplate ships with **`auth`** and **`setup`** only; forks may add more. Do not use a fixed feature list from another repo.
 - **Entry points:** Read `index.html`, `src/main.tsx`, `src/App.tsx` (provider order: `QueryProvider` → `AuthProvider` → `BrowserRouter`).
 
@@ -71,6 +71,7 @@ Deliver a concise, scannable summary:
 ### Actionable insights
 
 - Mismatches vs rules, missing optional docs, or tech debt called out in repo docs.
+- Active plans with unresolved app-usage ambiguity or undocumented standards/best-practice diversions, when visible from `documentation/jobs/`.
 
 ---
 

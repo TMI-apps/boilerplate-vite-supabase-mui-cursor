@@ -1,12 +1,10 @@
 ---
-
-## name: airtable-schema-structure
-
+name: airtable-schema-structure
 description: >-
   Inspect Airtable base structure (tables, field ids/types, links) via Meta API and
   repo SSOT. Schema only — no row data. Use before sampling cells or mapping fld/tbl
   constants. Triggers: Meta API, field id, linked tables, schema drift vs code.
-disable-model-invocation: true
+---
 
 # Airtable: structure (schema only)
 
