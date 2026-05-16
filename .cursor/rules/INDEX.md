@@ -65,6 +65,7 @@ Quick reference guide to all rules and their relationships.
 - Agent-specific behaviors
 - **Minimal documentation promises** (objective docs only; avoid optional deep docs by default)
 - **App vision & goals** (SSOT: `documentation/DOC_APP_VISION.md` — problem, persona, app’s role; onboard via `.cursor/skills/start/SKILL.md`)
+- **Supabase Sign in with Google (dashboard / Google Cloud)** (SSOT: `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`; README Quick Start and `start` skill link there — do not duplicate steps)
 - **🚨 CRITICAL: PowerShell/Select-Object piping rules** (prevents IDE crashes)
 - Deployment processes
 

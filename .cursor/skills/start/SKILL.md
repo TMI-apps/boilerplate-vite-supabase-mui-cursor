@@ -103,6 +103,7 @@ For Supabase:
   - Copy Project URL + Publishable Key
 - Guide user to enter values in setup wizard and create `.env` in project root.
 - Remind user to restart dev server after `.env` changes.
+- If the user needs **Sign in with Google**, do **not** invent parallel steps: use **`documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` as the SSOT** for Supabase + Google Cloud Console setup (callback URL, origins, client ID format). Link or open that file; README Quick Start step 6 points to the same doc.
 
 ### 8) Route verification gate
 
@@ -145,7 +146,6 @@ If any check fails:
 
 Only consider onboarding complete when:
 1. **`documentation/DOC_APP_VISION.md`** is **`ACTIVE`** (or user explicitly deferred with reason recorded)
-2. User confirms setup wizard steps they wanted are done
 2. User confirms setup wizard steps they wanted are done
 3. Route checks pass
 4. Verification checklist passes

@@ -23,6 +23,7 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | **Setup states & transitions** | [src/features/setup/docs/setup-states-and-transitions.md](../src/features/setup/docs/setup-states-and-transitions.md) |
 | **Testing app config** | [src/features/setup/docs/testing-app-config.md](../src/features/setup/docs/testing-app-config.md) |
 | **Testing Supabase setup** | [src/features/setup/docs/testing-supabase-setup.md](../src/features/setup/docs/testing-supabase-setup.md) |
+| **Supabase: Sign in with Google (dashboard setup)** | [DOC_SUPABASE_GOOGLE_OAUTH.md](./DOC_SUPABASE_GOOGLE_OAUTH.md) |
 | **App code modification** | [src/features/setup/docs/app-code-modification.md](../src/features/setup/docs/app-code-modification.md) |
 | **Complexity reduction** | See `.cursor/rules/architecture/RULE.md` complexity section |
 
@@ -37,3 +38,4 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | Dependency rules | `.dependency-cruiser.cjs` |
 | App config schema | `documentation/DOC_APP_CONFIG_FILE.md` |
 | **App vision & goals (problem, persona, app role)** | `documentation/DOC_APP_VISION.md` |
+| **Supabase + Google OAuth (dashboard / Google Cloud)** | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |

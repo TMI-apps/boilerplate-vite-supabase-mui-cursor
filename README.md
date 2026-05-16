@@ -185,6 +185,8 @@ VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 
 5. Restart dev server after `.env` changes (`Ctrl+C`, then `pnpm dev`).
 
+6. **Sign in with Google (optional):** Enabling the provider in Supabase is not enough until Google Cloud allows Supabase’s callback URL. Follow the single checklist: [documentation/DOC_SUPABASE_GOOGLE_OAUTH.md](./documentation/DOC_SUPABASE_GOOGLE_OAUTH.md) (SSOT for dashboard steps).
+
 Legacy note: `VITE_SUPABASE_ANON_KEY` is still accepted for backward compatibility.
 
 #### Airtable (optional) 📊

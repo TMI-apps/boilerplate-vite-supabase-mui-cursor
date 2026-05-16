@@ -44,5 +44,6 @@ Returns: `{ user, loading, error, login, signUp, logout, signInWithGoogle, signI
 
 ## Related
 
+- `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` – **SSOT** for Google Cloud + Supabase dashboard setup (Sign in with Google)
 - `src/routes/guards/` – auth guards for protected routes
 - `documentation/DOC_APP_CODE_MODIFICATION.md` – setup removal flow (auth can be removed if Supabase disabled)

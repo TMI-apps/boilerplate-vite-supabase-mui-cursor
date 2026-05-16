@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.3] - 2026-05-16
+
+### Added
+
+- **`documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`**: SSOT checklist for Sign in with Google (Supabase callback URL, Google Cloud OAuth web client origins and redirect URIs, client ID format vs labels).
+
+### Changed
+
+- **Onboarding**: README Quick Start, `documentation/DOC_INDEX.md` (quick link + SSOT map), `.cursor/rules/workflow/RULE.md`, `.cursor/rules/INDEX.md`, `.cursor/skills/start/SKILL.md`, `documentation/Authentication-main-app/auth-implementation-reference.md`, `src/features/auth/README.md` — link to the Google OAuth SSOT (no duplicated procedural steps). **`start` skill**: remove duplicate completion criterion line.
+- **Setup wizard**: `SupabaseDescription` includes a Sign in with Google pointer to `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`; `src/features/setup/README.md` updated for the same.
+
 ## [0.21.2] - 2026-05-15
 
 ### Changed

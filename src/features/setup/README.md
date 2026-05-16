@@ -8,6 +8,7 @@ Configuration wizard for Supabase, Airtable, hosting, and theme. Dev-only capabi
 - Connection tests and env variable writing via dev API
 - Config sync to `app.config.json` for agent discoverability
 - Optional finish-setup flow (removes setup code when complete)
+- Supabase dialog (`SupabaseDescription`) links to **`documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`** (SSOT) when using Sign in with Google
 
 ## Structure
 
@@ -66,5 +67,6 @@ Agent workflows: `.cursor/skills/airtable-schema-structure/SKILL.md`, `.cursor/s
 - `docs/setup-states-and-transitions.md` – setup state and transition rules
 - `docs/testing-app-config.md` – `app.config.json` sync testing
 - `docs/testing-supabase-setup.md` – supabase setup test guide
+- `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` – Sign in with Google (Supabase + Google Cloud); SSOT for dashboard steps
 - `documentation/DOC_APP_CONFIG_FILE.md` – project-level `app.config.json` reference
 - `.cursor/skills/complete-setup/SKILL.md` – removal of setup wizard when no longer needed
