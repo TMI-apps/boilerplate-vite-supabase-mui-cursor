@@ -64,4 +64,3 @@ Output is JSON: `records[].fields` keyed by `**fld…**`.
 
 - `.cursor/skills/airtable-schema-structure/SKILL.md`
 - `src/features/setup/README.md`
-

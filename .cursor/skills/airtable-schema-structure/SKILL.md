@@ -73,4 +73,3 @@ Forks may add their own drift-check script (compare a checked-in constants modul
 
 - `.cursor/skills/airtable-data-sample/SKILL.md` — sample rows after schema is known
 - `src/features/setup/README.md` — CLI / agent entry points
-
