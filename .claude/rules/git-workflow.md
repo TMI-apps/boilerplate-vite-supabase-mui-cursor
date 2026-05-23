@@ -1,6 +1,6 @@
 # Claude rule: git workflow
 
-SSOT: `.cursor/rules/workflow/RULE.md` for branch strategy, protected files, and agent behaviors. `.cursor/skills/finish/SKILL.md` for commit format, versioning, and changelog.
+SSOT: `.cursor/rules/workflow/RULE.md` for branch strategy, protected files, and agent behaviors. `.agents/skills/finish/SKILL.md` for commit format, versioning, and changelog.
 
 **Key behavioral reminders:**
 

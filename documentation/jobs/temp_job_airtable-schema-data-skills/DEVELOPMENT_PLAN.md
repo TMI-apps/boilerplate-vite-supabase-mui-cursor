@@ -33,8 +33,8 @@
 
 | In scope | Out of scope (defer) |
 |----------|----------------------|
-| `.cursor/skills/airtable-schema-structure/SKILL.md` (generic) | `db-structure-airtable-supabase` umbrella skill |
-| `.cursor/skills/airtable-data-sample/SKILL.md` (generic) | Alpha `fetch-*-fields.js`, `check-airtable-ids-vs-meta.js`, debug/sync Edge scripts |
+| `.agents/skills/airtable-schema-structure/SKILL.md` (generic) | `db-structure-airtable-supabase` umbrella skill |
+| `.agents/skills/airtable-data-sample/SKILL.md` (generic) | Alpha `fetch-*-fields.js`, `check-airtable-ids-vs-meta.js`, debug/sync Edge scripts |
 | `scripts/load-airtable-env.js` (or equivalent shared module) | Changing Vite env strategy to non-`VITE_*` server-only secrets |
 | `scripts/airtable-meta-dump.js` | CI that runs dumps against live bases |
 | `scripts/airtable-sample-records.js` | Supabase migrations / live Postgres introspection |
@@ -48,7 +48,7 @@
 |-------|------|------|--------|
 | 1 | Lock abstraction model (generic skill text, fork extension points, env contract) | Written decisions in “Decisions made” + no open blocking questions | Done (decisions recorded) |
 | 2 | Add Node scripts (`load-airtable-env`, meta dump, sample records) | `node scripts/...` succeeds against a real `.env` (manual or user-provided); no structure validator errors | Done |
-| 3 | Add two Cursor skills | Files at `.cursor/skills/<name>/SKILL.md`; content references only paths that exist or will exist post-phase-2 | Done |
+| 3 | Add two Cursor skills | Files at `.agents/skills/<name>/SKILL.md`; content references only paths that exist or will exist post-phase-2 | Done |
 | 4 | Wire `package.json` scripts + setup/README | `pnpm <script>` runs; README links skills | Done |
 | 5 | Quality gate | `pnpm validate:structure`, `pnpm validate:docs:refs`, `pnpm lint`, `pnpm type-check` pass | Done |
 
@@ -61,7 +61,7 @@
 | Rule / doc | Why |
 |------------|-----|
 | `.cursor/rules/architecture/RULE.md` | Skills are agent docs, not app layers; scripts stay under `scripts/` (allowed `*.js`). No business logic in scripts beyond I/O helpers. |
-| `.cursor/rules/file-placement/RULE.md` + `projectStructure.config.cjs` | `.cursor/skills/* /SKILL.md` whitelisted; `scripts/*.js` whitelisted; `documentation/jobs/temp_job_*/DEVELOPMENT_PLAN.md` whitelisted. **No** `projectStructure.config.cjs` change required for standard additions. |
+| `.cursor/rules/file-placement/RULE.md` + `projectStructure.config.cjs` | `.agents/skills/* /SKILL.md` whitelisted; `scripts/*.js` whitelisted; `documentation/jobs/temp_job_*/DEVELOPMENT_PLAN.md` whitelisted. **No** `projectStructure.config.cjs` change required for standard additions. |
 | `.cursor/rules/security/RULE.md` | Never echo API keys; skills must state redaction / low `maxRecords` / `--fields` allowlist; warn about PII in sample output. |
 | `.cursor/rules/code-style/RULE.md` | Keep each script focused; avoid >100-line functions where reasonable; use small helpers in one file or split only if needed. |
 | `.cursor/rules/workflow/RULE.md` | Implement on `develop`, not `main`. Changelog only in **finish**, not in this job. |
@@ -74,7 +74,7 @@
 | Env loader | `scripts/load-airtable-env.js` | `scripts/*.js` ✓ |
 | Meta dump CLI | `scripts/airtable-meta-dump.js` | ✓ |
 | Sample records CLI | `scripts/airtable-sample-records.js` | ✓ |
-| Skills | `.cursor/skills/airtable-schema-structure/SKILL.md`, `.cursor/skills/airtable-data-sample/SKILL.md` | `.cursor/skills/*/SKILL.md` ✓ |
+| Skills | `.agents/skills/airtable-schema-structure/SKILL.md`, `.agents/skills/airtable-data-sample/SKILL.md` | `.agents/skills/*/SKILL.md` ✓ |
 
 ### Risks / attention
 
@@ -141,9 +141,9 @@ Add two skills mirroring Alpha workflows but **boilerplate-neutral**.
 
 ### Steps
 
-1. Create **`.cursor/skills/airtable-schema-structure/SKILL.md`** with frontmatter (`name`, `description`, `disable-model-invocation: true` if matching repo convention for similar skills). Sections: Goal, When to use, Security, Commands table, Workflow, Output template, “Fork extension” for optional constants file.
-2. Create **`.cursor/skills/airtable-data-sample/SKILL.md`** with **explicit dependency** on schema skill; document `airtable-sample-records.js` usage; warn on PII; link to `airtableService` normalization vs wire shape.
-3. Cross-link from **`.cursor/skills/prime/SKILL.md`** or **`.cursor/skills/plan/SKILL.md`** only if maintainers want discoverability (optional — **ask user**; default **skip** to minimize unrelated diffs).
+1. Create **`.agents/skills/airtable-schema-structure/SKILL.md`** with frontmatter (`name`, `description`, `disable-model-invocation: true` if matching repo convention for similar skills). Sections: Goal, When to use, Security, Commands table, Workflow, Output template, “Fork extension” for optional constants file.
+2. Create **`.agents/skills/airtable-data-sample/SKILL.md`** with **explicit dependency** on schema skill; document `airtable-sample-records.js` usage; warn on PII; link to `airtableService` normalization vs wire shape.
+3. Cross-link from **`.agents/skills/prime/SKILL.md`** or **`.agents/skills/plan/SKILL.md`** only if maintainers want discoverability (optional — **ask user**; default **skip** to minimize unrelated diffs).
 4. Ensure every **path** in markdown exists or is clearly optional hypothetical.
 
 ### Gate
@@ -161,7 +161,7 @@ Discoverability for humans and agents.
 ### Steps
 
 1. Add **pnpm scripts** e.g. `airtable:meta-dump` and `airtable:sample` wrapping the node commands with documented args in `package.json` comments unnecessary — prefer **README** examples.
-2. Update **`src/features/setup/README.md`** only: add a **Related** (or short dedicated) subsection for **CLI / agent tools** — link paths `.cursor/skills/airtable-schema-structure/SKILL.md` and `.cursor/skills/airtable-data-sample/SKILL.md`, plus example `pnpm` / `node` invocations. Match tone/structure of existing “Related” bullets in that README. **Do not** add `documentation/DOC_AIRTABLE_AGENT_TOOLS.md` or `DOC_INDEX` entries for this topic.
+2. Update **`src/features/setup/README.md`** only: add a **Related** (or short dedicated) subsection for **CLI / agent tools** — link paths `.agents/skills/airtable-schema-structure/SKILL.md` and `.agents/skills/airtable-data-sample/SKILL.md`, plus example `pnpm` / `node` invocations. Match tone/structure of existing “Related” bullets in that README. **Do not** add `documentation/DOC_AIRTABLE_AGENT_TOOLS.md` or `DOC_INDEX` entries for this topic.
 
 ### Gate
 

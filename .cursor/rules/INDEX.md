@@ -57,14 +57,14 @@ Quick reference guide to all rules and their relationships.
 ### Workflow (`workflow/RULE.md`)
 - Code review process
 - **Git workflow with changelog synchronization** (mandatory)
-- **Semantic versioning** (SSOT: `.cursor/skills/finish/SKILL.md`)
-- **Commit message format** (SSOT: `.cursor/skills/finish/SKILL.md`)
+- **Semantic versioning** (SSOT: `.agents/skills/finish/SKILL.md`)
+- **Commit message format** (SSOT: `.agents/skills/finish/SKILL.md`)
 - **Branch and release strategy** (SSOT: `feature/*` -> `develop` -> `main`, with protected long-lived branches)
 - Development process
 - PR standards
 - Agent-specific behaviors
 - **Minimal documentation promises** (objective docs only; avoid optional deep docs by default)
-- **App vision & goals** (SSOT: `documentation/DOC_APP_VISION.md` — problem, persona, app’s role; onboard via `.cursor/skills/start/SKILL.md`)
+- **App vision & goals** (SSOT: `documentation/DOC_APP_VISION.md` — problem, persona, app’s role; onboard via `.agents/skills/start/SKILL.md`)
 - **Supabase Sign in with Google (dashboard / Google Cloud)** (SSOT: `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`; README Quick Start and `start` skill link there — do not duplicate steps)
 - **🚨 CRITICAL: PowerShell/Select-Object piping rules** (prevents IDE crashes)
 - Deployment processes
