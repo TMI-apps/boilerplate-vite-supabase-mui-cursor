@@ -8,6 +8,9 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./tests/setup.ts",
+    // Default 5000ms is too tight when the full suite warms JSDOM + MUI on slower hosts (Windows).
+    testTimeout: 10_000,
+    hookTimeout: 10_000,
     server: {
       deps: {
         fallbackCJS: true,

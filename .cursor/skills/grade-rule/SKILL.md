@@ -1,7 +1,6 @@
 ---
 name: grade-rule
 description: "Grade an attached rule or command file using the rubric."
-disable-model-invocation: true
 ---
 
 # grade-rule

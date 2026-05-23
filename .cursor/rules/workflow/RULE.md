@@ -18,6 +18,8 @@ Development workflows, code review standards, and process requirements. Includes
 | Project structure, file whitelist | `projectStructure.config.cjs` |
 | Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
 | App config schema (boilerplate only; removed by complete-setup) | `documentation/DOC_APP_CONFIG_FILE.md` |
+| **App vision & goals** (problem, persona, app’s role; fillable template) | `documentation/DOC_APP_VISION.md` |
+| **Supabase + Google OAuth** (dashboard / Google Cloud Console setup checklist) | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |
 | Feature-local README enforcement (Option 1), scripts, CI placement | `documentation/DOC_FEATURE_LOCAL_README.md` |
 
 ## Code Review Process
@@ -218,6 +220,18 @@ Before editing code files:
 - Use squash merge for `main` unless user explicitly requests a different merge strategy
 - If repository setting "Automatically delete head branches" is enabled, ensure it does not remove long-lived `develop`
 
+#### Diagnosing "merge blocked" / "rule violation"
+
+When a user reports a merge was blocked, do not assume the ruleset is broken. First inspect PR state:
+
+- `gh pr view <N> --json mergeable,mergeStateStatus,statusCheckRollup`
+- `mergeable: MERGEABLE` + `mergeStateStatus: BLOCKED` almost always means a **required status check is still `IN_PROGRESS` or missing** — wait with `gh pr checks <N> --watch`, then re-check.
+- Only investigate deeper (stale branch, missing approval, signed-commits, etc.) once `statusCheckRollup` is fully green but state is still `BLOCKED`.
+
+This repo enforces merge requirements via GitHub **Rulesets**, not classic branch protection:
+- Classic endpoint `gh api repos/OWNER/REPO/branches/main/protection` returns `404 Branch not protected` — that is **not** evidence that `main` is unprotected.
+- Use `gh api repos/OWNER/REPO/rules/branches/main` to list the active rules (required checks, PR requirements, deletion/non-fast-forward guards).
+
 ## Development Process
 
 ### Before Starting Work
@@ -253,6 +267,16 @@ Before editing code files:
 - The user is the tester and product-owner who provides user stories and tasks
 - The agent turns user stories into architecture, logic, and code implementation
 - Always respect user decisions and wait for validation before claiming success
+
+### Decision Questioning Protocol
+When asking the user to choose between implementation, product, architecture, or UX options:
+- First ask the question in raw text before using a multiple-choice UI. This guides your following preparation actions.
+- Then inspect the relevant codebase patterns, rules, and existing UX behavior to identify which option is most consistent with the current application.
+- Only after that research, ask the actual multiple-choice question.
+- Clearly label the option or recommendation that is most consistent with the current codebase.
+- Always include an omnipresent option for UX impact research, such as: "Research the UX impact of this decision, explain the tradeoffs, then re-ask this question."
+- If the user selects the UX impact option, pause the decision, research the user-facing consequences in the relevant code and UX flows, explain the findings, then ask the same decision again with the updated context.
+- Keep options ordered so later options are progressively stronger when presenting implementation approaches.
 
 ### Success Validation
 Never claim success without a user test:
@@ -345,7 +369,7 @@ See Branch Strategy section above for detailed branch protection rules and verif
    - Pushes only already committed work after explicit user confirmation
    - Default push target is the current non-`main` branch (typically `feature/*`); direct pushes to `main` are disallowed unless user explicitly requests an emergency override
    - Before pushing shared-branch updates, verify branch freshness against remote and sync first when behind
-   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.cursor/skills/debug/SKILL.md` § "Git env.exe couldn't create signal pipe")
+   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.cursor/skills/debug/patterns.md` — **Git on Windows: env.exe signal pipe Win32 error 5**)
 
 5. **General commit safety:**
    - Never assume the user wants to commit just because changes are complete
