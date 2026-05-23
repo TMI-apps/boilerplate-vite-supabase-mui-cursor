@@ -4,7 +4,6 @@ description: >-
   Turns recent code changes, failures, and conversation mistakes into durable guidance.
   Use when the user runs /learn, asks for a retrospective or to sharpen rules, or after
   resolving a multi-turn struggle (e.g. 3+ failed attempts, critical CI fix).
-disable-model-invocation: true
 ---
 
 # Learn from changes and sharpen rules
@@ -79,10 +78,11 @@ Pick **one primary** location. Cross-link elsewhere in one line if needed — ne
 | Folder placement, imports, layers, path aliases | `.cursor/rules/architecture/RULE.md` or `.cursor/rules/file-placement/RULE.md` |
 | Vitest, coverage, test layout | `.cursor/rules/testing/RULE.md` |
 | Changelog, version, finish / branch strategy | `.cursor/rules/workflow/RULE.md` or `.cursor/skills/finish/SKILL.md` |
-| Known symptom → fix pattern (repeatable) | `.cursor/skills/debug/SKILL.md` § **Common Error Pattern Recognition** |
+| Known symptom → fix pattern (repeatable) | `.cursor/skills/debug/patterns.md` |
 | Edge Functions vs frontend | `.cursor/rules/cloud-functions/RULE.md` |
 | TanStack Query, server state | `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`, or feature `api/` keys patterns (one primary) |
 | Long procedural workflow | Relevant `.cursor/skills/<name>/SKILL.md` |
+| **Product problem, persona, app role (fillable template)** | `documentation/DOC_APP_VISION.md` (onboarding: `.cursor/skills/start/SKILL.md`) |
 | Reusable multi-step procedure (not a one-line rule) | New or existing `.cursor/skills/<name>/SKILL.md` in this repo, or a user-level skill outside the repo |
 
 Confirm ownership via `.cursor/rules/INDEX.md`.

@@ -25,6 +25,7 @@ Quick reference guide to all rules and their relationships.
 - **Project structure** (SSOT for folder organization)
 - **Path aliases** (SSOT for `@/hooks/*`, `@/components/*`, etc. mappings)
 - Patterns and practices
+- **TanStack Query: plain optimistic + server-canonical response** (SSOT playbook—cache merge on success; avoid happy-path `invalidateQueries` for the same keys)
 - Module organization
 - Layer boundaries and import direction
 - **Architecture documentation** (minimal contract-doc maintenance)
@@ -63,6 +64,8 @@ Quick reference guide to all rules and their relationships.
 - PR standards
 - Agent-specific behaviors
 - **Minimal documentation promises** (objective docs only; avoid optional deep docs by default)
+- **App vision & goals** (SSOT: `documentation/DOC_APP_VISION.md` — problem, persona, app’s role; onboard via `.cursor/skills/start/SKILL.md`)
+- **Supabase Sign in with Google (dashboard / Google Cloud)** (SSOT: `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`; README Quick Start and `start` skill link there — do not duplicate steps)
 - **🚨 CRITICAL: PowerShell/Select-Object piping rules** (prevents IDE crashes)
 - Deployment processes
 

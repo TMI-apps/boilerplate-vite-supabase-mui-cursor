@@ -7,6 +7,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.3] - 2026-05-16
+
+### Added
+
+- **`documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`**: SSOT checklist for Sign in with Google (Supabase callback URL, Google Cloud OAuth web client origins and redirect URIs, client ID format vs labels).
+
+### Changed
+
+- **Onboarding**: README Quick Start, `documentation/DOC_INDEX.md` (quick link + SSOT map), `.cursor/rules/workflow/RULE.md`, `.cursor/rules/INDEX.md`, `.cursor/skills/start/SKILL.md`, `documentation/Authentication-main-app/auth-implementation-reference.md`, `src/features/auth/README.md` — link to the Google OAuth SSOT (no duplicated procedural steps). **`start` skill**: remove duplicate completion criterion line.
+- **Setup wizard**: `SupabaseDescription` includes a Sign in with Google pointer to `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`; `src/features/setup/README.md` updated for the same.
+
+## [0.21.2] - 2026-05-15
+
+### Changed
+
+- **Workflow rule**: Document **Decision Questioning Protocol** in `.cursor/rules/workflow/RULE.md` (ask in plain text before multiple-choice UI; research codebase-consistent options; label alignment; include omnipresent UX impact research path; order options from mild to stronger).
+
+### Documentation
+
+- **`documentation/jobs/research-the-skills-in-replicated-porcupine.md`**: Research note on high-meaning vocabulary across rules/skills and a priming-effectiveness rubric (top-10 terms).
+
+## [0.21.1] - 2026-05-15
+
+### Fixed
+
+- Raise vitest `testTimeout` to 10000ms (and `hookTimeout` likewise) so the Husky pre-push suite does not flake on fresh Windows clones: cumulative JSDOM + MUI (`ProfileMenu`) render cost under full-file order can exceed the Vitest default 5000ms while the component and tests behave correctly.
+
+## [0.21.0] - 2026-05-07
+
+### Added
+
+- **App vision & goals**: Fillable product brief `documentation/DOC_APP_VISION.md` (problem statement, user persona, app’s role; `DRAFT` → `ACTIVE` gate).
+
+### Changed
+
+- **Onboarding and agent workflows**: `start` requires the vision doc before fork/clone (unless user defers); `prime`, `plan`, `feature`, `quick-piv`, `implement`, `validate`, `learn`, and `router` reference the vision SSOT; `documentation/DOC_INDEX.md`, `.cursor/rules/workflow/RULE.md`, `.cursor/rules/INDEX.md`, and `CLAUDE.md` updated.
+
+## [0.20.1] - 2026-05-07
+
+### Changed
+
+- **Cursor agent skills**: Removed `disable-model-invocation` from project `.cursor/skills/**/SKILL.md` files so descriptions can drive agent discovery; repaired YAML frontmatter on `airtable-data-sample` and `airtable-schema-structure` skills.
+- **Router skill**: After routing, the agent must **invoke** the chosen skill (read its `SKILL.md` and execute the workflow in the same turn), not only list paths. Bare `/router` with no substantive task routes to **finish**.
+
+### Documentation
+
+- **Changelog**: Move finish concurrency gate and TanStack playbook notes from `[Unreleased]` into `[0.20.0]` Documentation so they align with the release that introduced those rule/skill updates.
+
+## [0.20.0] - 2026-05-05
+
+### Documentation
+
+- **Finish skill**: Parallel-thread concurrent-work gate — smoke signals (unstable tree, drifting status/diff, scope mismatch, version/changelog oddities, hook failures outside thread scope, non-fast-forward push, other agent on same checkout) block version bump, changelog, commit, and push until the user picks a path via structured **AskQuestion** (pause finish, bundle finish, stash lane when the other agent is paused, or wait-and-re-check with a single ~3 minute delay).
+- **Architecture rule**: Plain optimistic + server-canonical response playbook for TanStack Query (canonical mutation payloads, `onMutate`/`setQueryData`, avoid happy-path `invalidateQueries` for the same keys; anti-patterns; repo pointers). `.cursor/rules/INDEX.md` and SSOT list updated.
+
+### Changed
+
+- **Validate and check skills: parallel rule-shaped audit**: Rewrite `.cursor/skills/validate/SKILL.md` and `.cursor/skills/check/SKILL.md` so every invocation fans out one read-only subagent per applicable rule in `.cursor/rules/` (called via `Task` with `subagent_type: explore`, `readonly: true`, narrow scope, and a required structured output schema — `severity`, `file:line`, `rule_section`, `ambiguity`, `question`). The parent dedupes cross-rule overlaps, surfaces failed subagents as "not audited — rerun recommended", and runs a batched ambiguity-question gate before the report. Implementation review additionally runs the tooling pass (parent-executed `pnpm validate:structure / lint / type-check / arch:check / test:run` plus optional `format:check`) and a plan-compliance subagent in parallel. `check` reuses the contract with a smaller default rule set (architecture, file-placement, code-style; security/database/testing/workflow only when scope touches them), no plan-compliance pass, and defers the schema to `validate/SKILL.md` as the single source of truth.
+
+## [0.19.5] - 2026-05-01
+
+### Changed
+
+- **Agent skills refresh: router, debug patterns, and ambiguity gates**: Add `.cursor/skills/router/SKILL.md` for skill selection with goal/scope gates. Rewrites `.cursor/skills/debug/SKILL.md`, adds `.cursor/skills/debug/patterns.md`, and whitelists optional skill-level `patterns.md` in `projectStructure.config.cjs`. Updates `.cursor/skills/finish/SKILL.md`, `.cursor/rules/file-placement/RULE.md`, `.cursor/rules/workflow/RULE.md`, and `.cursor/skills/learn/SKILL.md` for cross-references. Extends `.cursor/skills/plan/SKILL.md`, `feature/SKILL.md`, `consolidate/SKILL.md`, `implement/SKILL.md`, `quick-piv/SKILL.md`, `validate/SKILL.md`, and `prime/SKILL.md` with ambiguity removal (app-usage or product-vision questions) and explicit user confirmation for diversions from standards or repo conventions.
+
 ## [0.19.4] - 2026-04-20
 
 ### Removed

@@ -1,7 +1,6 @@
 ---
 name: feature
 description: "feature"
-disable-model-invocation: true
 ---
 
 # feature
@@ -20,6 +19,10 @@ Systematic engineering process for new feature requests. Follow phases sequentia
 ---
 
 ## Phase 1: Pre-Development Analysis
+
+### 1.0 App vision (product SSOT)
+
+- [ ] Read `documentation/DOC_APP_VISION.md`. If vision status is **`DRAFT`**, **STOP** and direct the user to fill it (see `.cursor/skills/start/SKILL.md` § App vision) or obtain explicit written deferral before Phase 1 coding. Feature specs must not invent product scope when this file is empty of real prose.
 
 ### 1.1 Branch & Workflow Check
 - [ ] Verify current git branch. If on `main`, **stop immediately** and instruct: `git checkout develop`
@@ -66,6 +69,18 @@ Check each rule category systematically:
 ---
 
 ## Phase 2: Requirements & Design
+
+### 2.0 Ambiguity Elimination Gate
+- [ ] Identify every ambiguous product, UX, data, role, and workflow choice before planning implementation.
+- [ ] For each ambiguity, ask a question about the user's vision for how the app will be used in real life.
+- [ ] Do not choose between plausible interpretations silently.
+- [ ] Document each answer in the implementation document.
+
+**🔴 DECISION POINT:**
+- If any ambiguity remains → **STOP**
+- Ask a specific app-usage or product-vision question that clears the ambiguity
+- **WAIT** for explicit user response
+- Document the answer before proceeding
 
 ### 2.1 User Stories
 - [ ] Extract user stories with roles (unauthorized/free/premium/admin)
@@ -118,8 +133,8 @@ Categorize missing info:
 
 **🔴 DECISION POINT:** 
 - For missing info → Search codebase first
-- If no codebase precedent exists → **STOP** and ask user
-- Format question clearly: "I need to know [specific thing]. I searched the codebase and found no precedent. What should [specific thing] be?"
+- If no codebase precedent exists, or if the precedent does not clarify intended app usage → **STOP** and ask user
+- Format question clearly around app usage and vision: "I need to know [specific thing]. I searched the codebase and found no precedent. For users of this app, should [specific thing] work as [option/interpretation] or differently?"
 - **WAIT** for user answer
 - Document answer before proceeding
 
@@ -233,6 +248,17 @@ Identify **subjective** choices requiring user input.
 - [ ] Plan backward compatibility if needed
 - [ ] Document dependencies
 
+### 3.8 Standards Divergence Check
+- [ ] Identify any planned diversion from industry standards, framework best practices, or established repo conventions.
+- [ ] Prefer alignment with standards unless the user intentionally wants the diversion.
+- [ ] Document each confirmed diversion and its reason.
+
+**🔴 DECISION POINT:**
+- If a diversion is found → **STOP**
+- Ask: "This plan diverges from [standard/best practice/convention] by [specific diversion]. Is that intentional, or should I align the plan with the standard?"
+- **WAIT** for user decision
+- Document decision before proceeding
+
 ---
 
 ## Phase 4: Implementation Plan
@@ -284,6 +310,8 @@ Verify the PLAN complies before implementation:
 - [ ] Planned layer boundaries respect `architecture/RULE.md`
 - [ ] No planned circular dependencies
 - [ ] Planned complexity within thresholds (SSOT: `.eslintrc.json` lines 65-70)
+- [ ] No unresolved ambiguity remains
+- [ ] Any standards or best-practice divergence is documented with explicit user confirmation
 
 *Note: Actual validation commands run after implementation in Phase 5.*
 
@@ -462,9 +490,11 @@ If automated tests are approved:
    - Document all user answers before proceeding
    - Never skip decision points or assume answers
    - User journey mapping (2.1.1) is mandatory before implementation
+   - Ambiguity must be cleared with app-usage or product-vision questions before planning proceeds
 6. **Rule Compliance:** Validate against all `.cursor/rules` systematically
-7. **Progressive Complexity:** Offer options from simplest to most complex
-8. **Validation:** Never claim success without user testing
+7. **Standards Alignment:** Ask before preserving any diversion from industry standards, framework best practices, or repo conventions
+8. **Progressive Complexity:** Offer options from simplest to most complex
+9. **Validation:** Never claim success without user testing
 
 ---
 

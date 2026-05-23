@@ -1,16 +1,40 @@
 ---
 name: finish
 description: "finish"
-disable-model-invocation: true
 ---
 
 # finish
 
-Complete the implementation by doing what you haven't done yet of these tasks: 
+Complete the implementation by doing what you haven't done yet of these tasks:
+
+## Concurrent work / other agent threads (same branch, same checkout)
+
+**Smoke signals:** Before any mandatory version or changelog edit, `git commit`, or `git push` (including when running `.cursor/skills/push/SKILL.md` after a local commit), treat the working tree as **unstable** if you observe **any** of:
+
+- Unexpected modified or staged files, **or** a `git status` / diff that **shifts between two fresh reads** from disk without this thread having edited those paths.
+- Hunks or files that **do not match** this thread’s assumed scope for the current finish.
+- `package.json` or `CHANGELOG.md` behaving oddly (for example unexpected concurrent edits, conflicts or merge markers, or metadata that **no longer matches** the current full diff).
+- Husky / pre-commit hooks or commit failing due to files **outside** this thread’s stated work.
+- A **non-fast-forward** push requirement, or a sudden need to integrate remote updates **without** a clear single-writer explanation from this thread.
+- Firm knowledge that **another agent session** is active on the **same branch and same checkout**.
+
+**When any smoke appears:** Do **not** silently bump the version, write or edit changelog entries for release, commit, or push until the user selects one option under **User choice** below.
+
+### User choice (required when smoke is present)
+
+Call **AskQuestion** once with **exactly** these four options (you may shorten labels for the UI; keep the meanings intact):
+
+1. **Pause finish —** Stop before version/changelog/commit/push. Tell the user what you observed; wait while they resolve concurrency; do **no** further finish steps until they explicitly ask you to continue.
+2. **Bundle finish —** Re-read `git status` and the **full** diff from disk. Treat the branch as **one** release increment. Widen changelog and commit scope (and the version bump per [Semantic Versioning](#semantic-versioning-ssot) here) so they accurately describe **everything** that will be included in the commit—**explicit joint ownership** of the snapshot. Then continue the normal finish flow from that baseline.
+3. **Stash lane (other thread paused) —** **Only** if the user **explicitly confirms** the other thread or agent is paused: run `git stash push` with flags appropriate so nothing important is left out of the stash (for example include untracked or explicit paths when needed); use a **clear stash message**. Run the remainder of finish on the cleaned tree, then commit and push per this skill (push via `.cursor/skills/push/SKILL.md` when applicable). Then `git stash pop`, or `git stash apply` followed by `git stash drop`. If stash apply produces conflicts, **stop and report**; do **not** silently discard work. After a successful apply, briefly tell the user when it is safe to resume the other agent (for example after they have pulled or confirmed the pushed tip).
+4. **Wait and re-check —** Wait **~3 minutes once** for this selection (for example `sleep 180` in the shell—**no** tight polling loops). Then re-read status and full diff from disk. If smoke is **gone** and the tree **matches only this thread’s intended work**, continue finish **without** widening scope. If smoke remains or the diff still includes changes this thread does not own, **do not** commit or push—call **AskQuestion** again with the **same four** options. **Do not** run another automatic ~3 minute wait for Option 4 after one has already run **for the same user selection**; a further wait requires a **new** explicit user pick of Option 4.
+
+**Guardrails:** You cannot stop or suspend other agents. Options that depend on another thread being idle (**3**) or on time passing (**4**) rely on **user-stated truth** or on **clock time plus a clean re-read**, not on the assistant controlling other processes. For Option 4, claiming the tree is “only this thread’s work” **must** be justified by a **clean second read** of status and full diff from disk, **not** by assumption.
+
 - remove temporary console logs
 - remove instrumentation
 - remove redundant/legacy code
-- **If this was a debugging session that resulted in a fix:** update `.cursor/skills/debug/SKILL.md` § "Common Error Pattern Recognition" **only** when the insight is reusable.
+- **If this was a debugging session that resulted in a fix:** update `.cursor/skills/debug/patterns.md` (the debug pattern library) **only** when the insight is reusable.
   - Capture the pattern at the level of a **bug class**, not a single incident.
   - Use format: **Symptom class -> Likely cause classes -> Discriminator question -> First diagnostic move**.
   - Prefer cross-feature language (e.g. race conditions, stale state, config drift, schema mismatch, effect dependency loops).

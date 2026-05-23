@@ -5,7 +5,6 @@ description: >-
   removal opportunities across features. Use when the user asks to find duplication,
   consolidate code, audit for redundancy, reduce repetition, or identify shared
   patterns that should be unified.
-disable-model-invocation: true
 ---
 
 # Consolidate - Cross-Codebase Redundancy Audit
@@ -194,6 +193,16 @@ Check what already exists in `src/shared/`, `src/components/common/`, and `src/l
 - Can an existing shared hook/component be extended rather than creating a new one?
 - Would the consolidation conflict with or duplicate existing shared code?
 
+#### 3E. Ambiguity and Standards Check
+
+Before recommending consolidation, ask:
+- Is it ambiguous whether these repeated implementations are meant to serve the same user journey or different app usage contexts?
+- Would the proposed consolidation diverge from industry standards, framework best practices, or established repo conventions?
+
+If usage intent is ambiguous, stop and ask the user a question about how the app will be used so the answer determines whether to consolidate, standardize, or intentionally keep duplication.
+
+If a recommendation would preserve or introduce a standards diversion, ask whether the diversion is intentional or whether to align the plan with best practices.
+
 ---
 
 ### Phase 4: Prioritization
@@ -265,6 +274,8 @@ STRONG CANDIDATES (Score 6+)
     - Approach: [Simple extraction / Parameterized utility / Configurable factory]
     - Estimated scope: [files to modify, lines saved]
     - Risk: [Low/Medium/High - what could break]
+    - Usage ambiguity: [None / user question needed / user-confirmed reason]
+    - Standards alignment: [Aligned / confirmed intentional diversion / should realign]
 
     Architecture compliance:
     - Layer: [utils/services/hooks/components per architecture/RULE.md]
@@ -293,6 +304,8 @@ Which candidates should I implement? (e.g., "#1, #3, #5" or "all strong")
 ```
 
 **Decision gate:** Wait for user to choose which consolidations to execute.
+
+If any finding has unresolved usage ambiguity or an unconfirmed standards diversion, ask that question before asking which candidates to implement.
 
 ---
 

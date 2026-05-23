@@ -1,247 +1,220 @@
 ---
 name: debug
-description: "debug"
-disable-model-invocation: true
+description: Structured scientific debugging for runtime bugs, regressions, flaky behavior, frontend/backend failures, Supabase/RLS/Auth/Storage issues, and user-reported errors. Use when the user invokes /debug, asks to debug, reports an error, or describes inconsistent behavior.
 ---
 
 # debug
 
-Use **Scientific Method Debugging** 
-The user does **not** edit code. The user only:
-- Performs actions in the app.  
-- Filters console logs if needed
-- Copies and pastes console logs.  
-- Performs actions in external dashboards (e.g. Supabase).  
+Use **Scientific Method Debugging**. The goal is to reduce uncertainty with evidence, not to patch around symptoms.
 
-You must never claim the issue is fixed; only the user decides when the issue is resolved.
+The user does **not** edit code. The user only:
+
+- Performs actions in the app.
+- Filters console logs if needed (when not in Cursor Debug Mode).
+- Copies and pastes console logs (when not in Cursor Debug Mode; in Debug Mode the **agent** reads logs directly).
+- Performs actions in external dashboards when the agent cannot.
+
+Never claim the issue is fixed. Only the user decides when the issue is resolved.
 
 ---
 
-### 1. Expected Input
+## 0. Mandatory Preflight
+
+Before forming hypotheses or editing code, fill these slots in your working notes and reflect them in the first debug response:
+
+1. **Environment frozen:** Which app runtime, branch, deployed build, Supabase/project ref, user/account, browser/session, and feature flag state is being exercised? If unknown, state how you will prove it first.
+2. **Recent-change audit:** Which recent files, migrations, PRs, config changes, deploys, or dashboard edits touched the failing surface or shared dependency?
+3. **Event-chain draft:** What is the shortest user action → app behavior → side effect/API/DB call → failure chain you can reconstruct from current evidence?
+4. **Pattern lookup:** Search [`patterns.md`](patterns.md) for symptom tokens, error codes, subsystem names, and recent-change terms. Record matched pattern names or `no match for: <tokens>`.
+5. **Layer alignment:** Which layer does the best current evidence point to (UI state, client request, API/Edge, database/RLS, external service, deployment/config)? Is the next diagnostic step aimed at that same layer?
+
+If any slot is skipped, explicitly write `skipped because ...`. Do not silently omit a section.
+
+---
+
+## 1. Process Guardrails
+
+Use these guardrails during every evidence loop:
+
+- **Environment first:** Before interpreting logs, prove which runtime environment, project/branch, and deployed build the user is exercising. Do not assume production, staging, local, or a branch from memory.
+- **One turn should narrow:** Each debug iteration must explicitly state what uncertainty was removed. If the next action does not plausibly cut the remaining probability space roughly in half, pause and choose a better diagnostic step.
+- **Cross-surface failures point down-stack:** When independent user actions fail across multiple UI flows but share an external dependency, inspect the shared dependency's health/logs before adding more application-level guards.
+- **Localhost instrumentation has scope:** Browser debug logging to a local ingest endpoint only works when the exercised app can reach that local endpoint. For hosted or remote runtimes, prefer server-side logs, existing telemetry, MCP logs, or deployable remote-safe instrumentation.
+- **Stop editing after layer refutation:** If runtime evidence moves the likely cause outside the layer being edited, stop accumulating mitigations there. Keep only changes that improve observability or user-facing clarity and are independently justified by evidence.
+- **Recent changes are suspects:** A bug that appears after a refactor, migration, deploy, dashboard edit, dependency bump, or environment split must include at least one hypothesis tied to that change.
+- **Do not outsource an app-owned failure:** External service instability can be a hypothesis, but it must compete against app-specific request shape, auth path, RLS, schema, config, and recent-change hypotheses.
+- **Supabase stack:** For auth, RLS, Storage, and Edge Function errors, include hypotheses about JWT/session, policies, bucket policies, and request shape against `.cursor/rules/security/RULE.md` and `.cursor/rules/database/RULE.md` where relevant.
+
+---
+
+## 2. Expected Input
+
 Accept any of:
-- Error message + stack trace  
-- Console output  
-- Description of what the user did  
-- Mention of external systems involved  
+
+- Error message + stack trace
+- Console output
+- Description of what the user did
+- Mention of external systems involved
 
 If information is missing, proceed with assumptions and state them.
 
 ---
 
-### 2. Component Nesting & Structure Analysis (React/UI Issues)
-For UI/React issues, **always** analyze component nesting first, as nesting issues are often the root cause:
+## 3. Component Nesting & Structure Analysis (React/UI Issues)
 
-1. List all components/divs in which the problematic component is nested (full hierarchy).
-2. List all properties being passed down through the component tree (prop drilling analysis).
-3. Identify potential culprits:
-   - CSS inheritance/overrides from parent components
-   - Global styles affecting layout context (check body, html, #root for display: flex/grid that changes layout mode)
-   - Overflow/stacking context issues (any element with overflow ≠ visible creates new stacking context)
+For UI/React issues, analyze component nesting **before** behavioral instrumentation:
+
+1. List the problematic component's full component/DOM hierarchy.
+2. List relevant props, context values, refs, and derived state passed through that tree.
+3. Identify likely structural culprits:
+   - CSS inheritance/overrides from parents
+   - Global styles affecting layout context (`body`, `html`, `#root`)
+   - Overflow/stacking context issues (any element with overflow other than `visible` creates a new stacking context)
    - Prop type mismatches or undefined props
-   - Context providers affecting the component
+   - Context/provider mismatch
    - Z-index/positioning conflicts from nesting
-4. Form a hypothesis about which nesting level or prop is causing the issue.
+4. Map any structural hypothesis back to the event chain.
 
-This structural analysis informs the event chain reconstruction and helps identify if the issue is architectural rather than behavioral.
+Skip this section only when the bug is clearly not UI/React.
 
 ---
 
-### 3. Event Chain Reconstruction
+## 4. Event Chain Reconstruction
+
 For each issue:
-1. Reconstruct the chain from user action → app behavior → API calls/side effects → failure point.  
-2. Present as a numbered list.  
-3. Identify the most suspicious link.
 
-All diagnostic steps must map back to **specific links in this chain**.
+1. Reconstruct the chain from user action → app behavior → API calls/side effects → failure point.
+2. Present it as a numbered list.
+3. Identify the most suspicious link and why.
+
+All diagnostic steps must map back to **specific links in this chain**. If a diagnostic step cannot be mapped, choose a better step.
+
+---
+
+## 5. Pattern Recognition
+
+Known patterns live in [`patterns.md`](patterns.md). Use it as a searchable reference, not as prose to skim.
+
+Before forming hypotheses:
+
+- Search for exact symptoms/error codes (`08P01`, `42501`, `42703`, `42P10`, `CORS`, `Maximum update depth`, etc.).
+- Search for subsystem terms (`RLS`, `storage`, `JWT`, `Edge Function`, `stream`, `cache`, etc.).
+- Search for recent-change terms (migration/function/table/component names touched near the regression).
+
+If a pattern matches, promote it into the hypothesis set with a falsifier. If no pattern matches, record the searched tokens.
+
+When a fixing session yields a **new reusable** pattern, add it to `patterns.md` per `.cursor/skills/finish/SKILL.md` (quality gate applies).
 
 ---
 
-### 4. Hypotheses (Scientific Method)
-For each issue propose 2–3 hypotheses:
-- Each predicts **specific observable outcomes** the user can capture.  
-- Each includes a **falsification condition**.  
-- At least one involves an external configuration cause.  
-- Each hypothesis must map to a **specific step** in the event chain.
+## 6. Hypotheses (Scientific Method)
 
-Hypotheses must be designed so that logs or observations can **decide between them**.
+For each issue propose **2–3 hypotheses**:
+
+- Each maps to a **specific event-chain step**.
+- Each predicts **specific observable outcomes**.
+- Each includes a **falsification condition**.
+- At least one involves **external configuration** when errors involve auth, permissions, RLS, API keys, service URLs, quotas, environment mismatch, or dev/prod differences.
+- At least one involves a **recent change** when the bug appeared after a refactor, migration, deploy, dashboard change, dependency bump, or environment split.
+
+Hypotheses must be designed so that logs or observations can **decide between them**. Avoid hypotheses that all predict the same next observation.
 
 ---
-### 5. Instrumentation
 
-All hypotheses must be verifiable through logs captured after the user reproduces the issue.
-Logs should include all information needed for hypothesis falsification/verification.
-For API calls, raw API input and output can be needed (take simple security measures to avoid exposing secrets).
+## 7. Instrumentation
+
+All hypotheses must be verifiable through evidence captured after reproducing the issue. Logs should include all information needed for falsification or verification. For API calls, raw API input and output can be needed; avoid exposing secrets.
+
+Place instrumentation at the layer the evidence currently points to:
+
+- UI symptoms with uncertain client state → instrument component state/events.
+- Correct client state but bad request/response → instrument service/request boundaries.
+- Cross-surface failures sharing DB/Auth/Storage/Edge → inspect server, database, dashboard, MCP, or provider logs before adding more client logs.
+- Hosted or remote app → do not rely on localhost-only browser logging unless the app can reach that endpoint.
 
 **When Cursor Debug Mode is active** (system reminder contains "DEBUG MODE" with a provisioned server endpoint, log path, and session ID):
-- Use the provisioned logging infrastructure instead of `console.log`. The agent reads the log file directly — the user does not need to copy/paste logs.
+
+- Use the provisioned logging infrastructure instead of `console.log`. The agent reads the log file directly; the user does not need to copy/paste logs.
 - Each log entry must be a structured JSON payload with these fields:
   - `sessionId` — from the provisioned session
   - `runId` — to distinguish initial run vs post-fix verification (e.g. `"run1"`, `"post-fix"`)
-  - `hypothesisId` — which hypothesis this log tests (e.g. `"A"`, `"B"`)
-  - `location` — file and line (`"useChat.ts:142"`)
+  - `hypothesisId` — which hypothesis this log tests (e.g. `"H1"`, `"H2"`)
+  - `location` — file and function/line when practical
   - `message` — short description
   - `data` — relevant values
   - `timestamp` — `Date.now()`
 - Wrap each debug log in a collapsible code region (`// #region agent log` / `// #endregion`) to keep the editor clean.
-- Aim for 2–6 log points (minimum 1, maximum 10). If you think you need more than 10, narrow your hypotheses first.
-- Delete the log file before each reproduction run (clean slate).
+- Aim for 2–6 log points (minimum 1, maximum 10). If you think you need more than 10, narrow hypotheses first.
+- Delete or clear the log file before each reproduction run.
 
 **When Cursor Debug Mode is NOT active** (default):
-- All hypotheses must be verifiable by the user by simply performing an action and sharing the (filtered) console log output.
+
+- Hypotheses must be verifiable by the user performing an action and sharing filtered console output, or by agent-accessible logs/MCP/tools.
 - Console logs should include all possibly needed information for hypothesis falsification/verification.
+
 ---
 
-### 6. Unified Diagnostic Steps (Single Ordered List)
-Provide **one integrated numbered list** of user actions.  
-These may include in-app interactions, devtools checks, network observations, or dashboard inspections.
+## 8. Unified Diagnostic Steps
+
+Provide **one integrated numbered list** of user/agent actions. These may include in-app interactions, DevTools checks, network observations, dashboard inspections, MCP queries, log reads, or focused code edits.
 
 Each step must:
-- Correspond to a **specific location** in the event chain.  
-- Clearly state **what observation supports or refutes each hypothesis**.  
-- Aim to **cut the search space in half** with each action.  
-- Indicate precisely what the user should copy/paste back.
 
-Avoid category labels; all steps belong to one unified list.
+- Correspond to a **specific location** in the event chain.
+- State **what observation supports or refutes each hypothesis**.
+- Aim to **cut the search space in half**.
+- Indicate precisely what the user should do or return only when the agent cannot perform the action.
+
+Avoid category labels; all steps belong to one ordered plan.
 
 ---
 
-### 7. Iterative Evidence Loop
-When new evidence is available (user returns with logs, or agent reads the debug log file in Cursor Debug Mode):
-1. Update the event chain using the new evidence.
-2. Mark each hypothesis as **supported**, **refuted**, or **uncertain**, and briefly **explain why** — citing specific log entries or console output as evidence.
-3. **Revert code changes from rejected hypotheses.** Do not let defensive guards, speculative fixes, or unproven changes accumulate in the codebase. Only keep modifications supported by runtime evidence.
-4. Form a smaller, more precise hypothesis set.
-5. Provide the next unified action list.
+## 9. Iterative Evidence Loop
 
-When verifying a fix, compare **before and after** log entries for the same code path. Cite specific log lines showing the behavior change. Do not claim a fix works without this evidence.
+When new evidence is available (user returns with logs, or agent reads logs directly):
+
+1. Update the event chain using the new evidence.
+2. Mark each hypothesis as **supported**, **refuted**, or **uncertain**, and briefly explain why with evidence.
+3. Re-check [`patterns.md`](patterns.md) using any newly discovered tokens.
+4. **Revert or remove code changes from rejected hypotheses.** Do not let defensive guards, speculative fixes, or unproven changes accumulate. Only keep modifications supported by runtime evidence.
+5. Form a smaller, more precise hypothesis set.
+6. Provide the next unified action list.
+
+When verifying a fix, compare **before and after** evidence for the same code path. Do not claim a fix works without user confirmation.
 
 Repeat until only the user declares the issue resolved.
 
 ---
 
-### 8. External Configuration Awareness
-Always include a configuration-based hypothesis when errors involve:
-- Auth/permissions  
-- RLS policies  
-- API keys, tokens, or service URLs  
-- Environment variable mismatches  
-- Rate limits, quotas  
-- Dev vs prod differences  
+## 10. Output Structure for Debug Responses
 
-Provide specific checks and exact values the user should verify.
+Every substantive debug response must include these slots. Keep each concise; write `skipped because ...` when not applicable.
 
----
+```markdown
+## Debug State
+- Environment frozen:
+- Recent-change audit:
+- Event-chain step under test:
+- Pattern lookup:
+- Layer alignment:
+## Hypotheses
+- H1:
+  - Prediction:
+  - Falsifier:
+- H2:
+  - Prediction:
+  - Falsifier:
+## Evidence Plan
+1. Step:
+   - Tests:
+   - Supports/refutes:
+   - What to return:
+## Evidence Update
+- Removed uncertainty:
+- Supported:
+- Refuted:
+- Still uncertain:
+## Next Narrowing Step
+```
 
-### 9. Common Error Pattern Recognition
-When symptoms match known patterns, prioritize these hypotheses first:
-
-**React "Maximum update depth exceeded":**
-- Almost always: an object (not primitive) in a useCallback/useEffect dependency array
-- Check: useMutation/useQuery return objects (unstable), Context values (unmemoized), inline objects
-- Key question: "Is a callback being passed to Context via setState?" (classic loop pattern)
-- Debug approach: Log which dependency actually changed using refs, don't guess
-
-**N8N Webhook "Unused Respond to Webhook node found" (500 error):**
-- Symptom: Webhook returns 500 with message "Unused Respond to Webhook node found in the workflow"
-- Root cause: Webhook node Response Mode is set to auto-respond (default) but a Respond to Webhook node exists downstream
-- Key question: "Is the Webhook node's Response Mode set to 'Using Respond to Webhook node'?"
-- Debug approach: Check N8N workflow configuration, not code - verify Response Mode setting in Webhook node (N8N v1.114+ requires explicit configuration)
-
-**Auth Context Race Condition - Protected Route Redirects Before Role Loads:**
-- Symptom: Protected routes (e.g., admin pages) redirect to fallback route on page refresh, even though user has proper role. User sees redirect flash before staying on page, or gets redirected incorrectly.
-- Root cause: `loading` state becomes `false` before `userRole` is fetched. useEffect that fetches role runs on mount when `user` is `null` (initial state) and sets `loading: false` prematurely, allowing ProtectedRoute to render and redirect before role is available.
-- Key question: "Is the loading state being set to false before the initial session check completes?"
-- Debug approach: Track when `loading` changes to `false` relative to when `user` is set and when `userRole` is fetched. Use a ref to track if initial session check has completed before allowing `loading` to be set to `false` for null/anonymous users.
-
-**PowerShell Command Hangs - Long-Running Commands Get Stuck:**
-- Symptom: Commands like `pnpm type-check`, `pnpm lint`, or `pnpm test` appear to hang indefinitely in PowerShell/Cursor, especially in hooks or scripts
-- Root cause: PowerShell doesn't always propagate exit codes correctly. Commands may fail but PowerShell returns 0, causing Cursor to wait indefinitely for a clear termination signal
-- Key question: "Is the command actually hanging, or is Cursor waiting for an exit code that never comes?"
-- Debug approach: Check `.cursor/rules/workflow/RULE.md` for exit code handling patterns. Add explicit exit code handling: `command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }` for PowerShell, or `command || exit 1` for bash scripts
-
-**React Fast Refresh Context Provider Error During Hot Reload:**
-- Symptom: Context hook throws "must be used within Provider" error during hot reload, but works fine on full page refresh. Error disappears after refresh.
-- Root cause: React Fast Refresh temporarily unmounts providers during hot reload while components using the context are still rendering, causing context to be undefined
-- Key question: "Is this error only happening during hot reload in development mode, not on full refresh?"
-- Debug approach: Make context hook return a safe default in development mode instead of throwing. Check `import.meta.env?.MODE === 'development'` and return fallback context. Still throw in production to catch real bugs.
-
-**React State/URL Desynchronization - Component Checks Only State, Ignores URL Params:**
-- Symptom: Component creates new resources (conversations, items) on second action even though URL shows correct ID. State shows null/undefined but URL param exists.
-- Root cause: Component checks only state (`currentConversationId`) but ignores URL params (`paramConversationId`). Race condition where routing effect hasn't loaded resource yet but URL already indicates existing resource.
-- Key question: "Is the component checking both state AND URL params when determining resource context?"
-- Debug approach: Check if `paramConversationId` exists in URL but state is null - if so, use `paramConversationId` as fallback. Log both values to identify desynchronization. Use `effectiveId = stateId ?? (paramId && hasData ? paramId : null)` pattern.
-
-**Database UUID Type Error - Passing Array Index Instead of UUID:**
-- Symptom: Database error "invalid input syntax for type uuid: '1'" or similar when saving records with foreign key relationships. Error occurs when creating linked records (files, messages, etc.).
-- Root cause: Passing stringified array index (`String(index)`) instead of actual UUID from object. Common in `.map()` callbacks where index is mistakenly used instead of object ID property.
-- Key question: "Is the ID being passed the actual UUID property from the object, or a stringified array index?"
-- Debug approach: Check where ID is set in event handlers - verify it uses `(object as TypedObject).id` or `object.id`, not `String(index)`. Log the value being passed to identify if it's a numeric string vs UUID format.
-
-**localStorage Persistence Issue - Routing Data Cleared on Logout:**
-- Symptom: Feature works correctly on window close/reopen but fails after logout/login. Routing or state restoration doesn't work after login even though it works on refresh.
-- Root cause: `clearUserLocalStorage()` function clears localStorage keys that should persist across logout/login. Keys are user-specific but being cleared unnecessarily, breaking persistence.
-- Key question: "Is the localStorage clearing function removing keys that should persist across logout/login sessions?"
-- Debug approach: Check `clearUserLocalStorage()` function - verify which keys are cleared. User-specific keys (e.g., `lastOpenedChat:v1:{userId}`) should typically persist unless there's a security/privacy reason to clear them. Compare behavior: window close/reopen (keys persist) vs logout/login (keys cleared).
-
-**CORS Header Not Allowed - Generic "Failed" Error Message:**
-- Symptom: Browser console shows "Request header field X-Header-Name is not allowed by Access-Control-Allow-Headers in preflight response" but frontend only shows generic "I encountered an error: Failed" message. Request fails before reaching server.
-- Root cause: Edge function CORS configuration doesn't include custom headers being sent by frontend. Preflight OPTIONS request fails, causing fetch to throw generic error that gets truncated to just "Failed".
-- Key question: "Are all custom headers (x-title, http-referer, etc.) listed in the edge function's Access-Control-Allow-Headers?"
-- Debug approach: Check browser Network tab for OPTIONS preflight request - verify which headers are being sent vs allowed. Check edge function CORS configuration (`_shared/cors.ts`) - ensure all custom headers match exactly (case-sensitive). Improve frontend error handling to detect network/CORS errors and show clearer messages.
-
-**React State Synchronization Bug - Local Array Copy Not Updated:**
-- Symptom: Data appears in UI but disappears after save/reload, or save fails with validation errors. Only happens on first message or specific scenarios. Subsequent operations work fine.
-- Root cause: Async function creates local copy of state array (`let localArray = initialArray`), updates React state via callbacks (`setState`), but local copy isn't updated. When function returns, it returns stale local copy instead of updated state.
-- Key question: "Is the async function returning a local copy of state that was never updated, even though React state was updated via callbacks?"
-- Debug approach: Check if async function returns state - verify returned value matches React state. Look for `let localArray = initialArray` pattern followed by `setState` updates but no `localArray = updatedArray`. Fix: Update local copy before returning, or return updated state from callback.
-
-**Database Constraint Mismatch After Migration - ON CONFLICT References Old Primary Key:**
-- Symptom: Database error `42P10` "there is no unique or exclusion constraint matching the ON CONFLICT specification" when upserting/inserting records. Error occurs after database migrations that changed primary keys or unique constraints.
-- Root cause: Migration changed table constraints (e.g., primary key from `(assistant_id, tool_name)` to `(assistant_id, tool_id)`) but application code still references old constraint in `ON CONFLICT` clauses or queries.
-- Key question: "Did a recent migration change the primary key or unique constraint that this code references?"
-- Debug approach: Check migration files for table schema changes - verify current primary key/constraints match what code expects. Look for `ON CONFLICT` clauses, upsert operations, or unique constraint checks. Fix: Update code to use new constraint columns (may require lookup if old column is deprecated but kept for compatibility).
-
-**Git env.exe "couldn't create signal pipe" Win32 error 5 (Windows):**
-- Symptom: `git commit` fails with `env.exe: *** fatal error - couldn't create signal pipe, Win32 error 5` when run from Cursor's terminal/agent, but works on another PC or from external terminal.
-- Root cause: Win32 error 5 = ACCESS_DENIED. Primary confirmed cause: Cursor's sandbox restricts pipe creation when running terminal commands, blocking env.exe from spawning. Other possible causes: (2) Antivirus/security software blocking process spawn, (3) User account lacks "Create global objects" permission, (4) Git for Windows version/corruption.
-- Key question: "Does the commit work with full permissions (`all`) or from an external terminal (PowerShell, Windows Terminal)?"
-- Debug approach: For Cursor agent: use `required_permissions: ["all"]` when running git commit. For manual commits: use external terminal instead of Cursor's terminal. If still failing: check AV exclusions, Group Policy, try running Cursor as Administrator.
-
-**Vitest + MUI Material v7 ES Module Cycle Error:**
-- Symptom: Vitest tests fail with `Error: Cannot require() ES Module ... @mui/material/esm/index.js in a cycle` when testing components that import MUI Material v7. Tests work on some machines but fail on others.
-- Root cause: MUI Material v7 uses ESM-first exports with directory imports that Vitest cannot resolve. Vitest tries to use CommonJS `require()` for ESM modules, creating a cycle. May work on some machines due to different Node/pnpm versions, cache states, or dependency resolution.
-- Key question: "Does the test work on another machine or after clearing Vite cache (`rm -rf node_modules/.vite`)?"
-- Debug approach: Add `server.deps.inline: ["@mui/material", "@mui/icons-material"]` to `vitest.config.ts` to force pre-bundling. Also add `fallbackCJS: true` for ESM/CJS compatibility. Clear Vite cache if issue persists. Check Node/pnpm versions if working on other machines.
-
-**Stale closure / setState callback race:**
-- Value read from a closure or computed inside an async callback is used before it runs; or Handler A sets state, Handler B runs before React flushes and reads stale state.
-- Key question: "Is the value built synchronously and passed in, or only available inside a callback? Does the next handler receive the updated value or a stale snapshot?"
-- Debug approach: Build values synchronously before async calls; pass updated data forward explicitly; use refs for cross-handler communication. In loops, pass a getter (`getX: () => liveValue`) instead of a snapshot.
-- Examples: Form submit clears values; earlier messages disappear on save; data disappears after save; sequential operations revert earlier status.
-
-**Code vs DB schema mismatch:**
-- Code expects a column, constraint, or table name that no longer exists (or vice versa), usually after a migration.
-- Key question: "Did migrations run on this environment? Do column names, constraint names, and ON CONFLICT clauses match the current DB schema?"
-- Debug approach: Check migration files; query `information_schema.columns` for the affected table; verify constraint names with `\d+ <table>`; run missing migrations. Watch for staging/production drift where migrations ran in different order.
-- Examples: `ON CONFLICT` 42P10 after a migration; "column X does not exist" in one environment but not another; trigger references a dropped column.
-
-**Order of operations (async sequencing):**
-- Client or server performs step B before step A has persisted, causing a foreign key violation, missing record, or stale read.
-- Key question: "Is the dependent operation guaranteed to run after the prerequisite has fully committed, not just after the async call returns?"
-- Examples: insert of a child record before parent is saved; invoking a function with an ID before the row exists; clearing dirty state after navigation instead of before.
-- Debug approach: Defer dependent calls until after the prerequisite's success callback; return the DB-generated ID from create operations and thread it forward rather than using a client-generated ID.
-
-**Add other patterns here as they're discovered.**
-
----
-
-### 10. Output Structure for Each Response
-1. Quick Summary  
-2. Component Nesting Analysis (if UI/React issue)
-3. Event Chain  
-4. Pattern Match Check (does this match a known pattern from §9?)
-5. Hypotheses (with predictions + falsification conditions)  
-6. Instrumentation changes to verify/falsify all hypotheses
-7. Unified Action Steps and code changes
-8. What to Return  
-9. Next Narrowing Step  
+For small follow-up turns, a compact version is fine, but it must still mention environment, pattern lookup, hypotheses/evidence status, and the next narrowing step.
