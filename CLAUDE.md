@@ -9,23 +9,27 @@ Project memory for Claude Code. Keep under 100 lines — the imported rule files
 - **Stack:** Vite 7, React 19, TypeScript 5.6 (strict), MUI 7, TanStack Query 5, Supabase 2, Airtable, React Router 7, Vitest 4, ESLint 9 + GTS + Prettier, Husky + lint-staged, dependency-cruiser, eslint-plugin-boundaries.
 - **Package manager:** `pnpm@9.15.4` (enforced via `packageManager` field — do **not** use npm or yarn).
 
-## Workflow — slash commands
+## Workflow — agent skills
 
-Each slash command reads and executes a `.cursor/skills/<name>/SKILL.md` file.
+Project agent workflows live under **`.agents/skills/<name>/SKILL.md`** (cross-tool: Cursor, Claude Code, and other agents scan this folder).
 
-**Product context:** Fill `documentation/DOC_APP_VISION.md` (see `.cursor/skills/start/SKILL.md`) so planning and feature work align with your fork’s problem, persona, and app role.
+**Routing:** For ambiguous work or “which skill?”, read `.agents/skills/router/SKILL.md` first.
 
-| Slash command | Wraps | Purpose |
-| ------------- | ---------------------------------- | --------------------------------------------------------- |
-| `/plan` | `.cursor/skills/plan/SKILL.md` | Produce a `DEVELOPMENT_PLAN.md` |
-| `/implement` | `.cursor/skills/implement/SKILL.md`| Execute the plan phase by phase |
-| `/validate` | `.cursor/skills/validate/SKILL.md` | Rules + tooling review (read-only by default) |
-| `/check` | `.cursor/skills/check/SKILL.md` | Architecture and code-quality gate |
-| `/consolidate` | `.cursor/skills/consolidate/SKILL.md` | Cross-feature duplication and consolidation audit |
-| `/review` | `.cursor/skills/review/SKILL.md` | Component review (170-point rubric) |
-| `/finish` | `.cursor/skills/finish/SKILL.md` | Pre-commit: version, changelog, staging gate, commit |
+**Product context:** Fill `documentation/DOC_APP_VISION.md` (see `.agents/skills/start/SKILL.md`) so planning and feature work align with your fork’s problem, persona, and app role.
 
-For small scoped work: `.cursor/skills/quick-piv/SKILL.md`.
+| Skill | Purpose |
+| ----- | ------- |
+| `plan` | Produce a `DEVELOPMENT_PLAN.md` |
+| `implement` | Execute the plan phase by phase |
+| `validate` | Repo rules + tooling review (read-only by default) — **not** industry precedent |
+| `pattern-review` | Industry precedent for plans/proposals (proactive) |
+| `review-dev-plan` | Six-lens plan critique before implementation (M/L plans) |
+| `check` | Architecture and code-quality gate |
+| `consolidate` | Cross-feature duplication and consolidation audit |
+| `review` | Component review (170-point rubric) |
+| `finish` | Pre-commit: version, changelog, staging gate, commit |
+
+For small scoped work: `.agents/skills/quick-piv/SKILL.md`. Cross-repo adoption guides: `.agents/skills/write-adoption-guide/SKILL.md` → `documentation/handoffs/`. Layer model: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`.
 
 ## Rules — single source of truth
 
@@ -54,5 +58,5 @@ Claude-specific behavioral reminders (thin pointers to the above):
 ## Defaults
 
 - **Always read before edit.** Run `pnpm validate:structure` if creating new files in unfamiliar locations.
-- **Plan before non-trivial work.** Anything beyond a one-line fix should start with `/plan`.
+- **Plan before non-trivial work.** Anything beyond a one-line fix should start with the `plan` skill (`.agents/skills/plan/SKILL.md`).
 - **Lean output.** Don't restate skill content — point to the file and follow it.

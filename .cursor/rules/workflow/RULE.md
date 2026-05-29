@@ -11,14 +11,15 @@ Development workflows, code review standards, and process requirements. Includes
 
 | Topic | SSOT Location |
 |-------|----------------|
-| Semantic versioning, commit format, conventional commit types | `.cursor/skills/finish/SKILL.md` |
-| Changelog format, version sync workflow | `.cursor/skills/finish/SKILL.md` (this rule references it) |
+| Semantic versioning, commit format, conventional commit types | `.agents/skills/finish/SKILL.md` |
+| Changelog format, version sync workflow | `.agents/skills/finish/SKILL.md` (this rule references it) |
 | Branch strategy, protected files, agent behaviors | `.cursor/rules/workflow/RULE.md` (this file) |
 | Architecture patterns, layer rules, code placement | `.cursor/rules/architecture/RULE.md` |
 | Project structure, file whitelist | `projectStructure.config.cjs` |
 | Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
 | App config schema (boilerplate only; removed by complete-setup) | `documentation/DOC_APP_CONFIG_FILE.md` |
 | **App vision & goals** (problem, persona, app’s role; fillable template) | `documentation/DOC_APP_VISION.md` |
+| **Agent workflow layers** (skills vs rules; pattern review entry) | `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` |
 | **Supabase + Google OAuth** (dashboard / Google Cloud Console setup checklist) | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |
 | Feature-local README enforcement (Option 1), scripts, CI placement | `documentation/DOC_FEATURE_LOCAL_README.md` |
 
@@ -50,7 +51,7 @@ Development workflows, code review standards, and process requirements. Includes
 
 #### Semantic Versioning
 
-**SSOT:** See `.cursor/skills/finish/SKILL.md` for semantic versioning rules (MAJOR.MINOR.PATCH format, version bump criteria, and conventional commit type mappings).
+**SSOT:** See `.agents/skills/finish/SKILL.md` for semantic versioning rules (MAJOR.MINOR.PATCH format, version bump criteria, and conventional commit type mappings).
 
 **Version Release Rule:**
 - One commit per released version: Each version release should be a single commit
@@ -63,7 +64,7 @@ Commits and changelog must be synchronized:
 
 #### Commit Messages
 
-**SSOT:** See `.cursor/skills/finish/SKILL.md` for commit message format and standards.
+**SSOT:** See `.agents/skills/finish/SKILL.md` for commit message format and standards.
 
 **Key Requirements:**
 - Format: `[VERSION] type: Feature/Change Title`
@@ -94,12 +95,12 @@ Changelog entries use Keep-a-Changelog style sections:
 
 **Example Workflow:**
 1. Update changelog: Add `## 3.19.0 - 2024-11-01` with feature description
-2. Commit with matching message: `[3.19.0] feat: User Profile Settings` (see `.cursor/skills/finish/SKILL.md` for format details)
+2. Commit with matching message: `[3.19.0] feat: User Profile Settings` (see `.agents/skills/finish/SKILL.md` for format details)
 3. Verify: Changelog title matches commit subject (minus version prefix)
 
 #### Version Synchronization
 
-**SSOT for release version:** `package.json` and `CHANGELOG.md` are the canonical sources. See `.cursor/skills/finish/SKILL.md` for the full workflow.
+**SSOT for release version:** `package.json` and `CHANGELOG.md` are the canonical sources. See `.agents/skills/finish/SKILL.md` for the full workflow.
 
 When updating the changelog with a new version, update two locations to maintain consistency:
 
@@ -301,10 +302,12 @@ The agent must STOP and ASK the user before modifying any of the following file 
 
 **Cursor Rules and Skills:**
 - `.cursor/rules/**`
-- `.cursor/skills/**`
+- `.agents/skills/**`
 
 **Git Hooks:**
 - `.husky/**`
+
+**Pre-commit (local):** Staged-path light path — SSOT [`scripts/change-classify.cjs`](../../../scripts/change-classify.cjs), hook [`.husky/pre-commit`](../../../.husky/pre-commit). Skips `type-check` and staged structure/arch when staged files cannot affect app TypeScript; docs-only commits still run `validate:docs`. Full matrix: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git. Tests on push (`.husky/pre-push`), not on commit.
 
 **CI/CD:**
 - `.github/workflows/**`
@@ -346,7 +349,7 @@ See Branch Strategy section above for detailed branch protection rules and verif
 
 ### Commit and Push Workflow
 
-**Automated Workflow:** Use `.cursor/skills/finish/SKILL.md` and `.cursor/skills/push/SKILL.md` as a split workflow.
+**Automated Workflow:** Use `.agents/skills/finish/SKILL.md` and `.agents/skills/push/SKILL.md` as a split workflow.
 
 #### Agent-Executed Flow
 
@@ -369,7 +372,7 @@ See Branch Strategy section above for detailed branch protection rules and verif
    - Pushes only already committed work after explicit user confirmation
    - Default push target is the current non-`main` branch (typically `feature/*`); direct pushes to `main` are disallowed unless user explicitly requests an emergency override
    - Before pushing shared-branch updates, verify branch freshness against remote and sync first when behind
-   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.cursor/skills/debug/patterns.md` — **Git on Windows: env.exe signal pipe Win32 error 5**)
+   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.agents/skills/debug/patterns.md` — **Git on Windows: env.exe signal pipe Win32 error 5**)
 
 5. **General commit safety:**
    - Never assume the user wants to commit just because changes are complete
@@ -510,11 +513,11 @@ command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }
 - Entry: User Authentication with JWT token-based authentication system
 
 **Commit message:**
-- Format: `[3.19.0] feat: User Authentication` (see `.cursor/skills/finish/SKILL.md` for format SSOT)
+- Format: `[3.19.0] feat: User Authentication` (see `.agents/skills/finish/SKILL.md` for format SSOT)
 - Body includes: Implementation details, middleware updates, service changes, test coverage
 - References: Closes #123
 
-Note: Commit body is required and must include details about what changed. Version number is first, commit type and title match changelog exactly. See `.cursor/skills/finish/SKILL.md` for complete commit message standards.
+Note: Commit body is required and must include details about what changed. Version number is first, commit type and title match changelog exactly. See `.agents/skills/finish/SKILL.md` for complete commit message standards.
 
 ### Bad Commit Message
 - Generic messages like "fix stuff" without version, type, or details

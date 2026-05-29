@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.24.0] - 2026-05-29
+
+### Added
+
+- **Pre-commit light path**: `scripts/change-classify.cjs` classifies staged paths (`docs`, `migrations`, `no-src`); `.husky/pre-commit` skips `type-check`, staged structure, and arch when app TypeScript is not staged; `pnpm test:classify` in CI.
+- **Docs validation**: `validate:docs` now includes `.cursor/skills` alongside `.agents/skills`.
+
+### Changed
+
+- **Agent workflow docs**: `DOC_AGENT_WORKFLOW_LAYERS.md`, `finish` skill (§ Faster commit), `workflow/RULE.md` pre-commit pointer.
+- **Project structure**: allow `scripts/*.cjs` in `projectStructure.config.cjs`.
+- **Vitest**: exclude `scripts/**` so `pnpm test:classify` node tests are not collected on `test:run` / pre-push.
+
+## [0.23.0] - 2026-05-29
+
+### Added
+
+- **Pattern review (industry precedent)**: `.agents/skills/pattern-review/` with abstract rubric; wired through `plan`, `router`, `feature`, `architecture/RULE.md`, and `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`.
+- **`review-dev-plan` skill**: Multi-lens plan critique before implementation (including industry precedent).
+- **`write-adoption-guide` skill**: Author cross-repo adoption guides under `documentation/handoffs/`.
+- **Plan references**: `implementation-plan-template.md`, `complexity-rubric.md`; **Pattern & precedent** section in `DEVELOPMENT_PLAN.md`.
+
+### Changed
+
+- **Agent workflow**: `router` dev-cycle matrix; `plan` / `implement` / `validate` boundaries vs industry-standard review; skill `references/` allowed in `projectStructure.config.cjs`.
+
+## [0.22.0] - 2026-05-23
+
+### Added
+
+- **`grill-me` skill**: `.agents/skills/grill-me/SKILL.md` — product/design Q&A until shared understanding (wired in `router`).
+
+### Changed
+
+- **Agent skills (cross-tool)**: Moved all project skills from `.cursor/skills/` to `.agents/skills/` (universal convention for Cursor, Claude Code, and other agents). Removed redundant `.claude/commands/` wrappers; updated `CLAUDE.md`, rules, docs, and validation scripts. **`.cursor/rules/`** remains the SSOT for always-on project rules.
+
 ## [0.21.3] - 2026-05-16
 
 ### Added
@@ -15,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Onboarding**: README Quick Start, `documentation/DOC_INDEX.md` (quick link + SSOT map), `.cursor/rules/workflow/RULE.md`, `.cursor/rules/INDEX.md`, `.cursor/skills/start/SKILL.md`, `documentation/Authentication-main-app/auth-implementation-reference.md`, `src/features/auth/README.md` — link to the Google OAuth SSOT (no duplicated procedural steps). **`start` skill**: remove duplicate completion criterion line.
+- **Onboarding**: README Quick Start, `documentation/DOC_INDEX.md` (quick link + SSOT map), `.cursor/rules/workflow/RULE.md`, `.cursor/rules/INDEX.md`, `.agents/skills/start/SKILL.md`, `documentation/Authentication-main-app/auth-implementation-reference.md`, `src/features/auth/README.md` — link to the Google OAuth SSOT (no duplicated procedural steps). **`start` skill**: remove duplicate completion criterion line.
 - **Setup wizard**: `SupabaseDescription` includes a Sign in with Google pointer to `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`; `src/features/setup/README.md` updated for the same.
 
 ## [0.21.2] - 2026-05-15
@@ -48,7 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Cursor agent skills**: Removed `disable-model-invocation` from project `.cursor/skills/**/SKILL.md` files so descriptions can drive agent discovery; repaired YAML frontmatter on `airtable-data-sample` and `airtable-schema-structure` skills.
+- **Cursor agent skills**: Removed `disable-model-invocation` from project `.agents/skills/**/SKILL.md` files so descriptions can drive agent discovery; repaired YAML frontmatter on `airtable-data-sample` and `airtable-schema-structure` skills.
 - **Router skill**: After routing, the agent must **invoke** the chosen skill (read its `SKILL.md` and execute the workflow in the same turn), not only list paths. Bare `/router` with no substantive task routes to **finish**.
 
 ### Documentation
@@ -64,13 +100,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Validate and check skills: parallel rule-shaped audit**: Rewrite `.cursor/skills/validate/SKILL.md` and `.cursor/skills/check/SKILL.md` so every invocation fans out one read-only subagent per applicable rule in `.cursor/rules/` (called via `Task` with `subagent_type: explore`, `readonly: true`, narrow scope, and a required structured output schema — `severity`, `file:line`, `rule_section`, `ambiguity`, `question`). The parent dedupes cross-rule overlaps, surfaces failed subagents as "not audited — rerun recommended", and runs a batched ambiguity-question gate before the report. Implementation review additionally runs the tooling pass (parent-executed `pnpm validate:structure / lint / type-check / arch:check / test:run` plus optional `format:check`) and a plan-compliance subagent in parallel. `check` reuses the contract with a smaller default rule set (architecture, file-placement, code-style; security/database/testing/workflow only when scope touches them), no plan-compliance pass, and defers the schema to `validate/SKILL.md` as the single source of truth.
+- **Validate and check skills: parallel rule-shaped audit**: Rewrite `.agents/skills/validate/SKILL.md` and `.agents/skills/check/SKILL.md` so every invocation fans out one read-only subagent per applicable rule in `.cursor/rules/` (called via `Task` with `subagent_type: explore`, `readonly: true`, narrow scope, and a required structured output schema — `severity`, `file:line`, `rule_section`, `ambiguity`, `question`). The parent dedupes cross-rule overlaps, surfaces failed subagents as "not audited — rerun recommended", and runs a batched ambiguity-question gate before the report. Implementation review additionally runs the tooling pass (parent-executed `pnpm validate:structure / lint / type-check / arch:check / test:run` plus optional `format:check`) and a plan-compliance subagent in parallel. `check` reuses the contract with a smaller default rule set (architecture, file-placement, code-style; security/database/testing/workflow only when scope touches them), no plan-compliance pass, and defers the schema to `validate/SKILL.md` as the single source of truth.
 
 ## [0.19.5] - 2026-05-01
 
 ### Changed
 
-- **Agent skills refresh: router, debug patterns, and ambiguity gates**: Add `.cursor/skills/router/SKILL.md` for skill selection with goal/scope gates. Rewrites `.cursor/skills/debug/SKILL.md`, adds `.cursor/skills/debug/patterns.md`, and whitelists optional skill-level `patterns.md` in `projectStructure.config.cjs`. Updates `.cursor/skills/finish/SKILL.md`, `.cursor/rules/file-placement/RULE.md`, `.cursor/rules/workflow/RULE.md`, and `.cursor/skills/learn/SKILL.md` for cross-references. Extends `.cursor/skills/plan/SKILL.md`, `feature/SKILL.md`, `consolidate/SKILL.md`, `implement/SKILL.md`, `quick-piv/SKILL.md`, `validate/SKILL.md`, and `prime/SKILL.md` with ambiguity removal (app-usage or product-vision questions) and explicit user confirmation for diversions from standards or repo conventions.
+- **Agent skills refresh: router, debug patterns, and ambiguity gates**: Add `.agents/skills/router/SKILL.md` for skill selection with goal/scope gates. Rewrites `.agents/skills/debug/SKILL.md`, adds `.agents/skills/debug/patterns.md`, and whitelists optional skill-level `patterns.md` in `projectStructure.config.cjs`. Updates `.agents/skills/finish/SKILL.md`, `.cursor/rules/file-placement/RULE.md`, `.cursor/rules/workflow/RULE.md`, and `.agents/skills/learn/SKILL.md` for cross-references. Extends `.agents/skills/plan/SKILL.md`, `feature/SKILL.md`, `consolidate/SKILL.md`, `implement/SKILL.md`, `quick-piv/SKILL.md`, `validate/SKILL.md`, and `prime/SKILL.md` with ambiguity removal (app-usage or product-vision questions) and explicit user confirmation for diversions from standards or repo conventions.
 
 ## [0.19.4] - 2026-04-20
 
@@ -103,7 +139,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Airtable agent skills**: `.cursor/skills/airtable-schema-structure/SKILL.md` (Meta/schema, no row data) and `.cursor/skills/airtable-data-sample/SKILL.md` (small Data API samples with `returnFieldsByFieldId=true`). Fork-friendly; optional `tbl`/`fld` SSOT lives in product code per architecture rules.
+- **Airtable agent skills**: `.agents/skills/airtable-schema-structure/SKILL.md` (Meta/schema, no row data) and `.agents/skills/airtable-data-sample/SKILL.md` (small Data API samples with `returnFieldsByFieldId=true`). Fork-friendly; optional `tbl`/`fld` SSOT lives in product code per architecture rules.
 - **Airtable CLI helpers**: `scripts/load-airtable-env.js`, `scripts/airtable-meta-dump.js`, `scripts/airtable-sample-records.js` (default table from `VITE_AIRTABLE_TABLE_ID` when `--table` / `--table-name` omitted). `pnpm airtable:meta-dump` and `pnpm airtable:sample` in `package.json`.
 - **Setup docs**: `src/features/setup/README.md` — “Airtable CLI / agent tools” with commands and skill paths.
 
@@ -111,7 +147,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Consolidate skill**: `.cursor/skills/consolidate/SKILL.md` — cross-codebase redundancy audit (discover, classify, prioritize; execution only after user approval). Wired as `/consolidate` in `CLAUDE.md` and `.claude/commands/consolidate.md`.
+- **Consolidate skill**: `.agents/skills/consolidate/SKILL.md` — cross-codebase redundancy audit (discover, classify, prioritize; execution only after user approval). Wired as `/consolidate` in `CLAUDE.md` and `.claude/commands/consolidate.md`.
 
 ### Changed
 
@@ -151,14 +187,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Agent workflow**: Rewrote `.cursor/skills/check/SKILL.md` as an architecture and code-quality gate (tooling pass + spot-checks); moved requirement-depth and foundation-POC guidance into `.cursor/skills/plan/SKILL.md`.
+- **Agent workflow**: Rewrote `.agents/skills/check/SKILL.md` as an architecture and code-quality gate (tooling pass + spot-checks); moved requirement-depth and foundation-POC guidance into `.agents/skills/plan/SKILL.md`.
 - **Claude commands**: Updated `.claude/commands/check.md` and `.claude/commands/review.md` to match skills (`/review` documents the 170-point component rubric).
-- **Cross-references**: Updated `.cursor/skills/plan/SKILL.md`, `quick-piv/SKILL.md`, and `prime/SKILL.md` for the new `check` role.
+- **Cross-references**: Updated `.agents/skills/plan/SKILL.md`, `quick-piv/SKILL.md`, and `prime/SKILL.md` for the new `check` role.
 - **Project memory**: Trimmed `CLAUDE.md` and `.claude/rules/file-placement.md` / `git-workflow.md` to reduce duplication with `.cursor/rules/` (SSOT pointers only).
 
 ### Removed
 
-- **check-simple skill**: Removed `.cursor/skills/check-simple/` (overlapped plan and check).
+- **check-simple skill**: Removed `.agents/skills/check-simple/` (overlapped plan and check).
 
 ## [0.15.0] - 2026-04-08
 
@@ -169,7 +205,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Feature workflow decision gate**: Updated `.cursor/skills/feature/SKILL.md` to replace generic A/B/C/D option prompts with concrete codebase-derived approaches and a product-owner-friendly value-priority decision point.
+- **Feature workflow decision gate**: Updated `.agents/skills/feature/SKILL.md` to replace generic A/B/C/D option prompts with concrete codebase-derived approaches and a product-owner-friendly value-priority decision point.
 - **Feature planning traceability**: Phase 4 and implementation-document requirements now explicitly carry the chosen approach's concrete scope and rationale through planning and execution.
 - **Structure whitelist**: Updated `projectStructure.config.cjs` to allow `.claude/commands/*.md`, `.claude/rules/*.md`, `.claude/settings*.json`, and `CLAUDE.md`.
 
@@ -177,15 +213,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Cursor**: Migrated project slash commands from `.cursor/commands/*.md` to Agent Skills at `.cursor/skills/<name>/SKILL.md` (same names; `disable-model-invocation: true` on command-originated skills). Doc links and rule references updated accordingly.
+- **Cursor**: Migrated project slash commands from `.cursor/commands/*.md` to Agent Skills at `.agents/skills/<name>/SKILL.md` (same names; `disable-model-invocation: true` on command-originated skills). Doc links and rule references updated accordingly.
 
 ## [0.13.0] - 2026-03-26
 
 ### Added
 
 - **Agent workflow (Cursor)**: Commands `prime`, `plan`, `implement`, `validate`, and `quick-piv` under `.cursor/commands/` for session context, formal PIV cycle, and lightweight PIV
-- **Learn skill**: Project skill `.cursor/skills/learn/SKILL.md` to persist lessons into rules/commands; `documentation/DOC_INDEX.md` quick link
-- **Structure whitelist**: `.cursor/skills/*/` with `SKILL.md` in `projectStructure.config.cjs`
+- **Learn skill**: Project skill `.agents/skills/learn/SKILL.md` to persist lessons into rules/commands; `documentation/DOC_INDEX.md` quick link
+- **Structure whitelist**: `.agents/skills/*/` with `SKILL.md` in `projectStructure.config.cjs`
 - **Bug Dashboard Implementation Plan**: Planning documentation in `documentation/jobs/temp_job_bug_dashboard/`
 
 ### Changed

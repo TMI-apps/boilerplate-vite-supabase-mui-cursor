@@ -584,6 +584,7 @@ module.exports = {
       name: "scripts",
       children: [
         { name: "*.js" },
+        { name: "*.cjs" }, // CommonJS modules (e.g. change-classify SSOT)
         { name: "*.json" },
         { name: "*.ps1" }, // PowerShell scripts
       ],
@@ -615,25 +616,6 @@ module.exports = {
           ],
         },
         {
-          name: "commands",
-          children: [
-            { name: "*.md" },
-            {
-              name: "archive",
-              children: [{ name: "*.md" }],
-            },
-          ],
-        },
-        {
-          name: "skills",
-          children: [
-            {
-              name: "*",
-              children: [{ name: "SKILL.md" }, { name: "patterns.md" }],
-            },
-          ],
-        },
-        {
           name: "plans",
           children: [{ name: "*.md" }],
         },
@@ -645,14 +627,32 @@ module.exports = {
         { name: "*.log" },
       ],
     },
-    // Claude config and slash command wrappers
+    // Cross-tool agent skills (Cursor, Claude Code, etc.)
+    {
+      name: ".agents",
+      children: [
+        {
+          name: "skills",
+          children: [
+            {
+              name: "*",
+              children: [
+                { name: "SKILL.md" },
+                { name: "patterns.md" },
+                {
+                  name: "references",
+                  children: [{ name: "*.md" }],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    // Claude Code project config (thin rule pointers + settings)
     {
       name: ".claude",
       children: [
-        {
-          name: "commands",
-          children: [{ name: "*.md" }],
-        },
         {
           name: "rules",
           children: [{ name: "*.md" }],

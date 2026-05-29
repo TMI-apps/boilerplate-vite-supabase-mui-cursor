@@ -24,6 +24,17 @@ Architectural patterns, module organization, and structural standards for applic
 - Use dependency injection for testability
 - Minimize coupling between modules
 
+### Pattern risk (industry precedent — plans and proposals)
+
+**Proactively** before proposing or implementing designs that may diverge from **common industry practice** for the capability being built. Run [`.agents/skills/pattern-review/SKILL.md`](../../../.agents/skills/pattern-review/SKILL.md) (lens: [`references/rubric.md`](../../../.agents/skills/pattern-review/references/rubric.md)) — the agent **selects relevant aspects** per change; there is no fixed domain checklist.
+
+- Compare **plans and implementation proposals** to external precedent without waiting for the user to ask for “pattern review.”
+- Surface **Pattern risk** when material divergence is not mitigated; codebase convention alone is not sufficient.
+- Plans: fill **Pattern & precedent** (`.agents/skills/plan/references/implementation-plan-template.md`) for Complexity M/L or material behavioral design.
+- Plan critique: `review-dev-plan` includes an **Industry precedent** lens (same rubric).
+
+Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AGENT_WORKFLOW_LAYERS.md) § Pattern / industry-standard review.
+
 ## Project Structure
 
 ### Directory Organization
@@ -507,9 +518,9 @@ When reducing code complexity through refactoring, all changes must comply with 
 6. Verify layer boundaries after extraction
 7. Run `pnpm lint:arch` to verify architecture compliance
 
-**For detailed guidance:** See `.cursor/skills/optimize2/SKILL.md` (unified checklist and architecture compliance during refactors)
+**For detailed guidance:** See `.agents/skills/optimize2/SKILL.md` (unified checklist and architecture compliance during refactors)
 
-**For unified checklist:** See `.cursor/skills/optimize2/SKILL.md`
+**For unified checklist:** See `.agents/skills/optimize2/SKILL.md`
 
 ## Related Rules
 
@@ -519,7 +530,7 @@ When reducing code complexity through refactoring, all changes must comply with 
 - `security/RULE.md` - Security boundaries and architectural patterns
 - `workflow/RULE.md` - Code review standards for architecture
 - `cloud-functions/RULE.md` - Function organization patterns
-- `.cursor/skills/optimize2/SKILL.md` - Complexity reduction / optimization workflow (must comply with architecture rules)
+- `.agents/skills/optimize2/SKILL.md` - Complexity reduction / optimization workflow (must comply with architecture rules)
 
 **SSOT Status:**
 - This rule is the SSOT for:
@@ -535,4 +546,4 @@ When reducing code complexity through refactoring, all changes must comply with 
 **Rules that reference this rule:**
 - All other rules may reference architectural patterns
 - `cloud-functions/RULE.md` - References this rule as SSOT for function location
-- `.cursor/skills/optimize2/SKILL.md` - References this rule for architecture compliance during refactoring
+- `.agents/skills/optimize2/SKILL.md` - References this rule for architecture compliance during refactoring

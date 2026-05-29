@@ -11,7 +11,20 @@ pnpm lint-staged || exit 1
 echo "Running feature documentation validation for staged files..."
 pnpm validate:feature-docs:staged || exit 1
 
-# Validate docs links and rule/command file references
+# Light path: docs, migrations, or tooling-only — skip type-check, structure, arch
+# SSOT: scripts/change-classify.cjs
+LIGHT_KIND=$(node scripts/is-staged-precommit-light.js --echo-kind 2>/dev/null) || true
+if [ -n "$LIGHT_KIND" ]; then
+  if [ "$LIGHT_KIND" = "docs" ]; then
+    echo "pre-commit: docs-only staged files — skipping type-check, structure, and arch"
+    pnpm validate:docs || exit 1
+    exit 0
+  fi
+  echo "pre-commit: ${LIGHT_KIND} staged files — skipping type-check, structure, and arch"
+  exit 0
+fi
+
+# Full path: app or TS toolchain surface staged
 echo "Running documentation reference validation..."
 pnpm validate:docs || exit 1
 

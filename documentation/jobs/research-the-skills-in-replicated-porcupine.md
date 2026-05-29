@@ -2,12 +2,12 @@
 
 ## Context
 
-The user asked for an analytic survey of the repo's `.cursor/skills/` and `.cursor/rules/` content, focused on the **rules** files: extract the 50 words that carry the most meaning, propose a ranking method for "priming effectiveness," and apply it to pick a top 10. This is a research deliverable, not an implementation plan — the output below *is* the answer.
+The user asked for an analytic survey of the repo's `.agents/skills/` and `.cursor/rules/` content, focused on the **rules** files: extract the 50 words that carry the most meaning, propose a ranking method for "priming effectiveness," and apply it to pick a top 10. This is a research deliverable, not an implementation plan — the output below *is* the answer.
 
 ## Corpus surveyed
 
 - `.cursor/rules/INDEX.md` and the 10 `RULE.md` files (architecture, file-placement, code-style, workflow, testing, security, database, debugging, cloud-functions, project-specific) — ~3,300 lines.
-- 24 `.cursor/skills/*/SKILL.md` files — orientation only; the question targets rules.
+- 24 `.agents/skills/*/SKILL.md` files — orientation only; the question targets rules.
 
 The rules form a layered governance system: **architecture + file-placement** define structure, **code-style + workflow** define process, the rest are domain rules. The architecture and file-placement rules carry SSOT status; others reference them.
 

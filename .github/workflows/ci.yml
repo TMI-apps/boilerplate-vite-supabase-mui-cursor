@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Pre-commit classifier tests
+        run: pnpm test:classify
+
       - name: Feature README validation (strict)
         run: pnpm validate:feature-docs:strict
 

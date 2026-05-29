@@ -58,7 +58,7 @@ Read-only Node scripts (same `VITE_AIRTABLE_*` vars as the wizard; see `scripts/
 - **Meta (schema):** `pnpm airtable:meta-dump -- --pretty` or `node scripts/airtable-meta-dump.js --pretty --out <path>`
 - **Sample rows:** `pnpm airtable:sample -- --max-records 2` (uses `VITE_AIRTABLE_TABLE_ID` when `--table` / `--table-name` omitted) or `node scripts/airtable-sample-records.js --table <tblId> --max-records 1`
 
-Agent workflows: `.cursor/skills/airtable-schema-structure/SKILL.md`, `.cursor/skills/airtable-data-sample/SKILL.md`. Do not commit API keys or unsolicited PII dumps.
+Agent workflows: `.agents/skills/airtable-schema-structure/SKILL.md`, `.agents/skills/airtable-data-sample/SKILL.md`. Do not commit API keys or unsolicited PII dumps.
 
 ## Related
 
@@ -69,4 +69,4 @@ Agent workflows: `.cursor/skills/airtable-schema-structure/SKILL.md`, `.cursor/s
 - `docs/testing-supabase-setup.md` – supabase setup test guide
 - `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` – Sign in with Google (Supabase + Google Cloud); SSOT for dashboard steps
 - `documentation/DOC_APP_CONFIG_FILE.md` – project-level `app.config.json` reference
-- `.cursor/skills/complete-setup/SKILL.md` – removal of setup wizard when no longer needed
+- `.agents/skills/complete-setup/SKILL.md` – removal of setup wizard when no longer needed

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Validate file references inside .cursor/rules and .cursor/skills markdown files.
+ * Validate file references inside .cursor/rules and .agents/skills markdown files.
  *
  * Goal:
- * Catch stale references early (e.g. deleted docs still referenced by rules/commands/skills).
+ * Catch stale references early (e.g. deleted docs still referenced by rules/skills).
  *
  * Parsing notes:
  * - Strips ``` fenced blocks first so diagram/ASCII fences do not break inline `...` pairing.
@@ -17,6 +17,7 @@ const ROOT = process.cwd();
 const TARGET_DIRS = [
   path.join(".cursor", "rules"),
   path.join(".cursor", "skills"),
+  path.join(".agents", "skills"),
 ];
 
 const CODE_REF_REGEX = /`([^`]+)`/g;
@@ -91,6 +92,7 @@ function looksLikeRepoPath(value) {
 
   const rootPrefixes = [
     ".cursor/",
+    ".agents/",
     "src/",
     "documentation/",
     "scripts/",
@@ -118,7 +120,7 @@ function resolveCandidatePath(refPath, sourceFilePath) {
   if (/^[a-z0-9-]+\/RULE\.md$/i.test(refPath)) {
     const posix = toPosix(sourceFilePath);
     const inRules = posix.includes("/.cursor/rules/");
-    const inSkills = posix.includes("/.cursor/skills/");
+    const inSkills = posix.includes("/.agents/skills/");
     if (inRules || inSkills) {
       return path.join(ROOT, ".cursor", "rules", refPath);
     }
@@ -127,7 +129,12 @@ function resolveCandidatePath(refPath, sourceFilePath) {
   if (isExplicitRootFile(refPath)) {
     return path.join(ROOT, refPath);
   }
-  if (refPath.startsWith(".cursor/") || refPath.startsWith("src/") || refPath.startsWith("documentation/")) {
+  if (
+    refPath.startsWith(".cursor/") ||
+    refPath.startsWith(".agents/") ||
+    refPath.startsWith("src/") ||
+    refPath.startsWith("documentation/")
+  ) {
     return path.join(ROOT, refPath);
   }
   if (refPath.startsWith("scripts/") || refPath.startsWith("supabase/") || refPath.startsWith("cloud-functions/")) {
@@ -190,11 +197,11 @@ function main() {
   }
 
   if (allIssues.length === 0) {
-    console.log("✅ Cursor docs reference validation passed.");
+    console.log("✅ Agent docs reference validation passed.");
     process.exit(0);
   }
 
-  console.error("❌ Cursor docs reference validation failed.\n");
+  console.error("❌ Agent docs reference validation failed.\n");
   for (const issue of allIssues) {
     console.error(`- ${issue.file} references missing path: ${issue.ref}`);
   }
