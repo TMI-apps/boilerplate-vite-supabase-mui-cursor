@@ -21,13 +21,15 @@ Project agent workflows live under **`.agents/skills/<name>/SKILL.md`** (cross-t
 | ----- | ------- |
 | `plan` | Produce a `DEVELOPMENT_PLAN.md` |
 | `implement` | Execute the plan phase by phase |
-| `validate` | Rules + tooling review (read-only by default) |
+| `validate` | Repo rules + tooling review (read-only by default) — **not** industry precedent |
+| `pattern-review` | Industry precedent for plans/proposals (proactive) |
+| `review-dev-plan` | Six-lens plan critique before implementation (M/L plans) |
 | `check` | Architecture and code-quality gate |
 | `consolidate` | Cross-feature duplication and consolidation audit |
 | `review` | Component review (170-point rubric) |
 | `finish` | Pre-commit: version, changelog, staging gate, commit |
 
-For small scoped work: `.agents/skills/quick-piv/SKILL.md`.
+For small scoped work: `.agents/skills/quick-piv/SKILL.md`. Cross-repo adoption guides: `.agents/skills/write-adoption-guide/SKILL.md` → `documentation/handoffs/`. Layer model: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`.
 
 ## Rules — single source of truth
 

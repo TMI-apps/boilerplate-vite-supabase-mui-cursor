@@ -11,6 +11,12 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | **Agent: development plan (plan)** | [`.agents/skills/plan/SKILL.md`](../.agents/skills/plan/SKILL.md) |
 | **Agent: execute plan (implement)** | [`.agents/skills/implement/SKILL.md`](../.agents/skills/implement/SKILL.md) |
 | **Agent: validate plan or implementation** | [`.agents/skills/validate/SKILL.md`](../.agents/skills/validate/SKILL.md) |
+| **Agent: route ambiguous work (router)** | [`.agents/skills/router/SKILL.md`](../.agents/skills/router/SKILL.md) |
+| **Agent: industry precedent (pattern-review)** | [`.agents/skills/pattern-review/SKILL.md`](../.agents/skills/pattern-review/SKILL.md) |
+| **Agent: multi-lens plan critique (review-dev-plan)** | [`.agents/skills/review-dev-plan/SKILL.md`](../.agents/skills/review-dev-plan/SKILL.md) |
+| **Agent: write adoption guides (write-adoption-guide)** | [`.agents/skills/write-adoption-guide/SKILL.md`](../.agents/skills/write-adoption-guide/SKILL.md) |
+| **Agent workflow layers (skills vs rules)** | [DOC_AGENT_WORKFLOW_LAYERS.md](./DOC_AGENT_WORKFLOW_LAYERS.md) |
+| **Handoffs (portable notes)** | [handoffs/README.md](./handoffs/README.md) |
 | **Agent: lightweight PIV (quick-piv)** | [`.agents/skills/quick-piv/SKILL.md`](../.agents/skills/quick-piv/SKILL.md) |
 | **Agent skill: persist lessons (learn)** | [`.agents/skills/learn/SKILL.md`](../.agents/skills/learn/SKILL.md) |
 | **Architecture** | [ARCHITECTURE.md](../ARCHITECTURE.md) |
@@ -38,4 +44,5 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | Dependency rules | `.dependency-cruiser.cjs` |
 | App config schema | `documentation/DOC_APP_CONFIG_FILE.md` |
 | **App vision & goals (problem, persona, app role)** | `documentation/DOC_APP_VISION.md` |
+| **Agent workflow layers** | `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` |
 | **Supabase + Google OAuth (dashboard / Google Cloud)** | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |

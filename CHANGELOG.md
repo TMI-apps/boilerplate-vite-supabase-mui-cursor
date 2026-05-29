@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.23.0] - 2026-05-29
+
+### Added
+
+- **Pattern review (industry precedent)**: `.agents/skills/pattern-review/` with abstract rubric; wired through `plan`, `router`, `feature`, `architecture/RULE.md`, and `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`.
+- **`review-dev-plan` skill**: Multi-lens plan critique before implementation (including industry precedent).
+- **`write-adoption-guide` skill**: Author cross-repo adoption guides under `documentation/handoffs/`.
+- **Plan references**: `implementation-plan-template.md`, `complexity-rubric.md`; **Pattern & precedent** section in `DEVELOPMENT_PLAN.md`.
+
+### Changed
+
+- **Agent workflow**: `router` dev-cycle matrix; `plan` / `implement` / `validate` boundaries vs industry-standard review; skill `references/` allowed in `projectStructure.config.cjs`.
+
 ## [0.22.0] - 2026-05-23
 
 ### Added

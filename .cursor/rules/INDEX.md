@@ -29,6 +29,7 @@ Quick reference guide to all rules and their relationships.
 - Module organization
 - Layer boundaries and import direction
 - **Architecture documentation** (minimal contract-doc maintenance)
+- **Pattern risk (industry precedent)** — pointer to `.agents/skills/pattern-review/` (plans/proposals; not repo lint)
 
 **Related to:** code-style, testing, security, workflow
 

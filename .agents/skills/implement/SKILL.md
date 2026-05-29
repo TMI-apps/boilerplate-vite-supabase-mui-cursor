@@ -11,7 +11,7 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 **Do NOT update the changelog.** Changelog updates are done in the finish command, not during implementation.
 
-**Related:** Create or refresh plans with `.agents/skills/plan/SKILL.md`. For small tasks in one pass, `.agents/skills/quick-piv/SKILL.md`. After phases, use `.agents/skills/validate/SKILL.md` for a rules-and-tooling review before finish. For session context, `.agents/skills/prime/SKILL.md`. For commits and changelog, `.agents/skills/finish/SKILL.md`.
+**Related:** Create or refresh plans with `.agents/skills/plan/SKILL.md`. For small tasks in one pass, `.agents/skills/quick-piv/SKILL.md`. Before starting (when plan says so), run `.agents/skills/review-dev-plan/SKILL.md`. After phases, use `.agents/skills/validate/SKILL.md` for a rules-and-tooling review before finish. Industry precedent: `.agents/skills/pattern-review/SKILL.md`. For session context, `.agents/skills/prime/SKILL.md`. For commits and changelog, `.agents/skills/finish/SKILL.md`.
 
 ---
 
@@ -32,6 +32,9 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 - [ ] Read `DEVELOPMENT_PLAN.md` for the resolved job folder.
 - [ ] If the plan’s **Summary** or acceptance criteria imply user-facing product change, skim `documentation/DOC_APP_VISION.md` for consistency; if **`DRAFT`**, flag to the user before heavy implementation.
 - [ ] Verify mandatory sections exist: Summary, Phase overview, Conflict & compliance, Notes during development, Decisions made.
+- [ ] If Summary **Complexity** is **M** or **L**, or the plan changes user-visible behavior/contracts: verify **Pattern & precedent** is filled (or explicitly skipped with reason).
+- [ ] If **Plan review** is `Required: pending`, **stop** and route to `.agents/skills/review-dev-plan/SKILL.md` (or record waiver in **Decisions made**).
+- [ ] If **Pattern & precedent** is `Non-standard — waiver recommended` without an explicit waiver in **Decisions made**, **stop** and ask the owner.
 - [ ] Find the first phase in the overview that is not done (e.g. status `Pending`, empty, or not marked ✅).
 
 ### 2. Per phase: execute

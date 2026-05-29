@@ -138,6 +138,17 @@ Other rule files in `.cursor/rules/` (e.g. `debugging/`, `cloud-functions/`, `pr
 
 ---
 
+## Not in scope (use other skills)
+
+| Topic | Use instead |
+|-------|-------------|
+| Industry standards / best practice vs plans and proposals (agent-chosen aspects) | [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) |
+| Multi-lens qualitative plan critique (rebel, scale, industry precedent, …) | [`.agents/skills/review-dev-plan/SKILL.md`](../review-dev-plan/SKILL.md) |
+
+For Complexity **M/L** plans, run **`review-dev-plan`** before implementation when the plan requires it; **`validate`** does not replace industry-precedent review.
+
+---
+
 ## Report format
 
 Open the report with: total findings, counts by severity, and any rules listed as **not audited**.

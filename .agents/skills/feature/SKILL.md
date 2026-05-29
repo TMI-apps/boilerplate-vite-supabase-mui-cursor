@@ -206,6 +206,12 @@ Identify **subjective** choices requiring user input.
 - [ ] Select path aliases (@/hooks/*, @/components/*, etc.) - `architecture/RULE.md`
 - [ ] Decide: feature-specific vs shared code - `architecture/RULE.md`
 
+### 3.1b Pattern & industry precedent (proactive — when applicable)
+
+- [ ] Run [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) (`scan` or `lite`) **without waiting for the user to ask** — follow [`references/rubric.md`](../pattern-review/references/rubric.md); **select aspects** relevant to this feature.
+- [ ] If material divergence from common industry practice: add **Pattern & precedent** to `DEVELOPMENT_PLAN.md` and post the **Pattern risk** alert in chat.
+- [ ] **STOP** at 🔴 DECISION POINT until the owner picks an approach (A/B/C) or waives non-standard design—same as other subjective architecture choices.
+
 ### 3.2 Cloud Functions Planning (if backend needed)
 - [ ] Use decision framework (`cloud-functions/RULE.md`): security, secrets, testability
 - [ ] Decide: Edge Function vs frontend logic

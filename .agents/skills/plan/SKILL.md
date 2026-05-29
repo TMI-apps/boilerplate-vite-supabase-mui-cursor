@@ -11,7 +11,9 @@ Create a development plan for a feature or job. Research how best to implement i
 
 **Do NOT update the changelog.** Changelog updates are done in the finish command, not during planning.
 
-**Related:** For session context, use `.agents/skills/prime/SKILL.md`. For architecture/quality gate before merging, use `.agents/skills/check/SKILL.md`. For small scoped work without a full plan file, use `.agents/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.agents/skills/implement/SKILL.md`. To review the plan or resulting code without changing anything first, use `.agents/skills/validate/SKILL.md`. For commits and changelog, use `.agents/skills/finish/SKILL.md`.
+**Templates:** [`references/implementation-plan-template.md`](references/implementation-plan-template.md), [`references/complexity-rubric.md`](references/complexity-rubric.md).
+
+**Related:** For session context, use `.agents/skills/prime/SKILL.md`. For architecture/quality gate before merging, use `.agents/skills/check/SKILL.md`. For small scoped work without a full plan file, use `.agents/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.agents/skills/implement/SKILL.md`. For repo-rule plan/impl review, use `.agents/skills/validate/SKILL.md`. For multi-lens plan critique (including industry precedent), use `.agents/skills/review-dev-plan/SKILL.md`. For industry precedent on plans/proposals, use `.agents/skills/pattern-review/SKILL.md`. For commits and changelog, use `.agents/skills/finish/SKILL.md`.
 
 ---
 
@@ -70,12 +72,43 @@ Do **not** invest in full planning until the foundation is proven.
 - [ ] Define phases in logical order (workable chunks).
 - [ ] Write steps per phase aligned with compliance (concrete paths, layers, patterns).
 - [ ] Add a gate for each phase.
-- [ ] Write `DEVELOPMENT_PLAN.md` to `documentation/jobs/temp_job_<name>/`.
+- [ ] Write `DEVELOPMENT_PLAN.md` to `documentation/jobs/temp_job_<name>/` using [`references/implementation-plan-template.md`](references/implementation-plan-template.md).
+- [ ] Set **Complexity** (`XS` | `S` | `M` | `L`) in Summary per [`references/complexity-rubric.md`](references/complexity-rubric.md).
 
-### 5. Present and iterate
+### 5. Pattern & precedent
+
+**Proactively** run [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) (`plan-section` mode) when:
+
+- Complexity is **M** or **L**, or
+- The plan introduces **new user-visible behavior**, navigation/API contracts, or material architectural choices (agent applies [`references/rubric.md`](../pattern-review/references/rubric.md) — no fixed checklist).
+
+Fill **Pattern & precedent** in the plan. The reviewing agent **chooses** which aspects matter for this change. If non-standard, **stop** for owner pick (A/B/C or waiver) before implementation.
+
+Industry / product precedent → **pattern-review**. Repo rules → **Conflict & compliance** and later **validate**.
+
+### 6. Plan review gate
+
+Set **Plan review** in Summary:
+
+| Complexity | `review-dev-plan` |
+|------------|-------------------|
+| **XS** / **S** | Optional unless new behavioral contracts, risk, or user request |
+| **M** / **L** | **Mandatory** — set `Plan review: Required: pending`; do not route to `implement` until `Done <date>` or explicit waiver in **Decisions made** |
+
+If **Pattern & precedent** verdict is `Non-standard — waiver recommended` without an explicit owner waiver in **Decisions made**, treat as blocked (same as pending plan review).
+
+### 7. Present and iterate
 
 - Present the plan to the user.
 - Incorporate feedback and update the plan as needed.
+
+**Chat footer (short):**
+
+```markdown
+Plan: documentation/jobs/temp_job_<name>/DEVELOPMENT_PLAN.md
+Complexity: <XS|S|M|L> — <one line>
+Next: <review-dev-plan | implement | blocked> — <one-line gate>
+```
 
 ---
 
@@ -95,9 +128,10 @@ Do **not** invest in full planning until the foundation is proven.
 
 | Section | Purpose | Content |
 |---------|---------|---------|
-| **Summary** | Why and what, in brief | What we are building, why, scope, constraints |
+| **Summary** | Why and what, in brief | Goal, why, **Complexity**, **Plan review** status, scope, constraints |
 | **Phase overview** | Table of all phases | Phase #, goal, gate, status |
 | **Conflict & compliance** | Avoid technical debt, meet repo rules | See checklist below |
+| **Pattern & precedent** | Industry / product patterns vs this design | See template; required for M/L; agent-chosen aspects |
 | **Notes during development** | For implementation | Leave empty in the plan; fill during implementation |
 | **Decisions made** | For implementation | Leave empty in the plan; fill during implementation |
 

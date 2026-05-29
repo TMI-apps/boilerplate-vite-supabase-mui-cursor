@@ -99,6 +99,12 @@ flowchart TD
 
 Optional: run **`prime`** once when the codebase or branch context is unfamiliar — it does not replace gates 1–2.
 
+**Dev-cycle matrix:** [`.agents/skills/router/references/dev-cycle-matrix.md`](references/dev-cycle-matrix.md) — plan → pattern-review (when required) → review-dev-plan (M/L) → implement → validate.
+
+- If the idea introduces **new user-visible behavior or contracts** without industry precedent documented, run [`pattern-review`](../pattern-review/SKILL.md) or complete **Pattern & precedent** in the plan before `src/`.
+- **Plan exists + Complexity M/L + plan review pending** → `review-dev-plan` before `implement`.
+- **Small implementation** (`quick-piv`): only when behavior is clear, low risk, and no material industry-precedent gap (or owner waived).
+
 ---
 
 ## Situation → skill
@@ -110,6 +116,9 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | User sends **only** `/router` (no substantive task); see **Bare `/router`** above | `.agents/skills/finish/SKILL.md` |
 | New chat / ambiguous task; map repo rules and recent git state | `.agents/skills/prime/SKILL.md` |
 | **Goal and scope clear**; non-trivial job needing phased written plan + compliance | `.agents/skills/plan/SKILL.md` |
+| Plan written; qualitative critique before implementation (especially Complexity M/L) | `.agents/skills/review-dev-plan/SKILL.md` |
+| Industry standard / best practice / “is this how products usually do it?” | `.agents/skills/pattern-review/SKILL.md` |
+| Write a cross-repo adoption guide from an implemented pattern | `.agents/skills/write-adoption-guide/SKILL.md` |
 | Goal or scope **not** ready — questions only, no plan file yet | `.agents/skills/grill-me/SKILL.md` and/or `.agents/skills/plan/SKILL.md` **§ Refine** (see Decision model above) |
 | Execute an existing `DEVELOPMENT_PLAN.md` phase by phase | `.agents/skills/implement/SKILL.md` |
 | Small scoped change; plan+implement+validate in one pass | `.agents/skills/quick-piv/SKILL.md` |
@@ -315,6 +324,10 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - `.agents/skills/airtable-schema-structure/SKILL.md`
 - `.agents/skills/airtable-data-sample/SKILL.md`
 - `.agents/skills/grill-me/SKILL.md`
+- `.agents/skills/pattern-review/SKILL.md`
+- `.agents/skills/review-dev-plan/SKILL.md`
+- `.agents/skills/write-adoption-guide/SKILL.md`
+- `.agents/skills/router/references/dev-cycle-matrix.md`
 
 ### User Cursor bundle (`~/.cursor/skills-cursor/`)
 

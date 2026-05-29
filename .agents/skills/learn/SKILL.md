@@ -116,4 +116,4 @@ Confirm ownership via `.cursor/rules/INDEX.md`.
 - Putting secrets or new credentials in rules or skills.
 - Rewriting large rule sections without approval.
 - Deleting or silently rewriting existing rules without presenting the offending line and recommendation to the user first.
-- Adding files under `.agents/skills/` that are not allowed by `projectStructure.config.cjs` (currently: each subfolder may contain `SKILL.md` only).
+- Adding files under `.agents/skills/` that are not allowed by `projectStructure.config.cjs` (each subfolder: `SKILL.md`, optional `patterns.md`, optional `references/*.md`).

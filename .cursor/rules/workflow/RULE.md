@@ -19,6 +19,7 @@ Development workflows, code review standards, and process requirements. Includes
 | Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
 | App config schema (boilerplate only; removed by complete-setup) | `documentation/DOC_APP_CONFIG_FILE.md` |
 | **App vision & goals** (problem, persona, app’s role; fillable template) | `documentation/DOC_APP_VISION.md` |
+| **Agent workflow layers** (skills vs rules; pattern review entry) | `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` |
 | **Supabase + Google OAuth** (dashboard / Google Cloud Console setup checklist) | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |
 | Feature-local README enforcement (Option 1), scripts, CI placement | `documentation/DOC_FEATURE_LOCAL_README.md` |
 

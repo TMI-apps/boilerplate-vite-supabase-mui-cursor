@@ -635,7 +635,14 @@ module.exports = {
           children: [
             {
               name: "*",
-              children: [{ name: "SKILL.md" }, { name: "patterns.md" }],
+              children: [
+                { name: "SKILL.md" },
+                { name: "patterns.md" },
+                {
+                  name: "references",
+                  children: [{ name: "*.md" }],
+                },
+              ],
             },
           ],
         },
