@@ -47,7 +47,7 @@ export const ThemeConfigView = ({ config, loading, error }: ThemeConfigViewProps
 
   return (
     <Box>
-      <Typography variant="body2" color="text.secondary" paragraph>
+      <Typography variant="body2" color="text.secondary" component="p" sx={{ mb: 2 }}>
         Your application theme configuration:
       </Typography>
 

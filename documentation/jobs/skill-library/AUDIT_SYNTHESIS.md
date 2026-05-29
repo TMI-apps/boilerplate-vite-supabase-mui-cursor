@@ -14,7 +14,7 @@ Executed `/improve-skill-library` fixes (Batches A–D). **Status: applied** —
 | **A** | Boundaries on high-traffic skills | `plan`, `implement`, `validate`, `check`, `finish`, `feature`, `quick-piv`, `debug`, `grill-me`, `prime`, `start`, `push`, `optimize2` |
 | **B** | Handoffs implement→validate→finish; validate/check Next | `implement`, `validate`, `check`, `feature`, `quick-piv`, `review-dev-plan` |
 | **C** | finish commit/push gates; feature changelog removed; optimize2→finish | `finish`, `feature`, `optimize2` |
-| **D** | rules-registry SSOT; DOC_CHANGESETS; deduped tables/links | `plan/references/rules-registry.md`, `DOC_CHANGESETS.md`, `finish`, `plan`, `consolidate`, `CLAUDE.md` |
+| **D** | rules-registry SSOT; DOC_CHANGESETS; deduped tables/links | `plan/references/rules-registry.md`, `DOC_CHANGESETS.md`, `finish`, `plan`, `consolidate`, `AGENTS.md` |
 
 ---
 
@@ -27,7 +27,7 @@ Executed `/improve-skill-library` fixes (Batches A–D). **Status: applied** —
 | Dev-cycle M/L gates | `router/references/dev-cycle-matrix.md` | router (trimmed), plan §6 |
 | Rule of Three (full) | `optimize2/SKILL.md` | consolidate |
 | Changeset flow | `documentation/DOC_CHANGESETS.md` | layers doc (link fixed) |
-| Skill catalog | `router/SKILL.md` | CLAUDE.md (trimmed) |
+| Skill catalog | `router/SKILL.md` | AGENTS.md (trimmed) |
 
 ---
 

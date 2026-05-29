@@ -101,7 +101,7 @@ export const TableStructureDisplay = ({
           <TableChart />
           Table Structure
         </Typography>
-        <Typography variant="body2" color="text.secondary" paragraph>
+        <Typography variant="body2" color="text.secondary" component="p" sx={{ mb: 2 }}>
           Review the fields in your Airtable table:
         </Typography>
       </Box>

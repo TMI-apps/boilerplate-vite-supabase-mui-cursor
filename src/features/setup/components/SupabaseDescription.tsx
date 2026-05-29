@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 export const SupabaseDescription = () => {
   return (
     <>
-      <Typography variant="body2" color="text.secondary" paragraph>
+      <Typography variant="body2" color="text.secondary" component="p" sx={{ mb: 2 }}>
         Enter your Supabase project URL and publishable key to connect your app. This enables user
         authentication and allows you to use cloud database features. If you don't have a Supabase
         project yet,{" "}
@@ -19,7 +19,7 @@ export const SupabaseDescription = () => {
         . You can skip this step and configure it later if you prefer to use browser storage for
         now.
       </Typography>
-      <Typography variant="body2" color="text.secondary" paragraph sx={{ mt: 1 }}>
+      <Typography variant="body2" color="text.secondary" component="p" sx={{ mb: 2, mt: 1 }}>
         For <strong>Sign in with Google</strong>, configure the Google Cloud OAuth client and
         Supabase provider using the repo checklist:{" "}
         <code>documentation/DOC_SUPABASE_GOOGLE_OAUTH.md</code> (SSOT — enabling Google in Supabase

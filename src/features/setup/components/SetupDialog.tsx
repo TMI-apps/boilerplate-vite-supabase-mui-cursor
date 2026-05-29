@@ -39,14 +39,16 @@ export const SetupDialog = ({
       onClose={onClose}
       maxWidth={false}
       fullWidth
-      PaperProps={{
-        sx: {
-          width: { xs: "95%", sm: "90%", md: "85%", lg: "80%" },
-          maxWidth: "1200px",
-          height: { xs: "95%", sm: "90%", md: "85%", lg: "80%" },
-          maxHeight: "90vh",
-          display: "flex",
-          flexDirection: "column",
+      slotProps={{
+        paper: {
+          sx: {
+            width: { xs: "95%", sm: "90%", md: "85%", lg: "80%" },
+            maxWidth: "1200px",
+            height: { xs: "95%", sm: "90%", md: "85%", lg: "80%" },
+            maxHeight: "90vh",
+            display: "flex",
+            flexDirection: "column",
+          },
         },
       }}
     >

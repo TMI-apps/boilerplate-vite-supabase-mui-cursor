@@ -39,7 +39,7 @@ export const AirtableConfigView = ({ config, loading, error }: AirtableConfigVie
 
   return (
     <Box>
-      <Typography variant="body2" color="text.secondary" paragraph>
+      <Typography variant="body2" color="text.secondary" component="p" sx={{ mb: 2 }}>
         Your Airtable connection is configured with the following settings:
       </Typography>
 

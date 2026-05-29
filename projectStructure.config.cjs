@@ -737,7 +737,6 @@ module.exports = {
     // Other config files
     { name: ".gitignore" },
     { name: ".gitattributes" },
-    { name: ".eslintignore" },
     { name: ".editorconfig" },
     { name: ".firebaserc" },
     { name: "index.html" },

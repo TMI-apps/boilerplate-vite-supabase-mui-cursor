@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.26.0] - 2026-05-29
+
+### Changed
+
+- **Dependencies (major toolchain)**: Vite 8, MUI 9, TypeScript 6, ESLint 10, Vitest 4.1, TanStack Query 5.100, Supabase JS 2.106, React Router 7.16, and related dev tooling (see `package.json` / `pnpm-lock.yaml`).
+- **MUI 9 migration**: Replaced removed `Typography` `paragraph` prop with `component="p"`; `Dialog` `PaperProps` → `slotProps.paper`.
+- **TypeScript 6**: `ignoreDeprecations: "6.0"` on `tsconfig.app.json` until `baseUrl`/`paths` migration.
+- **ESLint 10**: Removed deprecated root `.eslintignore` (ignores remain in `eslint.config.js` + `eslint.ignores.js`).
+- **Docs**: `AGENTS.md`, `README.md`, `ARCHITECTURE.md`, debug patterns, and skill-library audit references updated for current stack (no `CLAUDE.md` references in active docs).
+
 ## [0.25.1] - 2026-05-29
 
 ### Changed

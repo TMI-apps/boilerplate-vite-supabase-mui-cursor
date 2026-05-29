@@ -50,6 +50,7 @@ Expose `isConfigured` and connection test helpers for their respective sections.
 - `@utils/setupUtils` – `getSetupSectionsState`, `getEnabledFeatures`, `isSetupComplete`
 - `@shared/theme/themeLoader` – `getCustomTheme`
 - `vite-plugin-dev-api.ts` – dev API plugin
+- **MUI 9** – setup dialogs use `Dialog` `slotProps.paper` (not `PaperProps`); descriptive copy uses `Typography` with `component="p"` (not the removed `paragraph` prop)
 
 ## Airtable CLI / agent tools (optional)
 

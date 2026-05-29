@@ -201,6 +201,8 @@ import { useTodos } from "@/features/todos/hooks/useTodos";  // ❌ Common compo
 
 This project uses three complementary tools for code quality and formatting: **GTS**, **ESLint**, and **Prettier**. Understanding their roles and how they work together is crucial for maintaining code consistency.
 
+**Toolchain versions** (SSOT: `package.json`): Vite 8, TypeScript 6, ESLint 10, Vitest 4, MUI 9. Ignore patterns live in `eslint.config.js` via `eslint.ignores.js` (ESLint 10 no longer reads `.eslintignore`).
+
 ### Complexity Management
 
 The project enforces complexity thresholds to maintain code maintainability:

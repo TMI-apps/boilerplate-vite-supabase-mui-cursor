@@ -83,7 +83,12 @@ const ThemeDialogContent = ({
     <Box
       sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0, overflow: "hidden" }}
     >
-      <Typography variant="body2" color="text.secondary" paragraph sx={{ flexShrink: 0 }}>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        component="p"
+        sx={{ mb: 2, flexShrink: 0 }}
+      >
         You can customize your app's theme using the{" "}
         <Typography
           component="a"

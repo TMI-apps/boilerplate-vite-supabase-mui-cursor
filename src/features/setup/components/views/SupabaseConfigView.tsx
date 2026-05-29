@@ -39,7 +39,7 @@ export const SupabaseConfigView = ({ config, loading, error }: SupabaseConfigVie
 
   return (
     <Box>
-      <Typography variant="body2" color="text.secondary" paragraph>
+      <Typography variant="body2" color="text.secondary" component="p" sx={{ mb: 2 }}>
         Your Supabase connection is configured with the following settings:
       </Typography>
 

@@ -15,7 +15,7 @@ export const HomePage = () => {
         <Typography variant="h3" component="h1" gutterBottom>
           Welcome to Vite MUI Supabase Starter
         </Typography>
-        <Typography variant="h6" color="text.secondary" paragraph>
+        <Typography variant="h6" color="text.secondary" component="p" sx={{ mb: 2 }}>
           A modern boilerplate with React, TypeScript, Vite, Material-UI, and Supabase
         </Typography>
         {!supabaseConfigured && (
@@ -36,7 +36,7 @@ export const HomePage = () => {
         )}
         {user ? (
           <Box sx={{ mt: 4 }}>
-            <Typography variant="body1" paragraph>
+            <Typography variant="body1" component="p" sx={{ mb: 2 }}>
               Welcome back, {user.email}!
             </Typography>
           </Box>
