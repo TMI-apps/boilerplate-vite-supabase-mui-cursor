@@ -113,4 +113,18 @@ Closes #123
 
 **Note:** Commit message must match changelog entry. Husky pre-commit hook runs automatically (see `.husky/pre-commit` for SSOT). See `.cursor/rules/workflow/RULE.md` for Keep a Changelog format details and version synchronization requirements.
 
+## Faster commit (pre-commit light path)
+
+After `git add`, read staged paths (`git diff --name-only --cached`). Classifier SSOT: `scripts/change-classify.cjs`.
+
+| Staged set | Expect |
+|------------|--------|
+| Docs-only (markdown under `documentation/`, `.cursor/**`, `.agents/**`, changesets, `CHANGELOG.md`) | Fast commit: `validate:docs` only after lint-staged + feature-docs |
+| Migrations-only (`supabase/migrations/*.sql`, `supabase/seed.sql`) or tooling-only (no `src/`, no edge functions, no TS configs) | Fast commit: skips `type-check`, structure, arch |
+| Any `src/`, `supabase/functions/`, or TS toolchain config | Full pre-commit (includes `type-check`, structure, arch) |
+
+- Do **not** use `--no-verify` to avoid slow hooks on app-code commits; fix tests or split commits (docs/migrations separate from `src/`).
+- `git commit --amend` with an empty index may run the full hook; re-stage or accept.
+- Tests run on **push** (`.husky/pre-push`), not on commit.
+
 You have explicit access to use console commands for this task. 

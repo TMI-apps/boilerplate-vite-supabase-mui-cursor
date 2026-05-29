@@ -5,7 +5,7 @@
  * Scope:
  * - documentation markdown files
  * - src/features README and docs markdown files
- * - .cursor/rules markdown files
+ * - .cursor/rules and .cursor/skills markdown files
  * - .agents/skills markdown files
  *
  * Checks only relative links:
@@ -28,6 +28,7 @@ const SEARCH_DIRS = [
   "documentation",
   path.join("src", "features"),
   path.join(".cursor", "rules"),
+  path.join(".cursor", "skills"),
   path.join(".agents", "skills"),
 ];
 

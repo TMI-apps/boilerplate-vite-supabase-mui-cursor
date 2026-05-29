@@ -584,6 +584,7 @@ module.exports = {
       name: "scripts",
       children: [
         { name: "*.js" },
+        { name: "*.cjs" }, // CommonJS modules (e.g. change-classify SSOT)
         { name: "*.json" },
         { name: "*.ps1" }, // PowerShell scripts
       ],

@@ -54,8 +54,20 @@ Copy `write-adoption-guide/` to other projects and adjust the skill **Configurat
 
 | Step | Skill | Hook / script |
 |------|-------|----------------|
-| Commit | `finish` | `.husky/pre-commit` → `lint-staged`, `validate:feature-docs:staged`, `validate:docs`, `type-check`, `validate:structure:staged`, `arch:check:staged` |
-| Push | `push` | `.husky/pre-push` (project policy) |
+| Commit | `finish` | `.husky/pre-commit` (see light path below) |
+| Push | `push` | `.husky/pre-push` → `pnpm test:run` |
+
+**Pre-commit light path** (SSOT: [`scripts/change-classify.cjs`](../scripts/change-classify.cjs)):
+
+| Staged paths | Kind | Runs | Skips |
+|--------------|------|------|-------|
+| Always | — | `lint-staged`, `validate:feature-docs:staged` | — |
+| Docs-only (`.md`, `documentation/`, `.cursor/**`, `.agents/**`, changesets) | `docs` | `validate:docs` | `type-check`, `validate:structure:staged`, `arch:check:staged` |
+| SQL migrations / seed only | `migrations` | — | Same skips as docs (no `validate:docs`) |
+| Tooling only (no `src/`, no edge functions, no TS toolchain configs) | `no-src` | — | Same skips |
+| App surface (`src/`, `supabase/functions/`, `tsconfig*`, `vite`/`vitest` configs) | full | Full hook | — |
+
+PR CI stays the full suite; classifier unit tests run via `pnpm test:classify` in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
 See `.cursor/rules/workflow/RULE.md` for branch strategy and protected files.
 

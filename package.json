@@ -1,7 +1,7 @@
 {
   "name": "vite-mui-supabase-starter",
   "private": true,
-  "version": "0.23.0",
+  "version": "0.24.0",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
@@ -15,6 +15,7 @@
     "type-check": "tsc --noEmit --project tsconfig.app.json",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:classify": "node --test scripts/change-classify.test.cjs",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "clean": "gts clean",

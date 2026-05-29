@@ -16,6 +16,7 @@ const path = require("path");
 const ROOT = process.cwd();
 const TARGET_DIRS = [
   path.join(".cursor", "rules"),
+  path.join(".cursor", "skills"),
   path.join(".agents", "skills"),
 ];
 

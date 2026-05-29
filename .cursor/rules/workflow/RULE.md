@@ -307,6 +307,8 @@ The agent must STOP and ASK the user before modifying any of the following file 
 **Git Hooks:**
 - `.husky/**`
 
+**Pre-commit (local):** Staged-path light path — SSOT [`scripts/change-classify.cjs`](../../../scripts/change-classify.cjs), hook [`.husky/pre-commit`](../../../.husky/pre-commit). Skips `type-check` and staged structure/arch when staged files cannot affect app TypeScript; docs-only commits still run `validate:docs`. Full matrix: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git. Tests on push (`.husky/pre-push`), not on commit.
+
 **CI/CD:**
 - `.github/workflows/**`
 

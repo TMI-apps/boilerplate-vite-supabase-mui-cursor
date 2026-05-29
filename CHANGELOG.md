@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.24.0] - 2026-05-29
+
+### Added
+
+- **Pre-commit light path**: `scripts/change-classify.cjs` classifies staged paths (`docs`, `migrations`, `no-src`); `.husky/pre-commit` skips `type-check`, staged structure, and arch when app TypeScript is not staged; `pnpm test:classify` in CI.
+- **Docs validation**: `validate:docs` now includes `.cursor/skills` alongside `.agents/skills`.
+
+### Changed
+
+- **Agent workflow docs**: `DOC_AGENT_WORKFLOW_LAYERS.md`, `finish` skill (§ Faster commit), `workflow/RULE.md` pre-commit pointer.
+- **Project structure**: allow `scripts/*.cjs` in `projectStructure.config.cjs`.
+- **Vitest**: exclude `scripts/**` so `pnpm test:classify` node tests are not collected on `test:run` / pre-push.
+
 ## [0.23.0] - 2026-05-29
 
 ### Added
