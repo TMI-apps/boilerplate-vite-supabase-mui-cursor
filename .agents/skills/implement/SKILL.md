@@ -65,17 +65,7 @@ For each phase **in order** (one phase at a time unless the plan explicitly allo
 
 ## Rules reference (follow while coding)
 
-See `.cursor/rules/INDEX.md` for the full set.
-
-| Topic | Location |
-|-------|----------|
-| Architecture | `.cursor/rules/architecture/RULE.md` – layers, import direction, path aliases |
-| File placement | `.cursor/rules/file-placement/RULE.md` and `projectStructure.config.cjs` |
-| Code style | `.cursor/rules/code-style/RULE.md` – naming, complexity (≤10 cyclomatic, ≤15 cognitive, ≤100 lines per function) |
-| Database | `.cursor/rules/database/RULE.md` – migrations |
-| Security | `.cursor/rules/security/RULE.md` – auth, RLS, validation, secrets |
-| Testing | `.cursor/rules/testing/RULE.md` |
-| Workflow | `.cursor/rules/workflow/RULE.md` – branch strategy (changelog only in finish) |
+See [`.cursor/rules/INDEX.md`](../../../.cursor/rules/INDEX.md) and [`.agents/skills/plan/references/rules-registry.md`](../plan/references/rules-registry.md).
 
 **Also:** `.dependency-cruiser.cjs` / `pnpm arch:check` for layer violations; `documentation/DOC_TANSTACK_QUERY.md` when changing server state or queries.
 
@@ -164,4 +154,22 @@ When all phases are done:
 - [ ] All gates passed
 - [ ] Notes and Decisions sections are up to date
 
-**Tell the user:** “Implementation complete. Anything else?”
+**Tell the user:** “Implementation complete.”
+
+**Next (mandatory handoff):**
+
+1. Run **`.agents/skills/validate/SKILL.md`** (impl review) on this job unless the user explicitly skips validation.
+2. After the user accepts validation (or waives in **Decisions made**), offer **`.agents/skills/finish/SKILL.md`** when they want to commit — do not commit without explicit request.
+
+Do **not** use **`quick-piv`** for remaining phases when a durable `DEVELOPMENT_PLAN.md` exists.
+
+## Boundaries
+
+| Not `implement` | Use instead |
+|-----------------|-------------|
+| Small XS/S change without durable plan | `.agents/skills/quick-piv/SKILL.md` |
+| Creating or rewriting the plan | `.agents/skills/plan/SKILL.md` |
+| Qualitative plan critique (M/L) | `.agents/skills/review-dev-plan/SKILL.md` |
+| Industry precedent on the plan | `.agents/skills/pattern-review/SKILL.md` |
+| Version, changelog, commit | `.agents/skills/finish/SKILL.md` |
+| Active debugging with unknown cause | `.agents/skills/debug/SKILL.md` |

@@ -218,3 +218,20 @@ Every substantive debug response must include these slots. Keep each concise; wr
 ```
 
 For small follow-up turns, a compact version is fine, but it must still mention environment, pattern lookup, hypotheses/evidence status, and the next narrowing step.
+
+---
+
+## Next
+
+When the user **confirms** the issue is resolved, optionally offer **`.agents/skills/learn/SKILL.md`** to persist reusable lessons. For commit/changelog, **`.agents/skills/finish/SKILL.md`** only when the user requests it.
+
+---
+
+## Boundaries
+
+| Not `debug` | Use instead |
+|-------------|-------------|
+| Known small scoped fix | `quick-piv` |
+| Persist lessons after resolution | `learn` |
+| Plan-driven feature work | `implement` |
+| Commit / push | `finish` / `push` |

@@ -49,7 +49,11 @@ Short `description` per Task (e.g. “— rebel”, “— scale/mod”, “— 
 
 Synthesize: agreements, **must-fix vs nice-to-have**, items **≥2 agents** flagged. Do not rewrite the plan unless asked. Fold in user constraints (scope, timebox, risks) if given.
 
+**Allowed plan edits without full rewrite:** Update only the **Plan review** row in Summary and rows in **Decisions made** when the user accepts the critique (or record waiver in **Decisions made**). Do not edit phase steps, Pattern & precedent body, or other sections unless the user explicitly asks.
+
 Update the plan’s **Plan review** row to `Done <date>` when the user accepts the critique (or record waiver in **Decisions made**).
+
+**Next:** **`.agents/skills/implement/SKILL.md`** when **Plan review** is `Done` and gates pass — or back to **`plan`** if the plan must change materially.
 
 ## Boundaries
 

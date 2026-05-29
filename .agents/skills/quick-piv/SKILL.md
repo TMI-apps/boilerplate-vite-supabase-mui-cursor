@@ -5,7 +5,7 @@ description: "quick-piv"
 
 # quick-piv
 
-Lightweight Plan → Implement → Validate in one workflow. Use for small, well-scoped tasks when the full formal PIV flow is overkill.
+Lightweight Plan → Implement → Validate in one workflow. **Primary outcome:** land a **small (XS/S)** scoped change in one session. This skill **orchestrates** compressed steps — full procedures live in sibling skills (`plan`, `implement`, `validate`, `finish`).
 
 **Critical:** Still follow repo rules. No changelog updates (`.agents/skills/finish/SKILL.md` handles that).
 
@@ -19,7 +19,11 @@ Lightweight Plan → Implement → Validate in one workflow. Use for small, well
 - User wants to move fast without separate plan / implement / validate invocations.
 - Task is scoped enough that a full `DEVELOPMENT_PLAN.md` is unnecessary.
 
-**When NOT to use:** Large features, multi-phase work, database migrations, breaking changes, new features that need conflict & compliance written down → use full `plan` + `implement` + `validate` instead.
+**When NOT to use:** Large features, multi-phase work, database migrations, breaking changes, **Complexity M/L**, pending **Plan review**, or missing **Pattern & precedent** when required → use full `plan` → `implement` → `validate` instead.
+
+## Hard stops (M/L and gates)
+
+Before implementing, if **Branch A** loads a plan with **Complexity M** or **L**, or **Plan review: Required: pending**, or incomplete **Pattern & precedent** when required — **stop** and route to **`.agents/skills/implement/SKILL.md`** (after `review-dev-plan` / `pattern-review` per [dev-cycle matrix](../router/references/dev-cycle-matrix.md)). Do **not** continue in `quick-piv`.
 
 ---
 
@@ -35,7 +39,7 @@ If unclear, **ask** which branch applies.
 
 ### Branch A: Active plan exists
 
-→ Load that `DEVELOPMENT_PLAN.md`. **Quick plan** = extend where appropriate (add phase, append steps, or state the extension clearly in chat). Update the plan file when you add to it. Then **implement**, then **quick validate**.
+→ Load that `DEVELOPMENT_PLAN.md`. Apply **Hard stops** above. If allowed (XS/S, gates clear): **Quick plan** = extend where appropriate. Then **implement** extension, then **quick validate** (inline tooling — not full **`validate`** skill unless user asks).
 
 ### Branch B: No active plan
 
@@ -78,9 +82,9 @@ If unclear, **ask** which branch applies.
 
 ---
 
-## Validate (quick pass)
+## Validate (quick pass — not the `validate` skill)
 
-After implementation:
+After implementation, run **inline tooling** only (subset of `.agents/skills/validate/SKILL.md` § Tooling pass):
 
 1. `pnpm validate:structure` — report failures.
 2. `pnpm lint` — report failures.
@@ -89,18 +93,25 @@ After implementation:
 5. **Report:** Brief summary: “✅ All checks pass” or list findings with severity (blocker / warning / suggestion).
 6. **If failures:** Ask: “Fix these? (all / specific / skip)” — only fix after the user chooses (same spirit as `.agents/skills/validate/SKILL.md`, compressed).
 
+**Next:** Offer full **`.agents/skills/validate/SKILL.md`** before merge/finish when rule fan-out or plan-compliance is needed. Offer **`.agents/skills/finish/SKILL.md`** only when the user wants to commit.
+
 ---
 
 ## Rules reference (follow during implementation)
 
-| Topic | Location |
-|-------|----------|
-| Overview | `.cursor/rules/INDEX.md` |
-| Architecture | `.cursor/rules/architecture/RULE.md` |
-| File placement | `.cursor/rules/file-placement/RULE.md` → `projectStructure.config.cjs` |
-| Code style | `.cursor/rules/code-style/RULE.md` |
+See [`.cursor/rules/INDEX.md`](../../../.cursor/rules/INDEX.md) and [`.agents/skills/plan/references/rules-registry.md`](../plan/references/rules-registry.md).
 
-**Also when applicable:** `.cursor/rules/testing/RULE.md`, `.cursor/rules/database/RULE.md`, `.cursor/rules/security/RULE.md`, `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`.
+**Also when applicable:** `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`.
+
+## Boundaries
+
+| Not `quick-piv` | Use instead |
+|-----------------|-------------|
+| M/L plan or pending plan review | `implement` after gates |
+| Unknown root cause bug | `debug` |
+| Full rule subagent audit | `validate` |
+| Commit / changelog | `finish` |
+| Durable multi-phase plan | `plan` |
 
 ---
 
@@ -110,6 +121,6 @@ After implementation:
 |------|---------------------|---------------------|
 | 1 | Load plan + extend where appropriate | **Output quick plan in chat first** (vital) |
 | 2 | Implement (extension or next phase) | Implement |
-| 3 | Quick validate | Quick validate |
+| 3 | Quick validate (inline tooling) | Quick validate (inline tooling) |
 
-**One workflow. One command. Fast.**
+**Next:** Full **`validate`** when needed → user sign-off → **`finish`** when user wants to commit.

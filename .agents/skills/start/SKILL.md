@@ -150,3 +150,71 @@ Only consider onboarding complete when:
 3. Route checks pass
 4. Verification checklist passes
 5. User confirms they are ready to proceed
+
+---
+
+## Teardown: remove setup wizard (after the app is configured)
+
+Run **only** when the user confirms the app is configured and the starter setup wizard is no longer needed. Trace imports/dependencies so nothing breaks. (Formerly the `complete-setup` skill.)
+
+### 1. Files and directories to delete
+
+**Pages & utils:** `src/pages/SetupPage.tsx`, `src/utils/setupUtils.ts`
+**Setup feature (entire directory):** `src/features/setup/` (components, hooks, services, types, views)
+**Scripts:** `scripts/validate-app-config.js`
+**Config & plugin:** `app.config.json`, `vite-plugin-dev-api.ts`
+
+### 2. Update Vite config
+- Remove `devApiPlugin` import and usage from `vite.config.ts`.
+- Remove `vite-plugin-dev-api.ts` from `tsconfig.node.json` include (if present).
+
+### 3. Update app and components
+- **App.tsx:** remove `SetupPage` import and `<Route path="/setup" element={<SetupPage />} />`.
+- **Topbar.tsx:** remove the Setup button (`<Button component={Link} to="/setup">Setup</Button>`).
+- **HomePage.tsx:** remove links to `/setup` (Typography link and "Configure Supabase" Button); simplify/remove the `!supabaseConfigured` Alert block that links to setup; keep the rest (user greeting, etc.).
+- **LoginForm.tsx:** remove the Alert block that links to `/setup` (or replace with a non-linking note).
+
+### 4. Verification
+After changes, all must pass: `pnpm type-check`, `pnpm lint`, `pnpm validate:structure`, `pnpm test:run`.
+Fix broken imports/references. Search for remaining references to: `setupUtils`, `SetupPage`, `@features/setup`, `app.config`, `/api/read-config`, `/api/write-config`, `/api/finish-setup`, `/api/write-env`, `/api/read-env`, `/api/remove-env-vars`.
+
+### 5. projectStructure.config.cjs (protected file)
+Remove `app.config.json` and `vite-plugin-dev-api.ts` from the root-level whitelist. See `workflow/RULE.md` § Protected Files — **ASK user for approval before modifying** this file.
+
+### 6. Remove app config validation
+- Remove `validate:app-config` script from `package.json`.
+- Remove the "App config validation" step from `.github/workflows/ci.yml`.
+- Delete `scripts/validate-app-config.js`.
+
+### 7. Delete boilerplate-only documentation
+Delete: `documentation/DOC_APP_CONFIG_FILE.md`, `documentation/DOC_SETUP_STATES_AND_TRANSITIONS.md`, `documentation/DOC_TESTING_SUPABASE_SETUP.md`, `documentation/DOC_TESTING_APP_CONFIG.md`, `documentation/DOC_APP_CODE_MODIFICATION.md`.
+
+### 8. Update remaining docs
+- **`documentation/DOC_INDEX.md`:** remove links to the deleted docs; remove "App config schema" from the SSOT Map table.
+- **`documentation/DOC_CONTRIBUTING.md`:** remove the "App config" row from the CI Gate Expectations table.
+
+### 9. Repo-wide reference sweep (mandatory)
+Search for and update/remove references to deleted files (`DOC_APP_CONFIG_FILE.md`, `DOC_SETUP_STATES_AND_TRANSITIONS.md`, `DOC_TESTING_SUPABASE_SETUP.md`, `DOC_TESTING_APP_CONFIG.md`, `DOC_APP_CODE_MODIFICATION.md`). Fix dead links in README/ARCHITECTURE/`documentation/*`. If hits appear under protected files (e.g. `.cursor/**`), ask the user first.
+
+### 10. Remove setup tests
+The setup feature directory is deleted in step 1 (includes its tests). Additionally delete `src/utils/setupUtils.test.ts`.
+
+### 11. Delete the start skill (this file)
+Once teardown is complete, delete **`.agents/skills/start/SKILL.md`** (this skill) and its now-empty folder, and remove its router entries — onboarding and teardown are no longer needed for a configured app.
+
+### Teardown notes
+- The setup wizard was the only consumer of `vite-plugin-dev-api.ts` (write-env, read-config, finish-setup, etc.); removing the plugin is safe.
+- `app.config.json` was written by the wizard; afterward configuration lives in `.env` only.
+- If `useSupabaseConfig` or `useAuthContext` are used in HomePage/LoginForm, keep those — they are auth-related, not setup-related.
+
+---
+
+## Boundaries
+
+| Not `start` | Use instead |
+|-------------|-------------|
+| Agent session technical context | `prime` |
+| Feature/plan work | `plan` / `feature` |
+
+**App vision procedure SSOT:** § App vision in this skill; content SSOT: `documentation/DOC_APP_VISION.md`.
+**Setup teardown** lives in this skill's **Teardown** section (formerly `complete-setup`).

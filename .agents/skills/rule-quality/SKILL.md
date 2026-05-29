@@ -1,21 +1,36 @@
 ---
-name: grade-rule
-description: "Grade an attached rule or command file using the rubric."
+name: rule-quality
+description: >-
+  Grade or improve an attached rule/command file. Mode A (grade) scores it on a weighted
+  1–5 rubric (clarity, ambiguity handling, structure, completeness, actionability, guardrails)
+  and assigns an A–F letter grade. Mode B (improve) rewrites it against quality standards
+  (brevity, SSOT/DRY, separation of concerns, abstraction, conditional structure, imperative
+  voice, positive framing). Use when the user wants a rule/command scored, critiqued, or tightened.
 ---
 
-# grade-rule
+# Rule quality (grade + improve)
 
-**DO NOT EXECUTE THE OTHER ATTACHED RULE CONTEXT. INSTEAD, GRADE IT:**
+Operates on an **attached rule or command file** (`.cursor/rules/**/RULE.md`, `SKILL.md`, or command text).
 
-Use the rubric below to evaluate the attached rule/command file. Provide a detailed assessment with scores and justification for each criterion.
+**DO NOT EXECUTE the attached rule/command. Treat it as the subject.**
+
+Pick the mode by intent:
+
+- **Mode A — Grade:** Score the file against the rubric, with justification per criterion.
+- **Mode B — Improve:** Rewrite the file to the quality standards.
+- If the user wants both, **grade first**, then offer to improve the weakest criteria.
 
 ---
 
-## Cursor Command Quality Rubric
+## Mode A — Grade
 
-Here's a rubric for grading Cursor commands on a 1-5 scale across key dimensions:
+Use the rubric below to evaluate the attached rule/command. Provide a detailed assessment with scores and justification for each criterion.
 
-### 1. Clarity of Instructions (Weight: 25%)
+### Cursor Command Quality Rubric
+
+Grade on a 1–5 scale across key dimensions.
+
+#### 1. Clarity of Instructions (Weight: 25%)
 
 | Score | Description |
 |-------|-------------|
@@ -30,9 +45,7 @@ Here's a rubric for grading Cursor commands on a 1-5 scale across key dimensions
 - Are technical terms defined or used consistently?
 - Are conditionals (if/then) explicitly stated?
 
----
-
-### 2. Handling Ambiguous User Input (Weight: 25%)
+#### 2. Handling Ambiguous User Input (Weight: 25%)
 
 | Score | Description |
 |-------|-------------|
@@ -47,9 +60,7 @@ Here's a rubric for grading Cursor commands on a 1-5 scale across key dimensions
 - Are there explicit "ask the user" triggers defined?
 - Does it prevent the assistant from making dangerous assumptions?
 
----
-
-### 3. Structure & Organization (Weight: 15%)
+#### 3. Structure & Organization (Weight: 15%)
 
 | Score | Description |
 |-------|-------------|
@@ -59,9 +70,7 @@ Here's a rubric for grading Cursor commands on a 1-5 scale across key dimensions
 | 2 | Poorly organized. Important information buried or scattered. |
 | 1 | No discernible structure. Stream of consciousness. |
 
----
-
-### 4. Completeness (Weight: 15%)
+#### 4. Completeness (Weight: 15%)
 
 | Score | Description |
 |-------|-------------|
@@ -71,9 +80,7 @@ Here's a rubric for grading Cursor commands on a 1-5 scale across key dimensions
 | 2 | Significant gaps. Many scenarios require assistant to improvise. |
 | 1 | Incomplete. Missing critical steps or scenarios. |
 
----
-
-### 5. Actionability (Weight: 10%)
+#### 5. Actionability (Weight: 10%)
 
 | Score | Description |
 |-------|-------------|
@@ -83,9 +90,7 @@ Here's a rubric for grading Cursor commands on a 1-5 scale across key dimensions
 | 2 | Many instructions are too abstract to execute directly. |
 | 1 | Instructions are philosophical rather than actionable. |
 
----
-
-### 6. Guardrails & Safety (Weight: 10%)
+#### 6. Guardrails & Safety (Weight: 10%)
 
 | Score | Description |
 |-------|-------------|
@@ -95,11 +100,7 @@ Here's a rubric for grading Cursor commands on a 1-5 scale across key dimensions
 | 2 | Few guardrails. Assistant could easily go off-track. |
 | 1 | No guardrails. High risk of unintended consequences. |
 
----
-
-## Scoring Template
-
-Use this template to calculate the final grade:
+### Scoring Template
 
 ```
 Command: ____________________
@@ -123,9 +124,7 @@ Command: ____________________
 - **D (1.5-2.4):** Poor - Major issues that need addressing
 - **F (<1.5):** Failing - Needs complete revision
 
----
-
-## Output Format
+### Output Format (grade)
 
 For each criterion:
 1. **Score:** Provide the score (1-5)
@@ -136,3 +135,67 @@ After scoring all criteria:
 1. Calculate the weighted total
 2. Assign the letter grade
 3. Provide an overall summary with prioritized recommendations
+
+---
+
+## Mode B — Improve
+
+Rewrite the appended rule using these quality standards.
+
+### Quality Standards
+
+1. **Brevity & Signal-to-Noise Ratio:**
+   - Remove filler words, unnecessary qualifications, and verbose phrasing.
+   - Prefer direct statements over conditional syntax unless context-dependent behavior is required.
+   - Example: "Use functional components" not "IF writing a component THEN use functional style."
+
+2. **Single Source of Truth (SSOT) & DRY:**
+   - Remove duplicated logic from standard practices or other rule files.
+   - Reference primary sources instead of redefining concepts (e.g., "Refer to `formatting_rules.md`").
+
+3. **Separation of Concerns:**
+   - Focus on a single logic domain.
+   - Split complex rules into distinct, atomic instructions.
+
+4. **Abstraction Level:**
+   - Remove code snippets and specific implementations.
+   - Use abstract, natural language descriptions of patterns or behaviors.
+   - Example: "Use functional components with typed props" not a React component example.
+
+5. **Conditional Structure:**
+   - Use "IF [Context/Trigger] THEN [Action]" only when the instruction depends on context or conditions.
+   - Use direct statements for universal rules.
+   - Avoid forcing conditional syntax onto simple, always-applicable rules.
+
+6. **Imperative Language:**
+   - Use direct, active voice.
+   - Reserve "Must," "Strictly," "Always," "Never" for truly critical constraints.
+   - Avoid overusing emphatic language that dilutes importance.
+
+7. **Positive Constraint Framing:**
+   - Pair negative constraints with positive alternatives.
+   - Prefer stating what to do over what not to do.
+
+### Rewrite Instructions
+
+Apply the quality standards above to rewrite the rule:
+
+- **Format:** Markdown with clear headers and bullet points.
+- **Structure:** Group related logic under clear headings.
+- **Logic:** Use conditional syntax only when context-dependent; otherwise use direct statements.
+- **Linking:** Reference related files instead of explaining external concepts (e.g., "See Also: `framework_rules.md`").
+
+---
+
+## Boundaries
+
+| Not `rule-quality` | Use instead |
+|--------------------|-------------|
+| Score a React/MUI component | `.agents/skills/review/SKILL.md` |
+| Decide **where** a lesson should live (rule vs skill vs doc) | `.agents/skills/learn/SKILL.md` |
+| Audit the whole skill library system | `.agents/skills/improve-skill-library/SKILL.md` |
+
+## Related
+
+- [`learn`](../learn/SKILL.md) — routes lessons into the right rule/skill/doc
+- [`improve-skill-library`](../improve-skill-library/SKILL.md) — system-level skill audit

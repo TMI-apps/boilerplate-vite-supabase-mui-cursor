@@ -13,7 +13,12 @@ description: >-
 
 Discover, classify, and prioritize opportunities to unify repeated code patterns across the codebase. This skill owns the **discovery** phase - systematically finding what is duplicated - and produces an actionable consolidation plan.
 
-**Scope:** Repo-wide pattern analysis. For per-hotspot optimization use `optimize2`. For architectural location correctness use `architecture-repair2`. For single-feature simplification use `challenge`.
+**Scope:** Repo-wide pattern analysis. For per-hotspot optimization use `optimize2`. For single-feature simplification use `challenge`. For **semantic placement / wrong-layer repair** (after tooling is green), use this skill's **Semantic placement mode** below.
+
+## Modes
+
+- **Default — Redundancy audit:** the discovery → classify → prioritize → present → execute workflow below (what repeats?).
+- **Semantic placement repair:** is code in the **wrong layer/feature**, or does it mix concerns? Moves and refactors behind a gate, **after** `check`/tooling is green. Full procedure: [`references/semantic-placement.md`](references/semantic-placement.md). (Formerly the `architecture-repair2` skill.)
 
 ## Triggers
 
@@ -28,12 +33,7 @@ Discover, classify, and prioritize opportunities to unify repeated code patterns
 
 ### Rule of Three (Inherited from optimize2)
 
-Do not extract/abstract until you have **3+ concrete use cases**. Two usages might be coincidental; the third proves the pattern. This audit *identifies* candidates - it does not force premature extraction.
-
-**Exception cases** (document why if overriding):
-1. **Architectural violation:** Code in wrong layer -> extract to correct layer even if single-use
-2. **Divergence risk:** Two implementations of the same concern will inevitably drift apart
-3. **Bug surface:** Duplicated logic where a fix in one copy was missed in another
+Do not extract/abstract until you have **3+ concrete use cases**. Full rule and exceptions: **`.agents/skills/optimize2/SKILL.md`** § Rule of Three.
 
 ### Consolidation != Abstraction
 
@@ -368,14 +368,14 @@ This skill is independently complete but works best in concert with sibling skil
 | Sibling | How it complements this skill |
 |---------|------------------------------|
 | **`optimize2`** | After consolidation identifies a shared abstraction, use optimize2 to ensure it is well-designed (4-level analysis). Optimize2's Rule of Three and Indirection Red Flags are embedded in this skill's Core Principles. |
-| **`architecture-repair2`** | After consolidation creates new shared code, architecture-repair2 verifies it is in the correct location. This skill's Phase 6 pre-flight uses architecture-repair2 placement rules inline. |
+| **Semantic placement mode** | After consolidation creates new shared code, the [semantic placement mode](references/semantic-placement.md) verifies it is in the correct location. This skill's Phase 6 pre-flight uses those placement rules inline. |
 | **`challenge`** | Challenge simplifies a single feature's implementation. Consolidate finds patterns *across* features. Run challenge first to simplify each feature, then consolidate to unify what is left. |
 | **`review`** | Review Section F3 scores "Reuse and duplication" per component. Consolidate provides the repo-wide perspective that review lacks. |
 
 **Recommended workflow for major cleanup:**
 1. `challenge` individual features (simplify each)
 2. `consolidate` across features (unify patterns) <- this skill
-3. `architecture-repair2` (verify everything is in the right place)
+3. Semantic placement mode (verify everything is in the right place — `references/semantic-placement.md`)
 4. `optimize2` on any remaining hotspots (per-function polish)
 
 ---
@@ -394,6 +394,6 @@ This skill is independently complete but works best in concert with sibling skil
 ## Boundaries
 
 - This skill **discovers and plans** consolidation. It does not run broad performance optimization (use `optimize2`).
-- This skill does not assess architectural *location* correctness beyond placement of new shared code (use `architecture-repair2`).
+- For architectural *location* correctness beyond placement of new shared code, use this skill's **Semantic placement mode** (`references/semantic-placement.md`).
 - This skill does not simplify individual feature workflows (use `challenge`).
 - Never claim success without user testing confirmation.

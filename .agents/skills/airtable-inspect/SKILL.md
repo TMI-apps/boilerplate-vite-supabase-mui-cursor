@@ -1,0 +1,110 @@
+---
+name: airtable-inspect
+description: >-
+  Inspect an Airtable base in two phases: (1) schema — tables, field ids/types, links via
+  Meta API and repo SSOT, no row data; (2) sample — a few rows to see cell shapes (attachments,
+  rich text, URLs, linked-record ids) with fld… keys. Always schema first, samples second.
+  Safe defaults: low maxRecords, optional fields allowlist, redact PII. Triggers: Meta API,
+  field id, linked tables, schema drift, sample rows, cell shape, returnFieldsByFieldId,
+  wire JSON vs app normalization.
+---
+
+# Airtable: inspect (schema + sample)
+
+Two phases. **Always run Phase 1 (schema) before Phase 2 (sample)** — you need the `fld…` ids before fetching values.
+
+## Security (both phases)
+
+- Never print API keys or raw `.env` lines.
+- Meta responses contain **no row values**; still treat dumps as operational metadata — do not commit without review.
+- For samples: never paste full production rows if they may contain names, emails, or internal content. Prefer **1–3 records**, a `--fields` allowlist when possible, and **truncate or redact** in chat. Do not commit raw JSON samples without review.
+
+Requires `VITE_AIRTABLE_API_KEY` and `VITE_AIRTABLE_BASE_ID` in `.env` or `.env.local` (loaded by `scripts/load-airtable-env.js`).
+
+---
+
+## Phase 1 — Schema (what exists)
+
+### Goal
+
+Answer **what exists** in the base: table ids (`tbl…`), field ids (`fld…`), types, linked targets — **without** loading record contents. Use this **before** writing mappers or debugging "field not found" when the app uses field ids.
+
+### Layers (boilerplate vs fork)
+
+1. **Airtable-agnostic:** Meta API `GET /v0/meta/bases/{baseId}/tables`; Data API field ids vs display names.
+2. **This boilerplate:** Env `VITE_AIRTABLE_`*; runtime Meta usage and types in `src/shared/services/airtableService.ts`; setup wizard under `src/features/setup/`.
+3. **Fork / product:** If you need a single SSOT for many `tbl`* / `fld`* constants, add a small module under `src/shared/` following `.cursor/rules/file-placement/RULE.md` and `.cursor/rules/architecture/RULE.md` (this repo does not ship one).
+
+### Commands (repo root)
+
+| Command | Purpose |
+| ------- | ------- |
+| `pnpm airtable:meta-dump` | Same as `node scripts/airtable-meta-dump.js` — full base tables + fields |
+| `node scripts/airtable-meta-dump.js --pretty --out meta.json` | Pretty JSON to a file (prefer a path outside git) |
+
+Forks may add their own drift-check script (compare a checked-in constants module to a saved Meta dump); this boilerplate does not ship one.
+
+### Workflow
+
+1. Run `pnpm airtable:meta-dump -- --pretty` (or `--out <path>`) with valid env.
+2. For the relevant table, list **every** field: name, `id`, `type`, and link options if applicable.
+3. Cross-check with `src/shared/services/airtableService.ts` (and any fork-owned id constants): fields present in Airtable but absent in code often cause drift bugs.
+
+### Output template
+
+```markdown
+## Scope
+[Table / feature]
+
+## Meta / script
+- Command: [...]
+- Table id + name: [...]
+- Columns (name | fld… | type): [...]
+
+## Code alignment
+- Matches `airtableService` / types: [...]
+- Gaps: [...]
+
+## Follow-up
+- [Constants / mapper / wizard copy]
+```
+
+---
+
+## Phase 2 — Sample (what values look like)
+
+### Goal
+
+See **what values** look like: attachment arrays, rich text wrappers, URLs, linked record id lists — with **`fld…` keys** as returned when `returnFieldsByFieldId=true` (same style as id-based API consumers). Only meaningful once Phase 1 told you which `fld…` values to pass to `--fields`.
+
+### Boilerplate vs wire shape
+
+- `scripts/airtable-sample-records.js` hits the **public Airtable REST API** and prints JSON (`records[].fields`).
+- `src/shared/services/airtableService.ts` may normalize or select fields for the UI. For "what does the REST API return today?", **run the script** (or an equivalent fetch); reading the service alone shows app behavior, not necessarily the raw envelope.
+
+### Commands (repo root)
+
+**Default table:** if you omit both `--table` and `--table-name`, the script uses `VITE_AIRTABLE_TABLE_ID` (same as the setup wizard primary table). If it is missing or still the placeholder, pass `--table` or `--table-name` explicitly.
+
+```bash
+pnpm airtable:sample -- --max-records 2
+
+node scripts/airtable-sample-records.js --table tblXXXXXXXXXXXXXX --max-records 1
+
+node scripts/airtable-sample-records.js --table-name "Your table" --max-records 1 --fields fldAAA,fldBBB
+```
+
+Output is JSON: `records[].fields` keyed by `fld…`.
+
+### Workflow
+
+1. **Structure:** Full field list from Phase 1.
+2. **Pick fields:** Choose `fld…` ids for `--fields` when narrowing PII or payload size.
+3. Run `pnpm airtable:sample` or `node scripts/airtable-sample-records.js` with low `--max-records`.
+4. Relate shapes to helpers in `src/shared/services/airtableService.ts` (and fork code).
+
+---
+
+## Related
+
+- `src/features/setup/README.md` — CLI / agent entry points

@@ -89,16 +89,23 @@ Per finding: **file:line**, **finding**, **rule** (e.g. `.cursor/rules/architect
 
 "Fix all, specific items, or nothing?" — wait for user direction. If the user wants fixes, apply them while still following `.cursor/rules/` and the structure whitelist.
 
+**Next:**
+
+- **Pass (or user waived warnings):** Offer **`.agents/skills/finish/SKILL.md`** when the user wants to commit.
+- **Blockers:** **`.agents/skills/implement/SKILL.md`** for plan-driven work, or fix here if the user requested fixes.
+- **Semantic placement after tooling green:** **`.agents/skills/consolidate/SKILL.md`** § Semantic placement mode (not a substitute for this gate).
+
+## Boundaries
+
+| Not `check` | Use instead |
+|-------------|-------------|
+| Plan vs code compliance | `.agents/skills/validate/SKILL.md` |
+| Industry precedent | `.agents/skills/pattern-review/SKILL.md` |
+| Single React component rubric | `.agents/skills/review/SKILL.md` |
+| Commit / push | `.agents/skills/finish/SKILL.md` / `push` |
+
 ---
 
 ## Rules reference
 
-| Topic | Location |
-|-------|----------|
-| Architecture | `.cursor/rules/architecture/RULE.md` |
-| File placement | `.cursor/rules/file-placement/RULE.md` → `projectStructure.config.cjs` |
-| Code style | `.cursor/rules/code-style/RULE.md` |
-| Security | `.cursor/rules/security/RULE.md` |
-| Database | `.cursor/rules/database/RULE.md` |
-| Testing | `.cursor/rules/testing/RULE.md` |
-| Workflow | `.cursor/rules/workflow/RULE.md` |
+Subagent contract: **`.agents/skills/validate/SKILL.md`**. Rule paths: [`.cursor/rules/INDEX.md`](../../../.cursor/rules/INDEX.md), [`.agents/skills/plan/references/rules-registry.md`](../plan/references/rules-registry.md).

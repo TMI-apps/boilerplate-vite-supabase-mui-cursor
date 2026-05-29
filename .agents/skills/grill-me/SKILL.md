@@ -11,6 +11,17 @@ disable-model-invocation: false
 
 Interview the user relentlessly about every aspect of this plan until reaching shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one.
 
+## Zoom out first (optional)
+
+When the thread feels stuck or the chosen route is unclear, **step back** before interrogating:
+
+- State what problem we are solving and which route we've chosen toward a solution.
+- List the last couple of attempts and their outcomes.
+- Reflect on a route we might take if we stepped back further and looked at the issue at large.
+- Compare the pros and cons of that wider alternative vs the other most fruitful option.
+
+Use this as a framing move; then proceed into the questions below. (No separate skill — this replaces the former `stepback`.)
+
 ## Roles
 
 The user's role is to keep the app aligned with the vision: desired behavior, product feel, future direction, priorities, risk tolerance, and tradeoffs.
@@ -55,3 +66,14 @@ When convinced there is shared understanding, end the grill session with:
 - A concise summary of the user's vision and constraints.
 - The remaining tradeoffs, expressed in product/future-development terms.
 - The recommended direction, with code implementation left to the agent unless a technical decision materially affects the user's vision.
+
+**Next:** Re-run **`.agents/skills/router/SKILL.md`** gates 1–2 → **`plan` § Refine** or **`feature`** when scope is bounded. Not **`implement`** until a `DEVELOPMENT_PLAN.md` exists.
+
+---
+
+## Boundaries
+
+| Not `grill-me` | Use instead |
+|----------------|-------------|
+| Engineering acceptance / APIs / gates | `plan` § Refine |
+| Execute or commit | `implement` / `finish` |

@@ -11,25 +11,13 @@ Project memory for Claude Code. Keep under 100 lines — the imported rule files
 
 ## Workflow — agent skills
 
-Project agent workflows live under **`.agents/skills/<name>/SKILL.md`** (cross-tool: Cursor, Claude Code, and other agents scan this folder).
+Project agent workflows live under **`.agents/skills/<name>/SKILL.md`**. **Full catalog and routing:** `.agents/skills/router/SKILL.md` § Skill index.
 
-**Routing:** For ambiguous work or “which skill?”, read `.agents/skills/router/SKILL.md` first.
+**Routing:** For ambiguous work, read `.agents/skills/router/SKILL.md` first.
 
-**Product context:** Fill `documentation/DOC_APP_VISION.md` (see `.agents/skills/start/SKILL.md`) so planning and feature work align with your fork’s problem, persona, and app role.
+**Product context:** Fill `documentation/DOC_APP_VISION.md` (see `.agents/skills/start/SKILL.md`).
 
-| Skill | Purpose |
-| ----- | ------- |
-| `plan` | Produce a `DEVELOPMENT_PLAN.md` |
-| `implement` | Execute the plan phase by phase |
-| `validate` | Repo rules + tooling review (read-only by default) — **not** industry precedent |
-| `pattern-review` | Industry precedent for plans/proposals (proactive) |
-| `review-dev-plan` | Six-lens plan critique before implementation (M/L plans) |
-| `check` | Architecture and code-quality gate |
-| `consolidate` | Cross-feature duplication and consolidation audit |
-| `review` | Component review (170-point rubric) |
-| `finish` | Pre-commit: version, changelog, staging gate, commit |
-
-For small scoped work: `.agents/skills/quick-piv/SKILL.md`. Cross-repo adoption guides: `.agents/skills/write-adoption-guide/SKILL.md` → `documentation/handoffs/`. Layer model: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`.
+Layer model: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`.
 
 ## Rules — single source of truth
 

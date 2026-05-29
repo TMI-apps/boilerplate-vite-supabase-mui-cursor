@@ -48,3 +48,10 @@ Push previously finished work to remote. This command is push-only.
 - If `push` detects anything that still needs committing, it must stop and redirect to `finish`.
 
 You have explicit access to use console commands for this task.
+
+## Boundaries
+
+| Not `push` | Use instead |
+|------------|-------------|
+| Stage, commit, version, changelog | `finish` |
+| Onboarding first push of `develop` | Documented exception in `start` only — still requires user confirmation |

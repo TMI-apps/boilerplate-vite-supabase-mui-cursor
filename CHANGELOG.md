@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.25.0] - 2026-05-29
+
+### Added
+
+- **`improve-skill-library` skill**: Audits the skill corpus with parallel subagent lenses and a no-information-loss gate before edits.
+- **`rule-quality` skill**: Merged grading (Mode A) and improvement (Mode B) for rule/command files (replaces `grade-rule` and `improve-rule`).
+- **`airtable-inspect` skill**: Two-phase Airtable inspection — schema then sample (replaces `airtable-schema-structure` and `airtable-data-sample`).
+- **`consolidate/references/semantic-placement.md`**: Semantic architecture repair procedure (formerly `architecture-repair2`).
+- **`plan/references/rules-registry.md`**: SSOT for `.cursor/rules` files referenced by plan/implement/validate skills.
+- **`documentation/DOC_CHANGESETS.md`**: Changeset release flow SSOT.
+- **Skill library audit artifacts**: `documentation/jobs/skill-library/REGISTRY.md` and `AUDIT_SYNTHESIS.md`.
+
+### Changed
+
+- **Skill library consolidation (29 → 24 skills)**: `stepback` → `grill-me`; `complete-setup` → `start` § Teardown; router tiebreaks, handoffs, and Boundaries on pipeline skills.
+- **Router**: Plan-review stack, orchestrator notes, disambiguation for overlapping skills; skill index deduped.
+- **Pipeline handoffs**: `implement` → `validate` → `finish`; `validate`/`check` Next blocks; `finish` commit/push gates.
+- **SSOT dedup**: Rules registry, dev-cycle matrix, pre-commit light path, Rule of Three, changesets — owners linked from former copies.
+- **Agent docs**: `CLAUDE.md`, `DOC_AGENT_WORKFLOW_LAYERS.md`, `workflow/RULE.md`, `file-placement/RULE.md` (Teardown references).
+- **Setup feature README**: Points to `airtable-inspect` and `start` § Teardown.
+
+### Removed
+
+- **Standalone skills merged away**: `stepback`, `grade-rule`, `improve-rule`, `airtable-schema-structure`, `airtable-data-sample`, `architecture-repair2`, `complete-setup`.
+
 ## [0.24.0] - 2026-05-29
 
 ### Added
