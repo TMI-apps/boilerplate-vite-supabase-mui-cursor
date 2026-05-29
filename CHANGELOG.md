@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.25.1] - 2026-05-29
+
+### Changed
+
+- **Agent memory**: Renamed root `CLAUDE.md` to `AGENTS.md` (cross-tool AGENTS.md standard); updated intro for Cursor, Claude Code, and other agents; `projectStructure.config.cjs` root whitelist entry updated.
+
 ## [0.25.0] - 2026-05-29
 
 ### Added

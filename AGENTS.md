@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-Project memory for Claude Code. Keep under 100 lines — the imported rule files carry the details.
+Project memory for coding agents (Cursor, Claude Code, and other AGENTS.md-aware tools). Keep under 100 lines — the imported rule files carry the details.
 
 ## Project
 
