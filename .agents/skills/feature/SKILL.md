@@ -1,6 +1,9 @@
 ---
 name: feature
-description: "feature"
+description: >-
+  Runs systematic new-feature engineering with mandatory decision stops; produces product/requirements
+  artifacts, not DEVELOPMENT_PLAN.md (plan is SSOT for execution plans). Use for new feature
+  requests before planning. Not implement, validate, or finish.
 ---
 
 # feature

@@ -1,6 +1,9 @@
 ---
 name: quick-piv
-description: "quick-piv"
+description: >-
+  Orchestrates compressed Plan → Implement → Validate for small XS/S scoped changes in one
+  session without a full DEVELOPMENT_PLAN.md. Use for focused fixes and tweaks. Not M/L work,
+  migrations, or when plan review or pattern-review gates are required (use full plan cycle).
 ---
 
 # quick-piv

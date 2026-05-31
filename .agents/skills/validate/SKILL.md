@@ -1,6 +1,9 @@
 ---
 name: validate
-description: "validate"
+description: >-
+  Validates a development plan or its implementation via parallel read-only rule-shaped audits,
+  then synthesizes findings before any fixes. Use when the user asks to validate plan or
+  implementation, or after implement before finish. Not pre-merge architecture-only gate (check).
 ---
 
 # validate

@@ -1,6 +1,9 @@
 ---
 name: implement
-description: "implement"
+description: >-
+  Executes DEVELOPMENT_PLAN.md phase by phase with gates, progress updates, and repo-rule
+  compliance. Use when the user asks to implement a plan or continue a job. Not planning (plan),
+  changelog (finish), or read-only audits (validate).
 ---
 
 # implement

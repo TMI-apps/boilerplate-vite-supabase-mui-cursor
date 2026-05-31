@@ -1,6 +1,9 @@
 ---
 name: check
-description: "check"
+description: >-
+  Architecture and code-quality gate via parallel rule-shaped fan-out (smaller default rule set,
+  no plan-compliance pass). Use pre-merge, pre-finish, or after large refactors. Read-only by
+  default. Not full plan/implementation validation (validate) or component rubric (review).
 ---
 
 # check

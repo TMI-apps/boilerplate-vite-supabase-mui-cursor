@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.26.1] - 2026-06-01
+
+### Documentation
+
+- **Agent skills**: Replace placeholder YAML `description` frontmatter (skill name only) with WHAT + WHEN text and sibling-skill boundaries on `plan`, `implement`, `validate`, `check`, `finish`, `push`, `feature`, `challenge`, `prime`, `quick-piv`, `review`, and `optimize2` so Cursor can route skills correctly.
+
 ## [0.26.0] - 2026-05-29
 
 ### Changed

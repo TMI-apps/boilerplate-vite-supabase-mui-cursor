@@ -1,6 +1,9 @@
 ---
 name: finish
-description: "finish"
+description: >-
+  Completes implementation wrap-up: concurrent-agent smoke checks, version/changelog when
+  required, commit, and coordination before push. Use when closing a job, after implement/validate,
+  or when the user runs /finish. Not push-only (use push) and not planning (use plan).
 ---
 
 # finish

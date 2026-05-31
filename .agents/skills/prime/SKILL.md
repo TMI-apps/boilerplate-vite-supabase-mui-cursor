@@ -1,6 +1,9 @@
 ---
 name: prime
-description: "prime"
+description: >-
+  Loads project context at session start (structure, governance, active jobs, enforced boundaries).
+  Use for a new chat, ambiguous tasks, or before larger refactors. Not human onboarding (start)
+  or pre-merge gates (check).
 ---
 
 # prime

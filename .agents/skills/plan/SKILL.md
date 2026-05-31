@@ -1,6 +1,9 @@
 ---
 name: plan
-description: "plan"
+description: >-
+  Creates DEVELOPMENT_PLAN.md with repo-rule compliance researched first (file placement,
+  architecture, patterns). Use for new features, M/L work, or /plan. Not XS/S quick changes
+  (quick-piv), product-only requirements (feature), or changelog updates (finish).
 ---
 
 # plan

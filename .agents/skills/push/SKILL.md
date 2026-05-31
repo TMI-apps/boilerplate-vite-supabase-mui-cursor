@@ -1,6 +1,9 @@
 ---
 name: push
-description: "push"
+description: >-
+  Pushes previously finished commits to remote only; never stages, commits, or amends. Use when
+  finish has already run, the working tree is clean, and local commits exist. If uncommitted
+  changes remain, stop and run finish first.
 ---
 
 # push

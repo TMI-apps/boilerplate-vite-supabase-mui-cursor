@@ -1,6 +1,9 @@
 ---
 name: optimize2
-description: "Analyze and optimize code across design, approach, efficiency, and complexity."
+description: >-
+  Analyzes code for optimization across design, approach, efficiency, and complexity so fixes
+  happen at the right level. Use when the user asks to optimize, reduce complexity, refactor
+  thoughtfully, or assess whether code should be rewritten vs tweaked.
 ---
 
 # optimize
