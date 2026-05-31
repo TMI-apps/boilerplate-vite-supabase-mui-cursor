@@ -10,7 +10,7 @@ description: >-
 
 Extract lessons from **what just happened** (diffs, errors, retries) and persist them where the assistant will see them **before** the same mistake repeats. This includes **adding** new guidance *and* **removing or narrowing** existing guidance that contributed to the problem. Prefer **one primary home** per lesson; cross-link instead of duplicating.
 
-**Related:** Rule quality heuristics: `.agents/skills/improve-rule/SKILL.md`. Finish/changelog flow: `.agents/skills/finish/SKILL.md`.
+**Related:** Rule grading/quality heuristics: `.agents/skills/rule-quality/SKILL.md`. Finish/changelog flow: `.agents/skills/finish/SKILL.md`.
 
 **This project:** In-repo skills live under `.agents/skills/<name>/SKILL.md` (whitelisted in `projectStructure.config.cjs`). Add new skills as new folders with a `SKILL.md`; do not create other file types under `skills/` unless the whitelist is extended.
 
@@ -25,7 +25,7 @@ Durable, discoverable guidance with minimal duplication.
 ## Triggers
 
 - **Manual:** User invokes learn, asks for a retrospective, or “sharpen rules.”
-- **Proactive:** After a loop (3+ failed attempts), a critical CI fix, or a non-obvious repo discovery — only when the user is clearly done debugging.
+- **Proactive:** After a loop (3+ failed attempts), a critical CI fix, or a non-obvious repo discovery — only when the user **confirms** debugging is resolved. **Never** run as primary in parallel with active **`debug`**.
 
 ---
 
@@ -89,13 +89,13 @@ Confirm ownership via `.cursor/rules/INDEX.md`.
 
 **Procedures vs rules:** Single-line constraints belong in the right `RULE.md`. Use a **skill** (this folder pattern or user skills) when the lesson is a reusable workflow the agent should follow step-by-step.
 
-**Tiering:** Use `[CRITICAL]` / `[HINT]` only if the target file already uses that style; otherwise use clear “Always” / “Never” per `.agents/skills/improve-rule/SKILL.md`.
+**Tiering:** Use `[CRITICAL]` / `[HINT]` only if the target file already uses that style; otherwise use clear “Always” / “Never” per `.agents/skills/rule-quality/SKILL.md`.
 
 ### 4. Apply the edit
 
 - Read the target file (or section); match tone and structure.
 - **Imperatives:** Direct verbs (“Always…”, “Never…”).
-- **Examples:** Short `// BAD` / `// GOOD` only where this repo already uses code in that file (e.g. `debug.md` patterns). For `RULE.md` edits, prefer concise bullets; follow `.agents/skills/improve-rule/SKILL.md` when tightening prose.
+- **Examples:** Short `// BAD` / `// GOOD` only where this repo already uses code in that file (e.g. `debug.md` patterns). For `RULE.md` edits, prefer concise bullets; follow `.agents/skills/rule-quality/SKILL.md` when tightening prose.
 - **Minimal diff:** Small subsection or bullet group; merging duplicates in the same section is fine. Large rewrites need **explicit user confirmation**.
 - **Deletions & narrowing (from Step 1b):** When the Reverse Audit flagged misleading or outdated guidance, present each proposed removal or rewrite to the user **before** applying. Never delete or substantially rewrite rule content without explicit user approval.
 

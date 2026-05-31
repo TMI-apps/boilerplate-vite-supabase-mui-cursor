@@ -1,6 +1,9 @@
 ---
 name: review
-description: "review"
+description: >-
+  Scores a TypeScript + MUI component against a structured quality rubric (0–5 per item).
+  Use when reviewing a specific component for UX, architecture, and maintainability. Not
+  repo-rule audits (validate/check) or development-plan critique (review-dev-plan).
 ---
 
 # review

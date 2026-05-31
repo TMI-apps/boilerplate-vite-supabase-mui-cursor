@@ -1,6 +1,9 @@
 ---
 name: validate
-description: "validate"
+description: >-
+  Validates a development plan or its implementation via parallel read-only rule-shaped audits,
+  then synthesizes findings before any fixes. Use when the user asks to validate plan or
+  implementation, or after implement before finish. Not pre-merge architecture-only gate (check).
 ---
 
 # validate
@@ -119,20 +122,17 @@ Same output schema, with `rule: "plan-compliance"`.
 8. **Ask:** "What should I do with these findings — fix all, specific items, or nothing?" Wait for the user.
 9. **Optionally act** — only if the user requests fixes; apply changes (plan markdown and/or source) while still following `.cursor/rules/` and the structure whitelist. Changelog remains the responsibility of `.agents/skills/finish/SKILL.md` unless the user explicitly includes it in the requested fixes.
 
+**Next:**
+
+- **Impl review, no blockers (or user waived):** Offer **`.agents/skills/finish/SKILL.md`** when the user wants to commit.
+- **Impl review, blockers:** Hand back to **`.agents/skills/implement/SKILL.md`** (or fixes in this skill if the user requested them).
+- **Plan review only:** Next is **`implement`** when gates pass, or back to **`plan`** if the plan must change.
+
 ---
 
 ## Rules reference (subagent registry)
 
-| Topic | Rule file |
-|-------|-----------|
-| Overview / index | `.cursor/rules/INDEX.md` |
-| Architecture | `.cursor/rules/architecture/RULE.md` |
-| File placement | `.cursor/rules/file-placement/RULE.md` (uses `projectStructure.config.cjs`) |
-| Code style | `.cursor/rules/code-style/RULE.md` |
-| Database | `.cursor/rules/database/RULE.md` |
-| Security | `.cursor/rules/security/RULE.md` |
-| Testing | `.cursor/rules/testing/RULE.md` |
-| Workflow | `.cursor/rules/workflow/RULE.md` |
+Spawn one subagent per applicable rule. Registry SSOT: [`.cursor/rules/INDEX.md`](../../../.cursor/rules/INDEX.md) and [`.agents/skills/plan/references/rules-registry.md`](../plan/references/rules-registry.md).
 
 Other rule files in `.cursor/rules/` (e.g. `debugging/`, `cloud-functions/`, `project-specific/`) are spawned when the scope touches them.
 
@@ -146,6 +146,17 @@ Other rule files in `.cursor/rules/` (e.g. `debugging/`, `cloud-functions/`, `pr
 | Multi-lens qualitative plan critique (rebel, scale, industry precedent, …) | [`.agents/skills/review-dev-plan/SKILL.md`](../review-dev-plan/SKILL.md) |
 
 For Complexity **M/L** plans, run **`review-dev-plan`** before implementation when the plan requires it; **`validate`** does not replace industry-precedent review.
+
+---
+
+## Boundaries
+
+| Not `validate` | Use instead |
+|----------------|-------------|
+| Industry / product precedent | `pattern-review` |
+| Six-lens qualitative plan critique | `review-dev-plan` |
+| Merge gate / layer spot-check without plan | `check` |
+| Commit / changelog | `finish` |
 
 ---
 

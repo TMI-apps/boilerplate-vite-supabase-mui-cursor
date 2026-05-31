@@ -728,7 +728,7 @@ module.exports = {
     // Note: Add specific TOML files here if needed (e.g., netlify.toml)
     // Markdown documentation files - ONLY README, architecture, and CHANGELOG allowed in root
     { name: "README.md" },
-    { name: "CLAUDE.md" },
+    { name: "AGENTS.md" },
     { name: "architecture.md" },
     { name: "ARCHITECTURE.md" }, // Allow uppercase variant
     { name: "CHANGELOG.md" },
@@ -737,7 +737,6 @@ module.exports = {
     // Other config files
     { name: ".gitignore" },
     { name: ".gitattributes" },
-    { name: ".eslintignore" },
     { name: ".editorconfig" },
     { name: ".firebaserc" },
     { name: "index.html" },

@@ -119,7 +119,7 @@ const HostingDialog = ({ open, onClose, onStatusChange }: HostingDialogProps) =>
       saveButtonText="Mark as Complete"
     >
       <Box>
-        <Typography variant="body2" color="text.secondary" paragraph>
+        <Typography variant="body2" color="text.secondary" component="p" sx={{ mb: 2 }}>
           For production deployment, you'll need to configure environment variables on your hosting
           provider. Select your hosting provider below to view their documentation:
         </Typography>

@@ -16,7 +16,7 @@ Use this file to pick **one primary skill** (sometimes two in sequence).
 
 **Bare `/router`:** If the user message is only `/router` (optional whitespace) and carries **no substantive task or question**, the primary skill is **finish** — read `.agents/skills/finish/SKILL.md` immediately and run it on the current working tree.
 
-**Quality bar:** Listed skills were reviewed for actionable structure (clear triggers, steps, or rubrics). Very thin prompts (e.g. `stepback`) are called out as minimal.
+**Quality bar:** Listed skills were reviewed for actionable structure (clear triggers, steps, or rubrics).
 
 ---
 
@@ -99,11 +99,7 @@ flowchart TD
 
 Optional: run **`prime`** once when the codebase or branch context is unfamiliar — it does not replace gates 1–2.
 
-**Dev-cycle matrix:** [`.agents/skills/router/references/dev-cycle-matrix.md`](references/dev-cycle-matrix.md) — plan → pattern-review (when required) → review-dev-plan (M/L) → implement → validate.
-
-- If the idea introduces **new user-visible behavior or contracts** without industry precedent documented, run [`pattern-review`](../pattern-review/SKILL.md) or complete **Pattern & precedent** in the plan before `src/`.
-- **Plan exists + Complexity M/L + plan review pending** → `review-dev-plan` before `implement`.
-- **Small implementation** (`quick-piv`): only when behavior is clear, low risk, and no material industry-precedent gap (or owner waived).
+**Dev-cycle (SSOT):** [`.agents/skills/router/references/dev-cycle-matrix.md`](references/dev-cycle-matrix.md) — full happy path, M/L gates, and plan depth. Do not duplicate that matrix here.
 
 ---
 
@@ -119,7 +115,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Plan written; qualitative critique before implementation (especially Complexity M/L) | `.agents/skills/review-dev-plan/SKILL.md` |
 | Industry standard / best practice / “is this how products usually do it?” | `.agents/skills/pattern-review/SKILL.md` |
 | Write a cross-repo adoption guide from an implemented pattern | `.agents/skills/write-adoption-guide/SKILL.md` |
-| Goal or scope **not** ready — questions only, no plan file yet | `.agents/skills/grill-me/SKILL.md` and/or `.agents/skills/plan/SKILL.md` **§ Refine** (see Decision model above) |
+| Goal or scope **not** ready — clarify only (no `DEVELOPMENT_PLAN.md` yet); **one** primary by missing dimension (see **Clarification-first routing**) | Product/vision → `grill-me`; acceptance/APIs → `plan` **§ Refine** only |
 | Execute an existing `DEVELOPMENT_PLAN.md` phase by phase | `.agents/skills/implement/SKILL.md` |
 | Small scoped change; plan+implement+validate in one pass | `.agents/skills/quick-piv/SKILL.md` |
 | Review plan or implementation **without** editing by default | `.agents/skills/validate/SKILL.md` |
@@ -128,7 +124,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Version, changelog, staging gate, **local** commit | `.agents/skills/finish/SKILL.md` |
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
 | Human onboarding; README quick start | `.agents/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
-| Remove setup wizard after app is configured | `.agents/skills/complete-setup/SKILL.md` |
+| Remove setup wizard after app is configured | `.agents/skills/start/SKILL.md` § Teardown |
 
 ### This repo — product & codebase shape
 
@@ -136,22 +132,20 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 |-----------|--------|
 | Full feature request with mandatory decision stops and phased spec | `.agents/skills/feature/SKILL.md` |
 | Scientific debugging; hypotheses; user supplies runtime evidence | `.agents/skills/debug/SKILL.md` |
-| Stress-test product/design choices before implementation | `.agents/skills/grill-me/SKILL.md` |
+| Stress-test product/design when gates 1–2 already pass (not gate-1 ambiguity) | `.agents/skills/grill-me/SKILL.md` |
 | Simplify **one** concrete feature (flows + code), reduce steps/complexity | `.agents/skills/challenge/SKILL.md` |
-| Find cross-feature duplication and consolidation candidates | `.agents/skills/consolidate/SKILL.md` |
+| Find cross-feature duplication and consolidation candidates (see skill § Symbiotic Relationships for cleanup pipeline) | `.agents/skills/consolidate/SKILL.md` |
 | Optimize hotspots: design → approach → efficiency → complexity | `.agents/skills/optimize2/SKILL.md` |
-| Semantic architecture repair **after** automated checks pass | `.agents/skills/architecture-repair2/SKILL.md` |
+| Semantic architecture repair **after** automated checks pass | `.agents/skills/consolidate/SKILL.md` § Semantic placement mode |
 | Retro from failures/diffs; persist lessons into rules or skills | `.agents/skills/learn/SKILL.md` |
-| Tighten prose/structure of an appended rule draft | `.agents/skills/improve-rule/SKILL.md` |
-| Score quality of an attached rule/command with rubric | `.agents/skills/grade-rule/SKILL.md` |
-| Brief reflection: problem, attempts, wider alternative | `.agents/skills/stepback/SKILL.md` *(minimal)* |
+| Audit/improve the **skill library** as a whole (overlap, SSOT, conflicts, handoffs); subagent lenses + no-loss pass | `.agents/skills/improve-skill-library/SKILL.md` |
+| Grade **or** improve an attached rule/command file (rubric score and/or quality rewrite) | `.agents/skills/rule-quality/SKILL.md` |
 
 ### This repo — integrations
 
 | Situation | Skill |
 |-----------|--------|
-| Airtable Meta/schema (`tbl…` / `fld…`), no row payloads | `.agents/skills/airtable-schema-structure/SKILL.md` |
-| Sample Airtable rows / cell shapes **after** schema known | `.agents/skills/airtable-data-sample/SKILL.md` |
+| Inspect Airtable — schema (`tbl…` / `fld…`, no rows) then sample cell shapes | `.agents/skills/airtable-inspect/SKILL.md` (Phase 1 schema → Phase 2 sample) |
 
 ### User-level Cursor skills (`~/.cursor/skills-cursor/`)
 
@@ -207,20 +201,20 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`validate`:** Plan-only review **or** impl vs plan + default read-only tooling report; asks user before fixes.
 - **`check`:** Merge/finish gate emphasizing **layer semantics** and architecture spot-checks on a scope/diff. Use when **structural correctness** is the worry.
 
-### `check` vs `architecture-repair2`
+### `check` vs `consolidate` § Semantic placement
 
 - **`check`:** Routine gate on current scope (scripts + checklist).
-- **`architecture-repair2`:** After linters pass — **semantic** placement, duplication, cross-feature boundaries, refactoring impact.
+- **`consolidate` § Semantic placement mode:** After linters pass — **semantic** placement, duplication, cross-feature boundaries, refactoring impact.
 
 ### `consolidate` vs `optimize2`
 
 - **`consolidate`:** **Repo-wide** redundancy audit and prioritization (discovery of shared patterns).
 - **`optimize2`:** **Targeted** optimization at four levels for chosen code; Rule of Three for extractions. Use for **hot paths** or known-complex modules.
 
-### `consolidate` vs `architecture-repair2`
+### `consolidate` — Redundancy audit vs Semantic placement mode
 
-- **`consolidate`:** “What repeats?” → unify abstractly (may stay duplicated by decision).
-- **`architecture-repair2`:** “Is code in the **wrong** layer/feature?” → move/refactor for boundaries.
+- **Redundancy audit (default):** “What repeats?” → unify abstractly (may stay duplicated by decision).
+- **Semantic placement mode:** “Is code in the **wrong** layer/feature?” → move/refactor for boundaries (after tooling is green).
 
 ### `challenge` vs `optimize2`
 
@@ -232,20 +226,25 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`debug`:** Active incident; hypotheses; runtime evidence; possibly temporary instrumentation.
 - **`learn`:** After resolution or struggle — **capture durable** rule/skill/debug-pattern updates.
 
-### `improve-rule` vs `learn`
+### `rule-quality` vs `learn`
 
-- **`improve-rule`:** Style/clarity pass on **provided rule text**.
+- **`rule-quality`:** Score (Mode A) or rewrite (Mode B) **provided rule/command text**.
 - **`learn`:** Decide **where** lessons live (rules vs skills vs debug appendix) from incident context.
 
-### `grade-rule` vs `review`
+### `improve-skill-library` vs `rule-quality` / `consolidate`
 
-- **`grade-rule`:** Grade **rules/commands** with command-quality rubric.
+- **`improve-skill-library`:** **System-level** audit of the whole `.agents/skills/` corpus — separation of concerns, SSOT, conflicts, handoffs — via parallel lens subagents and a no-information-loss gate. Edits skills + router/layers spine.
+- **`rule-quality`:** One **rule/command file's** grade or prose. **`consolidate`:** duplication in **`src/` application code**, not skills.
+
+### `rule-quality` vs `review`
+
+- **`rule-quality`:** Grade or improve **rules/commands** (rubric + quality standards).
 - **`review`:** Score **React/MUI components** with component rubric.
 
-### `grill-me` vs `plan`
+### `grill-me` vs `plan` § Refine
 
-- **`grill-me`:** Product/design **Q&A** until shared understanding (questions first). Fits **gate 1** failures dominated by vision and tradeoffs.
-- **`plan`:** **`§ Refine`** for engineering-level clarification (**gates 1–2**); full **`plan`** only after both pass — then produce **implementation document**.
+- **`grill-me`:** Product/design **Q&A** until shared understanding (questions first). Fits **gate 1** failures dominated by vision and tradeoffs. Includes an optional **Zoom out first** reflection (problem, recent attempts, wider alternative) — formerly the `stepback` skill.
+- **`plan` § Refine:** Engineering-level clarification — acceptance and scope bounds (**gate 2**); stop before **Investigate**. Full **`plan`** only after gates 1–2 pass — then produce the plan document.
 
 ### `prime` vs `start`
 
@@ -262,9 +261,9 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`canvas`:** Standalone **visual artifact** (tables, timelines, rich layouts) as deliverable.
 - **`validate`:** Structured **text report**; default no edits.
 
-### Airtable: `airtable-schema-structure` vs `airtable-data-sample`
+### Airtable: `airtable-inspect` phases
 
-- Always **schema first**, **samples second** (skill body states this explicitly).
+- One skill, two phases: **Phase 1 schema first**, **Phase 2 samples second** (skill body enforces the order).
 
 ### Supabase: `supabase` vs `supabase-postgres-best-practices`
 
@@ -292,6 +291,64 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`web-perf`:** **Browser-measured** performance (CWVs, network, traces via DevTools MCP).
 - **`optimize2`:** **Code-level** structure and complexity optimization (may include perf but not Lighthouse-centric).
 
+### Plan review stack (ordered pipeline)
+
+When the user asks to **review a plan** or before **implement** on Complexity **M/L**, run **in order** — do not pick multiple primaries for the same pass:
+
+1. **`pattern-review`** (`plan-section`) during **`plan`** step 5 when M/L or new user-visible/contracts — fills **Pattern & precedent** in the plan.
+2. **`review-dev-plan`** when Summary says `Plan review: Required: pending` (mandatory for M/L).
+3. **`validate`** (plan-review mode) for **repo rule** compliance on the plan document.
+
+Do **not** run standalone **`pattern-review`** `scan` in the same session if **`review-dev-plan`** already ran the industry-precedent lens (unless the user requests a delta review).
+
+### `implement` vs `quick-piv`
+
+- **`implement`:** Active `DEVELOPMENT_PLAN.md` with multi-phase or durable execution — phase-by-phase SSOT.
+- **`quick-piv`:** **XS/S** scope only; chat-sized extension or no plan file. **Never** when plan **Complexity** is **M/L** or **Plan review** is pending — use **`implement`** after gates pass.
+
+### `debug` vs `quick-piv`
+
+- **`debug`:** Unknown cause, need hypotheses and runtime evidence.
+- **`quick-piv`:** Root cause known; small scoped fix with clear gate.
+
+### `challenge` vs `feature`
+
+- **`feature`:** Net-new capability with mandatory 🔴 decision stops and journey mapping.
+- **`challenge`:** Simplify an **existing** named feature/workflow (flow + code).
+
+### `start` — onboarding vs Teardown
+
+- **`start` (onboarding):** Human first-time setup and app vision gate.
+- **`start` § Teardown:** Remove the setup wizard **after** the app is configured (formerly `complete-setup`); also deletes the `start` skill itself when done.
+
+### `prime` vs clarification skills
+
+- **`prime`:** Optional **once** for technical repo context — not a substitute for gates 1–2.
+- **Order when both needed:** `prime` (if unfamiliar) → **`grill-me` OR `plan` § Refine`** (one primary) → re-run gates → delivery skill.
+
+### `review` vs `optimize2`
+
+- **`review`:** Qualitative **component** rubric score (170-point).
+- **`optimize2`:** Structural/perf refactor of a **hotspot** at four levels.
+
+### `quick-piv` vs `validate`
+
+- **`quick-piv`:** Inline tooling checks only (“quick validate”) — not the **`validate`** skill fan-out.
+- **`validate`:** Full rule subagents + plan-compliance when the user asks to validate or before merge/finish.
+
+### `feature` vs `plan` / `implement` (orchestrator)
+
+- **`feature`:** Primary outcome = product/requirements artifact + mandatory decision stops. **Not** the durable execution plan.
+- **`plan`:** Produces `DEVELOPMENT_PLAN.md`. **`implement`:** Executes it. After **`feature`** Phase 4, run **`plan`** (or ensure `DEVELOPMENT_PLAN.md` exists) before **`implement`**.
+
+### `quick-piv` (orchestrator)
+
+- **Primary outcome:** Land a **small** scoped change in one session. Compresses plan/implement/check steps — defers to **`validate`**, **`finish`**, and full **`plan`** for M/L, commits, and durable plans.
+
+### Bare `/router` vs `finish` (situation table)
+
+- **Bare `/router`** (no task text): default **`finish`** on the working tree — not “which skill?” help. If the user wanted routing help, they must include a substantive question in the same message.
+
 ---
 
 ## Skill index (paths)
@@ -310,24 +367,23 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - `.agents/skills/push/SKILL.md`
 - `.agents/skills/quick-piv/SKILL.md`
 - `.agents/skills/prime/SKILL.md`
-- `.agents/skills/start/SKILL.md`
-- `.agents/skills/complete-setup/SKILL.md`
+- `.agents/skills/start/SKILL.md` (onboarding + § Teardown to remove the setup wizard)
 - `.agents/skills/learn/SKILL.md`
 - `.agents/skills/challenge/SKILL.md`
 - `.agents/skills/feature/SKILL.md`
 - `.agents/skills/debug/SKILL.md`
-- `.agents/skills/grade-rule/SKILL.md`
-- `.agents/skills/improve-rule/SKILL.md`
-- `.agents/skills/architecture-repair2/SKILL.md`
+- `.agents/skills/rule-quality/SKILL.md`
+- `.agents/skills/improve-skill-library/SKILL.md`
 - `.agents/skills/optimize2/SKILL.md`
-- `.agents/skills/stepback/SKILL.md`
-- `.agents/skills/airtable-schema-structure/SKILL.md`
-- `.agents/skills/airtable-data-sample/SKILL.md`
+- `.agents/skills/airtable-inspect/SKILL.md`
 - `.agents/skills/grill-me/SKILL.md`
 - `.agents/skills/pattern-review/SKILL.md`
 - `.agents/skills/review-dev-plan/SKILL.md`
 - `.agents/skills/write-adoption-guide/SKILL.md`
-- `.agents/skills/router/references/dev-cycle-matrix.md`
+
+### Router references (not skills)
+
+- `.agents/skills/router/references/dev-cycle-matrix.md` — dev-cycle happy path and M/L gates (SSOT)
 
 ### User Cursor bundle (`~/.cursor/skills-cursor/`)
 

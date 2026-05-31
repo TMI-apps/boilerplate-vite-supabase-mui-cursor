@@ -1,6 +1,9 @@
 ---
 name: prime
-description: "prime"
+description: >-
+  Loads project context at session start (structure, governance, active jobs, enforced boundaries).
+  Use for a new chat, ambiguous tasks, or before larger refactors. Not human onboarding (start)
+  or pre-merge gates (check).
 ---
 
 # prime
@@ -79,3 +82,16 @@ Deliver a concise, scannable summary:
 
 - **Downstream forks:** After cloning for a real product, update the “features” section of this report whenever `src/features/` changes; keep `prime` generic.
 - **Validation:** References in this file are checked by `pnpm validate:docs` (cursor doc references). Prefer paths that exist in this repository.
+
+---
+
+## Boundaries
+
+| Not `prime` | Use instead |
+|-------------|-------------|
+| Human first-time setup | `start` |
+| Product vision Q&A | `grill-me` |
+| Write `DEVELOPMENT_PLAN.md` | `plan` |
+| Commit / push | `finish` / `push` |
+
+**Next:** **`plan`**, **`plan` § Refine**, or **`grill-me`** per router gates — not **`implement`** alone.

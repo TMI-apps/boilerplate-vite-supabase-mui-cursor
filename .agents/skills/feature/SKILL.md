@@ -1,11 +1,16 @@
 ---
 name: feature
-description: "feature"
+description: >-
+  Runs systematic new-feature engineering with mandatory decision stops; produces product/requirements
+  artifacts, not DEVELOPMENT_PLAN.md (plan is SSOT for execution plans). Use for new feature
+  requests before planning. Not implement, validate, or finish.
 ---
 
 # feature
 
-Systematic engineering process for new feature requests. Follow phases sequentially. 
+Systematic engineering process for new feature requests. **Primary outcome:** product/requirements artifact with mandatory 🔴 decision stops — **not** the durable execution plan (`DEVELOPMENT_PLAN.md` is **`plan`** SSOT).
+
+Follow phases sequentially. 
 
 **CRITICAL: At every 🔴 DECISION POINT, you MUST:**
 1. **STOP** all coding/implementation activities
@@ -338,6 +343,18 @@ Verify the PLAN complies before implementation:
 
 ---
 
+## Handoff to engineering delivery (before Phase 5)
+
+When Phases 1–4 are complete and the user approved the implementation plan:
+
+1. Run **`.agents/skills/plan/SKILL.md`** to produce **`documentation/jobs/temp_job_<name>/DEVELOPMENT_PLAN.md`** (engineering SSOT), **or** confirm that file already exists and matches the approved spec.
+2. Do **not** start Phase 5 coding until **`DEVELOPMENT_PLAN.md`** exists and required gates (`pattern-review`, `review-dev-plan` for M/L) are satisfied per [dev-cycle matrix](../router/references/dev-cycle-matrix.md).
+3. For execution after the plan exists, prefer **`.agents/skills/implement/SKILL.md`** over ad-hoc coding in this skill.
+
+**Next after Phase 7:** **`.agents/skills/validate/SKILL.md`** → user acceptance → **`.agents/skills/finish/SKILL.md`** (changelog/commit only in `finish`).
+
+---
+
 ## Phase 5: Implementation
 
 ### 5.1 Re-check Required Information
@@ -459,14 +476,12 @@ If automated tests are approved:
 - [ ] Type safety (I3 from review.md)
 
 ### 7.2 Documentation Update
-- [ ] Update changelog if user-facing changes (`workflow/RULE.md`)
-- [ ] Update architecture docs if structural changes (`workflow/RULE.md`)
+- [ ] Update architecture docs if structural changes (`.cursor/rules/workflow/RULE.md` — do **not** update changelog here; **`finish`** owns changelog)
 - [ ] Do not create new deep docs by default; only add with explicit user approval
 - [ ] If feature code changed, stage corresponding `src/features/*/README.md` updates
 
 ### 7.3 Code Review Checklist (`workflow/RULE.md`)
-- [ ] Changelog updated (if user-facing changes) and matches commit message
-- [ ] Commit message follows format from `.agents/skills/finish/SKILL.md` (version first, matches changelog)
+- [ ] Commit/changelog deferred to **`.agents/skills/finish/SKILL.md`** when user wants to ship
 - [ ] Code follows style guidelines (`code-style/RULE.md`)
 - [ ] Architecture patterns followed (`architecture/RULE.md`)
 - [ ] Architecture documentation updated (if structural changes)
@@ -539,3 +554,16 @@ Ensures:
 5. Only then proceed to next step
 
 **Violating this process is a critical failure.** If you find yourself coding past a 🔴 marker without user input, you have made an error.
+
+---
+
+## Boundaries
+
+| Not `feature` | Use instead |
+|---------------|-------------|
+| Durable phased execution plan | `plan` → `DEVELOPMENT_PLAN.md` |
+| Phase-by-phase execution | `implement` |
+| Small XS/S scoped change | `quick-piv` |
+| Product Q&A when gates 1–2 fail | `grill-me` |
+| Changelog / commit / push | `finish` / `push` |
+| Simplify existing feature | `challenge` |

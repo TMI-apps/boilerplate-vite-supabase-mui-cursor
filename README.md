@@ -15,6 +15,16 @@ A modern, production-ready boilerplate for building React applications with Type
 - 🔒 **Authentication** - Complete auth flow (login, signup, logout) - requires Supabase
 - 📊 **Airtable Integration** - Connect to Airtable as a data source (optional)
 
+## Tech stack (pinned in `package.json`)
+
+| Area | Version |
+|------|---------|
+| Runtime / UI | React 19, MUI 9, React Router 7 |
+| Build | Vite 8, TypeScript 6 |
+| Data | TanStack Query 5, Supabase JS 2 |
+| Quality | ESLint 10, Vitest 4, Prettier 3, dependency-cruiser 17 |
+| Agent onboarding | Root `AGENTS.md` (see [ARCHITECTURE.md](./ARCHITECTURE.md)) |
+
 ## Prerequisites
 
 ### Required

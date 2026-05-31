@@ -1,6 +1,9 @@
 ---
 name: plan
-description: "plan"
+description: >-
+  Creates DEVELOPMENT_PLAN.md with repo-rule compliance researched first (file placement,
+  architecture, patterns). Use for new features, M/L work, or /plan. Not XS/S quick changes
+  (quick-piv), product-only requirements (feature), or changelog updates (finish).
 ---
 
 # plan
@@ -77,25 +80,15 @@ Do **not** invest in full planning until the foundation is proven.
 
 ### 5. Pattern & precedent
 
-**Proactively** run [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) (`plan-section` mode) when:
+**Proactively** run [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) (`plan-section` mode) when Complexity is **M** or **L**, or the plan introduces new user-visible behavior/contracts (see [rubric](../pattern-review/references/rubric.md) — agent chooses relevant aspects).
 
-- Complexity is **M** or **L**, or
-- The plan introduces **new user-visible behavior**, navigation/API contracts, or material architectural choices (agent applies [`references/rubric.md`](../pattern-review/references/rubric.md) — no fixed checklist).
-
-Fill **Pattern & precedent** in the plan. The reviewing agent **chooses** which aspects matter for this change. If non-standard, **stop** for owner pick (A/B/C or waiver) before implementation.
+Fill **Pattern & precedent** in the plan. If non-standard, **stop** for owner pick (A/B/C or waiver) before implementation.
 
 Industry / product precedent → **pattern-review**. Repo rules → **Conflict & compliance** and later **validate**.
 
 ### 6. Plan review gate
 
-Set **Plan review** in Summary:
-
-| Complexity | `review-dev-plan` |
-|------------|-------------------|
-| **XS** / **S** | Optional unless new behavioral contracts, risk, or user request |
-| **M** / **L** | **Mandatory** — set `Plan review: Required: pending`; do not route to `implement` until `Done <date>` or explicit waiver in **Decisions made** |
-
-If **Pattern & precedent** verdict is `Non-standard — waiver recommended` without an explicit owner waiver in **Decisions made**, treat as blocked (same as pending plan review).
+Set **Plan review** in Summary per [dev-cycle matrix](../router/references/dev-cycle-matrix.md) § Plan depth and gates — do not duplicate the M/L table here.
 
 ### 7. Present and iterate
 
@@ -156,18 +149,7 @@ Phases must be in logical order and split into workable chunks. **Each phase mus
 
 ## Rules reference (research before writing steps)
 
-| Topic | Location |
-|-------|----------|
-| Overview | `.cursor/rules/INDEX.md` |
-| Architecture | `.cursor/rules/architecture/RULE.md` – layers, import direction, path aliases, structure whitelist |
-| File placement | `.cursor/rules/file-placement/RULE.md` and `projectStructure.config.cjs` |
-| Code style | `.cursor/rules/code-style/RULE.md` – naming, complexity (≤10 cyclomatic, ≤15 cognitive, ≤100 lines per function where applicable) |
-| Database | `.cursor/rules/database/RULE.md` – migrations, idempotent, safe patterns |
-| Security | `.cursor/rules/security/RULE.md` – auth, RLS, validation, secrets |
-| Testing | `.cursor/rules/testing/RULE.md` |
-| Workflow | `.cursor/rules/workflow/RULE.md` – branch strategy (changelog only in finish) |
-| Cloud / Edge | `.cursor/rules/cloud-functions/RULE.md` – when applicable |
-| Debugging | `.cursor/rules/debugging/RULE.md` – when diagnosing complex issues |
+See [`.cursor/rules/INDEX.md`](../../../.cursor/rules/INDEX.md) and [`references/rules-registry.md`](references/rules-registry.md) — do not duplicate the full table here.
 
 **Boilerplate docs:** `ARCHITECTURE.md`, `documentation/DOC_INDEX.md`, and for query-based data `documentation/DOC_TANSTACK_QUERY.md`.
 
@@ -269,3 +251,18 @@ Each phase must have a gate.
 5. **Gates are mandatory:** Every phase has a gate.
 6. **Compliance first:** Conflict & compliance before detailed steps; steps must be rules-compliant.
 7. **Empty sections:** Notes during development and Decisions made start empty.
+
+---
+
+## Boundaries
+
+| Not `plan` | Use instead |
+|------------|-------------|
+| Execute phases | `implement` |
+| Small XS/S one-pass change | `quick-piv` |
+| Product discovery with 🔴 stops | `feature` |
+| Industry precedent procedure | `pattern-review` |
+| Six-lens plan critique | `review-dev-plan` |
+| Repo-rule audit of plan/impl | `validate` |
+| Changelog / commit | `finish` |
+| Product vision Q&A (gate 1) | `grill-me` — use **§ Refine** only for gate 2 |

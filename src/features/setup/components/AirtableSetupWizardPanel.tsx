@@ -42,7 +42,7 @@ function AirtableValidateConnectionStep({
       <Typography variant="h6" gutterBottom>
         Validating Connection
       </Typography>
-      <Typography variant="body2" color="text.secondary" paragraph>
+      <Typography variant="body2" color="text.secondary" component="p" sx={{ mb: 2 }}>
         Fetching table structure from Airtable...
       </Typography>
       <TableStructureDisplay

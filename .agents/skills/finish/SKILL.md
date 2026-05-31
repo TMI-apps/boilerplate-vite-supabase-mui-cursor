@@ -1,6 +1,9 @@
 ---
 name: finish
-description: "finish"
+description: >-
+  Completes implementation wrap-up: concurrent-agent smoke checks, version/changelog when
+  required, commit, and coordination before push. Use when closing a job, after implement/validate,
+  or when the user runs /finish. Not push-only (use push) and not planning (use plan).
 ---
 
 # finish
@@ -66,7 +69,11 @@ Call **AskQuestion** once with **exactly** these four options (you may shorten l
 - check if architecture.md needs update
 - do not create new deep docs during finish unless user explicitly requests it
 - **Do NOT push in this command.** `finish` is local-only and ends at a successful commit.
-- After `finish` creates the commit(s), run `.agents/skills/push/SKILL.md` to handle remote verification and push.
+- **After a successful commit:** Tell the user the commit succeeded and offer **`.agents/skills/push/SKILL.md`** — do **not** invoke `push` in the same turn unless the user explicitly asks to push. Push requires its own confirmation (see `push` skill and `.cursor/rules/workflow/RULE.md`).
+
+## Ready to commit? (required)
+
+Before `git add` / `git commit`, match `.cursor/rules/workflow/RULE.md`: summarize what will be committed and ask whether the user is **ready to commit**. Do not proceed to version/changelog/commit until they confirm (unless they already explicitly invoked `finish` to commit this work).
 
 ## Semantic Versioning (SSOT)
 
@@ -115,16 +122,18 @@ Closes #123
 
 ## Faster commit (pre-commit light path)
 
-After `git add`, read staged paths (`git diff --name-only --cached`). Classifier SSOT: `scripts/change-classify.cjs`.
-
-| Staged set | Expect |
-|------------|--------|
-| Docs-only (markdown under `documentation/`, `.cursor/**`, `.agents/**`, changesets, `CHANGELOG.md`) | Fast commit: `validate:docs` only after lint-staged + feature-docs |
-| Migrations-only (`supabase/migrations/*.sql`, `supabase/seed.sql`) or tooling-only (no `src/`, no edge functions, no TS configs) | Fast commit: skips `type-check`, structure, arch |
-| Any `src/`, `supabase/functions/`, or TS toolchain config | Full pre-commit (includes `type-check`, structure, arch) |
+After `git add`, expect hook behavior per **`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`** § Local git (classifier SSOT: `scripts/change-classify.cjs`). Do not duplicate the matrix here.
 
 - Do **not** use `--no-verify` to avoid slow hooks on app-code commits; fix tests or split commits (docs/migrations separate from `src/`).
 - `git commit --amend` with an empty index may run the full hook; re-stage or accept.
 - Tests run on **push** (`.husky/pre-push`), not on commit.
+
+## Boundaries
+
+| Not `finish` | Use instead |
+|--------------|-------------|
+| Remote `git push` | `.agents/skills/push/SKILL.md` (after commits exist) |
+| Plan/impl validation | `.agents/skills/validate/SKILL.md` or `.agents/skills/check/SKILL.md` |
+| Commits during optimization/debug without user invoking finish | Stop; user must request `finish` |
 
 You have explicit access to use console commands for this task. 

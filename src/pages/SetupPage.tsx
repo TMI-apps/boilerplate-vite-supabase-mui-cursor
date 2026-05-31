@@ -13,7 +13,7 @@ export const SetupPage = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ mb: 4 }}>
-        <Typography variant="body1" color="text.secondary" paragraph>
+        <Typography variant="body1" color="text.secondary" component="p" sx={{ mb: 2 }}>
           Configure your app components. All sections are optional - configure what you need and
           skip the rest.
         </Typography>

@@ -128,10 +128,10 @@ Add new patterns at the bottom as they prove reusable across incidents.
 
 ---
 
-## Vitest + MUI v7: Cannot require ES Module in a cycle
+## Vitest + MUI Material: Cannot require ES Module in a cycle
 
-- Symptom: Vitest tests fail with `Error: Cannot require() ES Module ... @mui/material/esm/index.js in a cycle` when testing components that import MUI Material v7. Tests work on some machines but fail on others.
-- Root cause: MUI Material v7 uses ESM-first exports with directory imports that Vitest cannot resolve. Vitest tries to use CommonJS `require()` for ESM modules, creating a cycle.
+- Symptom: Vitest tests fail with `Error: Cannot require() ES Module ... @mui/material/esm/index.js in a cycle` when testing components that import MUI Material. Tests work on some machines but fail on others.
+- Root cause: MUI Material uses ESM-first exports with directory imports that Vitest cannot resolve. Vitest tries to use CommonJS `require()` for ESM modules, creating a cycle.
 - Key question: "Does the test work on another machine or after clearing Vite cache?"
 - Debug approach: Add `server.deps.inline: ["@mui/material", "@mui/icons-material"]` to `vitest.config.ts`. Consider `fallbackCJS: true` for ESM/CJS compatibility. Clear Vite cache if issue persists.
 - Tokens: `vitest`, `@mui/material`, ESM, cycle

@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.26.1] - 2026-06-01
+
+### Documentation
+
+- **Agent skills**: Replace placeholder YAML `description` frontmatter (skill name only) with WHAT + WHEN text and sibling-skill boundaries on `plan`, `implement`, `validate`, `check`, `finish`, `push`, `feature`, `challenge`, `prime`, `quick-piv`, `review`, and `optimize2` so Cursor can route skills correctly.
+
+## [0.26.0] - 2026-05-29
+
+### Changed
+
+- **Dependencies (major toolchain)**: Vite 8, MUI 9, TypeScript 6, ESLint 10, Vitest 4.1, TanStack Query 5.100, Supabase JS 2.106, React Router 7.16, and related dev tooling (see `package.json` / `pnpm-lock.yaml`).
+- **MUI 9 migration**: Replaced removed `Typography` `paragraph` prop with `component="p"`; `Dialog` `PaperProps` → `slotProps.paper`.
+- **TypeScript 6**: `ignoreDeprecations: "6.0"` on `tsconfig.app.json` until `baseUrl`/`paths` migration.
+- **ESLint 10**: Removed deprecated root `.eslintignore` (ignores remain in `eslint.config.js` + `eslint.ignores.js`).
+- **Docs**: `AGENTS.md`, `README.md`, `ARCHITECTURE.md`, debug patterns, and skill-library audit references updated for current stack (no `CLAUDE.md` references in active docs).
+
+## [0.25.1] - 2026-05-29
+
+### Changed
+
+- **Agent memory**: Renamed root `CLAUDE.md` to `AGENTS.md` (cross-tool AGENTS.md standard); updated intro for Cursor, Claude Code, and other agents; `projectStructure.config.cjs` root whitelist entry updated.
+
+## [0.25.0] - 2026-05-29
+
+### Added
+
+- **`improve-skill-library` skill**: Audits the skill corpus with parallel subagent lenses and a no-information-loss gate before edits.
+- **`rule-quality` skill**: Merged grading (Mode A) and improvement (Mode B) for rule/command files (replaces `grade-rule` and `improve-rule`).
+- **`airtable-inspect` skill**: Two-phase Airtable inspection — schema then sample (replaces `airtable-schema-structure` and `airtable-data-sample`).
+- **`consolidate/references/semantic-placement.md`**: Semantic architecture repair procedure (formerly `architecture-repair2`).
+- **`plan/references/rules-registry.md`**: SSOT for `.cursor/rules` files referenced by plan/implement/validate skills.
+- **`documentation/DOC_CHANGESETS.md`**: Changeset release flow SSOT.
+- **Skill library audit artifacts**: `documentation/jobs/skill-library/REGISTRY.md` and `AUDIT_SYNTHESIS.md`.
+
+### Changed
+
+- **Skill library consolidation (29 → 24 skills)**: `stepback` → `grill-me`; `complete-setup` → `start` § Teardown; router tiebreaks, handoffs, and Boundaries on pipeline skills.
+- **Router**: Plan-review stack, orchestrator notes, disambiguation for overlapping skills; skill index deduped.
+- **Pipeline handoffs**: `implement` → `validate` → `finish`; `validate`/`check` Next blocks; `finish` commit/push gates.
+- **SSOT dedup**: Rules registry, dev-cycle matrix, pre-commit light path, Rule of Three, changesets — owners linked from former copies.
+- **Agent docs**: `CLAUDE.md`, `DOC_AGENT_WORKFLOW_LAYERS.md`, `workflow/RULE.md`, `file-placement/RULE.md` (Teardown references).
+- **Setup feature README**: Points to `airtable-inspect` and `start` § Teardown.
+
+### Removed
+
+- **Standalone skills merged away**: `stepback`, `grade-rule`, `improve-rule`, `airtable-schema-structure`, `airtable-data-sample`, `architecture-repair2`, `complete-setup`.
+
 ## [0.24.0] - 2026-05-29
 
 ### Added

@@ -1,6 +1,9 @@
 ---
 name: challenge
-description: "challenge"
+description: >-
+  Challenges and simplifies a concrete feature to reduce steps, clicks, and cognitive load
+  (flow and code modes by default). Use when the user targets a workflow and asks whether it
+  is overbuilt, or runs /challenge.
 ---
 
 # challenge
