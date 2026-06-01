@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.26.2] - 2026-06-01
+
+### Documentation
+
+- **Workflow rule**: Document `develop` → `main` PR conflict diagnosis (`CONFLICTING` / `DIRTY`), merge-`main`-into-`develop` fix order, squash-only release merges, and mandatory `main` back-merge into `develop` after each release PR.
+
 ## [0.26.1] - 2026-06-01
 
 ### Documentation

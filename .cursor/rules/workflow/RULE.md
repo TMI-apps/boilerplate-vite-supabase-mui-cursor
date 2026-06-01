@@ -128,7 +128,7 @@ Project supports:
 - **Never develop directly on `main`.** All non-emergency code changes must be made on feature branches or `develop`.
 - Start feature work from the latest `develop` state (`git switch develop` + `git pull origin develop`) to reduce stale-branch conflicts.
 - Preferred daily flow: `feature/*` -> `develop` via Pull Request.
-- Release flow: `develop` -> `main` via Pull Request after required checks are green.
+- Release flow: `develop` -> `main` via Pull Request after required checks are green; then merge `main` back into `develop` so branches do not diverge (see § `develop` → `main` PR conflicts).
 - Do not push directly to `main` except an explicit emergency override.
 - Avoid direct pushes to long-lived branches (`develop`, `main`) in shared workflows; use PRs whenever possible.
 - `develop` is long-lived; do not rely on auto-deleting it after PR merge.
@@ -228,6 +228,29 @@ When a user reports a merge was blocked, do not assume the ruleset is broken. Fi
 - `gh pr view <N> --json mergeable,mergeStateStatus,statusCheckRollup`
 - `mergeable: MERGEABLE` + `mergeStateStatus: BLOCKED` almost always means a **required status check is still `IN_PROGRESS` or missing** — wait with `gh pr checks <N> --watch`, then re-check.
 - Only investigate deeper (stale branch, missing approval, signed-commits, etc.) once `statusCheckRollup` is fully green but state is still `BLOCKED`.
+
+#### `develop` → `main` PR conflicts (`CONFLICTING` / `DIRTY`)
+
+When `mergeable: CONFLICTING` or `mergeStateStatus: DIRTY`, CI can still be green — this is **git history divergence**, not a failed check.
+
+**Common cause:** `main` was updated by a prior release PR (squash merge) while `develop` continued with new commits that never incorporated that `main` tip. Both branches then edit the same release surfaces (`CHANGELOG.md`, `package.json`, rules, agent skills).
+
+**Verify divergence:**
+
+```bash
+git fetch origin
+git merge-base --is-ancestor origin/main origin/develop
+```
+
+Exit code **1** means `main` is **not** fully contained in `develop` — branches diverged.
+
+**Fix order (agent-executable):**
+
+1. On `develop`: `git merge origin/main` and resolve conflicts (treat **`develop` as SSOT** for in-flight integration work — drop obsolete paths `main` reintroduces, e.g. merged-away skills or `CLAUDE.md` when `AGENTS.md` is current).
+2. Push `develop`; re-check the PR — expect `mergeable: MERGEABLE` (may show `BLOCKED` only while CI runs).
+3. Merge the release PR with **`gh pr merge --squash`** — rulesets disallow merge commits on this repo.
+
+**Prevention:** After every successful `develop` → `main` release PR, **merge `main` back into `develop`** (or rebase `develop` onto `main`) before more release work accumulates. There is no auto-sync workflow; manual back-merge avoids repeating the same conflict set.
 
 This repo enforces merge requirements via GitHub **Rulesets**, not classic branch protection:
 - Classic endpoint `gh api repos/OWNER/REPO/branches/main/protection` returns `404 Branch not protected` — that is **not** evidence that `main` is unprotected.
