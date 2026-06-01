@@ -249,8 +249,17 @@ Exit code **1** means `main` is **not** fully contained in `develop` — branche
 1. On `develop`: `git merge origin/main` and resolve conflicts (treat **`develop` as SSOT** for in-flight integration work — drop obsolete paths `main` reintroduces, e.g. merged-away skills or `CLAUDE.md` when `AGENTS.md` is current).
 2. Push `develop`; re-check the PR — expect `mergeable: MERGEABLE` (may show `BLOCKED` only while CI runs).
 3. Merge the release PR with **`gh pr merge --squash`** — rulesets disallow merge commits on this repo.
+4. **Immediately** (step 5 below) back-merge `main` into `develop` **before** any new `develop` commit.
 
-**Prevention:** After every successful `develop` → `main` release PR, **merge `main` back into `develop`** (or rebase `develop` onto `main`) before more release work accumulates. There is no auto-sync workflow; manual back-merge avoids repeating the same conflict set.
+**Prevention (mandatory, not optional cleanup):** A **squash merge always creates a NEW commit on `main` that `develop` does not contain**, so `main` is *never* a fast-forward of `develop` after a release. Therefore, **the moment** a `develop` → `main` release PR merges:
+
+```bash
+git fetch origin && git switch develop
+git merge origin/main   # brings in the squash commit; resolve trivial CHANGELOG/version overlap
+git push origin develop
+```
+
+Do this **before** landing any further work (including `finish`/`push`) on `develop`. Skipping it **guarantees** the next `develop` → `main` PR conflicts on `CHANGELOG.md` / `package.json` (and often rules). Verify with `git merge-base --is-ancestor origin/main origin/develop` → exit **0** means synced. There is no auto-sync workflow; this manual back-merge is part of "release done."
 
 This repo enforces merge requirements via GitHub **Rulesets**, not classic branch protection:
 - Classic endpoint `gh api repos/OWNER/REPO/branches/main/protection` returns `404 Branch not protected` — that is **not** evidence that `main` is unprotected.

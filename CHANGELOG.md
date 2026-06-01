@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.26.3] - 2026-06-01
+
+### Documentation
+
+- **Workflow rule**: Require immediate `main` → `develop` back-merge after each squash release (squash commit is never on `develop`); add verify command and fix-order step 4 so the next release PR does not repeat conflicts.
+
 ## [0.26.2] - 2026-06-01
 
 ### Documentation
