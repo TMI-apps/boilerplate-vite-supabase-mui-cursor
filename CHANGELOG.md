@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.26.4] - 2026-06-02
+
+### Changed
+
+- **`grill-me` skill**: Drop redundant "Other / explain" omnipresent option (AskQuestion UI already provides it); add "Dig deeper in the codebase" for elegant-design and industry-pattern research before re-asking.
+
 ## [0.26.3] - 2026-06-01
 
 ### Documentation
