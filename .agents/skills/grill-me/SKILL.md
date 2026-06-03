@@ -37,7 +37,7 @@ Use a question tool call when available, so the user can answer with clickable o
 Every multiple-choice question must include these omnipresent options:
 
 - "Explain the UX impact first" - when selected, research the relevant UI/user flow/code, explain what each decision would mean for users, then re-ask the same question.
-- "Other / explain" - for answers that do not fit the listed branches.
+- "Dig deeper in the codebase" - when selected, go beyond surface consistency: explore architecture, adjacent features, and applicable industry-standard patterns to propose the most elegant design for this decision; summarize findings and refined options, then re-ask the same question.
 
 Ask detailed questions, but keep them at the level the user can answer:
 
