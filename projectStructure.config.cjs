@@ -267,7 +267,11 @@ module.exports = {
         // Config
         {
           name: "config",
-          children: [{ name: "*.ts" }],
+          children: [
+            { name: "*.ts" },
+            { name: "app-tasks.json" },
+            { name: "app-tasks-archive.json" },
+          ],
         },
         // Shared
         {
@@ -720,6 +724,7 @@ module.exports = {
     { name: "vite.config.ts" },
     { name: "vitest.config.ts" },
     { name: "vite-plugin-dev-api.ts" },
+    { name: "vite-plugin-dev-tasks.ts" },
     // YAML files (specific only, no wildcard - pure whitelist)
     { name: "pnpm-lock.yaml" },
     { name: "pnpm-workspace.yaml" },

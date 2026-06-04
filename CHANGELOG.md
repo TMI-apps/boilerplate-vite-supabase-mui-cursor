@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.27.0] - 2026-06-04
+
+### Added
+
+- **Dev task backlog**: In-repo active/archive JSON (`src/config/app-tasks.json`, `app-tasks-archive.json`), `/tasks` UI with Active/Archive tabs, dnd-kit reorder, and dev-only Vite middleware (`/__dev/tasks*`).
+- **Dev entry**: Global floating **Tasks** FAB in development; minimal `/tasks` layout with scrollable list and top Snackbar feedback.
+- **Agent skills**: Bare `/router` reads the active backlog (not `finish`); `finish` archives completed tasks before commit when applicable.
+
 ## [0.26.6] - 2026-06-04
 
 ### Documentation

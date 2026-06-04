@@ -5,7 +5,7 @@ description: >-
   in the same turn). Maps situations to project, user, and plugin skills; resolves overlaps.
   Product context SSOT: documentation/DOC_APP_VISION.md. Use when the user asks which skill
   to use, types /router, starts ambiguous work, or routes from slash commands to SKILL.md
-  files. Bare /router (no task text) defaults to finish.
+  files. Bare /router (no task text) starts a session from the active backlog (not finish).
 ---
 
 # Skill router
@@ -14,7 +14,9 @@ Use this file to pick **one primary skill** (sometimes two in sequence).
 
 **Invocation contract (always):** After you decide the primary skill — and any secondary skill that must run **next** in order — **read that skill’s `SKILL.md` and execute its workflow starting in this same turn.** Invoking means load + follow steps, not naming a path or asking the user which skill file to open. If two skills apply sequentially (for example `plan` → `implement`), finish the first’s applicable step or hand off explicitly per that skill, then read and run the second without ending on a static routing table alone.
 
-**Bare `/router`:** If the user message is only `/router` (optional whitespace) and carries **no substantive task or question**, the primary skill is **finish** — read `.agents/skills/finish/SKILL.md` immediately and run it on the current working tree.
+**Bare `/router`:** If the user message is only `/router` (optional whitespace) and carries **no substantive task or question**, start a session from the **active backlog** (`src/config/app-tasks.json` only — see **App task backlog** below). This is **not** `finish` and **not** “commit the working tree.” Run **`prime`** then **`grill-me`** for the chosen task unless `title` + `description` already satisfy goal/scope gates; then route to `quick-piv` or `plan` / `feature` per gates 1–3.
+
+**`/finish`** is only for explicit wrap-up — read `.agents/skills/finish/SKILL.md` when the user invokes finish or asks to commit completed work.
 
 **Quality bar:** Listed skills were reviewed for actionable structure (clear triggers, steps, or rubrics).
 
@@ -109,7 +111,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 
 | Situation | Skill |
 |-----------|--------|
-| User sends **only** `/router` (no substantive task); see **Bare `/router`** above | `.agents/skills/finish/SKILL.md` |
+| User sends **only** `/router` (no substantive task); see **Bare `/router`** and **App task backlog** | Session from `app-tasks.json` → `prime` → `grill-me` → `quick-piv` or `plan` |
 | New chat / ambiguous task; map repo rules and recent git state | `.agents/skills/prime/SKILL.md` |
 | **Goal and scope clear**; non-trivial job needing phased written plan + compliance | `.agents/skills/plan/SKILL.md` |
 | Plan written; qualitative critique before implementation (especially Complexity M/L) | `.agents/skills/review-dev-plan/SKILL.md` |
@@ -347,7 +349,19 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 
 ### Bare `/router` vs `finish` (situation table)
 
-- **Bare `/router`** (no task text): default **`finish`** on the working tree — not “which skill?” help. If the user wanted routing help, they must include a substantive question in the same message.
+- **Bare `/router`** (no task text): **active backlog session start** — read only `src/config/app-tasks.json`, pick task, set **`in-progress`** when the coding assistant starts executing (same turn), then `prime` / `grill-me` / delivery skill. **Not** `finish`.
+- **`/finish`:** explicit wrap-up — includes archiving the session task when applicable (see `finish` skill). Not bare `/router`.
+
+### App task backlog (SSOT)
+
+- **Active:** `src/config/app-tasks.json` (`to-do` | `in-progress` only; array order = priority).
+- **Archive:** `src/config/app-tasks-archive.json` (`done` only; append order = completion timeline). **Do not read** unless the user asks for completed history.
+- **Coding agent pick up:** when the assistant **commits to execute** a backlog task, set `in-progress` in the active file **in the same turn** before `prime`, `grill-me`, `plan`, or code. User edits in `/tasks` UI do **not** trigger pick-up.
+- **Backlog selection** (bare `/router` or substantive `/router` when no dev task is established in the conversation yet):
+  - If `in-progress` exists: ask continue that task vs first `to-do` by list order.
+  - Else select first `to-do` by list order.
+  - Apply pick up for the chosen task (skip if already `in-progress`).
+- If no actionable `to-do` or `in-progress`: say so; optional `prime` for repo context — do **not** invent tasks and do **not** default to `finish`.
 
 ---
 
