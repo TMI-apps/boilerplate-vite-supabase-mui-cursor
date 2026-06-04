@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.26.6] - 2026-06-04
+
+### Documentation
+
+- **Mobile local dev**: Add `DOC_MOBILE_LOCAL_DEV` runbook, `MOBILE_LOCAL_DEV` adoption guide, and thin links from README, `start` skill, debug patterns, auth/setup feature READMEs, and doc index.
+- **`write-adoption-guide` skill**: Adopt MILA-improved procedure with `voice-and-naming` rules so adoption guides stay target-repo-safe (home-repo name once; §3 illustrative only).
+
 ## [0.26.5] - 2026-06-02
 
 ### Changed

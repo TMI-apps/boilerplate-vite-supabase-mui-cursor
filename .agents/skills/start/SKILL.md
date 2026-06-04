@@ -114,6 +114,10 @@ Verify routes from README:
 
 If a route fails, troubleshoot before continuing.
 
+### 9) Physical device testing (optional)
+
+If the user needs mobile layout or mobile OAuth on local dev, link **`documentation/DOC_MOBILE_LOCAL_DEV.md`** (SSOT). Do not duplicate adb or redirect steps here. DevTools device mode alone is not sufficient for viewport-height or SSO issues on a real phone.
+
 ## Mandatory verification checklist ("test for everything")
 
 Run and verify all relevant checks:

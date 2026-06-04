@@ -30,6 +30,7 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | **Testing app config** | [src/features/setup/docs/testing-app-config.md](../src/features/setup/docs/testing-app-config.md) |
 | **Testing Supabase setup** | [src/features/setup/docs/testing-supabase-setup.md](../src/features/setup/docs/testing-supabase-setup.md) |
 | **Supabase: Sign in with Google (dashboard setup)** | [DOC_SUPABASE_GOOGLE_OAUTH.md](./DOC_SUPABASE_GOOGLE_OAUTH.md) |
+| **Mobile local dev (physical device)** | [DOC_MOBILE_LOCAL_DEV.md](./DOC_MOBILE_LOCAL_DEV.md) |
 | **App code modification** | [src/features/setup/docs/app-code-modification.md](../src/features/setup/docs/app-code-modification.md) |
 | **Complexity reduction** | See `.cursor/rules/architecture/RULE.md` complexity section |
 
@@ -46,3 +47,4 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | **App vision & goals (problem, persona, app role)** | `documentation/DOC_APP_VISION.md` |
 | **Agent workflow layers** | `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` |
 | **Supabase + Google OAuth (dashboard / Google Cloud)** | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |
+| **Mobile local dev on physical device** | `documentation/DOC_MOBILE_LOCAL_DEV.md` |

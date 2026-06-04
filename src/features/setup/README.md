@@ -69,5 +69,6 @@ Agent workflow: `.agents/skills/airtable-inspect/SKILL.md` (Phase 1 schema, Phas
 - `docs/testing-app-config.md` – `app.config.json` sync testing
 - `docs/testing-supabase-setup.md` – supabase setup test guide
 - `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` – Sign in with Google (Supabase + Google Cloud); SSOT for dashboard steps
+- `documentation/DOC_MOBILE_LOCAL_DEV.md` – local dev on a physical phone (adb reverse, OAuth on device); SSOT for mobile testing
 - `documentation/DOC_APP_CONFIG_FILE.md` – project-level `app.config.json` reference
 - `.agents/skills/start/SKILL.md` § Teardown – removal of setup wizard when no longer needed

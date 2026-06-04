@@ -213,6 +213,10 @@ Use [MUI Theme Creator](https://bareynol.github.io/mui-theme-creator/) and paste
 - Setup: `http://localhost:5173/setup`
 - Login (when Supabase configured): `http://localhost:5173/login`
 
+### Testing on a physical phone (optional)
+
+Chrome DevTools device mode is enough for width breakpoints; it is **not** enough for mobile OAuth, viewport height, or keyboard issues. To test **local dev on a real device** (Android `adb reverse` + localhost, iOS tunnel/preview), follow [documentation/DOC_MOBILE_LOCAL_DEV.md](./documentation/DOC_MOBILE_LOCAL_DEV.md).
+
 ### You're ready
 
 Start building features on `feature/*` branches and merge through `develop` before promoting to `main`.
