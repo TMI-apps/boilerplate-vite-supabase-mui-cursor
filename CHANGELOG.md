@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.28.1] - 2026-06-09
+
+### Documentation
+
+- **Database rule**: Clarify SQL-migration-only scope, layer boundaries vs TanStack Query and auth, new-table checklist, and generic migration examples; update rules index blurb.
+
 ## [0.28.0] - 2026-06-09
 
 ### Added
