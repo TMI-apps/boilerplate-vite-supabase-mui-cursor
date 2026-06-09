@@ -12,8 +12,8 @@ In-repo development backlog for coding agents and local UI.
 
 | Layer | Path | Purpose |
 |-------|------|---------|
-| Components | `components/` | `TasksBacklogPanel`, `ActiveTaskList`, `ArchiveTaskList`, task rows |
-| Hooks | `hooks/` | `useAppTasksBacklog` — CRUD, reorder, archive/restore |
+| Components | `components/` | `TasksBacklogPanel`, `ActiveTaskList`, `ArchiveTaskList`, task rows, `TasksAutosaveIndicator`, `TasksListEmptyState`, `taskStatusUi` |
+| Hooks | `hooks/` | `useAppTasksBacklog` — CRUD, reorder, archive/restore, dirty-aware text autosave |
 | Services | `services/` | `appTasksDomain` — validation, archive/restore logic |
 | Types | `types/` | `AppTask`, `ActiveTaskStatus`, file path constants |
 
@@ -21,7 +21,7 @@ In-repo development backlog for coding agents and local UI.
 
 **Dev API (Vite serve only):** `vite-plugin-dev-tasks.ts` — `/__dev/tasks`, `/__dev/tasks/archive`, `/__dev/tasks/restore`.
 
-**UI entry:** `DevTasksFab` on all routes in dev; route `/tasks` with minimal chrome.
+**UI entry:** `DevTasksFab` on all routes in dev; route `/tasks` with minimal chrome (card rows, toolbar autosave chip, no column headers).
 
 ## Dependencies
 

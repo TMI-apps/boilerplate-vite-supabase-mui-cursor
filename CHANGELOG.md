@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.29.0] - 2026-06-09
+
+### Added
+
+- **Dev task backlog UI**: Card-style task rows, empty states, autosave chip indicator, and shared `taskStatusUi` constants for status labels and select width.
+
+### Changed
+
+- **`/tasks` layout**: Wider page shell, bordered panel, unified toolbar (tabs + add + autosave), and improved mobile grid for status/title/delete.
+- **Text autosave**: Dirty-aware background saves — local drafts while typing, debounced persist without parent re-render stomping, focus-within blur handling.
+- **Status labels**: Show “To do”, “Active”, and “Done” (stored value remains `in-progress`); status column min-width sized to fit “Active” without ellipsis.
+
+### Fixed
+
+- **Task delete**: Remove newly added or in-edit tasks using the latest pending snapshot, not stale list state.
+- **Status select**: Prevent “Act…” / “To…” truncation on narrow viewports via fixed column width.
+
 ## [0.28.1] - 2026-06-09
 
 ### Documentation

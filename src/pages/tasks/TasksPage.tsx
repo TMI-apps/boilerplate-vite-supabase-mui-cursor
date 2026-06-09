@@ -1,5 +1,6 @@
+import { ArrowBack } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
-import { Alert, Box, Container, Link, Typography } from "@mui/material";
+import { Alert, Box, Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { TasksBacklogPanel } from "@/features/tasks/components/TasksBacklogPanel";
 
 export const TasksPage = () => {
@@ -8,39 +9,57 @@ export const TasksPage = () => {
   return (
     <Box
       sx={{
-        height: "100dvh",
+        minHeight: "100dvh",
         display: "flex",
         flexDirection: "column",
-        overflow: "hidden",
-        bgcolor: "background.default",
+        bgcolor: (theme) => (theme.palette.mode === "light" ? "grey.50" : "background.default"),
       }}
     >
       <Container
-        maxWidth="md"
+        maxWidth="lg"
         sx={{
           display: "flex",
           flexDirection: "column",
           flex: 1,
           minHeight: 0,
-          py: 3,
+          py: { xs: 2, sm: 3 },
+          px: { xs: 2, sm: 3 },
         }}
       >
-        <Box
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            mb: 2,
+            mb: 2.5,
             flexShrink: 0,
+            alignItems: { xs: "stretch", sm: "flex-start" },
+            justifyContent: "space-between",
           }}
         >
-          <Typography variant="h5" component="h1">
-            Dev task backlog
-          </Typography>
-          <Link component={RouterLink} to="/" underline="hover">
+          <Box>
+            <Typography
+              variant="h4"
+              component="h1"
+              sx={{ fontWeight: 700, letterSpacing: "-0.02em" }}
+            >
+              Dev task backlog
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, maxWidth: 520 }}>
+              In-repo checklist for local development and coding agents. Changes sync to{" "}
+              <code>src/config/app-tasks.json</code>.
+            </Typography>
+          </Box>
+          <Button
+            component={RouterLink}
+            to="/"
+            variant="outlined"
+            size="small"
+            startIcon={<ArrowBack fontSize="small" />}
+            sx={{ alignSelf: { xs: "flex-start", sm: "center" }, flexShrink: 0 }}
+          >
             Back to app
-          </Link>
-        </Box>
+          </Button>
+        </Stack>
 
         {!isDev ? (
           <Alert severity="info">
@@ -49,7 +68,22 @@ export const TasksPage = () => {
             <code>src/config/app-tasks-archive.json</code> for local development and coding agents.
           </Alert>
         ) : (
-          <TasksBacklogPanel />
+          <Paper
+            elevation={0}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              minHeight: { xs: "60dvh", sm: 0 },
+              border: 1,
+              borderColor: "divider",
+              borderRadius: 2,
+              overflow: "hidden",
+              bgcolor: "background.paper",
+            }}
+          >
+            <TasksBacklogPanel />
+          </Paper>
         )}
       </Container>
     </Box>

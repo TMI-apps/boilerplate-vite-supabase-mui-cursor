@@ -12,9 +12,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import type { AppTask } from "../types/appTask.types";
 import { ActiveTaskRow } from "./ActiveTaskRow";
+import { TasksListEmptyState } from "./TasksListEmptyState";
 
 interface ActiveTaskListProps {
   tasks: AppTask[];
@@ -50,10 +51,14 @@ export const ActiveTaskList = ({
 
   const ids = tasks.map((_, i) => `active-${i}`);
 
+  if (tasks.length === 0) {
+    return <TasksListEmptyState variant="active" />;
+  }
+
   return (
-    <Stack spacing={0}>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={ids} strategy={verticalListSortingStrategy}>
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <SortableContext items={ids} strategy={verticalListSortingStrategy}>
+        <Stack spacing={1.5}>
           {tasks.map((task, index) => (
             <ActiveTaskRow
               key={ids[index]}
@@ -65,11 +70,8 @@ export const ActiveTaskList = ({
               onDelete={() => void onDelete(index)}
             />
           ))}
-        </SortableContext>
-      </DndContext>
-      {tasks.length === 0 && (
-        <Box sx={{ color: "text.secondary", py: 2 }}>No active tasks. Add one to get started.</Box>
-      )}
-    </Stack>
+        </Stack>
+      </SortableContext>
+    </DndContext>
   );
 };

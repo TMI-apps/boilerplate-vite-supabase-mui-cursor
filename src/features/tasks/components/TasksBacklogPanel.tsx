@@ -1,7 +1,9 @@
-import { Box, Button, Tab, Tabs } from "@mui/material";
+import { Add } from "@mui/icons-material";
+import { Box, Button, Stack, Tab, Tabs } from "@mui/material";
 import { useAppTasksBacklog } from "../hooks/useAppTasksBacklog";
 import { ActiveTaskList } from "./ActiveTaskList";
 import { ArchiveTaskList } from "./ArchiveTaskList";
+import { TasksAutosaveIndicator } from "./TasksAutosaveIndicator";
 import { TasksFeedback } from "./TasksFeedback";
 
 export const TasksBacklogPanel = () => {
@@ -10,6 +12,7 @@ export const TasksBacklogPanel = () => {
     activeTasks,
     archiveTasks,
     feedback,
+    textAutosaveStatus,
     errorMessage,
     changeView,
     updateRowText,
@@ -31,23 +34,45 @@ export const TasksBacklogPanel = () => {
         errorMessage={errorMessage}
         onDismiss={() => clearFeedback()}
       />
-      <Tabs
-        value={tabIndex}
-        onChange={(_, index) => {
-          void changeView(index === 0 ? "active" : "archive");
+
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={1}
+        sx={{
+          flexShrink: 0,
+          px: { xs: 1.5, sm: 2 },
+          pt: 1,
+          pb: 0,
+          alignItems: { xs: "stretch", sm: "center" },
+          justifyContent: "space-between",
         }}
-        sx={{ flexShrink: 0, mb: 1, borderBottom: 1, borderColor: "divider" }}
       >
-        <Tab label={`Active (${activeTasks.length})`} />
-        <Tab label={`Archive (${archiveTasks.length})`} />
-      </Tabs>
-      {view === "active" && (
-        <Box sx={{ flexShrink: 0, mb: 1 }}>
-          <Button variant="outlined" onClick={() => void addTask()}>
-            Add task
-          </Button>
-        </Box>
-      )}
+        <Tabs
+          value={tabIndex}
+          onChange={(_, index) => {
+            void changeView(index === 0 ? "active" : "archive");
+          }}
+          sx={{ minHeight: 40 }}
+        >
+          <Tab label={`Active (${activeTasks.length})`} sx={{ minHeight: 40, py: 1 }} />
+          <Tab label={`Archive (${archiveTasks.length})`} sx={{ minHeight: 40, py: 1 }} />
+        </Tabs>
+
+        {view === "active" && (
+          <Stack direction="row" spacing={1} sx={{ alignItems: "center", pb: { xs: 0.5, sm: 0 } }}>
+            <TasksAutosaveIndicator status={textAutosaveStatus} />
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<Add />}
+              onClick={() => void addTask()}
+            >
+              Add task
+            </Button>
+          </Stack>
+        )}
+      </Stack>
+
       <Box
         sx={{
           flex: 1,
@@ -55,7 +80,8 @@ export const TasksBacklogPanel = () => {
           overflowY: "auto",
           overflowX: "hidden",
           WebkitOverflowScrolling: "touch",
-          pb: 2,
+          px: { xs: 1.5, sm: 2 },
+          py: 2,
         }}
       >
         {view === "active" ? (

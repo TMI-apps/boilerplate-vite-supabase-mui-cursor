@@ -17,3 +17,6 @@ export interface AppTask {
 }
 
 export type SaveFeedback = "idle" | "saving" | "saved" | "archived" | "restored" | "error";
+
+/** Background text autosave — subtle UI only (not the main snackbar). */
+export type TextAutosaveStatus = "idle" | "pending" | "saved";
