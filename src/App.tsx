@@ -12,7 +12,6 @@ import { QueryErrorBoundary } from "@/components/common/QueryErrorBoundary";
 import { AuthCallbackPage } from "@pages/AuthCallbackPage";
 
 const HomePage = lazy(() => import("@pages/HomePage").then((m) => ({ default: m.HomePage })));
-const SetupPage = lazy(() => import("@pages/SetupPage").then((m) => ({ default: m.SetupPage })));
 const TasksPage = lazy(() =>
   import("@pages/tasks/TasksPage").then((m) => ({ default: m.TasksPage }))
 );
@@ -37,7 +36,6 @@ function AppContent() {
                 <Route path="/" element={<HomePage />} />
               </Route>
               <Route path="/auth/callback" element={<AuthCallbackPage />} />
-              <Route path="/setup" element={<SetupPage />} />
               <Route path="/tasks" element={<TasksPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

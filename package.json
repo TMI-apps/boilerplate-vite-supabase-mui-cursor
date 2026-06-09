@@ -1,7 +1,7 @@
 {
   "name": "vite-mui-supabase-starter",
   "private": true,
-  "version": "0.27.0",
+  "version": "0.28.0",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
@@ -32,7 +32,6 @@
     "validate:structure": "node scripts/project-structure-validator.js",
     "validate:structure:json": "node scripts/project-structure-validator.js --format=json",
     "validate:version-sync": "node scripts/validate-version-sync.js",
-    "validate:app-config": "node scripts/validate-app-config.js",
     "validate:docs:links": "node scripts/validate-markdown-links.js",
     "validate:docs:refs": "node scripts/validate-cursor-doc-references.js",
     "validate:docs": "pnpm validate:docs:links && pnpm validate:docs:refs",

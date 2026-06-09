@@ -375,64 +375,26 @@ These rules are defined in `eslint.config.js` using GTS's flat config format.
 
 **Also:** `tsconfig.app.json` / `vite.config.ts` define legacy shortcuts (`@features/*`, `@shared/*`, `@pages/*`, `@utils/*` → `src/utils`, etc.). Existing files may still use them; **prefer `@/`** for new work so imports match the architecture rule and reviews.
 
-**Note:** Root-level helpers under `src/utils/` are imported as `@/utils/...` via the `src/*` base (e.g. `@/utils/setupUtils`). Shared utilities belong in `src/shared/utils/` when used across features.
+**Note:** Root-level helpers under `src/utils/` are imported as `@/utils/...` via the `src/*` base. Shared utilities belong in `src/shared/utils/` when used across features.
 
 ## API Integration
 
 The boilerplate supports connecting to external APIs:
 
-- **Supabase**: For authentication (configured via setup wizard)
-- **Airtable**: For data storage (configured via setup wizard)
+- **Supabase**: For authentication (configure via `.env` — see README and dev task backlog)
+- **Airtable**: For data storage (optional — configure via `.env`)
 
-Both services are optional and can be configured through the setup wizard. The services are initialized in `shared/services/` and can be used directly in feature services.
+Both services are optional. The services are initialized in `shared/services/` and can be used directly in feature services.
 
-## Dev-Only Code Modification Feature
+## Dev task backlog
 
-This boilerplate includes a **dev-only app code modification** feature that allows the UI to modify app source code and configuration files during development. This is used by the setup wizard to:
+Local development includes an in-repo task backlog for coding agents and developers:
 
-- Write environment variables to `.env` file
-- Sync configuration metadata to `app.config.json`
+- **SSOT:** `src/config/app-tasks.json` (active) and `src/config/app-tasks-archive.json` (done)
+- **UI:** `/tasks` route (dev-only) via `DevTasksFab`
+- **API:** `vite-plugin-dev-tasks.ts` — `/__dev/tasks` endpoints (serve mode only)
 
-### Architecture
-
-The feature consists of three main components:
-
-1. **Vite Plugin** (`vite-plugin-dev-api.ts`):
-   - Provides dev-only API endpoints: `/api/write-env` and `/api/write-config`
-   - Only works when running Vite dev server (not in production)
-   - Located at project root (required for Vite plugin configuration)
-
-2. **Services** (`src/features/setup/services/`):
-   - `envWriterService.ts`: Handles environment variable writing API calls
-   - `configService.ts`: Handles app configuration file (`app.config.json`) syncing
-   - `configurationResetService.ts`: Section reset pipeline (env removal API, cleanup, status, sync)
-
-### Security
-
-⚠️ **Important**: This feature only works in development mode. The Vite plugin endpoints are only available when running `vite dev`. In production builds, these endpoints do not exist.
-
-### Usage
-
-The feature is primarily used by the setup wizard:
-
-- **Environment Variables**: `useEnvWriter` hook calls `writeEnvVariables` service
-- **Configuration Sync**: Automatically syncs to `app.config.json` when configuration changes
-
-### App Configuration File
-
-The app maintains `app.config.json` which stores:
-- Setup section statuses and enabled features
-- API configuration references (without sensitive keys)
-- Theme configuration status
-- Last updated timestamp
-
-This file is readable by Cursor agent and syncs when finishing setup (before cleanup runs). Call `syncConfiguration()` manually for ad-hoc syncing.
-
-**Security**: API keys are NOT stored in this file - they remain in `.env`. The config file only contains references and metadata.
-
-For more details, see:
-- `documentation/DOC_APP_CODE_MODIFICATION.md` - Code modification feature
-- `documentation/DOC_APP_CONFIG_FILE.md` - Configuration file documentation
+Fresh clones ship onboarding tasks (Supabase, Hosting, App vision, Airtable optional, Theme). See `src/features/tasks/README.md` and `.agents/skills/start/SKILL.md`.
 
 ## Best Practices
 

@@ -1,11 +1,12 @@
 ---
 name: router
 description: >-
-  Chooses which skill applies, then invokes it (read that SKILL.md and execute the workflow
-  in the same turn). Maps situations to project, user, and plugin skills; resolves overlaps.
-  Product context SSOT: documentation/DOC_APP_VISION.md. Use when the user asks which skill
-  to use, types /router, starts ambiguous work, or routes from slash commands to SKILL.md
-  files. Bare /router (no task text) starts a session from the active backlog (not finish).
+  Picks the next action and skill, then invokes it (read that SKILL.md and execute the workflow
+  in the same turn). Mid-thread: continue the logical next step on active work. Idle or new:
+  fall back to gates and app-tasks.json backlog. Maps situations to project, user, and plugin
+  skills; resolves overlaps. Product context SSOT: documentation/DOC_APP_VISION.md. Use when
+  the user types /router, asks which skill to use, starts ambiguous work, or routes slash
+  commands to SKILL.md files. Bare /router is next-action dispatch (not finish).
 ---
 
 # Skill router
@@ -14,9 +15,55 @@ Use this file to pick **one primary skill** (sometimes two in sequence).
 
 **Invocation contract (always):** After you decide the primary skill — and any secondary skill that must run **next** in order — **read that skill’s `SKILL.md` and execute its workflow starting in this same turn.** Invoking means load + follow steps, not naming a path or asking the user which skill file to open. If two skills apply sequentially (for example `plan` → `implement`), finish the first’s applicable step or hand off explicitly per that skill, then read and run the second without ending on a static routing table alone.
 
-**Bare `/router`:** If the user message is only `/router` (optional whitespace) and carries **no substantive task or question**, start a session from the **active backlog** (`src/config/app-tasks.json` only — see **App task backlog** below). This is **not** `finish` and **not** “commit the working tree.” Run **`prime`** then **`grill-me`** for the chosen task unless `title` + `description` already satisfy goal/scope gates; then route to `quick-piv` or `plan` / `feature` per gates 1–3.
+## `/router` — pick next action + skill
 
-**`/finish`** is only for explicit wrap-up — read `.agents/skills/finish/SKILL.md` when the user invokes finish or asks to commit completed work.
+**Purpose:** `/router` means “decide the **most logical next step** for this thread, pick the skill, and **do it**.” The user should not have to name the skill.
+
+**Resolution order (always):**
+
+1. **Thread continuation** — active in-flight work in this conversation (see **Active thread work** below).
+2. **Substantive request** — user message names a task, question, or change → **Decision model** gates + **Situation → skill** (skip backlog).
+3. **Backlog intake** — only when step 1 finds **no** active thread work **and** the message is bare `/router` or equivalent idle dispatch (see **App task backlog**).
+
+**Bare `/router`:** Message is only `/router` (optional whitespace) with **no substantive task or question**. Run step 1 first; if no active thread work, fall through to backlog intake. This is **not** `finish` and **not** “commit the working tree” unless thread continuation clearly left off at validated, landing-ready work **and** the user’s prior turn signaled wrap-up (otherwise prefer `validate` or the next implement phase — do not auto-commit).
+
+**On continuation:** Briefly state one line — `Next: [action] → \`skill\`` — then read and run that skill. Do not re-run full backlog selection or restart gates 1–2 when the thread already has a bounded active job.
+
+### Active thread work
+
+Treat the thread as **mid-task** when **any** of these hold:
+
+| Signal | Examples |
+|--------|----------|
+| **Conversation** | Recent turns executing `implement`, `quick-piv`, `feature`, `debug`, `grill-me`, or `plan` § Refine on a specific job; quick plan posted but implement/validate not done |
+| **Open / recent files** | `documentation/jobs/temp_job_*/DEVELOPMENT_PLAN.md` tied to the current job |
+| **Plan state** | Active plan has pending phases, `Plan review: Required: pending`, or incomplete **Pattern & precedent** when M/L requires it |
+| **Working tree** | `git status` shows changes that match the thread’s stated scope (same job/files discussed) |
+
+**Not** active thread work: new or idle chat; prior job explicitly completed in thread; user clearly changed topic; only unrelated uncommitted files with no in-thread narrative.
+
+**Context gather (step 1):** Skim recent thread; note open/recent job paths; run `git status -sb` when the tree may inform the next step; load the active `DEVELOPMENT_PLAN.md` when one applies.
+
+### Thread → next skill (mid-task)
+
+Pick **one** primary by the **most blocking** row that applies (top wins). Then invoke it.
+
+| Thread state | Next skill |
+|--------------|------------|
+| Active `debug` incident; root cause unknown | `debug` |
+| `feature` phase incomplete | `feature` |
+| Gates 1–2 still fail **on the current job** | `grill-me` or `plan` § Refine (same split as **Clarification-first routing**) |
+| Plan exists; **Plan review** pending (M/L) | `review-dev-plan` |
+| Plan exists; **Pattern & precedent** missing when required | `pattern-review` (`plan-section`) or resume `plan` |
+| Plan exists; pending phase(s) | `implement` |
+| Plan exists; XS/S in-thread extension only | `quick-piv` |
+| No plan file; quick plan in chat; implement/validate incomplete | `quick-piv` |
+| All planned phases done; full audit not yet run | `validate` |
+| Validated; user/thread signaled landing | `finish` (only when wrap-up is the clear next step — not the default for bare `/router` on new work) |
+
+Align with [dev-cycle matrix](references/dev-cycle-matrix.md). When unfamiliar with repo state mid-job, run **`prime`** once, then continue with the chosen skill — do not replace thread continuation with backlog intake.
+
+**`/finish`** is only for explicit wrap-up — read `.agents/skills/finish/SKILL.md` when the user invokes finish or asks to commit completed work (not the default idle `/router` outcome).
 
 **Quality bar:** Listed skills were reviewed for actionable structure (clear triggers, steps, or rubrics).
 
@@ -24,7 +71,7 @@ Use this file to pick **one primary skill** (sometimes two in sequence).
 
 ## Decision model: goals + requirements → skill
 
-Route work in **three gates**. Answer in order; **do not skip gate 1 or 2** to reach `plan` or `implement`.
+For **new or substantive** requests — and after **Active thread work** is ruled out — route in **three gates**. Answer in order; **do not skip gate 1 or 2** to reach `plan` or `implement`. When the thread is **mid-task**, use **Thread → next skill** instead of restarting gates unless the user explicitly changes scope.
 
 ### Gate 1 — Goal / outcome
 
@@ -111,7 +158,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 
 | Situation | Skill |
 |-----------|--------|
-| User sends **only** `/router` (no substantive task); see **Bare `/router`** and **App task backlog** | Session from `app-tasks.json` → `prime` → `grill-me` → `quick-piv` or `plan` |
+| User sends **only** `/router` (no substantive task); see **`/router` — pick next action + skill** | Thread continuation if mid-task; else `app-tasks.json` → `prime` → `grill-me` → `quick-piv` or `plan` |
 | New chat / ambiguous task; map repo rules and recent git state | `.agents/skills/prime/SKILL.md` |
 | **Goal and scope clear**; non-trivial job needing phased written plan + compliance | `.agents/skills/plan/SKILL.md` |
 | Plan written; qualitative critique before implementation (especially Complexity M/L) | `.agents/skills/review-dev-plan/SKILL.md` |
@@ -125,8 +172,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Component-level rubric (props, MUI, a11y, tests) | `.agents/skills/review/SKILL.md` |
 | Version, changelog, staging gate, **local** commit | `.agents/skills/finish/SKILL.md` |
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
-| Human onboarding; README quick start | `.agents/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
-| Remove setup wizard after app is configured | `.agents/skills/start/SKILL.md` § Teardown |
+| Human onboarding; README quick start + dev task backlog | `.agents/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
 
 ### This repo — product & codebase shape
 
@@ -318,10 +364,9 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - **`feature`:** Net-new capability with mandatory 🔴 decision stops and journey mapping.
 - **`challenge`:** Simplify an **existing** named feature/workflow (flow + code).
 
-### `start` — onboarding vs Teardown
+### `start` — onboarding
 
-- **`start` (onboarding):** Human first-time setup and app vision gate.
-- **`start` § Teardown:** Remove the setup wizard **after** the app is configured (formerly `complete-setup`); also deletes the `start` skill itself when done.
+- **`start`:** Human first-time setup via README + dev task backlog (`/tasks`); app vision gate.
 
 ### `prime` vs clarification skills
 
@@ -347,20 +392,29 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 
 - **Primary outcome:** Land a **small** scoped change in one session. Compresses plan/implement/check steps — defers to **`validate`**, **`finish`**, and full **`plan`** for M/L, commits, and durable plans.
 
+### Thread continuation vs backlog intake
+
+- **Thread continuation:** Mid-task `/router` — resume the active job via **Thread → next skill**; do not read `app-tasks.json` first.
+- **Backlog intake:** Idle thread + bare `/router` — pick from `app-tasks.json` per **App task backlog**.
+- **Conflict:** If thread work and backlog `in-progress` disagree, **thread wins** unless the user explicitly asks to switch tasks.
+
 ### Bare `/router` vs `finish` (situation table)
 
-- **Bare `/router`** (no task text): **active backlog session start** — read only `src/config/app-tasks.json`, pick task, set **`in-progress`** when the coding assistant starts executing (same turn), then `prime` / `grill-me` / delivery skill. **Not** `finish`.
-- **`/finish`:** explicit wrap-up — includes archiving the session task when applicable (see `finish` skill). Not bare `/router`.
+- **Bare `/router`** (no task text): **next-action dispatch** — **Active thread work** first; only when idle, **backlog intake** from `src/config/app-tasks.json`. **Not** default `finish` on new/idle dispatch.
+- **`/finish`:** explicit wrap-up — includes archiving the session task when applicable (see `finish` skill). Not the default for idle `/router`.
 
 ### App task backlog (SSOT)
 
 - **Active:** `src/config/app-tasks.json` (`to-do` | `in-progress` only; array order = priority).
 - **Archive:** `src/config/app-tasks-archive.json` (`done` only; append order = completion timeline). **Do not read** unless the user asks for completed history.
 - **Coding agent pick up:** when the assistant **commits to execute** a backlog task, set `in-progress` in the active file **in the same turn** before `prime`, `grill-me`, `plan`, or code. User edits in `/tasks` UI do **not** trigger pick-up.
-- **Backlog selection** (bare `/router` or substantive `/router` when no dev task is established in the conversation yet):
+- **Onboarding tasks:** Fresh clones ship five seeded tasks (Supabase, Hosting, App vision, Airtable optional, Theme). Agents sync status at session boundaries per `start`, `router`, and `finish` — edit JSON directly or via `/__dev/tasks` when dev server runs. Disk-wins on UI conflicts.
+- **Backlog intake** (fallback only — after **Active thread work** is ruled out):
+  - Read only `src/config/app-tasks.json`.
   - If `in-progress` exists: ask continue that task vs first `to-do` by list order.
   - Else select first `to-do` by list order.
   - Apply pick up for the chosen task (skip if already `in-progress`).
+  - Then `prime` (if needed) → `grill-me` unless `title` + `description` satisfy gates 1–2 → `quick-piv` or `plan` / `feature` per gate 3.
 - If no actionable `to-do` or `in-progress`: say so; optional `prime` for repo context — do **not** invent tasks and do **not** default to `finish`.
 
 ---
@@ -381,7 +435,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/push/SKILL.md`
 - `.agents/skills/quick-piv/SKILL.md`
 - `.agents/skills/prime/SKILL.md`
-- `.agents/skills/start/SKILL.md` (onboarding + § Teardown to remove the setup wizard)
+- `.agents/skills/start/SKILL.md` (onboarding via README + dev task backlog)
 - `.agents/skills/learn/SKILL.md`
 - `.agents/skills/challenge/SKILL.md`
 - `.agents/skills/feature/SKILL.md`

@@ -17,7 +17,7 @@ Development workflows, code review standards, and process requirements. Includes
 | Architecture patterns, layer rules, code placement | `.cursor/rules/architecture/RULE.md` |
 | Project structure, file whitelist | `projectStructure.config.cjs` |
 | Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
-| App config schema (boilerplate only; removed by `start` § Teardown) | `documentation/DOC_APP_CONFIG_FILE.md` |
+| Dev task backlog / onboarding | `src/config/app-tasks.json` + `src/features/tasks/README.md` |
 | **App vision & goals** (problem, persona, app’s role; fillable template) | `documentation/DOC_APP_VISION.md` |
 | **Agent workflow layers** (skills vs rules; pattern review entry) | `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` |
 | **Supabase + Google OAuth** (dashboard / Google Cloud Console setup checklist) | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |
@@ -112,7 +112,7 @@ When updating the changelog with a new version, update two locations to maintain
 
 Both locations must use the same version number. If the app displays version in the UI (e.g. via `VITE_APP_VERSION`), update that location too; this boilerplate does not display version in ProfileMenu by default.
 
-**Note:** When the setup wizard exists, `app.config.json` has its own `version` field for config schema compatibility; it is independent of release version. See `documentation/DOC_APP_CONFIG_FILE.md`. After running `start` § Teardown, configuration lives in `.env` only.
+**Note:** Configuration lives in `.env` only. Onboarding checklist: `src/config/app-tasks.json` (see `src/features/tasks/README.md`).
 
 ### Branch Strategy
 

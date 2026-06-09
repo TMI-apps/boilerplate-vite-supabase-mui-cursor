@@ -2,26 +2,33 @@
 
 In-repo development backlog for coding agents and local UI.
 
-## SSOT files
+## Purpose
 
-| File | Role |
-|------|------|
-| `src/config/app-tasks.json` | Active work (`to-do`, `in-progress` only); top = highest priority |
-| `src/config/app-tasks-archive.json` | Completed tasks (`done` only); append order = completion timeline |
+- Dev-only task board at `/tasks` for onboarding and agent work
+- SSOT for active and archived tasks in JSON files
+- Pre-seeded onboarding checklist on fresh clones (Supabase, Hosting, App vision, Airtable optional, Theme)
 
-## Dev API (Vite serve only)
+## Structure
 
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/__dev/tasks` | GET / POST | Read / replace active array |
-| `/__dev/tasks/archive` | GET / POST | Read newest-first / archive at active index |
-| `/__dev/tasks/restore` | POST | Restore from archive display index |
+| Layer | Path | Purpose |
+|-------|------|---------|
+| Components | `components/` | `TasksBacklogPanel`, `ActiveTaskList`, `ArchiveTaskList`, task rows |
+| Hooks | `hooks/` | `useAppTasksBacklog` — CRUD, reorder, archive/restore |
+| Services | `services/` | `appTasksDomain` — validation, archive/restore logic |
+| Types | `types/` | `AppTask`, `ActiveTaskStatus`, file path constants |
 
-Implemented in `vite-plugin-dev-tasks.ts` (`apply: "serve"`). Not available in production builds or `pnpm preview` writes.
+**Config SSOT:** `src/config/app-tasks.json` (active), `src/config/app-tasks-archive.json` (done).
 
-## UI
+**Dev API (Vite serve only):** `vite-plugin-dev-tasks.ts` — `/__dev/tasks`, `/__dev/tasks/archive`, `/__dev/tasks/restore`.
 
-- Route: `/tasks` (minimal chrome; production shows dev-only message).
-- Dev FAB: `DevTasksFab` on all routes when `import.meta.env.DEV`.
+**UI entry:** `DevTasksFab` on all routes in dev; route `/tasks` with minimal chrome.
 
-Domain helpers: `services/appTasksDomain.ts`.
+## Dependencies
+
+- `vite-plugin-dev-tasks.ts` (project root)
+- MUI 9, dnd-kit (reorder)
+- Agent skills: `.agents/skills/start/SKILL.md`, `router`, `finish` for task sync
+
+## Onboarding
+
+Fresh clones ship five pre-seeded tasks in `app-tasks.json`. Agents sync status at session boundaries per start/router/finish skills.

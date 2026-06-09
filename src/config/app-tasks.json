@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "title": "Configure Supabase",
+    "description": "Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env (see README Quick Start). Enable auth providers in the Supabase dashboard. For Google OAuth, follow documentation/DOC_SUPABASE_GOOGLE_OAUTH.md. Verify auth via ProfileMenu sign-in once configured.",
+    "status": "to-do"
+  },
+  {
+    "title": "Configure Hosting",
+    "description": "Set deployment target and env vars for production (see README deployment section). Configure build output, preview URL, and any host-specific VITE_* vars. Confirm pnpm build succeeds locally before first deploy.",
+    "status": "to-do"
+  },
+  {
+    "title": "Define app vision",
+    "description": "Collaborate with the coding agent to fill documentation/DOC_APP_VISION.md (problem, persona, app role). Replace placeholder bullets with real prose and change Vision status from DRAFT to ACTIVE when complete.",
+    "status": "to-do"
+  },
+  {
+    "title": "Configure Airtable (optional)",
+    "description": "Optional — skip or archive this task if unused. Add VITE_AIRTABLE_API_KEY, VITE_AIRTABLE_BASE_ID, and VITE_AIRTABLE_TABLE_ID to .env. Use .agents/skills/airtable-inspect/SKILL.md for schema then sample rows.",
+    "status": "to-do"
+  },
+  {
+    "title": "Configure Theme",
+    "description": "Customize MUI theme via src/shared/theme/ (themeLoader.ts and related tokens). Match brand colors, typography, and dark/light mode defaults. Verify changes in the running dev app.",
+    "status": "to-do"
+  }
+]

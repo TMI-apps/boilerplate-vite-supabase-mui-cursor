@@ -66,7 +66,7 @@ When Supabase and Google allow **`http://localhost`** but **reject private LAN I
    Replace `5173` with **N** if Vite uses another port. Re-run after unplugging USB or rebooting the phone.
 
 3. On the phone browser, open **`http://localhost:5173`** — **not** `http://192.168.x.x:5173`.
-4. Test routes: `/`, `/setup`, `/login` (when Supabase is configured). For Google OAuth, complete sign-in on the device.
+4. Test routes: `/`, `/tasks` (dev FAB), ProfileMenu sign-in when Supabase is configured. For Google OAuth, complete sign-in on the device.
 
 ---
 

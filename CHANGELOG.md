@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.28.0] - 2026-06-09
+
+### Added
+
+- **Onboarding tasks**: Seed `src/config/app-tasks.json` with five default tasks (Supabase, Hosting, App vision, Airtable optional, Theme).
+
+### Changed
+
+- **Onboarding**: Replace `/setup` wizard with dev task backlog — configure via `.env`, README, and agent skills; DevTasksFab is the sole entry to `/tasks`.
+- **Navigation**: Remove Topbar Setup link; Home and LoginForm no longer link to setup; ProfileMenu keeps minimal unconfigured auth message.
+- **Agent skills**: Rewrite `start` for task-based onboarding; extend `router` and `finish` with onboarding task sync guidance.
+
+### Removed
+
+- **Setup wizard**: Entire `src/features/setup/`, `SetupPage`, `setupUtils`, `app.config.json`, `vite-plugin-dev-api.ts`, `validate-app-config` (script + CI), and setup-only documentation.
+
 ## [0.27.0] - 2026-06-04
 
 ### Added

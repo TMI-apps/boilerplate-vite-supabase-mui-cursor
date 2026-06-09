@@ -22,6 +22,15 @@ Run this block **before** version/changelog edits and **before** any `git add` /
 4. **Before `git add`:** when step 3 ran, the **same commit** must stage **both** backlog JSON files. Missing either after archiving is an error — fix before commit.
 5. Restore is **not** part of `/finish` unless the user explicitly asks.
 
+### Onboarding task sync (when applicable)
+
+When this session completed onboarding work (Supabase env, hosting, vision doc, optional Airtable/theme):
+
+1. Re-read `src/config/app-tasks.json` and check actual state (env vars, `DOC_APP_VISION.md` status).
+2. Archive tasks that are truly done (same archive flow as above) — e.g. Supabase task after `VITE_SUPABASE_*` is set and verified.
+3. For declined optional tasks (Airtable), archive with a skip note in the description or leave as `to-do` per user intent.
+4. Do not add task-board UI complexity — file edits only; disk-wins if the user edited tasks in `/tasks` during the session.
+
 ## Concurrent work / other agent threads (same branch, same checkout)
 
 **Smoke signals:** Before any mandatory version or changelog edit, `git commit`, or `git push` (including when running `.agents/skills/push/SKILL.md` after a local commit), treat the working tree as **unstable** if you observe **any** of:
