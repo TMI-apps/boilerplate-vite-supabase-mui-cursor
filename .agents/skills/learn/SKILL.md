@@ -73,7 +73,7 @@ Pick **one primary** location. Cross-link elsewhere in one line if needed — ne
 | Lesson type | Primary location (this repo) |
 |-------------|-------------------------------|
 | Postgres migrations, Supabase schema, RLS, idempotent migrations | `.cursor/rules/database/RULE.md` |
-| Local dev URLs, `pnpm dev`, env wiring, Supabase setup testing | `.cursor/rules/workflow/RULE.md` and/or `documentation/DOC_TESTING_SUPABASE_SETUP.md`, `src/features/setup/docs/testing-supabase-setup.md` |
+| Local dev URLs, `pnpm dev`, env wiring, Supabase setup | `.cursor/rules/workflow/RULE.md` and/or `README.md` Quick Start |
 | Auth, secrets, validation | `.cursor/rules/security/RULE.md` |
 | Folder placement, imports, layers, path aliases | `.cursor/rules/architecture/RULE.md` or `.cursor/rules/file-placement/RULE.md` |
 | Vitest, coverage, test layout | `.cursor/rules/testing/RULE.md` |

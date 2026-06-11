@@ -166,4 +166,14 @@ Add new patterns at the bottom as they prove reusable across incidents.
 
 ---
 
+## Mobile: layout OK in DevTools but broken on a real phone
+
+- Symptom: Fixed bottom UI, full-height shell, or login layout looks correct in Chrome DevTools device mode at the same CSS width, but is clipped, scrolls wrong, or misaligned on a physical Android/iOS device. Mobile OAuth may work on desktop localhost but fail when opening `http://192.168.x.x:N` on the phone.
+- Root cause: DevTools emulates width only — not visible viewport height (`100vh` vs browser chrome), system nav bars, virtual keyboard, or IdP redirect rules for LAN IPs vs localhost.
+- Key question: "Was this verified on a physical device using the SSOT URL pattern (adb reverse + localhost on Android, or tunnel/preview on iOS)?"
+- Debug approach: Read **`documentation/DOC_MOBILE_LOCAL_DEV.md`** before closing the issue. Do not ship viewport or mobile-login fixes on DevTools-only evidence. For Android + Supabase/Google OAuth locally: `adb reverse tcp:N tcp:N` and open `http://localhost:N` on the phone — not the LAN IP.
+- Tokens: mobile, DevTools, adb reverse, viewport, OAuth, 100vh, keyboard
+
+---
+
 ## Add other patterns here as they're discovered.

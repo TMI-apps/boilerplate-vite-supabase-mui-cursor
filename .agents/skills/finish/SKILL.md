@@ -10,6 +10,27 @@ description: >-
 
 Complete the implementation by doing what you haven't done yet of these tasks:
 
+## App task backlog — archive before git (when applicable)
+
+**Same behavior as choosing `done` on `/tasks`:** remove the task from `src/config/app-tasks.json` and append `{ title, description, status: "done" }` to `src/config/app-tasks-archive.json`. Do **not** leave `done` rows in the active file.
+
+Run this block **before** version/changelog edits and **before** any `git add` / `git commit`.
+
+1. Read **only** `src/config/app-tasks.json`.
+2. **Resolve which task to archive:** prefer the task this session executed (usually the single `in-progress` you picked up). If the user named a task for this finish, use that row. **Zero** `in-progress`: ask — skip archiving, archive a named task, or pause finish. **Multiple** `in-progress`: ask which to archive. **Already archived** (user set `done` in UI): do not duplicate; continue finish.
+3. **Archive** at the resolved **active index** (remove from active preserving order; append to archive on disk). Use the same semantics as `POST /__dev/tasks/archive` with `{ index }` when the dev server is available, or edit both JSON files directly with validated shapes.
+4. **Before `git add`:** when step 3 ran, the **same commit** must stage **both** backlog JSON files. Missing either after archiving is an error — fix before commit.
+5. Restore is **not** part of `/finish` unless the user explicitly asks.
+
+### Onboarding task sync (when applicable)
+
+When this session completed onboarding work (Supabase env, hosting, vision doc, optional Airtable/theme):
+
+1. Re-read `src/config/app-tasks.json` and check actual state (env vars, `DOC_APP_VISION.md` status).
+2. Archive tasks that are truly done (same archive flow as above) — e.g. Supabase task after `VITE_SUPABASE_*` is set and verified.
+3. For declined optional tasks (Airtable), archive with a skip note in the description or leave as `to-do` per user intent.
+4. Do not add task-board UI complexity — file edits only; disk-wins if the user edited tasks in `/tasks` during the session.
+
 ## Concurrent work / other agent threads (same branch, same checkout)
 
 **Smoke signals:** Before any mandatory version or changelog edit, `git commit`, or `git push` (including when running `.agents/skills/push/SKILL.md` after a local commit), treat the working tree as **unstable** if you observe **any** of:

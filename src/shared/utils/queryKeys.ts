@@ -1,5 +1,5 @@
 /**
- * Shared query keys for cross-cutting data (user, config).
+ * Shared query keys for cross-cutting data (user).
  * Feature-specific keys live in features/[feature]/api/keys.ts.
  *
  * Conventions:
@@ -12,9 +12,5 @@ export const sharedQueryKeys = {
   user: {
     all: ["user"] as const,
     profile: (userId: string) => ["user", "profile", userId] as const,
-  },
-  config: {
-    all: ["config"] as const,
-    section: (section: string) => ["config", section] as const,
   },
 } as const;

@@ -183,7 +183,7 @@ Examples:
 - ✅ Architecture documentation (`DOC_ARCHITECTURE_*.md`)
 - ✅ Feature documentation (`DOC_FEATURE_*.md`)
 - ✅ Project guides (`DOC_ARCHITECTURE_MIGRATION.md`, etc.)
-- ⚠️ Boilerplate-only docs (e.g. DOC_APP_CONFIG_FILE, DOC_SETUP_*) are removed by `start` § Teardown
+- ⚠️ Boilerplate-only docs removed when setup wizard was replaced by dev task backlog
 
 **Workflow for permanent documentation:**
 1. **STOP** before creating any file directly in `documentation/`

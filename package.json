@@ -1,6 +1,7 @@
 {
   "name": "vite-mui-supabase-starter",
   "private": true,
+  "version": "0.29.0",
   "version": "0.26.5",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
@@ -32,7 +33,6 @@
     "validate:structure": "node scripts/project-structure-validator.js",
     "validate:structure:json": "node scripts/project-structure-validator.js --format=json",
     "validate:version-sync": "node scripts/validate-version-sync.js",
-    "validate:app-config": "node scripts/validate-app-config.js",
     "validate:docs:links": "node scripts/validate-markdown-links.js",
     "validate:docs:refs": "node scripts/validate-cursor-doc-references.js",
     "validate:docs": "pnpm validate:docs:links && pnpm validate:docs:refs",
@@ -46,21 +46,24 @@
     "airtable:sample": "node scripts/airtable-sample-records.js"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.100.14",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^9.0.1",
     "@mui/material": "^9.0.1",
     "@supabase/supabase-js": "^2.106.2",
+    "@tanstack/react-query": "^5.100.14",
     "airtable": "^0.12.2",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.16.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@tanstack/eslint-plugin-query": "^5.100.14",
     "@tanstack/react-query-devtools": "^5.100.14",
-    "@eslint/js": "^10.0.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",

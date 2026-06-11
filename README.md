@@ -175,18 +175,20 @@ git fetch upstream
 pnpm dev
 ```
 
-The app runs at `http://localhost:5173/` (or another port if 5173 is busy) and redirects to setup on first run.
+The app runs at `http://localhost:5173/` (or another port if 5173 is busy).
 
-### Step 5: Complete the setup wizard
+In local dev, use the floating **Tasks** button (bottom-right) to open `/tasks` — your onboarding checklist lives there.
 
-All setup sections are optional. Configure what you need now and skip the rest.
+### Step 5: Complete onboarding tasks
+
+Work through the dev task backlog at `/tasks` (or edit `src/config/app-tasks.json` directly). All sections are optional except what your app needs; configure what you want now and skip or archive the rest.
 
 #### Supabase (optional, needed for auth/database) 🔐
 
 1. Create a project at [supabase.com](https://supabase.com).
 2. Go to **Project Settings -> API**.
 3. Copy your **Project URL** and **Publishable Key**.
-4. In the setup wizard, test the connection and create `.env` in project root:
+4. Create `.env` in project root:
 
 ```bash
 VITE_SUPABASE_URL=your-project-url
@@ -201,17 +203,25 @@ Legacy note: `VITE_SUPABASE_ANON_KEY` is still accepted for backward compatibili
 
 #### Airtable (optional) 📊
 
-Enter API key, Base ID, and Table ID in setup to enable Airtable integration.
+Add `VITE_AIRTABLE_API_KEY`, `VITE_AIRTABLE_BASE_ID`, and `VITE_AIRTABLE_TABLE_ID` to `.env`. See `.agents/skills/airtable-inspect/SKILL.md` for schema inspection.
 
 #### Theme customization (optional) 🎨
 
-Use [MUI Theme Creator](https://bareynol.github.io/mui-theme-creator/) and paste the JSON in the theme step.
+Customize `src/shared/theme/` or use [MUI Theme Creator](https://bareynol.github.io/mui-theme-creator/) as a starting point.
+
+#### App vision
+
+Collaborate with your coding agent to fill [documentation/DOC_APP_VISION.md](./documentation/DOC_APP_VISION.md) and set status to **ACTIVE**.
 
 ### Step 6: Verify app routes
 
 - Home: `http://localhost:5173/`
-- Setup: `http://localhost:5173/setup`
-- Login (when Supabase configured): `http://localhost:5173/login`
+- Tasks (dev only, via FAB): `http://localhost:5173/tasks`
+- Login (when Supabase configured): use ProfileMenu in the topbar
+
+### Testing on a physical phone (optional)
+
+Chrome DevTools device mode is enough for width breakpoints; it is **not** enough for mobile OAuth, viewport height, or keyboard issues. To test **local dev on a real device** (Android `adb reverse` + localhost, iOS tunnel/preview), follow [documentation/DOC_MOBILE_LOCAL_DEV.md](./documentation/DOC_MOBILE_LOCAL_DEV.md).
 
 ### You're ready
 
@@ -223,7 +233,7 @@ For detailed installation instructions, see the [Quick Start Guide](#quick-start
 
 ### Optional: Manual Supabase Setup
 
-If you prefer to set up Supabase manually instead of using the setup wizard (recommended: use the [setup wizard](#step-5-complete-the-setup-wizard) instead):
+If you prefer to set up Supabase manually (same as task #1 in the dev backlog):
 
 1. Create a `.env` file in the project root directory
 
@@ -247,18 +257,16 @@ VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 
 If you skipped Supabase setup initially, you can configure it anytime:
 
-1. Navigate to `/setup` in your running app
-2. Follow the setup wizard steps to configure Supabase credentials
-3. Create the `.env` file with your credentials (see [Manual Supabase Setup](#optional-manual-supabase-setup))
-4. **Restart your development server** (`Ctrl+C` then `pnpm dev`)
+1. Open `/tasks` in local dev (floating button) or edit `.env` directly
+2. Add Supabase credentials to `.env` (see [Manual Supabase Setup](#optional-manual-supabase-setup))
+3. **Restart your development server** (`Ctrl+C` then `pnpm dev`)
 
 
 ### Troubleshooting
 
-**Setup wizard not appearing?**
-- Make sure you're accessing `http://localhost:5173/` (or the port shown in your terminal)
-- Clear your browser's local storage and reload
-- Check that the dev server is running
+**Dev task backlog not visible?**
+- `/tasks` is dev-only — use the floating button when running `pnpm dev`
+- Production builds show an info message instead of the task list
 
 **Supabase connection failing?**
 - Verify your credentials are correct (check for typos)
