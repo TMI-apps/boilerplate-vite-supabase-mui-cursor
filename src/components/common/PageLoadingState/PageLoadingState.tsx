@@ -1,19 +1,26 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
+
+interface PageLoadingStateProps {
+  message?: string;
+}
 
 /**
  * Fallback UI for React Suspense (e.g. lazy-loaded routes).
  * Shows a centered spinner while the lazy component loads.
  */
-export const PageLoadingState = () => (
+export const PageLoadingState = ({ message }: PageLoadingStateProps) => (
   <Box
     sx={{
       display: "flex",
+      flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
       minHeight: 200,
       py: 4,
+      gap: 2,
     }}
   >
     <CircularProgress />
+    {message && <Typography variant="body1">{message}</Typography>}
   </Box>
 );

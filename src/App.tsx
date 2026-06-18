@@ -10,6 +10,8 @@ import { MainLayout } from "@/layouts/MainLayout/MainLayout";
 import { PageLoadingState } from "@/components/common/PageLoadingState";
 import { QueryErrorBoundary } from "@/components/common/QueryErrorBoundary";
 import { AuthCallbackPage } from "@pages/AuthCallbackPage";
+import { LoginPage } from "@pages/LoginPage";
+import { ResetPasswordPage } from "@pages/ResetPasswordPage";
 
 const HomePage = lazy(() => import("@pages/HomePage").then((m) => ({ default: m.HomePage })));
 const TasksPage = lazy(() =>
@@ -35,6 +37,8 @@ function AppContent() {
               <Route element={<MainLayout />}>
                 <Route path="/" element={<HomePage />} />
               </Route>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/auth/callback" element={<AuthCallbackPage />} />
               <Route path="/tasks" element={<TasksPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />

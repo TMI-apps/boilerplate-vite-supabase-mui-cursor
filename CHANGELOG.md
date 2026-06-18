@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.30.0] - 2026-06-10
+
+### Added
+
+- **Authentication**: Full sign-in UX — Google OAuth (PKCE on `/`), email sign-in/sign-up, forgot password, `/login`, `/reset-password`, inline home sign-in, and anonymous sessions treated as logged out.
+- **Auth components**: `SignInPanel`, `EmailAuthForm`, safe redirect helpers, mapped English error messages, and auth viewport layout for responsive no-scroll pages.
+- **Favicon**: Theme-primary rocket SVG (`public/favicon.svg`).
+
+### Changed
+
+- **Branding**: Site title and topbar link set to “React app starterkit”; removed boilerplate welcome copy from home.
+- **Profile menu**: Google sign-in plus link to email login; removed schoolaccount / Entreefederatie paths.
+- **`/tasks`**: Back button top-left without style overrides; removed checklist subtitle copy.
+- **Auth preview**: Sign-in UI visible when Supabase is not configured (actions disabled with info alert).
+
+### Removed
+
+- **Vite default favicon** (`public/vite.svg`).
+
 ## [0.29.0] - 2026-06-09
 
 ### Added

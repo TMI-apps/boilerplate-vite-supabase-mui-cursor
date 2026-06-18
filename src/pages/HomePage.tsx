@@ -1,36 +1,64 @@
-import { Box, Typography, Container } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Alert, Box, Typography } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { Button } from "@/components/common/Button";
 import { useAuthContext } from "@/shared/context/AuthContext";
-import { useSupabaseConfig } from "@shared/hooks/useSupabaseConfig";
+import { SignInPanel } from "@features/auth/components/SignInPanel";
+import { useAuthCallbackHandler } from "@features/auth/hooks/useAuthCallbackHandler";
+import { PageLoadingState } from "@/components/common/PageLoadingState";
+import { authContentSx } from "@features/auth/components/authViewLayout";
 
 export const HomePage = () => {
-  const { user } = useAuthContext();
-  const { isConfigured: supabaseConfigured } = useSupabaseConfig();
+  const { user, loading, clearAuthError } = useAuthContext();
+  const { isProcessing, error: callbackError } = useAuthCallbackHandler();
+  const location = useLocation();
+  const [locationAuthError, setLocationAuthError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stateError = (location.state as { authError?: string } | null)?.authError;
+    if (stateError) {
+      setLocationAuthError(stateError);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [location.state]);
+
+  if (loading || isProcessing) {
+    return <PageLoadingState message="Signing in…" />;
+  }
+
+  const showInlineLogin = !user;
 
   return (
-    <Container maxWidth="md">
-      <Box sx={{ textAlign: "center", py: 8 }}>
-        <Typography variant="h3" component="h1" gutterBottom>
-          Welcome to Vite MUI Supabase Starter
-        </Typography>
-        <Typography variant="h6" color="text.secondary" component="p" sx={{ mb: 2 }}>
-          A modern boilerplate with React, TypeScript, Vite, Material-UI, and Supabase
-        </Typography>
-        {user ? (
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="body1" component="p" sx={{ mb: 2 }}>
-              Welcome back, {user.email}!
-            </Typography>
-          </Box>
-        ) : (
-          <Box sx={{ mt: 4 }}>
-            {supabaseConfigured && (
-              <Typography variant="body1" color="text.secondary">
-                Use the profile icon in the topbar to sign in.
-              </Typography>
-            )}
-          </Box>
-        )}
-      </Box>
-    </Container>
+    <Box sx={{ ...authContentSx, textAlign: "center" }}>
+      {(callbackError || locationAuthError) && (
+        <Alert
+          severity="error"
+          sx={{ maxWidth: 420, width: "100%", mb: { xs: 1, sm: 1.5 }, textAlign: "left" }}
+          action={
+            <Button
+              size="small"
+              onClick={() => {
+                clearAuthError();
+                setLocationAuthError(null);
+              }}
+            >
+              Dismiss
+            </Button>
+          }
+        >
+          {callbackError || locationAuthError}
+        </Alert>
+      )}
+
+      {user ? (
+        <Box sx={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="body1" component="p">
+            Welcome back, {user.email}!
+          </Typography>
+        </Box>
+      ) : showInlineLogin ? (
+        <SignInPanel />
+      ) : null}
+    </Box>
   );
 };

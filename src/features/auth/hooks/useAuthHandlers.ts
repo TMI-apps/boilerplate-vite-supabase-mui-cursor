@@ -1,10 +1,12 @@
-import { useRef } from "react";
+import { useRef, useCallback } from "react";
 import * as authService from "../services/authService";
 import type { User, LoginCredentials, SignUpCredentials } from "../types/auth.types";
 import {
   handleLogin as handleLoginUtil,
   handleSignUp as handleSignUpUtil,
   handleLogout as handleLogoutUtil,
+  handleRequestPasswordReset as handleRequestPasswordResetUtil,
+  handleUpdatePassword as handleUpdatePasswordUtil,
 } from "./authHandlerUtils";
 
 interface UseAuthHandlersOptions {
@@ -47,22 +49,26 @@ export const useAuthHandlers = ({ setUser, setLoading, setError }: UseAuthHandle
   const handleLogin = (credentials: LoginCredentials) => handleLoginUtil(credentials, state);
   const handleSignUp = (credentials: SignUpCredentials) => handleSignUpUtil(credentials, state);
   const handleLogout = () => handleLogoutUtil(state);
+  const handleRequestPasswordReset = (email: string) =>
+    handleRequestPasswordResetUtil(email, state);
+  const handleUpdatePassword = (password: string) => handleUpdatePasswordUtil(password, state);
 
   const handleSignInWithGoogle = createSignInHandler(
     authService.signInWithGoogle,
     "Failed to sign in with Google"
   );
 
-  const handleSignInWithEntreefederatie = createSignInHandler(
-    authService.signInWithEntreefederatie,
-    "Failed to sign in with Entreefederatie"
-  );
+  const clearAuthError = useCallback(() => {
+    setError(null);
+  }, [setError]);
 
   return {
     login: handleLogin,
     signUp: handleSignUp,
     logout: handleLogout,
     signInWithGoogle: handleSignInWithGoogle,
-    signInWithEntreefederatie: handleSignInWithEntreefederatie,
+    requestPasswordReset: handleRequestPasswordReset,
+    updatePassword: handleUpdatePassword,
+    clearAuthError,
   };
 };

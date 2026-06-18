@@ -13,9 +13,8 @@ interface ProfileMenuContentProps {
   profile: UserProfile | null;
   profileLoading: boolean;
   onSignInWithGoogle: () => void;
-  onSignInWithEntreefederatie: () => void;
+  onGoToLogin: () => void;
   onSignOut: () => void;
-  entreefederatieEnabled: boolean;
 }
 
 export const ProfileMenuContent = ({
@@ -25,9 +24,8 @@ export const ProfileMenuContent = ({
   profile,
   profileLoading,
   onSignInWithGoogle,
-  onSignInWithEntreefederatie,
+  onGoToLogin,
   onSignOut,
-  entreefederatieEnabled,
 }: ProfileMenuContentProps) => {
   if (isLoggedIn) {
     return (
@@ -45,13 +43,7 @@ export const ProfileMenuContent = ({
   }
 
   if (supabaseConfigured) {
-    return (
-      <SignInMenuItems
-        onSignInWithGoogle={onSignInWithGoogle}
-        onSignInWithEntreefederatie={onSignInWithEntreefederatie}
-        entreefederatieEnabled={entreefederatieEnabled}
-      />
-    );
+    return <SignInMenuItems onSignInWithGoogle={onSignInWithGoogle} onGoToLogin={onGoToLogin} />;
   }
 
   return (

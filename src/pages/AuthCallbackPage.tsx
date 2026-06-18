@@ -3,15 +3,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import {
   checkSupabaseConfigured,
-  handleAuthError,
+  getOAuthErrorMessage,
   handleCodeExchange,
   getRedirectPath,
 } from "@features/auth/services/authCallbackService";
 import { getAuthCallbackParams } from "@/shared/utils/authCallbackParams";
 
 /**
- * AuthCallbackPage handles OAuth/SAML redirects from Supabase.
- * This page processes the authorization code and exchanges it for a session.
+ * Legacy OAuth callback route. Primary PKCE callback handling lives on `/`.
  */
 export const AuthCallbackPage = () => {
   const navigate = useNavigate();
@@ -24,7 +23,10 @@ export const AuthCallbackPage = () => {
       const { error, code } = getAuthCallbackParams(searchParams);
 
       if (error) {
-        handleAuthError(navigate);
+        void navigate("/", {
+          replace: true,
+          state: { authError: getOAuthErrorMessage(searchParams) },
+        });
         return;
       }
 
@@ -51,7 +53,7 @@ export const AuthCallbackPage = () => {
       }}
     >
       <CircularProgress />
-      <Typography variant="body1">Authenticating...</Typography>
+      <Typography variant="body1">Signing in…</Typography>
     </Box>
   );
 };

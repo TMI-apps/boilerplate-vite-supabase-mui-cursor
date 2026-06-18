@@ -1,19 +1,26 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import * as authService from "./authService";
 
-// Mock Supabase
 const mockSupabase = {
   auth: {
     signInWithPassword: vi.fn(),
     signUp: vi.fn(),
     signOut: vi.fn(),
     getUser: vi.fn(),
+    signInWithOAuth: vi.fn(),
+    resetPasswordForEmail: vi.fn(),
+    updateUser: vi.fn(),
+    exchangeCodeForSession: vi.fn(),
   },
 };
 
 vi.mock("@shared/services/supabaseService", () => ({
   getSupabase: vi.fn(() => mockSupabase),
   isSupabaseConfigured: vi.fn(() => true),
+}));
+
+vi.mock("@shared/utils/queryClient", () => ({
+  queryClient: { clear: vi.fn() },
 }));
 
 describe("authService", () => {
@@ -47,8 +54,8 @@ describe("authService", () => {
       });
     });
 
-    it("should return error on invalid credentials", async () => {
-      const mockError = { message: "Invalid credentials" };
+    it("should return mapped error on invalid credentials", async () => {
+      const mockError = { message: "Invalid login credentials" };
 
       vi.mocked(mockSupabase.auth.signInWithPassword).mockResolvedValue({
         data: { user: null, session: null },
@@ -61,7 +68,27 @@ describe("authService", () => {
       });
 
       expect(result.user).toBeNull();
-      expect(result.error).toEqual(mockError);
+      expect(result.error?.message).toBe("Invalid email or password.");
+    });
+  });
+
+  describe("signUp", () => {
+    it("should detect duplicate sign-up via empty identities", async () => {
+      vi.mocked(mockSupabase.auth.signUp).mockResolvedValue({
+        data: {
+          user: { id: "123", email: "test@example.com", identities: [] },
+          session: null,
+        },
+        error: null,
+      } as unknown as Awaited<ReturnType<typeof mockSupabase.auth.signUp>>);
+
+      const result = await authService.signUp({
+        email: "test@example.com",
+        password: "password123",
+      });
+
+      expect(result.user).toBeNull();
+      expect(result.error?.message).toContain("Google");
     });
   });
 

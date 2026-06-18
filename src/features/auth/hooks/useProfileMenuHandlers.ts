@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/shared/context/AuthContext";
 
 interface UseProfileMenuHandlersProps {
@@ -6,17 +7,18 @@ interface UseProfileMenuHandlersProps {
 }
 
 export const useProfileMenuHandlers = ({ onClose }: UseProfileMenuHandlersProps) => {
-  const { signInWithGoogle, signInWithEntreefederatie, logout } = useAuthContext();
+  const { signInWithGoogle, logout } = useAuthContext();
+  const navigate = useNavigate();
 
   const handleSignIn = useCallback(() => {
     void signInWithGoogle();
     onClose();
   }, [signInWithGoogle, onClose]);
 
-  const handleSignInEntreefederatie = useCallback(() => {
-    void signInWithEntreefederatie();
+  const handleGoToLogin = useCallback(() => {
     onClose();
-  }, [signInWithEntreefederatie, onClose]);
+    void navigate("/login");
+  }, [navigate, onClose]);
 
   const handleSignOut = useCallback(async () => {
     onClose();
@@ -25,7 +27,7 @@ export const useProfileMenuHandlers = ({ onClose }: UseProfileMenuHandlersProps)
 
   return {
     handleSignIn,
-    handleSignInEntreefederatie,
+    handleGoToLogin,
     handleSignOut,
   };
 };

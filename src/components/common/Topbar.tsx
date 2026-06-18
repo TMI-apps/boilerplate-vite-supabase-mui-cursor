@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import { ProfileMenu } from "@/components/common/ProfileMenu";
 
@@ -7,8 +7,6 @@ import { ProfileMenu } from "@/components/common/ProfileMenu";
  * This component is designed to be reusable across all apps.
  */
 export const Topbar = () => {
-  const location = useLocation();
-
   return (
     <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar>
@@ -17,14 +15,14 @@ export const Topbar = () => {
             component={Link}
             to="/"
             sx={{
-              color: location.pathname === "/" ? "primary.main" : "inherit",
+              color: "primary.main",
               textDecoration: "none",
               "&:hover": {
                 textDecoration: "none",
               },
             }}
           >
-            Vite MUI Supabase Starter
+            React app starterkit
           </Box>
         </Typography>
 

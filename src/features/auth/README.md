@@ -4,8 +4,9 @@ User authentication and session management via Supabase.
 
 ## Purpose
 
-- Email/password login and sign-up
-- Google OAuth and Entreefederatie (SAML) sign-in
+- Email/password login, sign-up, and password reset
+- Google OAuth sign-in (PKCE callback on `/`)
+- Anonymous sessions for unauthenticated visitors
 - Session persistence and auth state subscription
 - Profile menu state and handlers
 - Auth redirect and callback handling
@@ -14,37 +15,46 @@ User authentication and session management via Supabase.
 
 | Layer | Path | Purpose |
 |-------|------|---------|
-| Hooks | `hooks/` | `useAuth`, `useAuthSession`, `useAuthRedirect`, `useUserProfile` / `useUserProfileQuery`, `useProfileMenuState`, `useProfileMenuHandlers` |
-
-**TanStack Query:** `useUserProfileQuery` is the primary hook for user profile data (caching, deduplication). `useUserProfile` is a thin wrapper for backward compatibility.
-| Services | `services/` | `authService`, `authCallbackService` – Supabase auth calls |
-| Components | `components/` | `LoginForm` |
+| Hooks | `hooks/` | `useAuth`, `useAuthSession`, `useAuthRedirect`, `useAuthCallbackHandler`, profile menu hooks |
+| Services | `services/` | `authService`, `authCallbackService`, `authErrorMessages`, `authValidation` |
+| Components | `components/` | `SignInPanel`, `EmailAuthForm`, `LoginForm` (deprecated wrapper) |
 | Types | `types/` | `User`, `LoginCredentials`, `SignUpCredentials`, `AuthState` |
 
 ## Main API
 
-### `useAuth()`
+### `useAuth()` / `useAuthContext()`
 
-Returns: `{ user, loading, error, login, signUp, logout, signInWithGoogle, signInWithEntreefederatie }`
+Returns:
+
+`{ user, loading, error, login, signUp, logout, signInWithGoogle, requestPasswordReset, updatePassword, clearAuthError }`
 
 - Requires Supabase configured (`isSupabaseConfigured()`). If not, `loading` becomes `false` and handlers no-op.
+- Anonymous Supabase users are treated as logged out (`user === null`).
 - Session is initialized on mount and kept in sync via `useAuthStateSubscription`.
 
-### `authService`
+### Routes
 
-- `login(credentials)` / `signUp(credentials)` / `logout()` – password auth
-- `signInWithGoogle()` / `signInWithEntreefederatie()` – OAuth/SAML
-- Filters anonymous users via `supabaseUserToUser()`
+- `/login` – dedicated sign-in page (redirects to `/` when already authenticated)
+- `/reset-password` – password recovery from email link
+- `/` – inline sign-in when logged out; primary OAuth PKCE callback handler
+- `/auth/callback` – legacy OAuth callback (kept for backward compatibility)
 
 ## Dependencies
 
 - `@shared/services/supabaseService` – Supabase client, `isSupabaseConfigured`
-- `@config/entreefederatie` – Entreefederatie domain
+- `@shared/utils/appOrigin` – absolute app URLs (basename-aware)
+- `@config/legal` – placeholder Privacy/Terms URLs (`LEGAL_ORIGIN`)
 - `@shared/utils/userUtils` – `supabaseUserToUser`
+- `@utils/redirectUtils` – safe post-login redirect paths
+
+## Configuration checklist
+
+- Supabase Redirect URLs: app origin (`getAppOrigin()`), full `/reset-password` URL
+- Google OAuth provider enabled in Supabase
+- Env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` (or `VITE_SUPABASE_ANON_KEY`)
+- Update `LEGAL_ORIGIN` in `src/config/legal.ts` when product URLs are available
 
 ## Related
 
-- `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` – **SSOT** for Google Cloud + Supabase dashboard setup (Sign in with Google)
-- `documentation/DOC_MOBILE_LOCAL_DEV.md` – **SSOT** for testing auth (and layout) on a physical device during local dev; required before closing mobile OAuth issues
-- `src/routes/guards/` – auth guards for protected routes
-- `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` – Sign in with Google setup
+- `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` – Google Cloud + Supabase dashboard setup
+- `documentation/DOC_MOBILE_LOCAL_DEV.md` – local device testing for OAuth
