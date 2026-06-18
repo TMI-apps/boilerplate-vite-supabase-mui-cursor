@@ -1,5 +1,5 @@
 ---
-description: "Database migration best practices for Supabase/PostgreSQL"
+description: "SQL migration best practices for Supabase/PostgreSQL (not client queries or TanStack)"
 alwaysApply: false
 globs: ["**/supabase/migrations/**/*.sql", "**/supabase/**/*.sql"]
 ---
@@ -9,6 +9,35 @@ globs: ["**/supabase/migrations/**/*.sql", "**/supabase/**/*.sql"]
 ## Overview
 
 Database migrations must be safe for both fresh database resets and incremental updates. All migrations should be idempotent and handle edge cases gracefully.
+
+**This rule covers SQL in `supabase/migrations/` only.** It does not define how the React app reads or writes data.
+
+---
+
+## Scope and layer boundaries
+
+| Layer | Location | SSOT |
+| ----- | -------- | ---- |
+| Schema, RLS, functions, triggers | `supabase/migrations/*.sql` | **This rule** |
+| RLS policy performance (`(select auth.uid())`, etc.) | Migrations + | `security/RULE.md` |
+| Supabase client calls | `features/*/services/`, `shared/services/supabaseService.ts` | `architecture/RULE.md` |
+| Cached server state (reads, invalidation) | `features/*/hooks/` + query keys | `architecture/RULE.md`, `documentation/DOC_TANSTACK_QUERY.md` |
+| Auth session | `features/auth/hooks/` | Supabase `onAuthStateChange` — not TanStack |
+
+**Do not** put TanStack Query patterns in migrations, or SQL migration patterns in feature hooks. After a schema change: ship the migration first, then update services/types and TanStack hooks if the app consumes the new shape.
+
+---
+
+## New table checklist
+
+When adding a table the frontend will query:
+
+- [ ] `CREATE TABLE` with explicit types, `NOT NULL` / defaults where appropriate, and foreign keys
+- [ ] `ALTER TABLE … ENABLE ROW LEVEL SECURITY` in the same migration (or immediately after create)
+- [ ] RLS policies for each operation the app needs (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) — see `security/RULE.md` for `(select auth.uid())` syntax
+- [ ] Indexes on columns used in filters, joins, and sort (e.g. `user_id`, FK columns, `created_at` for `.order()`)
+- [ ] Regenerate TypeScript types after applying locally: `supabase gen types typescript --local > src/shared/types/database.types.ts` (then type `createClient<Database>()` when wired)
+- [ ] Verify policies with a non-service-role client (anon + authenticated), not only in the SQL editor as `postgres`
 
 ---
 
@@ -40,19 +69,19 @@ Database migrations must be safe for both fresh database resets and incremental 
 -- ❌ BAD: Fails on fresh database
 DO $$
 BEGIN
-  IF (SELECT COUNT(*) FROM tools) = 0 THEN
-    RAISE EXCEPTION 'Tools table is empty';
+  IF (SELECT COUNT(*) FROM example_table) = 0 THEN
+    RAISE EXCEPTION 'example_table is empty';
   END IF;
 END $$;
 
 -- ✅ GOOD: Skips validation on fresh database
 DO $$
 DECLARE
-  tool_count INTEGER;
+  row_count INTEGER;
 BEGIN
-  SELECT COUNT(*) INTO tool_count FROM tools;
-  IF tool_count = 0 THEN
-    RAISE NOTICE 'Tools table is empty - skipping validation (expected on fresh database)';
+  SELECT COUNT(*) INTO row_count FROM example_table;
+  IF row_count = 0 THEN
+    RAISE NOTICE 'example_table is empty - skipping validation (expected on fresh database)';
     RETURN;
   END IF;
   -- ... rest of validation
@@ -86,18 +115,18 @@ END IF;
 **Solution:** Use conditional checks or `ON CONFLICT`:
 
 ```sql
--- ✅ GOOD: Safe on empty table
-INSERT INTO user_assistants (user_id, assistant_id)
-SELECT id, unnest(accessible_assistant_ids)
-FROM users
-WHERE array_length(accessible_assistant_ids, 1) > 0
-ON CONFLICT DO NOTHING;
+-- ✅ GOOD: Safe on empty table (backfill from nullable source column)
+INSERT INTO example_child (parent_id, label)
+SELECT id, legacy_label
+FROM example_parent
+WHERE legacy_label IS NOT NULL
+ON CONFLICT (parent_id, label) DO NOTHING;
 
--- ✅ GOOD: Safe on empty table
-UPDATE files
-SET message_id = (metadata->>'message_id')::uuid
-WHERE metadata->>'message_id' IS NOT NULL
-  AND message_id IS NULL;
+-- ✅ GOOD: Safe on empty table (conditional update)
+UPDATE example_table
+SET status = 'active'
+WHERE status IS NULL
+  AND archived_at IS NULL;
 ```
 
 ### 5. Conditional Migrations Must Be Documented
@@ -116,13 +145,15 @@ DO $$
 BEGIN
   -- Only drop if columns exist
   IF EXISTS (
-    SELECT 1 FROM information_schema.columns 
-    WHERE table_name = 'users' AND column_name = 'total_messages'
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'example_table'
+      AND column_name = 'deprecated_column'
   ) THEN
-    ALTER TABLE users DROP COLUMN IF EXISTS total_messages;
-    RAISE NOTICE 'Dropped deprecated total_messages column';
+    ALTER TABLE example_table DROP COLUMN IF EXISTS deprecated_column;
+    RAISE NOTICE 'Dropped deprecated_column';
   ELSE
-    RAISE NOTICE 'total_messages column does not exist - skipping (expected on fresh database)';
+    RAISE NOTICE 'deprecated_column does not exist - skipping (expected on fresh database)';
   END IF;
 END $$;
 ```
@@ -171,26 +202,33 @@ ALTER TABLE table_name
 
 ### Index Creation
 
+Add indexes for columns the app filters or sorts on (`.eq()`, `.in()`, `.order()` from PostgREST). Foreign keys and `user_id` on RLS-scoped tables are common candidates.
+
 ```sql
 -- ✅ Always use IF NOT EXISTS
-CREATE INDEX IF NOT EXISTS idx_name ON table_name(column_name);
+CREATE INDEX IF NOT EXISTS idx_example_table_user_id ON example_table(user_id);
 
--- ✅ Partial indexes
-CREATE INDEX IF NOT EXISTS idx_name 
-ON table_name(column_name) 
-WHERE condition;
+-- ✅ Partial indexes (smaller, faster for filtered queries)
+CREATE INDEX IF NOT EXISTS idx_example_table_active
+ON example_table(created_at DESC)
+WHERE archived_at IS NULL;
 ```
 
 ### Policy Management
 
-```sql
--- ✅ Drop policies safely
-DROP POLICY IF EXISTS "policy_name" ON table_name;
+Enable RLS when creating user-facing tables. Policy **performance** patterns (subquery `auth.uid()`) are SSOT in `security/RULE.md`.
 
--- ✅ Create policies (usually unique by name, but be careful)
-CREATE POLICY "policy_name" ON table_name
+```sql
+-- ✅ Enable RLS on new tables
+ALTER TABLE example_table ENABLE ROW LEVEL SECURITY;
+
+-- ✅ Drop policies safely before recreate
+DROP POLICY IF EXISTS "Users can read own rows" ON example_table;
+
+-- ✅ Create policies — use (select auth.uid()) per security/RULE.md
+CREATE POLICY "Users can read own rows" ON example_table
   FOR SELECT
-  USING (condition);
+  USING ((select auth.uid()) = user_id);
 ```
 
 ### Enum Modifications
@@ -223,9 +261,9 @@ CREATE TRIGGER trigger_name
 **Format:** `YYYYMMDDHHMMSS_description.sql`
 
 **Examples:**
-- `20250120000000_create_tools_table.sql`
-- `20250120000001_fix_auth_trigger.sql`
-- `20251217000000_create_get_storage_object_metadata_function.sql`
+- `20250120000000_create_example_table.sql`
+- `20250120000001_add_example_table_rls.sql`
+- `20251217000000_create_example_rpc.sql`
 
 **Rules:**
 - Use timestamp for ordering
@@ -268,6 +306,9 @@ CREATE TRIGGER trigger_name
 - ✅ All CREATE operations use `IF NOT EXISTS` or `OR REPLACE`
 - ✅ Data migrations handle empty tables
 - ✅ Function dependencies exist before use
+- ✅ New user-facing tables have RLS enabled and policies applied
+- ✅ Indexes exist for common filter/sort columns
+- ✅ TypeScript types regenerated after schema changes (when types are in use)
 
 ---
 
@@ -279,16 +320,13 @@ CREATE TRIGGER trigger_name
 
 ```sql
 -- ✅ GOOD: Document revert migration
--- Revert files RLS policies to original working version
--- The (select auth.uid()) optimization may be causing performance issues
--- This migration reverts changes from 20250120000002_optimize_files_table_performance.sql
+-- Reverts RLS policy change from 20250120000002_tighten_example_table_select.sql
 
--- Drop optimized policies (safe with IF EXISTS)
-DROP POLICY IF EXISTS "Users can read own files" ON files;
+DROP POLICY IF EXISTS "Users can read own rows" ON example_table;
 
--- Recreate original policies
-CREATE POLICY "Users can read own files" ON files
-  FOR SELECT USING (auth.uid() = owner_id);
+CREATE POLICY "Users can read own rows" ON example_table
+  FOR SELECT
+  USING ((select auth.uid()) = user_id);
 ```
 
 ---
@@ -381,33 +419,36 @@ RAISE EXCEPTION 'Critical error: %', error_message;
 ### ✅ Good Migration
 
 ```sql
--- Add message_id column to files table
--- Safe for both fresh and existing databases
+-- Create example_table with RLS — safe on fresh database; idempotent guards for re-runs
 
-ALTER TABLE files
-  ADD COLUMN IF NOT EXISTS message_id UUID REFERENCES messages(id) ON DELETE SET NULL;
+CREATE TABLE IF NOT EXISTS example_table (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  archived_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
-CREATE INDEX IF NOT EXISTS idx_files_message_id 
-ON files(message_id) 
-WHERE message_id IS NOT NULL;
+ALTER TABLE example_table ENABLE ROW LEVEL SECURITY;
 
--- Migrate existing data (safe on empty table)
-UPDATE files
-SET message_id = (metadata->>'message_id')::uuid
-WHERE metadata->>'message_id' IS NOT NULL
-  AND message_id IS NULL
-  AND (metadata->>'message_id')::uuid IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_example_table_user_id ON example_table(user_id);
+CREATE INDEX IF NOT EXISTS idx_example_table_created_at
+ON example_table(created_at DESC)
+WHERE archived_at IS NULL;
 
--- Log results (informational)
+DROP POLICY IF EXISTS "Users can read own rows" ON example_table;
+CREATE POLICY "Users can read own rows" ON example_table
+  FOR SELECT
+  USING ((select auth.uid()) = user_id);
+
+DROP POLICY IF EXISTS "Users can insert own rows" ON example_table;
+CREATE POLICY "Users can insert own rows" ON example_table
+  FOR INSERT
+  WITH CHECK ((select auth.uid()) = user_id);
+
 DO $$
-DECLARE
-  migrated_count INTEGER;
 BEGIN
-  SELECT COUNT(*) INTO migrated_count
-  FROM files
-  WHERE message_id IS NOT NULL;
-  
-  RAISE NOTICE 'Migration complete. Files with message_id: %', migrated_count;
+  RAISE NOTICE 'example_table migration complete';
 END $$;
 ```
 
@@ -425,8 +466,8 @@ END $$;
 -- ❌ BAD: Will fail on fresh database
 DO $$
 BEGIN
-  IF (SELECT COUNT(*) FROM tools) = 0 THEN
-    RAISE EXCEPTION 'Tools table is empty';
+  IF (SELECT COUNT(*) FROM example_table) = 0 THEN
+    RAISE EXCEPTION 'example_table is empty';
   END IF;
 END $$;
 
@@ -445,10 +486,14 @@ Before committing a migration, verify:
 - [ ] Data migrations handle empty tables
 - [ ] No `RAISE EXCEPTION` in validation blocks (use `RAISE NOTICE` or `RAISE WARNING`)
 - [ ] Function dependencies exist in earlier migrations
+- [ ] User-facing tables have RLS enabled and policies for required operations
+- [ ] Indexes added for filter/sort columns the app will query
+- [ ] TypeScript types regenerated if the app uses generated `Database` types
 - [ ] Tested on fresh database (`supabase db reset`)
 - [ ] Tested on existing database (incremental update)
 - [ ] Clear comments explaining purpose and dependencies
 - [ ] Conditional migrations have proper checks and documentation
+- [ ] App layer updated separately (services/hooks) — see Scope and layer boundaries
 
 ---
 
@@ -464,9 +509,10 @@ Before committing a migration, verify:
 
 **When modifying this rule, check these rules for consistency:**
 
-- `security/RULE.md` - RLS policy patterns and security considerations
+- `security/RULE.md` - RLS policy performance and verification (policies are created in migrations)
 - `workflow/RULE.md` - Development processes and testing workflows
-- `architecture/RULE.md` - Database structure and organization patterns
+- `architecture/RULE.md` - Service/hook layers, TanStack Query patterns (not SQL)
+- `documentation/DOC_TANSTACK_QUERY.md` - Query keys, invalidation, client cache (not SQL)
 
 **Rules that reference this rule:**
 - `security/RULE.md` - References RLS policy patterns (which are often created in migrations)

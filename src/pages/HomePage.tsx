@@ -1,13 +1,10 @@
-import { Link } from "react-router-dom";
-import { Box, Typography, Button, Container, Alert } from "@mui/material";
+import { Box, Typography, Container } from "@mui/material";
 import { useAuthContext } from "@/shared/context/AuthContext";
 import { useSupabaseConfig } from "@shared/hooks/useSupabaseConfig";
-import { usePrefetch } from "@shared/hooks/usePrefetch";
 
 export const HomePage = () => {
   const { user } = useAuthContext();
   const { isConfigured: supabaseConfigured } = useSupabaseConfig();
-  const { prefetchSetup } = usePrefetch();
 
   return (
     <Container maxWidth="md">
@@ -18,22 +15,6 @@ export const HomePage = () => {
         <Typography variant="h6" color="text.secondary" component="p" sx={{ mb: 2 }}>
           A modern boilerplate with React, TypeScript, Vite, Material-UI, and Supabase
         </Typography>
-        {!supabaseConfigured && (
-          <Alert severity="info" sx={{ mb: 3, textAlign: "left" }}>
-            <Typography variant="body2">
-              <strong>Local Mode:</strong> You're running the app without Supabase configured.{" "}
-              <Typography
-                component={Link}
-                to="/setup"
-                onMouseEnter={prefetchSetup}
-                sx={{ color: "primary.main", textDecoration: "underline" }}
-              >
-                Configure Supabase
-              </Typography>{" "}
-              to enable authentication.
-            </Typography>
-          </Alert>
-        )}
         {user ? (
           <Box sx={{ mt: 4 }}>
             <Typography variant="body1" component="p" sx={{ mb: 2 }}>
@@ -42,20 +23,10 @@ export const HomePage = () => {
           </Box>
         ) : (
           <Box sx={{ mt: 4 }}>
-            {supabaseConfigured ? (
+            {supabaseConfigured && (
               <Typography variant="body1" color="text.secondary">
                 Use the profile icon in the topbar to sign in.
               </Typography>
-            ) : (
-              <Button
-                variant="contained"
-                size="large"
-                component={Link}
-                to="/setup"
-                onMouseEnter={prefetchSetup}
-              >
-                Configure Supabase
-              </Button>
             )}
           </Box>
         )}

@@ -7,6 +7,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.29.0] - 2026-06-09
+
+### Added
+
+- **Dev task backlog UI**: Card-style task rows, empty states, autosave chip indicator, and shared `taskStatusUi` constants for status labels and select width.
+
+### Changed
+
+- **`/tasks` layout**: Wider page shell, bordered panel, unified toolbar (tabs + add + autosave), and improved mobile grid for status/title/delete.
+- **Text autosave**: Dirty-aware background saves — local drafts while typing, debounced persist without parent re-render stomping, focus-within blur handling.
+- **Status labels**: Show “To do”, “Active”, and “Done” (stored value remains `in-progress`); status column min-width sized to fit “Active” without ellipsis.
+
+### Fixed
+
+- **Task delete**: Remove newly added or in-edit tasks using the latest pending snapshot, not stale list state.
+- **Status select**: Prevent “Act…” / “To…” truncation on narrow viewports via fixed column width.
+
+## [0.28.1] - 2026-06-09
+
+### Documentation
+
+- **Database rule**: Clarify SQL-migration-only scope, layer boundaries vs TanStack Query and auth, new-table checklist, and generic migration examples; update rules index blurb.
+
+## [0.28.0] - 2026-06-09
+
+### Added
+
+- **Onboarding tasks**: Seed `src/config/app-tasks.json` with five default tasks (Supabase, Hosting, App vision, Airtable optional, Theme).
+
+### Changed
+
+- **Onboarding**: Replace `/setup` wizard with dev task backlog — configure via `.env`, README, and agent skills; DevTasksFab is the sole entry to `/tasks`.
+- **Navigation**: Remove Topbar Setup link; Home and LoginForm no longer link to setup; ProfileMenu keeps minimal unconfigured auth message.
+- **Agent skills**: Rewrite `start` for task-based onboarding; extend `router` and `finish` with onboarding task sync guidance.
+
+### Removed
+
+- **Setup wizard**: Entire `src/features/setup/`, `SetupPage`, `setupUtils`, `app.config.json`, `vite-plugin-dev-api.ts`, `validate-app-config` (script + CI), and setup-only documentation.
+
+## [0.27.0] - 2026-06-04
+
+### Added
+
+- **Dev task backlog**: In-repo active/archive JSON (`src/config/app-tasks.json`, `app-tasks-archive.json`), `/tasks` UI with Active/Archive tabs, dnd-kit reorder, and dev-only Vite middleware (`/__dev/tasks*`).
+- **Dev entry**: Global floating **Tasks** FAB in development; minimal `/tasks` layout with scrollable list and top Snackbar feedback.
+- **Agent skills**: Bare `/router` reads the active backlog (not `finish`); `finish` archives completed tasks before commit when applicable.
+
+## [0.26.6] - 2026-06-04
+
+### Documentation
+
+- **Mobile local dev**: Add `DOC_MOBILE_LOCAL_DEV` runbook, `MOBILE_LOCAL_DEV` adoption guide, and thin links from README, `start` skill, debug patterns, auth/setup feature READMEs, and doc index.
+- **`write-adoption-guide` skill**: Adopt MILA-improved procedure with `voice-and-naming` rules so adoption guides stay target-repo-safe (home-repo name once; §3 illustrative only).
+
 ## [0.26.5] - 2026-06-02
 
 ### Changed

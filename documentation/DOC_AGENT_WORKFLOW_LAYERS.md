@@ -46,7 +46,7 @@ No separate `documentation/DOC_*` procedure for this workflow — invocable step
 |------|------|
 | How to write a guide | `.agents/skills/write-adoption-guide/SKILL.md` |
 | Output folder (config in skill) | `documentation/handoffs/` |
-| Template | `.agents/skills/write-adoption-guide/references/adoption-guide-template.md` |
+| Template + voice rules | `.agents/skills/write-adoption-guide/references/adoption-guide-template.md`, `references/voice-and-naming.md` |
 
 Copy `write-adoption-guide/` to other projects and adjust the skill **Configuration** block (output folder, repo display name).
 

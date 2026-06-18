@@ -2,6 +2,8 @@
 
 Compact guidance for **next-step mode**. Compress, skip, or reorder when scope, risk, or discoveries demand it.
 
+**`/router`:** Thread continuation first (mid-task → logical next skill); backlog intake only when idle. See [router § `/router` — pick next action + skill](../SKILL.md).
+
 **Skill inventory:** [`.agents/skills/router/SKILL.md`](../SKILL.md) § Skill index.
 
 ## Optimistic happy path

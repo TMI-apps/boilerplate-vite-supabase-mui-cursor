@@ -32,7 +32,7 @@ Answer **what exists** in the base: table ids (`tbl…`), field ids (`fld…`), 
 ### Layers (boilerplate vs fork)
 
 1. **Airtable-agnostic:** Meta API `GET /v0/meta/bases/{baseId}/tables`; Data API field ids vs display names.
-2. **This boilerplate:** Env `VITE_AIRTABLE_`*; runtime Meta usage and types in `src/shared/services/airtableService.ts`; setup wizard under `src/features/setup/`.
+2. **This boilerplate:** Env `VITE_AIRTABLE_*`; runtime Meta usage and types in `src/shared/services/airtableService.ts`; onboarding task in dev backlog.
 3. **Fork / product:** If you need a single SSOT for many `tbl`* / `fld`* constants, add a small module under `src/shared/` following `.cursor/rules/file-placement/RULE.md` and `.cursor/rules/architecture/RULE.md` (this repo does not ship one).
 
 ### Commands (repo root)
@@ -107,4 +107,4 @@ Output is JSON: `records[].fields` keyed by `fld…`.
 
 ## Related
 
-- `src/features/setup/README.md` — CLI / agent entry points
+- `README.md` — env vars and Airtable scripts (`pnpm airtable:meta-dump`, `pnpm airtable:sample`)

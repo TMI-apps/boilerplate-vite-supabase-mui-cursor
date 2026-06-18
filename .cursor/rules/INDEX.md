@@ -85,8 +85,10 @@ Quick reference guide to all rules and their relationships.
 ---
 
 ### Database (`database/RULE.md`)
-- Database migration best practices for Supabase/PostgreSQL
+- **SQL migrations only** (`supabase/migrations/`) — not client queries or TanStack
 - Safe migration patterns (idempotent, handles fresh/existing databases)
+- New-table checklist (RLS, indexes, type generation)
+- Layer boundaries (pointers to `architecture/RULE.md`, `DOC_TANSTACK_QUERY.md`)
 - Testing migrations (fresh database and incremental updates)
 - Error handling and logging patterns
 

@@ -28,7 +28,6 @@ Before pushing, ensure these pass locally:
 | Lint | `pnpm lint` |
 | Format | `pnpm format:check` |
 | Version/changelog sync | `pnpm validate:version-sync` |
-| App config | `pnpm validate:app-config` |
 | Structure | `pnpm validate:structure` |
 | Architecture | `pnpm arch:check:ci` |
 | Tests | `pnpm test:run` |
