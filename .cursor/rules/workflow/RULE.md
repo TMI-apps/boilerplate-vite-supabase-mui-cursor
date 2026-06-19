@@ -520,6 +520,16 @@ command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }
 
 ## Deployment Process
 
+### Cloudflare Workers (frontend SPA)
+
+- **SSOT:** `documentation/DOC_CLOUDFLARE_WORKERS.md` + root `wrangler.jsonc`
+- **Deploy model:** Workers Builds (push-to-deploy). GitHub is the CI gate only — no deploy workflow, no `CLOUDFLARE_API_TOKEN` secret. `develop` → preview, `main` → production
+- **Fork-safe:** never commit `account_id` or a custom-domain `routes` entry to this template — use `CLOUDFLARE_ACCOUNT_ID` (Workers Builds env / local) and per-fork domain config
+- `pnpm deploy` (`pnpm build && wrangler deploy`) is an emergency local path only
+- Set `VITE_*` (and `NODE_VERSION=20`, `CLOUDFLARE_ACCOUNT_ID`) in **Workers Builds build variables** (build-time embed), Root directory EMPTY
+- React Router requires `assets.not_found_handling: "single-page-application"` in `wrangler.jsonc` (already set)
+- Migration from Cloudflare Pages: see the doc's Pages → Workers mapping table
+
 ### Cloud Functions Deployment
 - When cloud functions have to be deployed (again) for changes to have effect, deploy them yourself
 - Don't ask user to deploy unless there's a specific reason they need to do it

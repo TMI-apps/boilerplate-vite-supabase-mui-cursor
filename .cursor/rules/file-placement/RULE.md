@@ -257,6 +257,16 @@ Let me know once you've moved them and I'll continue with the remaining changes.
 
 Always validate placement before creating. If invalid, suggest correct location per architecture rules.
 
+### Tooling artifacts (build / deploy CLIs)
+
+When adding deployment or build tooling that writes local state (e.g. Cloudflare Wrangler → `.wrangler/`):
+
+1. Add the path to **`.gitignore`**
+2. Add the same path to **`DEFAULT_IGNORE_PATTERNS`** in `scripts/project-structure-validator.js` (same pattern as `dist/`, `.firebase/`)
+3. Whitelist any new **root config files** in `projectStructure.config.cjs` (e.g. `wrangler.jsonc`)
+
+Otherwise `pnpm validate:structure` fails after the first local build. See `documentation/DOC_CLOUDFLARE_WORKERS.md`.
+
 ## Related Files
 
 When updating this rule, also check:

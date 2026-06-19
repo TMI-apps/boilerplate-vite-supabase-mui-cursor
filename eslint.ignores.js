@@ -3,6 +3,7 @@ export default [
   'dist/',
   'node_modules/',
   '.git/',
+  '.wrangler/',
   'coverage/',
   '.eslintcache',
   '*.config.js',

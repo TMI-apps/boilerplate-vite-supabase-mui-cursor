@@ -59,6 +59,8 @@ const DEFAULT_IGNORE_PATTERNS = [
   '.pnpm-store',
   'supabase/.temp/**', // Supabase CLI temporary files
   'supabase/.temp',
+  '.wrangler/**', // Wrangler local state (Cloudflare Workers)
+  '.wrangler',
   // Removed: 'backup/**', 'backup', 'backups/**', 'backups' - want to catch these as violations
   // Removed: '**/temp-*' - want to catch temp files as violations
   // Removed: '**/*-check.*' - want to catch check files as violations
