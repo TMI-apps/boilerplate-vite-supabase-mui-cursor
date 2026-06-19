@@ -6,7 +6,7 @@
   },
   {
     "title": "Configure Hosting",
-    "description": "Set deployment target and env vars for production (see README deployment section). Configure build output, preview URL, and any host-specific VITE_* vars. Confirm pnpm build succeeds locally before first deploy.",
+    "description": "Deploy via Cloudflare Workers Builds (push-to-deploy; GitHub is CI gate only). Rename `name` in wrangler.jsonc, connect the repo in the Cloudflare dashboard (Build `pnpm install && pnpm run build`, Deploy `npx wrangler deploy`, Root directory EMPTY), set NODE_VERSION=20 + CLOUDFLARE_ACCOUNT_ID + VITE_* build vars, add the deployed origin to Supabase Auth URLs. Full guide: documentation/DOC_CLOUDFLARE_WORKERS.md.",
     "status": "to-do"
   },
   {

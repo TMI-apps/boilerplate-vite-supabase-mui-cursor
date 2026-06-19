@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Rename before first deploy. Forks: use your own unique Worker name.
+  "name": "vite-mui-supabase-starter",
+  "compatibility_date": "2026-06-19",
+  "workers_dev": true,
+  "preview_urls": true,
+  // Assets-only SPA Worker (no `main`, no ASSETS binding).
+  // Account is NOT pinned here so the template stays fork-safe — set
+  // CLOUDFLARE_ACCOUNT_ID in Workers Builds (and locally) instead.
+  // Custom domains are a per-fork opt-in: add a `routes` entry in your fork.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}

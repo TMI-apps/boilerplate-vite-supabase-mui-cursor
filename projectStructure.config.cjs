@@ -723,6 +723,7 @@ module.exports = {
     { name: "vite.config.ts" },
     { name: "vitest.config.ts" },
     { name: "vite-plugin-dev-tasks.ts" },
+    { name: "wrangler.jsonc" },
     // YAML files (specific only, no wildcard - pure whitelist)
     { name: "pnpm-lock.yaml" },
     { name: "pnpm-workspace.yaml" },
@@ -742,6 +743,7 @@ module.exports = {
     { name: ".gitattributes" },
     { name: ".editorconfig" },
     { name: ".firebaserc" },
+    { name: ".node-version" },
     { name: "index.html" },
     // Environment files (specific only, no wildcard - pure whitelist)
     { name: ".env" },

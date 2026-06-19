@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.31.0] - 2026-06-19
+
+### Added
+
+- **Cloudflare Workers deployment**: Root `wrangler.jsonc` as a fork-safe, assets-only SPA Worker (`not_found_handling: single-page-application`, `workers_dev`, `preview_urls`); `.node-version` (20); `deploy` and `preview:worker` scripts.
+- **`documentation/DOC_CLOUDFLARE_WORKERS.md`**: Workers Builds–only deploy model with the GitHub-vs-Cloudflare responsibility split, dashboard settings (Build/Deploy commands, empty Root directory, `NODE_VERSION`/`CLOUDFLARE_ACCOUNT_ID`/`VITE_*` build vars), Pages → Workers migration mapping, and troubleshooting.
+
+### Changed
+
+- **Deploy architecture**: GitHub is the CI/quality gate only (no deploy workflow, no `CLOUDFLARE_API_TOKEN` secret); Cloudflare Workers Builds deploys on push (`develop` → preview, `main` → production).
+- **Fork-safety**: `account_id` and custom domain are intentionally not committed — disambiguate via `CLOUDFLARE_ACCOUNT_ID` and add domains per fork.
+- **Docs/rules**: README deployment section, hosting task in `app-tasks.json`, and workflow rule deployment guidance updated; `.wrangler/` ignored by the structure validator.
+
+### Removed
+
+- **`@cloudflare/vite-plugin`**: Switched to a plain assets-only Worker so the committed `wrangler.jsonc` is the single, transparent source of deploy config.
+
 ## [0.30.0] - 2026-06-10
 
 ### Added

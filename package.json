@@ -1,13 +1,15 @@
 {
   "name": "vite-mui-supabase-starter",
   "private": true,
-  "version": "0.30.0",
+  "version": "0.31.0",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "dev": "vite",
     "build": "tsc --project tsconfig.app.json && vite build",
     "preview": "vite preview",
+    "deploy": "pnpm build && wrangler deploy",
+    "preview:worker": "pnpm build && wrangler dev",
     "lint": "eslint . --cache --cache-location .eslintcache",
     "lint:fix": "eslint . --fix --cache --cache-location .eslintcache",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
@@ -93,7 +95,8 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.0",
     "vite": "^8.0.14",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.7",
+    "wrangler": "4.102.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

@@ -288,7 +288,8 @@ If you skipped Supabase setup initially, you can configure it anytime:
 
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
-- `pnpm preview` - Preview production build
+- `pnpm preview` - Preview production build (Workers runtime via Cloudflare Vite plugin)
+- `pnpm deploy` - Deploy to Cloudflare Workers (`wrangler deploy`)
 - `pnpm lint` - Run ESLint (code quality checks)
 - `pnpm lint:fix` - Auto-fix ESLint errors
 - `pnpm format` - Format all code with Prettier
@@ -315,6 +316,22 @@ This project uses **GTS**, **ESLint**, and **Prettier** together for code qualit
 - Configure your editor to format on save using Prettier
 - ESLint will provide real-time feedback in your IDE
 - See [ARCHITECTURE.md](./ARCHITECTURE.md#code-quality-tools) for detailed documentation
+
+## Deployment (Cloudflare Workers Builds)
+
+This starter targets **Cloudflare Workers** with static assets, deployed via **Workers Builds** (push-to-deploy). GitHub is the **CI/quality gate only** — it never deploys, and no `CLOUDFLARE_API_TOKEN` secret is needed.
+
+- **GitHub:** runs `ci.yml` and enforces PR + green `test` check on `main`/`develop`.
+- **Cloudflare Workers Builds:** builds and deploys on push (`develop` → preview, `main` → production).
+
+To connect a fork:
+
+1. Rename `name` in [`wrangler.jsonc`](./wrangler.jsonc).
+2. In the Cloudflare dashboard, connect the repo (Build `pnpm install && pnpm run build`, Deploy `npx wrangler deploy`, Root directory **empty**).
+3. Add build variables: `NODE_VERSION=20`, `CLOUDFLARE_ACCOUNT_ID`, and your `VITE_*` keys.
+4. Add the deployed origin to Supabase Auth URLs.
+
+The template is **fork-safe**: no account id or custom domain is committed. Full checklist, Pages migration mapping, OAuth URLs, and troubleshooting: **[documentation/DOC_CLOUDFLARE_WORKERS.md](./documentation/DOC_CLOUDFLARE_WORKERS.md)**.
 
 ## Architecture
 
