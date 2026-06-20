@@ -1,4 +1,4 @@
-import type { AppTask } from "../types/appTask.types";
+import type { AppTask } from "@/features/tasks/types/appTask.types";
 
 export const TASK_STATUS_OPTIONS: AppTask["status"][] = ["to-do", "in-progress", "done"];
 

@@ -6,7 +6,7 @@
  *
  * Usage:
  * ```tsx
- * import { theme } from "@shared/theme/theme";
+ * import { theme } from "@/shared/theme/theme";
  * import { ThemeProvider } from "@mui/material/styles";
  *
  * <ThemeProvider theme={theme}>

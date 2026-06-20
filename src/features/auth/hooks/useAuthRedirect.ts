@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/shared/context/AuthContext";
-import { getAndClearRedirectPath } from "@utils/redirectUtils";
+import { getAndClearRedirectPath } from "@/shared/utils/redirectUtils";
 
 /**
  * Custom hook that handles redirecting users to their intended page after successful authentication.

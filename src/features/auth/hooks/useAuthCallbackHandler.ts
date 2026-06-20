@@ -3,9 +3,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   getOAuthErrorMessage,
   handleCodeExchange,
-} from "@features/auth/services/authCallbackService";
-import { isPasswordRecoveryRedirect } from "@shared/utils/oauthUtils";
-import { isSupabaseConfigured } from "@shared/services/supabaseService";
+} from "@/features/auth/services/authCallbackService";
+import { isPasswordRecoveryRedirect } from "@/shared/utils/oauthUtils";
+import { isSupabaseConfigured } from "@/shared/services/supabaseService";
+import { useAuthContext } from "@/shared/context/AuthContext";
 
 interface AuthCallbackState {
   isProcessing: boolean;
@@ -18,8 +19,8 @@ interface AuthCallbackState {
 export const useAuthCallbackHandler = (): AuthCallbackState => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { error, setAuthError } = useAuthContext();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isSupabaseConfigured()) {
@@ -43,19 +44,22 @@ export const useAuthCallbackHandler = (): AuthCallbackState => {
       setIsProcessing(true);
 
       if (oauthError) {
-        setError(getOAuthErrorMessage(searchParams));
+        setAuthError(getOAuthErrorMessage(searchParams));
         setIsProcessing(false);
         return;
       }
 
       if (code) {
-        await handleCodeExchange(code, navigate);
+        const exchangeError = await handleCodeExchange(code, navigate);
+        if (exchangeError) {
+          setAuthError(exchangeError);
+        }
         setIsProcessing(false);
       }
     };
 
     void processCallback();
-  }, [navigate, searchParams]);
+  }, [navigate, searchParams, setAuthError]);
 
   return { isProcessing, error };
 };

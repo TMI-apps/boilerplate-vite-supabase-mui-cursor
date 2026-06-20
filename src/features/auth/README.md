@@ -10,15 +10,18 @@ User authentication and session management via Supabase.
 - Session persistence and auth state subscription
 - Profile menu state and handlers
 - Auth redirect and callback handling
+- User profile query/mutation (TanStack Query)
 
 ## Structure
 
 | Layer | Path | Purpose |
 |-------|------|---------|
-| Hooks | `hooks/` | `useAuth`, `useAuthSession`, `useAuthRedirect`, `useAuthCallbackHandler`, profile menu hooks |
-| Services | `services/` | `authService`, `authCallbackService`, `authErrorMessages`, `authValidation` |
-| Components | `components/` | `SignInPanel`, `EmailAuthForm`, `LoginForm` (deprecated wrapper) |
-| Types | `types/` | `User`, `LoginCredentials`, `SignUpCredentials`, `AuthState` |
+| Hooks | `hooks/` | `useAuth`, `useAuthSession`, `useAuthRedirect`, `useAuthCallbackHandler`, `useUserProfileQuery`, `useUpdateUserProfile`, profile menu hooks |
+| Services | `services/` | `authService`, `authCallbackService`, `authErrorMessages`, `authValidation`, `userProfileService`, `authHandlerUtils` |
+| Components | `components/` | `SignInPanel`, `EmailAuthForm`, `authViewLayout` tokens |
+| Types | `types/` | `User`, `UserProfile`, `AuthContextValue`, credentials types |
+
+**Cross-layout UI:** `ProfileMenu` lives in `@/components/common/ProfileMenu` (shell widget used by Topbar).
 
 ## Main API
 
@@ -26,11 +29,17 @@ User authentication and session management via Supabase.
 
 Returns:
 
-`{ user, loading, error, login, signUp, logout, signInWithGoogle, requestPasswordReset, updatePassword, clearAuthError }`
+`{ user, loading, error, login, signUp, logout, signInWithGoogle, requestPasswordReset, updatePassword, clearAuthError, setAuthError }`
 
 - Requires Supabase configured (`isSupabaseConfigured()`). If not, `loading` becomes `false` and handlers no-op.
 - Anonymous Supabase users are treated as logged out (`user === null`).
 - Session is initialized on mount and kept in sync via `useAuthStateSubscription`.
+
+### User feedback policy
+
+- **Form-blocking errors:** inline MUI `Alert` (sign-in panel, email form).
+- **OAuth/callback errors:** `setAuthError` on auth context; shown on Home via single Alert.
+- **Profile mutations:** TanStack `useUpdateUserProfile` merges server response via `setQueryData` (no happy-path invalidation).
 
 ### Routes
 
@@ -41,11 +50,12 @@ Returns:
 
 ## Dependencies
 
-- `@shared/services/supabaseService` – Supabase client, `isSupabaseConfigured`
-- `@shared/utils/appOrigin` – absolute app URLs (basename-aware)
-- `@config/legal` – placeholder Privacy/Terms URLs (`LEGAL_ORIGIN`)
-- `@shared/utils/userUtils` – `supabaseUserToUser`
-- `@utils/redirectUtils` – safe post-login redirect paths
+- `@/shared/services/supabaseService` – Supabase client, `isSupabaseConfigured`
+- `@/shared/utils/appOrigin` – absolute app URLs (basename-aware)
+- `@/config/legal` – placeholder Privacy/Terms URLs (`LEGAL_ORIGIN`)
+- `@/shared/utils/userUtils` – `supabaseUserToUser`
+- `@/shared/utils/redirectUtils` – safe post-login redirect paths
+- `@/shared/utils/queryKeys` – TanStack profile query keys
 
 ## Configuration checklist
 
@@ -58,3 +68,4 @@ Returns:
 
 - `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` – Google Cloud + Supabase dashboard setup
 - `documentation/DOC_MOBILE_LOCAL_DEV.md` – local device testing for OAuth
+- `documentation/DOC_TANSTACK_QUERY.md` – profile query/mutation patterns

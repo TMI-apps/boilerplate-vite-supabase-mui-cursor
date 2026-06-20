@@ -1,10 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { sharedQueryKeys } from "@shared/utils/queryKeys";
-import { updateUserProfile, type UserProfileUpdate } from "../services/userProfileService";
+import { sharedQueryKeys } from "@/shared/utils/queryKeys";
+import type { UserProfileUpdate } from "@/features/auth/types/auth.types";
+import { updateUserProfile } from "@/features/auth/services/userProfileService";
 
 /**
  * Mutation hook to update user profile.
- * Invalidates the profile query on success so the UI refetches.
+ * Merges the canonical server response into the profile query cache on success.
  */
 export const useUpdateUserProfile = (userId: string | null) => {
   const queryClient = useQueryClient();
@@ -14,11 +15,9 @@ export const useUpdateUserProfile = (userId: string | null) => {
       if (!userId) throw new Error("User ID required");
       return updateUserProfile(userId, data);
     },
-    onSuccess: () => {
-      if (userId) {
-        void queryClient.invalidateQueries({
-          queryKey: sharedQueryKeys.user.profile(userId),
-        });
+    onSuccess: (result) => {
+      if (userId && result) {
+        queryClient.setQueryData(sharedQueryKeys.user.profile(userId), result);
       }
     },
   });

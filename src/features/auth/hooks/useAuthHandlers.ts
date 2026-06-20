@@ -1,13 +1,13 @@
 import { useRef, useCallback } from "react";
-import * as authService from "../services/authService";
-import type { User, LoginCredentials, SignUpCredentials } from "../types/auth.types";
+import * as authService from "@/features/auth/services/authService";
+import type { User, LoginCredentials, SignUpCredentials } from "@/features/auth/types/auth.types";
 import {
   handleLogin as handleLoginUtil,
   handleSignUp as handleSignUpUtil,
   handleLogout as handleLogoutUtil,
   handleRequestPasswordReset as handleRequestPasswordResetUtil,
   handleUpdatePassword as handleUpdatePasswordUtil,
-} from "./authHandlerUtils";
+} from "@/features/auth/services/authHandlerUtils";
 
 interface UseAuthHandlersOptions {
   setUser: (user: User | null) => void;

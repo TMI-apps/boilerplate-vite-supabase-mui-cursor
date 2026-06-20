@@ -22,13 +22,23 @@ try {
     process.exit(0);
   }
 
-  // Pass files to validator
+  // Pass files to validator (use temp file to avoid Windows command-line length limits)
   const validatorPath = path.join(__dirname, 'project-structure-validator.js');
-  const filesArg = stagedFiles.join(',');
-  
-  execSync(`node "${validatorPath}" --files=${filesArg}`, {
-    stdio: 'inherit',
-  });
+  const fs = require('fs');
+  const os = require('os');
+  const tmpFile = path.join(os.tmpdir(), `staged-structure-files-${process.pid}.txt`);
+  fs.writeFileSync(tmpFile, stagedFiles.join('\n'), 'utf8');
+  try {
+    execSync(`node "${validatorPath}" --files-from="${tmpFile}"`, {
+      stdio: 'inherit',
+    });
+  } finally {
+    try {
+      fs.unlinkSync(tmpFile);
+    } catch {
+      // ignore cleanup errors
+    }
+  }
 } catch (error) {
   // If git command fails or validator fails, exit with error code
   process.exit(error.status || 1);

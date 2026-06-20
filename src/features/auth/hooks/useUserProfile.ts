@@ -1,7 +1,7 @@
 import { useUserProfileQuery } from "./useUserProfileQuery";
-import type { User, UserProfile } from "../types/auth.types";
+import type { User, UserProfile } from "@/features/auth/types/auth.types";
 
-export type { UserProfile, UserRole } from "../types/auth.types";
+export type { UserProfile, UserRole } from "@/features/auth/types/auth.types";
 
 interface UseUserProfileReturn {
   profile: UserProfile | null;

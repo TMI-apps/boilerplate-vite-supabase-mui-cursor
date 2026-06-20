@@ -1,5 +1,5 @@
-import * as authService from "../services/authService";
-import type { User, LoginCredentials, SignUpCredentials } from "../types/auth.types";
+import * as authService from "@/features/auth/services/authService";
+import type { User, LoginCredentials, SignUpCredentials } from "@/features/auth/types/auth.types";
 
 interface AuthHandlerState {
   setUser: (user: User | null) => void;

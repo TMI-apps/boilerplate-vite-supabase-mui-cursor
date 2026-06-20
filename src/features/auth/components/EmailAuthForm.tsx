@@ -3,10 +3,10 @@ import { Alert, Box, Link, ToggleButton, ToggleButtonGroup, Typography } from "@
 import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
 import { useAuthContext } from "@/shared/context/AuthContext";
-import { useAuthRedirect } from "../hooks/useAuthRedirect";
-import { PASSWORD_RESET_SENT_MESSAGE } from "../services/authErrorMessages";
-import { validateEmail, validatePassword } from "../services/authValidation";
-import type { LoginCredentials, SignUpCredentials } from "../types/auth.types";
+import { useAuthRedirect } from "@/features/auth/hooks/useAuthRedirect";
+import { PASSWORD_RESET_SENT_MESSAGE } from "@/features/auth/types/authMessages";
+import { useEmailAuthValidation } from "@/features/auth/hooks/useEmailAuthValidation";
+import type { LoginCredentials, SignUpCredentials } from "@/features/auth/types/auth.types";
 import { authStackSpacing } from "./authViewLayout";
 
 type EmailAuthMode = "sign-in" | "sign-up" | "forgot-password";
@@ -21,6 +21,7 @@ const compactFieldSx = {
 
 export const EmailAuthForm = ({ authDisabled = false }: EmailAuthFormProps) => {
   const { login, signUp, requestPasswordReset, loading, clearAuthError } = useAuthContext();
+  const { validateEmailField, validatePasswordField } = useEmailAuthValidation();
   const resetRedirect = useAuthRedirect();
   const [mode, setMode] = useState<EmailAuthMode>("sign-in");
   const [email, setEmail] = useState("");
@@ -62,7 +63,7 @@ export const EmailAuthForm = ({ authDisabled = false }: EmailAuthFormProps) => {
     setSuccessMessage(null);
     clearAuthError();
 
-    const emailError = validateEmail(email);
+    const emailError = validateEmailField(email);
     if (emailError) {
       setValidationError(emailError);
       return;
@@ -76,7 +77,7 @@ export const EmailAuthForm = ({ authDisabled = false }: EmailAuthFormProps) => {
       return;
     }
 
-    const passwordError = validatePassword(password);
+    const passwordError = validatePasswordField(password);
     if (passwordError) {
       setValidationError(passwordError);
       return;

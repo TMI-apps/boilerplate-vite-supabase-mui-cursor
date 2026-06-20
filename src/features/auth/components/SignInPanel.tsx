@@ -1,11 +1,11 @@
 import { Alert, Box, Divider, Link, Typography } from "@mui/material";
 import { Button } from "@/components/common/Button";
 import { useAuthContext } from "@/shared/context/AuthContext";
-import { useSupabaseConfig } from "@shared/hooks/useSupabaseConfig";
-import { PRIVACY_URL, TERMS_URL } from "@config/legal";
+import { useSupabaseConfig } from "@/shared/hooks/useSupabaseConfig";
+import { PRIVACY_URL, TERMS_URL } from "@/config/legal";
 import { GoogleIcon } from "./GoogleIcon";
 import { EmailAuthForm } from "./EmailAuthForm";
-import { authStackSpacing } from "./authViewLayout";
+import { authStackSpacing, authContentMaxWidth } from "./authViewLayout";
 
 const SUPABASE_CONFIG_MESSAGE =
   "Authentication requires Supabase configuration. Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY (or VITE_SUPABASE_ANON_KEY) in your environment.";
@@ -19,7 +19,7 @@ export const SignInPanel = () => {
     <Box
       sx={{
         width: "100%",
-        maxWidth: 420,
+        maxWidth: authContentMaxWidth,
         flexShrink: 0,
       }}
     >

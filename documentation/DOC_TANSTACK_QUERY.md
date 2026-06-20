@@ -20,10 +20,6 @@ export const sharedQueryKeys = {
     all: ["user"] as const,
     profile: (userId: string) => ["user", "profile", userId] as const,
   },
-  config: {
-    all: ["config"] as const,
-    section: (section: string) => ["config", section] as const,
-  },
 } as const;
 ```
 
@@ -58,7 +54,7 @@ Only invalidate directly related keys. Avoid broad `invalidateQueries({ queryKey
 | Create project      | `projectKeys.lists()`                           | Detail (not yet existing) |
 | Update project      | `projectKeys.detail(id)`, `projectKeys.lists()` | Other features            |
 | Delete project      | `projectKeys.detail(id)`, `projectKeys.lists()` | User, config              |
-| Update user profile | `sharedQueryKeys.user.profile(userId)`          | Config, projects          |
+| Update user profile | Merge via `setQueryData` on mutation result | Same profile key on happy path |
 
 ### Example: useUpdateUserProfile
 
@@ -69,11 +65,9 @@ export const useUpdateUserProfile = (userId: string | null) => {
 
   return useMutation({
     mutationFn: (data: UserProfileUpdate) => updateUserProfile(userId!, data),
-    onSuccess: () => {
-      if (userId) {
-        queryClient.invalidateQueries({
-          queryKey: sharedQueryKeys.user.profile(userId),
-        });
+    onSuccess: (result) => {
+      if (userId && result) {
+        queryClient.setQueryData(sharedQueryKeys.user.profile(userId), result);
       }
     },
   });
@@ -117,11 +111,14 @@ Supabase uses Row Level Security (RLS). Always include `userId` in the query key
 
 | Data type             | staleTime       | gcTime           | Notes                              |
 | --------------------- | --------------- | ---------------- | ---------------------------------- |
-| User profile          | 5 min (default) | 30 min (default) | Invalidated on profile update      |
-| Config sections       | 10 min          | 1 hour           | Setup wizard data, rarely changes  |
+| User profile          | 5 min (default) | 30 min (default) | Merge via `setQueryData` on update |
 | Lists (e.g. projects) | 5 min           | 30 min           | Invalidate on create/update/delete |
 | Detail (e.g. project) | 2–5 min         | 30 min           | Invalidate on update/delete        |
 | Realtime data         | 0               | 5 min            | Polling or websocket-driven        |
+
+## Intentional exceptions
+
+**`/tasks` dev backlog** (`src/features/tasks`) uses local React state and direct fetch to the Vite dev middleware — not TanStack Query. This is intentional: the backlog is a dev-only tool backed by local JSON, not user-facing server state. See `src/features/tasks/README.md`.
 
 ## Testing
 
@@ -145,8 +142,8 @@ render(<ProfileMenu />, {
 
 ### When to use
 
-- **Use wrapper:** When rendering components that call `useUserProfile`, `useConfigurationData`, or other query hooks without mocking them
-- **Mock instead:** When you want to control the returned data (e.g. `vi.mock("@features/auth/hooks/useUserProfile")`)
+- **Use wrapper:** When rendering components that call `useUserProfileQuery` or other query hooks without mocking them
+- **Mock instead:** When you want to control the returned data (e.g. `vi.mock("@/features/auth/hooks/useUserProfileQuery")`)
 
 ### Service tests
 
@@ -157,28 +154,11 @@ Mock `queryClient` in service tests when the service uses it (e.g. invalidation 
 Unit tests cover hooks and services. The following require **manual verification**:
 
 - Login/logout flow and cache clear on logout
-- Prefetching on hover over Setup links
 - Cached data when navigating back
-
-See `documentation/jobs/implementation-plan-tanstack-query.md` – Step 9 "Not covered by automated tests".
-
-## Prefetching
-
-**File:** `src/shared/hooks/usePrefetch.ts`
-
-- Use `prefetchSetup` on hover over Setup links to preload config data
-- **Rule:** Only prefetch for critical routes; measure before adding more
-
-```tsx
-const { prefetchSetup } = usePrefetch();
-<Link to="/setup" onMouseEnter={prefetchSetup}>
-  Setup
-</Link>;
-```
 
 ## Lazy loading + Suspense
 
-- Lazy load heavy pages: `lazy(() => import("@pages/SetupPage"))`
+- Lazy load heavy pages: `lazy(() => import("@/pages/tasks/TasksPage"))`
 - Wrap routes in `<Suspense fallback={<PageLoadingState />}>`
 - Cached query data + code splitting = fast navigation on return visits
 

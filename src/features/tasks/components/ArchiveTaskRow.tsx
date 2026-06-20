@@ -9,7 +9,7 @@ import {
   Typography,
   type SelectChangeEvent,
 } from "@mui/material";
-import type { ActiveTaskStatus, AppTask } from "../types/appTask.types";
+import type { ActiveTaskStatus, AppTask } from "@/features/tasks/types/appTask.types";
 
 interface ArchiveTaskRowProps {
   task: AppTask;
@@ -49,7 +49,7 @@ export const ArchiveTaskRow = ({ task, displayIndex, onRestore }: ArchiveTaskRow
           >
             {task.title}
           </Typography>
-          <Chip label="Done" size="small" color="success" variant="outlined" sx={{ height: 22 }} />
+          <Chip label="Done" size="small" color="success" variant="outlined" />
         </Box>
 
         <Collapse in={expanded}>

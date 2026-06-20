@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Box, Typography, CircularProgress } from "@mui/material";
 import {
   checkSupabaseConfigured,
   getOAuthErrorMessage,
   handleCodeExchange,
   getRedirectPath,
-} from "@features/auth/services/authCallbackService";
+} from "@/features/auth/services/authCallbackService";
 import { getAuthCallbackParams } from "@/shared/utils/authCallbackParams";
+import { useAuthContext } from "@/shared/context/AuthContext";
+import { PageLoadingState } from "@/components/common/PageLoadingState";
 
 /**
  * Legacy OAuth callback route. Primary PKCE callback handling lives on `/`.
@@ -15,6 +16,7 @@ import { getAuthCallbackParams } from "@/shared/utils/authCallbackParams";
 export const AuthCallbackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { setAuthError } = useAuthContext();
 
   useEffect(() => {
     const handleAuthCallback = async () => {
@@ -23,15 +25,16 @@ export const AuthCallbackPage = () => {
       const { error, code } = getAuthCallbackParams(searchParams);
 
       if (error) {
-        void navigate("/", {
-          replace: true,
-          state: { authError: getOAuthErrorMessage(searchParams) },
-        });
+        setAuthError(getOAuthErrorMessage(searchParams));
+        void navigate("/", { replace: true });
         return;
       }
 
       if (code) {
-        await handleCodeExchange(code, navigate);
+        const exchangeError = await handleCodeExchange(code, navigate);
+        if (exchangeError) {
+          setAuthError(exchangeError);
+        }
         return;
       }
 
@@ -39,21 +42,7 @@ export const AuthCallbackPage = () => {
     };
 
     void handleAuthCallback();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, setAuthError]);
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        gap: 2,
-      }}
-    >
-      <CircularProgress />
-      <Typography variant="body1">Signing in…</Typography>
-    </Box>
-  );
+  return <PageLoadingState message="Completing sign-in…" />;
 };

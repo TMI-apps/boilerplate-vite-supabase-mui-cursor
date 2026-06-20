@@ -379,11 +379,7 @@ module.exports = {
           name: "types",
           children: [{ name: "*.d.ts" }],
         },
-        // Utils
-        {
-          name: "utils",
-          children: [{ name: "*.ts" }],
-        },
+        // Utils — consolidated under shared/utils (no top-level src/utils)
         // Reference (documentation)
         {
           name: "_reference",
@@ -643,8 +639,15 @@ module.exports = {
               children: [
                 { name: "SKILL.md" },
                 { name: "patterns.md" },
+                { name: "AGENTS.md" },
+                { name: "README.md" },
+                { name: "metadata.json" },
                 {
                   name: "references",
+                  children: [{ name: "*.md" }],
+                },
+                {
+                  name: "rules",
                   children: [{ name: "*.md" }],
                 },
               ],
@@ -701,6 +704,7 @@ module.exports = {
     { name: "database.rules.json" },
     { name: "firebase.json" },
     { name: "package.json" },
+    { name: "skills-lock.json" },
     { name: "projectStructure.cache.json" },
     { name: "saml-attribute-mapping.json" },
     { name: "tsconfig.json" },

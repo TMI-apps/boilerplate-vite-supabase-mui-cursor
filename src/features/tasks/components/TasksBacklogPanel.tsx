@@ -1,6 +1,6 @@
 import { Add } from "@mui/icons-material";
 import { Box, Button, Stack, Tab, Tabs } from "@mui/material";
-import { useAppTasksBacklog } from "../hooks/useAppTasksBacklog";
+import { useAppTasksBacklog } from "@/features/tasks/hooks/useAppTasksBacklog";
 import { ActiveTaskList } from "./ActiveTaskList";
 import { ArchiveTaskList } from "./ArchiveTaskList";
 import { TasksAutosaveIndicator } from "./TasksAutosaveIndicator";

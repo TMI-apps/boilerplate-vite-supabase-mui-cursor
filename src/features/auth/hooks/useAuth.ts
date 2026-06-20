@@ -1,24 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { isSupabaseConfigured } from "@shared/services/supabaseService";
-import type { User, LoginCredentials, SignUpCredentials } from "../types/auth.types";
+import { isSupabaseConfigured } from "@/shared/services/supabaseService";
+import type { AuthContextValue, User } from "@/features/auth/types/auth.types";
 import { initializeSession } from "./useAuthSession";
 import { useAuthStateSubscription } from "./useAuthStateSubscription";
 import { useAuthHandlers } from "./useAuthHandlers";
 
-interface UseAuthReturn {
-  user: User | null;
-  loading: boolean;
-  error: string | null;
-  login: (credentials: LoginCredentials) => Promise<void>;
-  signUp: (credentials: SignUpCredentials) => Promise<void>;
-  logout: () => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
-  requestPasswordReset: (email: string) => Promise<boolean>;
-  updatePassword: (password: string) => Promise<boolean>;
-  clearAuthError: () => void;
-}
-
-export const useAuth = (): UseAuthReturn => {
+export const useAuth = (): AuthContextValue => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,10 +48,15 @@ export const useAuth = (): UseAuthReturn => {
     setError,
   });
 
+  const setAuthError = useCallback((message: string | null) => {
+    setError(message);
+  }, []);
+
   return {
     user,
     loading,
     error,
     ...handlers,
+    setAuthError,
   };
 };

@@ -1,4 +1,4 @@
-import type { ActiveTaskStatus, AppTask } from "../types/appTask.types";
+import type { ActiveTaskStatus, AppTask } from "@/features/tasks/types/appTask.types";
 
 const TASK_KEYS = new Set(["title", "description", "status"]);
 

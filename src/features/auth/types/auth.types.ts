@@ -45,3 +45,33 @@ export interface SignUpCredentials {
   password: string;
   // Add any additional signup fields here
 }
+
+/** Partial profile data for updates (excludes id) */
+export type UserProfileUpdate = Partial<Omit<UserProfile, "id">>;
+
+/** Auth context and useAuth return shape */
+export interface AuthContextValue {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  signUp: (credentials: SignUpCredentials) => Promise<void>;
+  logout: () => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<boolean>;
+  updatePassword: (password: string) => Promise<boolean>;
+  clearAuthError: () => void;
+  setAuthError: (message: string | null) => void;
+}
+
+/** Service result with optional error */
+export interface AuthServiceResult<T> {
+  data: T;
+  error: Error | null;
+}
+
+/** Connection test result for external services */
+export interface ConnectionTestResult {
+  success: boolean;
+  error?: string;
+}

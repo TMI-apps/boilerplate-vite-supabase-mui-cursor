@@ -24,7 +24,7 @@ export const ProfileName = ({ displayName, isVerified }: ProfileNameProps) => {
         <VerifiedIcon
           fontSize="small"
           color="primary"
-          sx={{ fontSize: (theme) => theme.spacing(2), flexShrink: 0 }}
+          sx={{ fontSize: (theme) => theme.typography.body2.fontSize, flexShrink: 0 }}
         />
       )}
     </Box>

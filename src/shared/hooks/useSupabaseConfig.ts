@@ -1,4 +1,4 @@
-import { isSupabaseConfigured } from "@shared/services/supabaseService";
+import { isSupabaseConfigured } from "@/shared/services/supabaseService";
 
 /**
  * Hook to check if Supabase is configured.

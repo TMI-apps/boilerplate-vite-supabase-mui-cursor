@@ -1,5 +1,4 @@
-import type { User } from "@features/auth/types/auth.types";
-import type { UserProfile } from "@features/auth/hooks/useUserProfile";
+import type { User, UserProfile } from "@/features/auth/types/auth.types";
 
 /**
  * Get display name for user (profile display name, email, or fallback)

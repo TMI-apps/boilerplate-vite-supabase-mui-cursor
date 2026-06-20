@@ -13,7 +13,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Stack } from "@mui/material";
-import type { AppTask } from "../types/appTask.types";
+import type { AppTask } from "@/features/tasks/types/appTask.types";
 import { ActiveTaskRow } from "./ActiveTaskRow";
 import { TasksListEmptyState } from "./TasksListEmptyState";
 
