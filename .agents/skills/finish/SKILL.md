@@ -14,6 +14,8 @@ Complete the implementation by doing what you haven't done yet of these tasks:
 
 **Same behavior as choosing `done` on `/tasks`:** remove the task from `src/config/app-tasks.json` and append `{ title, description, status: "done" }` to `src/config/app-tasks-archive.json`. Do **not** leave `done` rows in the active file.
 
+**Always include task-list changes in the commit:** Whenever `src/config/app-tasks.json` or `src/config/app-tasks-archive.json` have pending changes, they **must** be staged in the commit you are about to make — no matter what else that commit contains. Never leave task-list updates out of a commit. This applies even when no archive ran this session (e.g. status edits made via `/tasks`).
+
 Run this block **before** version/changelog edits and **before** any `git add` / `git commit`.
 
 1. Read **only** `src/config/app-tasks.json`.
