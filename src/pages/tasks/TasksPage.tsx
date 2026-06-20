@@ -12,7 +12,7 @@ export const TasksPage = () => {
         minHeight: "100dvh",
         display: "flex",
         flexDirection: "column",
-        bgcolor: (theme) => (theme.palette.mode === "light" ? "grey.50" : "background.default"),
+        bgcolor: "background.default",
       }}
     >
       <Container

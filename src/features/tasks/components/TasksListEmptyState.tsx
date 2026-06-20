@@ -34,7 +34,7 @@ export const TasksListEmptyState = ({ variant }: TasksListEmptyStateProps) => {
         borderColor: "divider",
         borderStyle: "dashed",
         borderRadius: 2,
-        bgcolor: (theme) => (theme.palette.mode === "light" ? "grey.50" : "action.hover"),
+        bgcolor: "action.hover",
       }}
     >
       <Icon sx={{ fontSize: 40, color: "text.disabled", mb: 1 }} />

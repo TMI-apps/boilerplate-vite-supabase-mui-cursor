@@ -1,10 +1,13 @@
 import { NavigateFunction } from "react-router-dom";
-import { isSupabaseConfigured } from "@shared/services/supabaseService";
-import { shouldExchangeCode } from "@shared/utils/pkceExchangeGuard";
+import { isSupabaseConfigured } from "@/shared/services/supabaseService";
+import { shouldExchangeCode } from "@/shared/utils/pkceExchangeGuard";
 import * as authService from "./authService";
-import { getAndClearRedirectPath } from "@utils/redirectUtils";
+import { getAndClearRedirectPath } from "@/shared/utils/redirectUtils";
+import { mapAuthError } from "./authErrorMessages";
 
-export const OAUTH_CALLBACK_ERROR_MESSAGE = "Sign-in could not be completed. Please try again.";
+import { OAUTH_CALLBACK_ERROR_MESSAGE } from "@/features/auth/types/authMessages";
+
+export { OAUTH_CALLBACK_ERROR_MESSAGE };
 
 export const checkSupabaseConfigured = (navigate: NavigateFunction): boolean => {
   if (!isSupabaseConfigured()) {
@@ -25,25 +28,27 @@ export const getOAuthErrorMessage = (searchParams: URLSearchParams): string => {
 export const handleCodeExchange = async (
   code: string,
   navigate: NavigateFunction
-): Promise<void> => {
+): Promise<string | null> => {
   if (!shouldExchangeCode(code)) {
     const redirectPath = getAndClearRedirectPath();
     void navigate(redirectPath || "/", { replace: true });
-    return;
+    return null;
   }
 
   try {
     const { error: exchangeError } = await authService.exchangeCodeForSession(code);
 
     if (exchangeError) {
-      void navigate("/", { replace: true, state: { authError: exchangeError.message } });
-      return;
+      void navigate("/", { replace: true });
+      return mapAuthError(exchangeError);
     }
 
     const redirectPath = getAndClearRedirectPath();
     void navigate(redirectPath || "/", { replace: true });
+    return null;
   } catch {
-    void navigate("/", { replace: true, state: { authError: OAUTH_CALLBACK_ERROR_MESSAGE } });
+    void navigate("/", { replace: true });
+    return OAUTH_CALLBACK_ERROR_MESSAGE;
   }
 };
 

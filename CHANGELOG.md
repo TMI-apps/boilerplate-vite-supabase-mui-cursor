@@ -7,13 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.32.0] - 2026-06-20
+
+### Added
+
+- **Vercel React best practices skill**: `.agents/skills/vercel-react-best-practices/` (SKILL.md, AGENTS.md, rules library) with `skills-lock.json` for agent-skills provenance.
+- **Inconsistency remediation job plan**: `documentation/jobs/temp_job_inconsistency-remediation/DEVELOPMENT_PLAN.md`.
+- **Shared error utilities**: `src/shared/utils/errorUtils.ts`; auth user-facing strings in `src/features/auth/types/authMessages.ts`.
+- **`useEmailAuthValidation`**: Hook bridge so `EmailAuthForm` does not import auth services directly.
+
 ### Changed
 
-- **`finish` skill**: Added an explicit rule that pending changes to the task-list files (`src/config/app-tasks.json` / `src/config/app-tasks-archive.json`) must always be staged in the commit being made, regardless of what else the commit contains.
+- **Path aliases**: Standardized on industry `@/` → `src/*` only; removed granular `@shared`, `@features`, `@pages`, `@utils` aliases from app and root TypeScript/Vite/Vitest config.
+- **Utils consolidation**: Moved `redirectUtils`, `dateFormatters`, and tests from `src/utils/` to `src/shared/utils/`; removed top-level `src/utils/`.
+- **Auth types & TanStack**: Consolidated `AuthContextValue` and profile types in `auth.types.ts`; `useUpdateUserProfile` merges via `setQueryData`; `ProfileMenu` uses `useUserProfileQuery`.
+- **Error handling**: Unified OAuth callback errors via auth context; shared `getErrorMessage`; updated unconfigured-Supabase copy (no setup-wizard wording).
+- **Layout & styling**: Auth layout tokens (`authViewLayout.ts`, `authFormSurfaceSx`); `ResetPasswordPage` and `AuthCallbackPage` aligned with shared loading/layout patterns; `Topbar` moved to folder + `index.ts`.
+- **Docs & rules**: Updated `ARCHITECTURE.md`, `README.md`, `DOC_TANSTACK_QUERY.md`, feature READMEs, cursor rules for `@/` aliases, and `finish` skill task-list staging rule.
 
-### Documentation
+### Removed
 
-- **Workers Builds plan**: Scrubbed account-specific details (org account id, email, repo/Pages names, ruleset id) from `documentation/jobs/temp_job_cloudflare-workers-builds-deploy/DEVELOPMENT_PLAN.md` so the committed plan reads generically for any fork.
+- **Orphan config**: `src/config/entreefederatie.ts`.
+- **Deprecated auth UI**: `LoginForm.tsx` wrapper; `authHandlerUtils` from hooks (now in `services/`).
 
 ## [0.31.0] - 2026-06-19
 

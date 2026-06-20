@@ -1,4 +1,12 @@
 import type { AuthError } from "@supabase/supabase-js";
+import { getErrorMessage } from "@/shared/utils/errorUtils";
+import {
+  DUPLICATE_SIGNUP_MESSAGE,
+  PASSWORD_RESET_SENT_MESSAGE,
+  GENERIC_AUTH_ERROR_MESSAGE,
+} from "@/features/auth/types/authMessages";
+
+export { DUPLICATE_SIGNUP_MESSAGE, PASSWORD_RESET_SENT_MESSAGE };
 
 const INVALID_CREDENTIALS_MESSAGES = [
   "invalid login credentials",
@@ -29,22 +37,6 @@ const getErrorCode = (error: unknown): string | undefined => {
     return typeof code === "string" ? code.toLowerCase() : undefined;
   }
   return undefined;
-};
-
-const getErrorMessage = (error: unknown): string => {
-  if (error instanceof Error) {
-    return error.message;
-  }
-  if (typeof error === "string") {
-    return error;
-  }
-  if (error && typeof error === "object" && "message" in error) {
-    const message = (error as { message?: unknown }).message;
-    if (typeof message === "string") {
-      return message;
-    }
-  }
-  return "";
 };
 
 /**
@@ -87,11 +79,5 @@ export const mapAuthError = (error: unknown): string => {
     return originalMessage;
   }
 
-  return "Something went wrong. Please try again.";
+  return GENERIC_AUTH_ERROR_MESSAGE;
 };
-
-export const DUPLICATE_SIGNUP_MESSAGE =
-  "An account may already exist for this email via Google. Sign in with Google or reset your password.";
-
-export const PASSWORD_RESET_SENT_MESSAGE =
-  "If this email is registered, you will receive a reset link.";

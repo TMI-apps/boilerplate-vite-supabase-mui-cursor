@@ -1,5 +1,5 @@
-import { getSupabase } from "@shared/services/supabaseService";
-import type { UserProfile } from "../types/auth.types";
+import { getSupabase } from "@/shared/services/supabaseService";
+import type { UserProfile, UserProfileUpdate } from "@/features/auth/types/auth.types";
 
 const USER_PROFILE_FIELDS = `
   id,
@@ -45,12 +45,8 @@ export const fetchUserProfile = async (userId: string): Promise<UserProfile | nu
   return data as UserProfile;
 };
 
-/** Partial profile data for updates (excludes id) */
-export type UserProfileUpdate = Partial<Omit<UserProfile, "id">>;
-
 /**
- * Updates user profile in the users table.
- * Invalidates the profile query via TanStack Query (caller's responsibility).
+ * Updates user profile in the users table and returns the canonical row.
  */
 export const updateUserProfile = async (
   userId: string,

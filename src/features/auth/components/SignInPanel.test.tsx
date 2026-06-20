@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { SignInPanel } from "./SignInPanel";
 import { useAuthContext } from "@/shared/context/AuthContext";
-import { useSupabaseConfig } from "@shared/hooks/useSupabaseConfig";
+import { useSupabaseConfig } from "@/shared/hooks/useSupabaseConfig";
 
 vi.mock("@/shared/context/AuthContext");
-vi.mock("@shared/hooks/useSupabaseConfig");
-vi.mock("../hooks/useAuthRedirect", () => ({
+vi.mock("@/shared/hooks/useSupabaseConfig");
+vi.mock("@/features/auth/hooks/useAuthRedirect", () => ({
   useAuthRedirect: () => vi.fn(),
 }));
 
@@ -24,6 +24,7 @@ describe("SignInPanel", () => {
       requestPasswordReset: vi.fn(),
       updatePassword: vi.fn(),
       clearAuthError: vi.fn(),
+      setAuthError: vi.fn(),
     });
     vi.mocked(useSupabaseConfig).mockReturnValue({
       isConfigured: true,

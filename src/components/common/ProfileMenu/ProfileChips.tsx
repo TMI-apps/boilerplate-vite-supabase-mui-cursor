@@ -1,5 +1,5 @@
 import { Box, Chip } from "@mui/material";
-import type { UserProfile } from "@features/auth/hooks/useUserProfile";
+import type { UserProfile } from "@/features/auth/types/auth.types";
 import { getRoleDisplay } from "@/shared/utils/profileHelpers";
 
 interface ProfileChipsProps {

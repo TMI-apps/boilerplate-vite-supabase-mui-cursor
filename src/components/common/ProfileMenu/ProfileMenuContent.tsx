@@ -3,8 +3,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import { ProfileInfo } from "./ProfileInfo";
 import { SignInMenuItems } from "./SignInMenuItems";
-import type { User } from "@features/auth/types/auth.types";
-import type { UserProfile } from "@features/auth/hooks/useUserProfile";
+import type { User } from "@/features/auth/types/auth.types";
+import type { UserProfile } from "@/features/auth/types/auth.types";
 
 interface ProfileMenuContentProps {
   isLoggedIn: boolean;

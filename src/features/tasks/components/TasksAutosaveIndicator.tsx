@@ -1,6 +1,6 @@
 import { CheckCircleOutlined, Sync } from "@mui/icons-material";
 import { Chip } from "@mui/material";
-import type { TextAutosaveStatus } from "../types/appTask.types";
+import type { TextAutosaveStatus } from "@/features/tasks/types/appTask.types";
 
 interface TasksAutosaveIndicatorProps {
   status: TextAutosaveStatus;

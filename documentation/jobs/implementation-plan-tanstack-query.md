@@ -297,7 +297,7 @@ Toevoegen in `QueryProvider` of `App.tsx`, alleen in development.
 
 **Wijziging:**
 
-1. Import `queryClient` uit `@shared/utils/queryClient`
+1. Import `queryClient` uit `@/shared/utils/queryClient`
 2. Roep `queryClient.clear()` aan vóór `supabase.auth.signOut()`
 
 ### Deliverables
@@ -352,8 +352,8 @@ Controleren of alle gebruikers van `useUserProfile` nog correct werken (ProfileM
 
 ```typescript
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { projectKeys } from "@features/projects/api/keys";
-import { ProjectService } from "@features/projects/services/projectService";
+import { projectKeys } from "@/features/projects/api/keys";
+import { ProjectService } from "@/features/projects/services/projectService";
 
 export const useCreateProject = () => {
   const queryClient = useQueryClient();
@@ -446,8 +446,8 @@ Controleren of alle gebruikers van `useConfigurationData` nog correct werken (Se
 
 ```typescript
 import { useQueryClient } from "@tanstack/react-query";
-import { projectKeys } from "@features/projects/api/keys";
-import { fetchProjects } from "@features/projects/services/projectService";
+import { projectKeys } from "@/features/projects/api/keys";
+import { fetchProjects } from "@/features/projects/services/projectService";
 
 export const usePrefetch = () => {
   const queryClient = useQueryClient();
@@ -490,7 +490,7 @@ export const usePrefetch = () => {
 
 ```tsx
 // App.tsx
-const ProjectsPage = lazy(() => import("@pages/ProjectsPage"));
+const ProjectsPage = lazy(() => import("@/pages/ProjectsPage"));
 
 <QueryProvider>
   <Suspense fallback={<LoadingState />}>

@@ -488,8 +488,8 @@ command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }
 
 **Supabase Environment Variables (Current):**
 - `VITE_SUPABASE_URL` - Your Supabase project URL
-- `VITE_SUPABASE_ANON_KEY` - Your Supabase anonymous/public key
-- Access in code: `import {supabase} from '../../config/supabase';`
+- `VITE_SUPABASE_PUBLISHABLE_KEY` - Your Supabase anonymous/public key (legacy name: `VITE_SUPABASE_ANON_KEY`)
+- Access in code: `import { getSupabase, isSupabaseConfigured } from "@/shared/services/supabaseService"`
 
 **For Edge Functions (set in Supabase Dashboard):**
 - `GAMMA_API_KEY` - Gamma API key for presentation generation

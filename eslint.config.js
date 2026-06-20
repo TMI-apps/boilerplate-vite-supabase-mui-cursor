@@ -53,9 +53,9 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ['@features/*/hooks', '@features/*/services'],
+              group: ['@/features/*/services'],
               message:
-                'Components cannot import from hooks or services. Use hooks instead.',
+                'Components cannot import from services. Use hooks instead.',
             },
           ],
         },
@@ -71,7 +71,7 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ['@features/*/components'],
+              group: ['@/features/*/components'],
               message: 'Hooks cannot import from components.',
             },
           ],
@@ -88,7 +88,7 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ['@features/**'],
+              group: ['@/features/**'],
               message: 'Common components cannot import from features.',
             },
           ],

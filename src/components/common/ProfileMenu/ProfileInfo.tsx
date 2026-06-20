@@ -1,7 +1,7 @@
 import { Box, Avatar, Typography, CircularProgress } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
-import type { User } from "@features/auth/types/auth.types";
-import type { UserProfile } from "@features/auth/hooks/useUserProfile";
+import type { User } from "@/features/auth/types/auth.types";
+import type { UserProfile } from "@/features/auth/types/auth.types";
 import { getDisplayName, getAvatarInitial, getAvatarUrl } from "@/shared/utils/profileHelpers";
 import { ProfileChips } from "./ProfileChips";
 import { ProfileName } from "./ProfileName";

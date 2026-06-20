@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
-import { Alert, Box, Container, Typography } from "@mui/material";
+import { Alert, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
 import { PageLoadingState } from "@/components/common/PageLoadingState";
 import { useAuthContext } from "@/shared/context/AuthContext";
-import { getSupabase, isSupabaseConfigured } from "@shared/services/supabaseService";
-import { validatePasswordConfirmation } from "@features/auth/services/authValidation";
+import { getSupabase, isSupabaseConfigured } from "@/shared/services/supabaseService";
+import { validatePasswordConfirmation } from "@/features/auth/services/authValidation";
+import {
+  authContentSx,
+  authFormSurfaceSx,
+  authViewportSx,
+} from "@/features/auth/components/authViewLayout";
 
 export const ResetPasswordPage = () => {
   const { updatePassword, loading, error, clearAuthError } = useAuthContext();
@@ -82,81 +87,87 @@ export const ResetPasswordPage = () => {
 
   if (!isSupabaseConfigured()) {
     return (
-      <Container maxWidth="sm">
-        <Box sx={{ py: 8 }}>
-          <Alert severity="info">
-            Authentication requires Supabase configuration before you can reset your password.
-          </Alert>
+      <Box sx={authViewportSx}>
+        <Box sx={authContentSx}>
+          <Box sx={authFormSurfaceSx}>
+            <Alert severity="info">
+              Authentication requires Supabase configuration before you can reset your password.
+            </Alert>
+          </Box>
         </Box>
-      </Container>
+      </Box>
     );
   }
 
   if (!recoveryReady) {
     return (
-      <Container maxWidth="sm">
-        <Box sx={{ py: 8 }}>
-          <Alert severity="warning">
-            This password reset link is invalid or has expired. Request a new link from the sign-in
-            page.
-          </Alert>
-          <Button variant="contained" sx={{ mt: 2 }} onClick={() => void navigate("/login")}>
-            Go to sign in
-          </Button>
+      <Box sx={authViewportSx}>
+        <Box sx={authContentSx}>
+          <Box sx={authFormSurfaceSx}>
+            <Alert severity="warning">
+              This password reset link is invalid or has expired. Request a new link from the
+              sign-in page.
+            </Alert>
+            <Button variant="contained" sx={{ mt: 2 }} onClick={() => void navigate("/login")}>
+              Go to sign in
+            </Button>
+          </Box>
         </Box>
-      </Container>
+      </Box>
     );
   }
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ py: 8, maxWidth: 420, mx: "auto" }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Reset password
-        </Typography>
+    <Box sx={authViewportSx}>
+      <Box sx={authContentSx}>
+        <Box sx={authFormSurfaceSx}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Reset password
+          </Typography>
 
-        {(validationError || error) && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {validationError || error}
-          </Alert>
-        )}
+          {(validationError || error) && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {validationError || error}
+            </Alert>
+          )}
 
-        {successMessage && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            {successMessage}
-          </Alert>
-        )}
+          {successMessage && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {successMessage}
+            </Alert>
+          )}
 
-        <Box component="form" onSubmit={handleSubmit}>
-          <Input
-            label="New password"
-            type="password"
-            value={password}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(event.target.value)
-            }
-            required
-            fullWidth
-            margin="normal"
-            autoComplete="new-password"
-          />
-          <Input
-            label="Confirm password"
-            type="password"
-            value={confirmPassword}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setConfirmPassword(event.target.value)
-            }
-            required
-            fullWidth
-            margin="normal"
-            autoComplete="new-password"
-          />
-          <Button type="submit" variant="contained" fullWidth disabled={loading} sx={{ mt: 2 }}>
-            {loading ? "Please wait…" : "Update password"}
-          </Button>
+          <Box component="form" onSubmit={handleSubmit}>
+            <Input
+              label="New password"
+              type="password"
+              value={password}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setPassword(event.target.value)
+              }
+              required
+              fullWidth
+              margin="normal"
+              autoComplete="new-password"
+            />
+            <Input
+              label="Confirm password"
+              type="password"
+              value={confirmPassword}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setConfirmPassword(event.target.value)
+              }
+              required
+              fullWidth
+              margin="normal"
+              autoComplete="new-password"
+            />
+            <Button type="submit" variant="contained" fullWidth disabled={loading} sx={{ mt: 2 }}>
+              {loading ? "Please wait…" : "Update password"}
+            </Button>
+          </Box>
         </Box>
       </Box>
-    </Container>
+    </Box>
   );
 };

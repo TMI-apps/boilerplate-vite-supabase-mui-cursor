@@ -54,7 +54,9 @@ export const initSupabase = (): SupabaseClient | null => {
  */
 export const getSupabase = (): SupabaseClient => {
   if (!isSupabaseConfigured() || !supabaseUrl || !supabaseAnonKey) {
-    throw new Error("Supabase is not configured. Please complete the setup wizard.");
+    throw new Error(
+      "Supabase is not configured. Authentication requires Supabase environment variables."
+    );
   }
 
   if (!supabase) {

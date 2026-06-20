@@ -288,7 +288,7 @@ If you skipped Supabase setup initially, you can configure it anytime:
 
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
-- `pnpm preview` - Preview production build (Workers runtime via Cloudflare Vite plugin)
+- `pnpm preview:worker` - Preview production build in Workers runtime (`pnpm build && wrangler dev`)
 - `pnpm deploy` - Deploy to Cloudflare Workers (`wrangler deploy`)
 - `pnpm lint` - Run ESLint (code quality checks)
 - `pnpm lint:fix` - Auto-fix ESLint errors
@@ -346,8 +346,8 @@ This project follows a strict feature-based architecture. See [ARCHITECTURE.md](
 ## Development Workflow
 
 1. **Create a feature**: Add files in `src/features/[feature-name]/`
-2. **Use common components**: Import from `@common/*`
-3. **Access shared services**: Import from `@shared/*`
+2. **Use common components**: Import from `@/components/common/...`
+3. **Access shared code**: Import from `@/shared/...` or `@/features/...`
 4. **Follow the layer rules**: Components → Hooks → Services
 5. **Write tests**: Add tests alongside your code
 
@@ -356,19 +356,25 @@ This project follows a strict feature-based architecture. See [ARCHITECTURE.md](
 ```
 src/
 ├── assets/          # Static assets and global styles
-├── common/          # Reusable UI components (no business logic)
-├── features/        # Feature modules (auth, etc.)
+├── components/      # App-level shared UI (Topbar, ProfileMenu, etc.)
+│   └── common/
+├── config/          # App config (e.g. dev task JSON)
+├── features/        # Feature modules (auth, tasks, etc.)
 │   ├── auth/
 │   │   ├── components/
 │   │   ├── hooks/
 │   │   ├── services/
 │   │   └── types/
+│   └── tasks/
 ├── layouts/         # Layout components
-├── pages/           # Route-level page components
-├── store/           # Global state (contexts, etc.)
-├── shared/          # Shared utilities and services
-├── utils/           # Utility functions
-└── components/      # App-level components
+├── pages/           # Route-level page components (subfolder per page)
+├── routes/          # Router config and guards
+└── shared/          # Cross-feature utilities, services, theme, context
+    ├── context/
+    ├── hooks/
+    ├── services/
+    ├── theme/
+    └── utils/
 ```
 
 ## Testing

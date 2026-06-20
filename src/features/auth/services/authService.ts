@@ -1,7 +1,7 @@
-import { getSupabase, isSupabaseConfigured } from "@shared/services/supabaseService";
-import { queryClient } from "@shared/utils/queryClient";
-import { getAppOrigin, getAppUrl } from "@shared/utils/appOrigin";
-import type { User, LoginCredentials, SignUpCredentials } from "../types/auth.types";
+import { getSupabase, isSupabaseConfigured } from "@/shared/services/supabaseService";
+import { queryClient } from "@/shared/utils/queryClient";
+import { getAppOrigin, getAppUrl } from "@/shared/utils/appOrigin";
+import type { User, LoginCredentials, SignUpCredentials } from "@/features/auth/types/auth.types";
 import { supabaseUserToUser } from "@/shared/utils/userUtils";
 import { DUPLICATE_SIGNUP_MESSAGE, mapAuthError } from "./authErrorMessages";
 

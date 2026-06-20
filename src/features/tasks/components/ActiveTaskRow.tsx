@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { AppTask } from "../types/appTask.types";
+import type { AppTask } from "@/features/tasks/types/appTask.types";
 import {
   TASK_STATUS_COLOR,
   TASK_STATUS_LABEL,

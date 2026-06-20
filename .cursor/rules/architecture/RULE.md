@@ -263,20 +263,27 @@ Use `pnpm validate:structure` to validate:
 
 **SSOT:** This section is the Single Source of Truth for all path alias definitions. Other rules reference this section.
 
-**Always use path aliases with `@/` prefix** - never relative parent imports (`../`):
+**Canonical form:** use the `@/` catch-all alias only (`@/*` → `src/*`). Mirror the filesystem under `src/` — for example `@/shared/utils/redirectUtils`, `@/features/auth/hooks/useAuth`, `@/components/common/Topbar`.
+
+**Do not use** granular aliases without the slash (`@shared`, `@features`, `@pages`, `@utils`, `@common`) or relative parent imports (`../`).
+
+**Common paths:**
 
 - `@/components/*` → `src/components/*`
 - `@/pages/*` → `src/pages/*`
-- `@/hooks/*` → `src/shared/hooks/*`
-- `@/services/*` → `src/shared/services/*`
-- `@/utils/*` → `src/shared/utils/*`
-- `@/types/*` → `src/shared/types/*`
+- `@/features/*` → `src/features/*`
+- `@/shared/hooks/*` → `src/shared/hooks/*`
+- `@/shared/services/*` → `src/shared/services/*`
+- `@/shared/utils/*` → `src/shared/utils/*` (all cross-feature utilities live here)
+- `@/shared/types/*` → `src/shared/types/*`
 - `@/config/*` → `src/config/*`
-- `@/context/*` → `src/shared/context/*`
-- `@/theme/*` → `src/shared/theme/*`
+- `@/shared/context/*` → `src/shared/context/*`
+- `@/shared/theme/*` → `src/shared/theme/*`
 - `@/routes/*` → `src/routes/*`
 - `@/lib/*` → `src/lib/*`
-- `@/ai-capabilities/*` → `src/ai-capabilities/*`
+- `@/layouts/*` → `src/layouts/*`
+
+**Optional shortcuts** (secondary to tree paths above): `@/hooks/*` → `src/shared/hooks/*`, `@/services/*` → `src/shared/services/*`, `@/utils/*` → `src/shared/utils/*`, `@/types/*` → `src/shared/types/*`, `@/context/*` → `src/shared/context/*`, `@/theme/*` → `src/shared/theme/*`.
 
 Use path aliases, not relative imports.
 

@@ -1,21 +1,21 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Box, useTheme } from "@mui/material";
-import { QueryProvider } from "@shared/context/QueryProvider";
-import { AuthProvider } from "@shared/context/AuthContext";
+import { QueryProvider } from "@/shared/context/QueryProvider";
+import { AuthProvider } from "@/shared/context/AuthContext";
 import { Topbar } from "@/components/common/Topbar";
 import { DevTasksFab } from "@/components/common/DevTasksFab";
 import { QueryDevtoolsGate } from "@/components/common/QueryDevtoolsGate";
 import { MainLayout } from "@/layouts/MainLayout/MainLayout";
 import { PageLoadingState } from "@/components/common/PageLoadingState";
 import { QueryErrorBoundary } from "@/components/common/QueryErrorBoundary";
-import { AuthCallbackPage } from "@pages/AuthCallbackPage";
-import { LoginPage } from "@pages/LoginPage";
-import { ResetPasswordPage } from "@pages/ResetPasswordPage";
+import { AuthCallbackPage } from "@/pages/AuthCallbackPage";
+import { LoginPage } from "@/pages/LoginPage";
+import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 
-const HomePage = lazy(() => import("@pages/HomePage").then((m) => ({ default: m.HomePage })));
+const HomePage = lazy(() => import("@/pages/HomePage").then((m) => ({ default: m.HomePage })));
 const TasksPage = lazy(() =>
-  import("@pages/tasks/TasksPage").then((m) => ({ default: m.TasksPage }))
+  import("@/pages/tasks/TasksPage").then((m) => ({ default: m.TasksPage }))
 );
 
 function AppContent() {

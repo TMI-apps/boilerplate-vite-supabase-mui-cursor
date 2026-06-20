@@ -2,15 +2,15 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
-import { ProfileMenu } from "../ProfileMenu";
+import { ProfileMenu } from "@/components/common/ProfileMenu";
 import { useAuthContext } from "@/shared/context/AuthContext";
-import { useUserProfile } from "@features/auth/hooks/useUserProfile";
-import { isSupabaseConfigured } from "@shared/services/supabaseService";
-import type { User } from "@features/auth/types/auth.types";
+import { useUserProfileQuery } from "@/features/auth/hooks/useUserProfileQuery";
+import { useSupabaseConfig } from "@/shared/hooks/useSupabaseConfig";
+import type { User } from "@/features/auth/types/auth.types";
 
 vi.mock("@/shared/context/AuthContext");
-vi.mock("@features/auth/hooks/useUserProfile");
-vi.mock("@shared/services/supabaseService");
+vi.mock("@/features/auth/hooks/useUserProfileQuery");
+vi.mock("@/shared/hooks/useSupabaseConfig");
 
 const mockSignInWithGoogle = vi.fn();
 const mockLogout = vi.fn();
@@ -36,11 +36,13 @@ describe("ProfileMenu", () => {
     requestPasswordReset: vi.fn(),
     updatePassword: vi.fn(),
     clearAuthError: vi.fn(),
+    setAuthError: vi.fn(),
   };
 
-  const defaultUserProfile = {
-    profile: null,
-    loading: false,
+  const defaultUserProfileQuery = {
+    data: null,
+    isLoading: false,
+    isError: false,
     error: null,
     refetch: vi.fn(),
   };
@@ -55,8 +57,8 @@ describe("ProfileMenu", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useAuthContext).mockReturnValue(defaultAuthContext);
-    vi.mocked(useUserProfile).mockReturnValue(defaultUserProfile);
-    vi.mocked(isSupabaseConfigured).mockReturnValue(true);
+    vi.mocked(useUserProfileQuery).mockReturnValue(defaultUserProfileQuery as never);
+    vi.mocked(useSupabaseConfig).mockReturnValue({ isConfigured: true });
   });
 
   describe("Internal anchor mode (default)", () => {

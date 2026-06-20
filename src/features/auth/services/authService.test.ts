@@ -14,12 +14,12 @@ const mockSupabase = {
   },
 };
 
-vi.mock("@shared/services/supabaseService", () => ({
+vi.mock("@/shared/services/supabaseService", () => ({
   getSupabase: vi.fn(() => mockSupabase),
   isSupabaseConfigured: vi.fn(() => true),
 }));
 
-vi.mock("@shared/utils/queryClient", () => ({
+vi.mock("@/shared/utils/queryClient", () => ({
   queryClient: { clear: vi.fn() },
 }));
 
