@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useMemo } from "react";
 import * as authService from "@/features/auth/services/authService";
 import type { User, LoginCredentials, SignUpCredentials } from "@/features/auth/types/auth.types";
 import {
@@ -17,58 +17,65 @@ interface UseAuthHandlersOptions {
 
 export const useAuthHandlers = ({ setUser, setLoading, setError }: UseAuthHandlersOptions) => {
   const signInInFlightRef = useRef(false);
+  const stateRef = useRef({ setUser, setLoading, setError });
+  stateRef.current = { setUser, setLoading, setError };
 
-  const executeSignIn = async (
-    signInMethod: () => Promise<{ error: Error | null }>,
-    errorMessage: string
-  ) => {
-    if (signInInFlightRef.current) return;
-    signInInFlightRef.current = true;
-    try {
-      setLoading(true);
-      setError(null);
-      const { error: signInError } = await signInMethod();
-      if (signInError) setError(signInError.message);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : errorMessage);
-    } finally {
-      setLoading(false);
-      signInInFlightRef.current = false;
-    }
-  };
+  const executeSignIn = useCallback(
+    async (signInMethod: () => Promise<{ error: Error | null }>, errorMessage: string) => {
+      if (signInInFlightRef.current) return;
+      signInInFlightRef.current = true;
+      const { setLoading: setLoadingState, setError: setErrorState } = stateRef.current;
+      try {
+        setLoadingState(true);
+        setErrorState(null);
+        const { error: signInError } = await signInMethod();
+        if (signInError) setErrorState(signInError.message);
+      } catch (err) {
+        setErrorState(err instanceof Error ? err.message : errorMessage);
+      } finally {
+        setLoadingState(false);
+        signInInFlightRef.current = false;
+      }
+    },
+    []
+  );
 
-  const createSignInHandler = (
-    signInMethod: () => Promise<{ error: Error | null }>,
-    errorMessage: string
-  ) => {
-    return () => executeSignIn(signInMethod, errorMessage);
-  };
-
-  const state = { setUser, setLoading, setError };
-
-  const handleLogin = (credentials: LoginCredentials) => handleLoginUtil(credentials, state);
-  const handleSignUp = (credentials: SignUpCredentials) => handleSignUpUtil(credentials, state);
-  const handleLogout = () => handleLogoutUtil(state);
-  const handleRequestPasswordReset = (email: string) =>
-    handleRequestPasswordResetUtil(email, state);
-  const handleUpdatePassword = (password: string) => handleUpdatePasswordUtil(password, state);
-
-  const handleSignInWithGoogle = createSignInHandler(
-    authService.signInWithGoogle,
-    "Failed to sign in with Google"
+  const login = useCallback(
+    (credentials: LoginCredentials) => handleLoginUtil(credentials, stateRef.current),
+    []
+  );
+  const signUp = useCallback(
+    (credentials: SignUpCredentials) => handleSignUpUtil(credentials, stateRef.current),
+    []
+  );
+  const logout = useCallback(() => handleLogoutUtil(stateRef.current), []);
+  const requestPasswordReset = useCallback(
+    (email: string) => handleRequestPasswordResetUtil(email, stateRef.current),
+    []
+  );
+  const updatePassword = useCallback(
+    (password: string) => handleUpdatePasswordUtil(password, stateRef.current),
+    []
+  );
+  const signInWithGoogle = useCallback(
+    () => executeSignIn(authService.signInWithGoogle, "Failed to sign in with Google"),
+    [executeSignIn]
   );
 
   const clearAuthError = useCallback(() => {
-    setError(null);
-  }, [setError]);
+    stateRef.current.setError(null);
+  }, []);
 
-  return {
-    login: handleLogin,
-    signUp: handleSignUp,
-    logout: handleLogout,
-    signInWithGoogle: handleSignInWithGoogle,
-    requestPasswordReset: handleRequestPasswordReset,
-    updatePassword: handleUpdatePassword,
-    clearAuthError,
-  };
+  return useMemo(
+    () => ({
+      login,
+      signUp,
+      logout,
+      signInWithGoogle,
+      requestPasswordReset,
+      updatePassword,
+      clearAuthError,
+    }),
+    [login, signUp, logout, signInWithGoogle, requestPasswordReset, updatePassword, clearAuthError]
+  );
 };

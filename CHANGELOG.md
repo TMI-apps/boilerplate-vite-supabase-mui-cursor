@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.32.1] - 2026-06-20
+
+### Changed
+
+- **MUI bundle imports**: Replaced `@mui/material` and `@mui/icons-material` barrel imports with direct path imports across the app for faster dev cold starts and smaller transform graphs.
+- **Route code-splitting**: Lazy-loaded `LoginPage`, `ResetPasswordPage`, and `AuthCallbackPage` so auth UI is not in the initial bundle.
+- **Auth context performance**: Memoized `useAuth` context value and stabilized `useAuthHandlers` callbacks to reduce unnecessary consumer re-renders.
+- **Query devtools**: Dynamically import `@tanstack/react-query-devtools` in dev only so it stays out of production bundles.
+
 ## [0.32.0] - 2026-06-20
 
 ### Added

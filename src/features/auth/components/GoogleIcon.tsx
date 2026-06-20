@@ -1,4 +1,4 @@
-import { SvgIcon, SvgIconProps } from "@mui/material";
+import SvgIcon, { type SvgIconProps } from "@mui/material/SvgIcon";
 
 export const GoogleIcon = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 24 24">

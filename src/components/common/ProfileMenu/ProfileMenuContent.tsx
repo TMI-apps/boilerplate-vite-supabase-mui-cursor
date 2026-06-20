@@ -1,10 +1,13 @@
-import { MenuItem, Box, Divider } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import { ProfileInfo } from "./ProfileInfo";
 import { SignInMenuItems } from "./SignInMenuItems";
 import type { User } from "@/features/auth/types/auth.types";
 import type { UserProfile } from "@/features/auth/types/auth.types";
+
+import Box from "@mui/material/Box";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 
 interface ProfileMenuContentProps {
   isLoggedIn: boolean;

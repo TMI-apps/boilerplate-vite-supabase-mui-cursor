@@ -1,8 +1,15 @@
+import { lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const ReactQueryDevtools = lazy(() =>
+  import("@tanstack/react-query-devtools").then((module) => ({
+    default: module.ReactQueryDevtools,
+  }))
+);
 
 /**
  * TanStack Query devtools — bottom-left on /tasks to avoid overlapping the task list and FAB.
+ * Loaded dynamically in dev only so production bundles exclude the devtools package.
  */
 export const QueryDevtoolsGate = () => {
   const { pathname } = useLocation();
@@ -12,5 +19,9 @@ export const QueryDevtoolsGate = () => {
     return null;
   }
 
-  return <ReactQueryDevtools initialIsOpen={false} buttonPosition={buttonPosition} />;
+  return (
+    <Suspense fallback={null}>
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition={buttonPosition} />
+    </Suspense>
+  );
 };

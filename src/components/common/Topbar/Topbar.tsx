@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import { ProfileMenu } from "@/components/common/ProfileMenu";
+
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 /**
  * Topbar component that is always visible.

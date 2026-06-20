@@ -1,5 +1,7 @@
-import { ArchiveOutlined, AssignmentOutlined } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import ArchiveOutlined from "@mui/icons-material/ArchiveOutlined";
+import AssignmentOutlined from "@mui/icons-material/AssignmentOutlined";
 
 type EmptyVariant = "active" | "archive";
 

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Alert, Box, Link, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
 import { useAuthContext } from "@/shared/context/AuthContext";
@@ -8,6 +7,13 @@ import { PASSWORD_RESET_SENT_MESSAGE } from "@/features/auth/types/authMessages"
 import { useEmailAuthValidation } from "@/features/auth/hooks/useEmailAuthValidation";
 import type { LoginCredentials, SignUpCredentials } from "@/features/auth/types/auth.types";
 import { authStackSpacing } from "./authViewLayout";
+
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import Link from "@mui/material/Link";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 type EmailAuthMode = "sign-in" | "sign-up" | "forgot-password";
 

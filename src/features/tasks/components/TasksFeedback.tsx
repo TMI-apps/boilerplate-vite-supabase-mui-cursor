@@ -1,5 +1,7 @@
-import { Alert, Snackbar } from "@mui/material";
 import type { SaveFeedback } from "@/features/tasks/types/appTask.types";
+
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 const FEEDBACK_LABEL: Record<Exclude<SaveFeedback, "idle">, string> = {
   saving: "Saving…",

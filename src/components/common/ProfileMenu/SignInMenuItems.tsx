@@ -1,5 +1,7 @@
-import { MenuItem, Box } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
+
+import Box from "@mui/material/Box";
+import MenuItem from "@mui/material/MenuItem";
 
 interface SignInMenuItemsProps {
   onSignInWithGoogle: () => void;

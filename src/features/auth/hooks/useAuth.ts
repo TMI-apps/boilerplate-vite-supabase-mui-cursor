@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { isSupabaseConfigured } from "@/shared/services/supabaseService";
 import type { AuthContextValue, User } from "@/features/auth/types/auth.types";
 import { initializeSession } from "./useAuthSession";
@@ -52,11 +52,14 @@ export const useAuth = (): AuthContextValue => {
     setError(message);
   }, []);
 
-  return {
-    user,
-    loading,
-    error,
-    ...handlers,
-    setAuthError,
-  };
+  return useMemo(
+    () => ({
+      user,
+      loading,
+      error,
+      ...handlers,
+      setAuthError,
+    }),
+    [user, loading, error, handlers, setAuthError]
+  );
 };

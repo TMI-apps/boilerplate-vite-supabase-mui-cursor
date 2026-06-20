@@ -1,4 +1,3 @@
-import { Alert, Box, Divider, Link, Typography } from "@mui/material";
 import { Button } from "@/components/common/Button";
 import { useAuthContext } from "@/shared/context/AuthContext";
 import { useSupabaseConfig } from "@/shared/hooks/useSupabaseConfig";
@@ -6,6 +5,12 @@ import { PRIVACY_URL, TERMS_URL } from "@/config/legal";
 import { GoogleIcon } from "./GoogleIcon";
 import { EmailAuthForm } from "./EmailAuthForm";
 import { authStackSpacing, authContentMaxWidth } from "./authViewLayout";
+
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import Link from "@mui/material/Link";
+import Divider from "@mui/material/Divider";
 
 const SUPABASE_CONFIG_MESSAGE =
   "Authentication requires Supabase configuration. Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY (or VITE_SUPABASE_ANON_KEY) in your environment.";

@@ -1,5 +1,7 @@
-import { Box, Typography } from "@mui/material";
 import VerifiedIcon from "@mui/icons-material/Verified";
+
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 interface ProfileNameProps {
   displayName: string;

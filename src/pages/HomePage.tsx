@@ -1,10 +1,13 @@
-import { Alert, Box, Typography } from "@mui/material";
 import { Button } from "@/components/common/Button";
 import { useAuthContext } from "@/shared/context/AuthContext";
 import { SignInPanel } from "@/features/auth/components/SignInPanel";
 import { useAuthCallbackHandler } from "@/features/auth/hooks/useAuthCallbackHandler";
 import { PageLoadingState } from "@/components/common/PageLoadingState";
 import { authContentSx, authContentMaxWidth } from "@/features/auth/components/authViewLayout";
+
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 
 export const HomePage = () => {
   const { user, loading, error, clearAuthError } = useAuthContext();
