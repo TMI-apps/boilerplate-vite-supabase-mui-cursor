@@ -1,5 +1,5 @@
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { Fab } from "@mui/material";
+import Fab from "@mui/material/Fab";
 
 /**
  * Dev-only floating entry to /tasks (import.meta.env.DEV).

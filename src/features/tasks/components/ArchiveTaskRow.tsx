@@ -1,15 +1,14 @@
 import { useState } from "react";
-import {
-  Box,
-  Chip,
-  Collapse,
-  MenuItem,
-  Paper,
-  Select,
-  Typography,
-  type SelectChangeEvent,
-} from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import type { ActiveTaskStatus, AppTask } from "@/features/tasks/types/appTask.types";
+
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import Select from "@mui/material/Select";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
 
 interface ArchiveTaskRowProps {
   task: AppTask;

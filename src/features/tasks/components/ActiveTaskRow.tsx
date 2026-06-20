@@ -1,16 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Delete, DragIndicator } from "@mui/icons-material";
-import {
-  Box,
-  Collapse,
-  IconButton,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-  Typography,
-  type SelectChangeEvent,
-} from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { AppTask } from "@/features/tasks/types/appTask.types";
@@ -20,6 +9,17 @@ import {
   TASK_STATUS_OPTIONS,
   TASK_STATUS_SELECT_MIN_WIDTH,
 } from "./taskStatusUi";
+
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Delete from "@mui/icons-material/Delete";
+import DragIndicator from "@mui/icons-material/DragIndicator";
 
 type FocusedField = "title" | "description" | null;
 

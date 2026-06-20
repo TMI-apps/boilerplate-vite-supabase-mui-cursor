@@ -34,6 +34,7 @@ Returns:
 - Requires Supabase configured (`isSupabaseConfigured()`). If not, `loading` becomes `false` and handlers no-op.
 - Anonymous Supabase users are treated as logged out (`user === null`).
 - Session is initialized on mount and kept in sync via `useAuthStateSubscription`.
+- Context value and auth handlers are memoized so consumers re-render only when `user`, `loading`, `error`, or handler identity changes.
 
 ### User feedback policy
 

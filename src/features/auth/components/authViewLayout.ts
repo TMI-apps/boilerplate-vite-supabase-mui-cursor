@@ -1,5 +1,4 @@
-import type { SxProps, Theme } from "@mui/material";
-
+import type { SxProps, Theme } from "@mui/material/styles";
 /** Shared max width for auth form surfaces (SignInPanel, Home, ResetPassword). */
 export const authContentMaxWidth = 420;
 

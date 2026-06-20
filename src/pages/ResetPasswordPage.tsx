@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Alert, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
@@ -12,6 +11,10 @@ import {
   authFormSurfaceSx,
   authViewportSx,
 } from "@/features/auth/components/authViewLayout";
+
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 
 export const ResetPasswordPage = () => {
   const { updatePassword, loading, error, clearAuthError } = useAuthContext();

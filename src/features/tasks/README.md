@@ -25,6 +25,8 @@ In-repo development backlog for coding agents and local UI.
 
 **UI entry:** `DevTasksFab` on all routes in dev; route `/tasks` with minimal chrome (card rows, toolbar autosave chip, no column headers).
 
+**Bundle:** Task UI components import MUI and icons via direct path imports (not barrel files) to keep the lazy `/tasks` chunk lean in dev and production.
+
 ## User feedback policy
 
 - **Mutation/async errors:** single MUI `Snackbar` via `TasksFeedback` (tasks pattern is SSOT for non-form mutations).

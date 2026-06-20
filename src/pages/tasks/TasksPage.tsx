@@ -1,7 +1,13 @@
-import { ArrowBack } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
-import { Alert, Box, Button, Container, Paper, Typography } from "@mui/material";
 import { TasksBacklogPanel } from "@/features/tasks/components/TasksBacklogPanel";
+
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import ArrowBack from "@mui/icons-material/ArrowBack";
 
 export const TasksPage = () => {
   const isDev = import.meta.env.DEV;

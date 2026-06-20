@@ -12,10 +12,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Stack } from "@mui/material";
 import type { AppTask } from "@/features/tasks/types/appTask.types";
 import { ActiveTaskRow } from "./ActiveTaskRow";
 import { TasksListEmptyState } from "./TasksListEmptyState";
+import Stack from "@mui/material/Stack";
 
 interface ActiveTaskListProps {
   tasks: AppTask[];

@@ -1,4 +1,3 @@
-import { Menu } from "@mui/material";
 import { useAuthContext } from "@/shared/context/AuthContext";
 import { useSupabaseConfig } from "@/shared/hooks/useSupabaseConfig";
 import { useUserProfileQuery } from "@/features/auth/hooks/useUserProfileQuery";
@@ -7,6 +6,8 @@ import { ProfileMenuTrigger } from "./ProfileMenu/ProfileMenuTrigger";
 import { getMenuProps } from "@/shared/utils/menuConfig";
 import { useProfileMenuHandlers } from "@/features/auth/hooks/useProfileMenuHandlers";
 import { useProfileMenuState } from "@/features/auth/hooks/useProfileMenuState";
+
+import Menu from "@mui/material/Menu";
 
 interface ProfileMenuProps {
   anchorEl?: HTMLElement | null;
