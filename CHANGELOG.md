@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **`finish` skill**: Added an explicit rule that pending changes to the task-list files (`src/config/app-tasks.json` / `src/config/app-tasks-archive.json`) must always be staged in the commit being made, regardless of what else the commit contains.
+
 ### Documentation
 
 - **Workers Builds plan**: Scrubbed account-specific details (org account id, email, repo/Pages names, ruleset id) from `documentation/jobs/temp_job_cloudflare-workers-builds-deploy/DEVELOPMENT_PLAN.md` so the committed plan reads generically for any fork.
