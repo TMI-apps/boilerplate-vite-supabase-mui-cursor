@@ -11,7 +11,7 @@
 ### Scope
 
 - **In scope:** `wrangler.jsonc` (plain assets-only SPA, fork-safe), remove `@cloudflare/vite-plugin`, deploy/preview scripts, `.node-version`, structure whitelist, docs (`DOC_CLOUDFLARE_WORKERS.md`, README, app-tasks, rules), enable `develop` ruleset, Workers Builds click-path.
-- **Out of scope:** Committing `account_id` or a custom domain (fork-safety). Creating a deploy workflow or `CLOUDFLARE_API_TOKEN` secret. Touching the unrelated `lesmateriaal` Pages project.
+- **Out of scope:** Committing `account_id` or a custom domain (fork-safety). Creating a deploy workflow or `CLOUDFLARE_API_TOKEN` secret. Touching unrelated Pages projects that already exist in the Cloudflare account.
 
 ### Decisions locked with user
 
@@ -19,7 +19,7 @@
 |---|----------|--------|
 | D1 | wrangler.jsonc approach | **Plain assets-only Worker** (remove Vite plugin) |
 | D2 | account_id / custom domain in repo | **Fork-safe** — not committed; `CLOUDFLARE_ACCOUNT_ID` env + Workers Builds |
-| D3 | Deploy the template itself | **Yes, TMI `*.workers.dev` only**, no custom domain |
+| D3 | Deploy the template itself | **Yes, the org account's `*.workers.dev` only**, no custom domain |
 | D4 | Enable `develop` ruleset | **Yes, now** |
 
 ## Target architecture
@@ -32,14 +32,14 @@
 
 | Item | Finding |
 |------|---------|
-| Repo | `TMI-apps/boilerplate-vite-supabase-mui-cursor` (the template) |
+| Repo | The template repo (or your fork of it) |
 | CI check name / integration | `test` / GitHub Actions integration_id `15368` |
 | `main` ruleset | Active; PR + `required_status_checks(test,15368)` + non_fast_forward + deletion + merge/squash/rebase + strict=false — already matches spec |
 | `develop` ruleset | Same rules, **`enforcement: disabled`** → only needs enabling |
 | Deploy workflow | None (correct) |
-| Old Pages project for this repo | None (`lesmateriaal`/`toolbox.tmi.one` is a separate app — do not touch) |
-| Cloudflare account | TMI `5badf6b278a8f6356defeb33e5b35d3b` (org) vs personal `9c69823ab585efd89297bdee81812a32` → use TMI |
-| Local tooling | Wrangler 4.102.0 OAuth (tom@tmi.one); gh as TomFranse (repo admin) |
+| Old Pages project for this repo | None for this repo (any pre-existing Pages projects in the account are separate apps — do not touch) |
+| Cloudflare account | Use your Cloudflare **org** account (not a personal one); set its id as `CLOUDFLARE_ACCOUNT_ID` (never committed) |
+| Local tooling | Wrangler OAuth + `gh` with repo admin (account-specific; not committed) |
 | `public/_redirects` | Absent (no SPA-rule conflict to remove) |
 | `.node-version` | Absent → add `20` |
 
@@ -81,7 +81,7 @@
 
 ### Phase 4 — PR + ruleset
 - Commit, push, open PR feature → develop.
-- `gh api ... rulesets/15259707 -X PATCH -f enforcement=active`.
+- `gh api --method PUT repos/<owner>/<repo>/rulesets/<develop-ruleset-id> --input <full-body>` to set `enforcement=active` (PUT re-validates the whole ruleset; send the full clean body).
 - **Gate:** PR open; `gh api` confirms develop ruleset active.
 
 ### Phase 5 — Hand-off (user)
