@@ -29,6 +29,7 @@ Turn the skills corpus into one coherent system. This skill **discovers** struct
 | Set | Paths | Treatment |
 |-----|-------|-----------|
 | **Editable corpus** | `.agents/skills/*/SKILL.md` (+ their `references/`) | Audited and edited |
+| **Vendored skills** | `.agents/skills/*` with `skills-lock.json` provenance (e.g. `vercel-react-best-practices`) | Audited; **routing/layers wiring + scope notes + Boundaries editable**, but **rule bodies are upstream sync only** — do not hand-edit `rules/*.md` or generated `AGENTS.md` content |
 | **Routing spine** | `.agents/skills/router/SKILL.md`, `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` | Audited; updated when skills are added/removed/renamed (per the layers doc "When you change something" coupling) |
 | **Reference-only** | User skills (`~/.cursor/skills-cursor/`), plugin skills (`~/.cursor/plugins/`) | Read for overlap/conflict detection; **never edited** here |
 

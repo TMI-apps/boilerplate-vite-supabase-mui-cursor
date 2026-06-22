@@ -38,6 +38,19 @@ No separate `documentation/DOC_*` procedure for this workflow — invocable step
 
 **Not the same as:** `.agents/skills/validate/SKILL.md` (repo rule compliance).
 
+## Vendored reference skills (React performance)
+
+Some `.agents/skills/` entries are **vendored** from upstream sources (provenance in `skills-lock.json`) rather than authored here. They are reference catalogs, not workflow procedures.
+
+| Item | Path |
+|------|------|
+| Vercel React/Next performance rule catalog (70 rules, 8 categories) | `.agents/skills/vercel-react-best-practices/SKILL.md` |
+| Rule bodies (SSOT) | `.agents/skills/vercel-react-best-practices/rules/*.md` |
+| Compiled single-file copy (generated) | `.agents/skills/vercel-react-best-practices/AGENTS.md` |
+| Routing + perf tiebreak (vs `optimize2`/`web-perf`/`review`) | `.agents/skills/router/SKILL.md` § `vercel-react-best-practices` vs ... |
+
+**Stack scope:** this repo is **Vite + React 19 SPA** — apply the client/re-render/bundle/rendering/js rules; skip Next.js/RSC `server-*` rules unless SSR is added. **Editing rule bodies = upstream sync**, not ad-hoc corpus edits; router/layers wiring is editable here.
+
 ## Cross-repo adoption guides
 
 **Doc type:** adoption guide (`<SLUG>_ADOPTION_GUIDE.md`) — how to replicate a capability in other repos; not a session handoff.
@@ -83,6 +96,7 @@ See `.cursor/rules/workflow/RULE.md` for branch strategy and protected files.
 | `.husky/pre-commit` | `workflow/RULE.md`, `finish` skill, this doc if hook scope changes |
 | `finish` / `push` flow | Both skills, `router` matrix |
 | New invocable workflow | `router/SKILL.md` (situation table + skill index) |
+| New vendored reference skill (e.g. via `skills-lock.json`) | `router/SKILL.md` (situation table + skill index) + § Vendored reference skills above |
 | Rules registry for skills | `.agents/skills/plan/references/rules-registry.md`; callers link only |
 | Pattern / industry-standard review | `.agents/skills/pattern-review/` — see § Pattern / industry-standard review above |
 | New cross-repo adoption guide | `write-adoption-guide` skill; file under `documentation/handoffs/*_ADOPTION_GUIDE.md` |

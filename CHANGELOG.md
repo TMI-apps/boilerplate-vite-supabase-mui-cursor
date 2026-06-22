@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Skill library — Vercel skill integration**: Wired the vendored `vercel-react-best-practices` skill into the routing spine (`router` situation row, skill index, and a `vercel-react-best-practices` vs `optimize2` vs `web-perf` vs `review` tiebreak). Added a "Vendored reference skills" section + coupling row to `DOC_AGENT_WORKFLOW_LAYERS.md`, a Vite stack-scope note + Boundaries to the Vercel `SKILL.md`, link-outs from `optimize2`/`review`, and a vendored-skill class to `improve-skill-library` scope.
+- **Skill handoffs & consistency**: `review-dev-plan` Next now routes through `validate` (plan mode) for M/L; added `grill-me` vs `challenge` router tiebreak; clarified `finish` stash-lane push timing; added post-implementation handoffs for `challenge`/`consolidate`; corrected Vercel rule count (40+ → 70) in `metadata.json`/`AGENTS.md`.
+- **Audit artifacts**: Regenerated `documentation/jobs/skill-library/REGISTRY.md` (25 skills) and added `AUDIT_SYNTHESIS_2026-06-20.md` + `CONTENT_LEDGER.md`.
+
 ## [0.32.1] - 2026-06-20
 
 ### Changed

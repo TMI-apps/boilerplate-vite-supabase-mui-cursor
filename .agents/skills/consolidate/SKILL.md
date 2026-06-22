@@ -377,6 +377,7 @@ This skill is independently complete but works best in concert with sibling skil
 2. `consolidate` across features (unify patterns) <- this skill
 3. Semantic placement mode (verify everything is in the right place — `references/semantic-placement.md`)
 4. `optimize2` on any remaining hotspots (per-function polish)
+5. `validate` or `check` to confirm rules/architecture, then `finish` to commit (this skill does not commit)
 
 ---
 

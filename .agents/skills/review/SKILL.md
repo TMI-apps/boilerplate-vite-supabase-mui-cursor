@@ -106,6 +106,8 @@ At the end, sum the points and compute a percentage.
 
 ## Section D – Performance (max 15)
 
+> For a rule-level deep-dive when a D item scores weak, see `.agents/skills/vercel-react-best-practices/SKILL.md` (Vite-applicable re-render, bundle, and rendering rules). This rubric scores; that catalog prescribes fixes.
+
 **D1. Rendering efficiency (0–5)**
 - No obvious unnecessary re-renders (e.g., stable props where possible, React.memo or memoized values if needed)
 - Avoids creating new inline objects/functions in hot paths without reason

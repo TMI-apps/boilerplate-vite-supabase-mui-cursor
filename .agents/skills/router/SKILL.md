@@ -184,6 +184,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Simplify **one** concrete feature (flows + code), reduce steps/complexity | `.agents/skills/challenge/SKILL.md` |
 | Find cross-feature duplication and consolidation candidates (see skill § Symbiotic Relationships for cleanup pipeline) | `.agents/skills/consolidate/SKILL.md` |
 | Optimize hotspots: design → approach → efficiency → complexity | `.agents/skills/optimize2/SKILL.md` |
+| Apply React performance rule catalog (re-render, bundle, rendering, data-fetch) during write/review/refactor | `.agents/skills/vercel-react-best-practices/SKILL.md` (Vite-applicable subset) |
 | Semantic architecture repair **after** automated checks pass | `.agents/skills/consolidate/SKILL.md` § Semantic placement mode |
 | Retro from failures/diffs; persist lessons into rules or skills | `.agents/skills/learn/SKILL.md` |
 | Audit/improve the **skill library** as a whole (overlap, SSOT, conflicts, handoffs); subagent lenses + no-loss pass | `.agents/skills/improve-skill-library/SKILL.md` |
@@ -289,6 +290,12 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`rule-quality`:** Grade or improve **rules/commands** (rubric + quality standards).
 - **`review`:** Score **React/MUI components** with component rubric.
 
+### `grill-me` vs `challenge`
+
+- **`grill-me`:** **Gate-1 product/vision ambiguity** — resolve unknowns via Q&A before there is a concrete thing to simplify. No named feature required.
+- **`challenge`:** A **named, existing** feature/workflow you want simplified (flow + code modes). Requires a concrete target.
+- When `grill-me` has multiple entry points (gate-1 clarification, product stress-test, backlog path), pick **one primary** in that order: gate failure > stress-test > backlog.
+
 ### `grill-me` vs `plan` § Refine
 
 - **`grill-me`:** Product/design **Q&A** until shared understanding (questions first). Fits **gate 1** failures dominated by vision and tradeoffs. Includes an optional **Zoom out first** reflection (problem, recent attempts, wider alternative) — formerly the `stepback` skill.
@@ -338,6 +345,17 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 
 - **`web-perf`:** **Browser-measured** performance (CWVs, network, traces via DevTools MCP).
 - **`optimize2`:** **Code-level** structure and complexity optimization (may include perf but not Lighthouse-centric).
+
+### `vercel-react-best-practices` vs `optimize2` vs `web-perf` vs `review`
+
+Multiple skills touch React performance. Pick by **primary outcome**:
+
+- **`web-perf`:** Outcome = **measured** Core Web Vitals / trace / network (Chrome DevTools MCP). Diagnose *what* is slow.
+- **`optimize2`:** Outcome = **choose refactor depth** (design → approach → efficiency → complexity) for a named hotspot. Decide *how far* to change it.
+- **`vercel-react-best-practices`:** Outcome = **apply the React perf rule catalog** (re-render, bundle, rendering, client data-fetch) during write/review/refactor. This repo is **Vite + React 19 SPA** — apply the Vite-applicable subset; skip Next.js/RSC `server-*` rules unless SSR is added.
+- **`review`:** Outcome = **170-point component rubric**; use `vercel-react-best-practices` only for a § D (Performance) deep-dive when requested or when D scores weak.
+
+**Order when several apply:** `web-perf` (measure) → `optimize2` (decide depth) → `vercel-react-best-practices` (apply rules) → `review` (holistic score).
 
 ### Plan review stack (ordered pipeline)
 
@@ -443,6 +461,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/rule-quality/SKILL.md`
 - `.agents/skills/improve-skill-library/SKILL.md`
 - `.agents/skills/optimize2/SKILL.md`
+- `.agents/skills/vercel-react-best-practices/SKILL.md` (vendored Vercel React perf rule catalog — `skills-lock.json` provenance; apply Vite-applicable subset)
 - `.agents/skills/airtable-inspect/SKILL.md`
 - `.agents/skills/grill-me/SKILL.md`
 - `.agents/skills/pattern-review/SKILL.md`

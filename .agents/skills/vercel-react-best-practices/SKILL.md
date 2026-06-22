@@ -20,6 +20,26 @@ Reference these guidelines when:
 - Refactoring existing React/Next.js code
 - Optimizing bundle size or load times
 
+## Stack scope (this repo)
+
+This repo is **Vite + React 19 SPA** (no Next.js / RSC / server actions). Apply the **Vite-applicable** rule categories:
+
+- **Apply:** `bundle-*`, `rerender-*`, `rendering-*`, `js-*`, `advanced-*`, and `client-*` (treat SWR rules as TanStack Query equivalents — this repo uses TanStack Query 5).
+- **Skip unless SSR is added:** `server-*` (RSC, server actions, `React.cache`, LRU cross-request) and Next-only mechanics (`next/dynamic`, `async-api-routes`, `after()`). Use the framework-neutral idea where one exists (e.g. `React.lazy` / dynamic `import()` instead of `next/dynamic`).
+
+This is a **vendored** catalog (provenance in `skills-lock.json`). Editing rule bodies = upstream sync; routing and this scope note are editable here.
+
+## Boundaries
+
+| Not `vercel-react-best-practices` | Use instead |
+|-----------------------------------|-------------|
+| Browser-measured perf (CWVs, Lighthouse, traces) | `web-perf` plugin skill |
+| Choosing refactor depth for a named hotspot | `.agents/skills/optimize2/SKILL.md` (4-level analysis) |
+| Holistic component score (UX, a11y, API) | `.agents/skills/review/SKILL.md` (170-point rubric) |
+| Repo-rule / architecture compliance | `.agents/skills/validate/SKILL.md` or `.agents/skills/check/SKILL.md` |
+
+Router tiebreak: `.agents/skills/router/SKILL.md` § `vercel-react-best-practices` vs `optimize2` vs `web-perf` vs `review`.
+
 ## Rule Categories by Priority
 
 | Priority | Category | Impact | Prefix |

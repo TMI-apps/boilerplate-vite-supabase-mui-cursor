@@ -650,4 +650,5 @@ Common indicators for each level:
 | Wrong layer / feature placement | `consolidate` § Semantic placement mode |
 | Simplify whether feature should exist | `challenge` |
 | Browser-measured perf (CWVs) | `web-perf` plugin skill |
+| React perf rule catalog (re-render, bundle, rendering patterns) | `.agents/skills/vercel-react-best-practices/SKILL.md` (Vite-applicable subset) |
 | Commit / changelog | `finish` |

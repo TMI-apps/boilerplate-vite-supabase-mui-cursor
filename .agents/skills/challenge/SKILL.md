@@ -203,6 +203,8 @@ After changes:
 
 Never claim success without user testing confirmation.
 
+**Next:** After the user confirms the simplified behavior, offer **`.agents/skills/validate/SKILL.md`** or **`.agents/skills/check/SKILL.md`** for a fuller audit, then **`.agents/skills/finish/SKILL.md`** to commit. `challenge` does not commit.
+
 ---
 
 ## Output Template
