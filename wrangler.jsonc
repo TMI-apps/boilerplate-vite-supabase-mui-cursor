@@ -2,7 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   // Rename before first deploy. Forks: use your own unique Worker name.
   "name": "vite-mui-supabase-starter",
-  "compatibility_date": "2026-06-19",
+  "compatibility_date": "2026-06-23",
   "workers_dev": true,
   "preview_urls": true,
   // Assets-only SPA Worker (no `main`, no ASSETS binding).
