@@ -6,7 +6,7 @@ In-repo development backlog for coding agents and local UI.
 
 - Dev-only task board at `/tasks` for onboarding and agent work
 - SSOT for active and archived tasks in JSON files
-- Pre-seeded onboarding checklist on fresh clones (Supabase, Hosting, App vision, Airtable optional, Theme)
+- Pre-seeded onboarding checklist on fresh clones (Supabase, Cloudflare Workers Builds fork deploy, App vision, Airtable optional, Theme)
 
 **Intentional exception:** This feature uses local React state + `fetch` (not TanStack Query) because it is a dev-only tool backed by the Vite dev plugin, not user-facing server state.
 
