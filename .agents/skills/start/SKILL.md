@@ -24,7 +24,7 @@ Guide a new user through first-time setup of this boilerplate by following the R
 Fresh clones ship five pre-seeded tasks in priority order:
 
 1. Configure Supabase
-2. Configure Cloudflare Workers Builds (fork deploy) — agent one-shot brief in `app-tasks.json` description; SSOT `documentation/DOC_CLOUDFLARE_WORKERS.md`
+2. Put your app online (Cloudflare hosting)
 3. Define app vision (`documentation/DOC_APP_VISION.md`)
 4. Configure Airtable (optional)
 5. Configure Theme
@@ -130,7 +130,7 @@ Walk through backlog tasks in order (skip or archive optional items the user dec
 - Remind user to restart dev server after `.env` changes.
 - For **Sign in with Google**, use **`documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` as the SSOT**.
 
-**Hosting (task #2 — Configure Cloudflare Workers Builds):** Follow the agent one-shot brief in `src/config/app-tasks.json` task description and `documentation/DOC_CLOUDFLARE_WORKERS.md`. Fork must add `account_id`/custom domain; template intentionally omits them.
+**Hosting (task #2 — Put your app online):** Follow the **Agent one-shot brief** in `documentation/DOC_CLOUDFLARE_WORKERS.md`; the task description in `src/config/app-tasks.json` is the plain-language summary. Fork must add `account_id`/custom domain; template intentionally omits them.
 
 **App vision (task #3):** Collaborate on `DOC_APP_VISION.md`; set status to **`ACTIVE`**.
 

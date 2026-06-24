@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **`develop` branch protection**: Hardened the `develop` ruleset to match `main` — now requires a pull request (merge/squash/rebase) and the green `test` CI check, plus `non_fast_forward` and deletion protection, so no direct or force push bypasses CI.
-- **Onboarding hosting task**: Rewrote the `/tasks` hosting task ("Put your app online (Cloudflare hosting)") in plain language for non-technical forkers — what to prepare and that the coding agent performs the setup — instead of an inline technical brief; full technical detail now lives in the SSOT doc.
+- **Onboarding hosting task**: Rewrote the `/tasks` hosting task ("Put your app online (Cloudflare hosting)") in plain language for non-technical forkers — what to prepare and that the coding agent performs the setup — instead of an inline technical brief; full technical detail now lives in the SSOT doc. Synced the `start` skill onboarding pointers to the new task name and doc section.
 - **Wrangler**: Bumped `compatibility_date` to `2026-06-23`.
 
 ## [0.32.1] - 2026-06-20
