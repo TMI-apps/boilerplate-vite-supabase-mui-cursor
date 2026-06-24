@@ -184,6 +184,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Simplify **one** concrete feature (flows + code), reduce steps/complexity | `.agents/skills/challenge/SKILL.md` |
 | Find cross-feature duplication and consolidation candidates (see skill § Symbiotic Relationships for cleanup pipeline) | `.agents/skills/consolidate/SKILL.md` |
 | Optimize hotspots: design → approach → efficiency → complexity | `.agents/skills/optimize2/SKILL.md` |
+| React perf patterns (bundle, waterfalls, re-renders) for Vite SPA | `.agents/skills/react-perf-vite/SKILL.md` |
 | Semantic architecture repair **after** automated checks pass | `.agents/skills/consolidate/SKILL.md` § Semantic placement mode |
 | Retro from failures/diffs; persist lessons into rules or skills | `.agents/skills/learn/SKILL.md` |
 | Audit/improve the **skill library** as a whole (overlap, SSOT, conflicts, handoffs); subagent lenses + no-loss pass | `.agents/skills/improve-skill-library/SKILL.md` |
@@ -334,10 +335,13 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`building-mcp-server-on-cloudflare`:** **Expose** tools as remote MCP with OAuth/deploy.
 - **`agents-sdk`:** **Consume** or embed MCP patterns inside Agents SDK — use when agent wiring dominates.
 
-### `web-perf` vs `optimize2`
+### `web-perf` vs `optimize2` vs `react-perf-vite`
 
 - **`web-perf`:** **Browser-measured** performance (CWVs, network, traces via DevTools MCP).
-- **`optimize2`:** **Code-level** structure and complexity optimization (may include perf but not Lighthouse-centric).
+- **`optimize2`:** **Code-level** structure and complexity optimization (may include perf but not Lighthouse-centric); Rule of Three for extractions.
+- **`react-perf-vite`:** **Pattern lookup** for stack-native React perf (lazy routes, TanStack dedup, re-render rules) — read `rules/` on demand; does not replace hotspot refactor.
+
+**Order when multiple apply:** measure with **`web-perf`** if symptoms are CWV/Lighthouse → structural fix with **`optimize2`** → cite specific **`react-perf-vite`** rules while implementing.
 
 ### Plan review stack (ordered pipeline)
 
@@ -443,6 +447,8 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/rule-quality/SKILL.md`
 - `.agents/skills/improve-skill-library/SKILL.md`
 - `.agents/skills/optimize2/SKILL.md`
+- `.agents/skills/react-perf-vite/SKILL.md`
+- `documentation/DOC_REACT_PERF.md` — human overview (links to skill)
 - `.agents/skills/airtable-inspect/SKILL.md`
 - `.agents/skills/grill-me/SKILL.md`
 - `.agents/skills/pattern-review/SKILL.md`

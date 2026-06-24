@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.34.0] - 2026-06-24
+
+### Added
+
+- **`react-perf-vite` skill**: Stack-native React performance playbook (20 on-demand rules) for Vite, TanStack Query, and Workers — replaces vendored Vercel corpus.
+- **`documentation/DOC_REACT_PERF.md`**: Human/agent overview and skill tiebreaks.
+
+### Removed
+
+- **`vercel-react-best-practices`**: Purged vendored skill (~76 files, nested `AGENTS.md` ~106 KB per-turn context bloat). Patterns adapted into `react-perf-vite`; upstream attribution in skill + doc.
+
+### Changed
+
+- **Router**: Situation row + `web-perf` / `optimize2` / `react-perf-vite` tiebreak; skill index updated.
+- **`skills-lock.json`**: Tracks local `react-perf-vite` (derived from vercel-labs/agent-skills).
+
 ## [0.33.0] - 2026-06-24
 
 ### Added

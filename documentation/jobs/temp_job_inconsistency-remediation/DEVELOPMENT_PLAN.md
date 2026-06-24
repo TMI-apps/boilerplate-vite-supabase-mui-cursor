@@ -35,7 +35,7 @@
 ## Notes during development
 
 - `authMessages.ts` holds user-facing auth strings so components do not import services directly (arch/lint gate).
-- `validate:structure` may still report pre-existing violations under `.agents/skills/vercel-react-best-practices/` (unrelated to this job).
+- `validate:structure` on agent skills: only `.agents/skills/<name>/SKILL.md` (+ whitelisted `references/`) — no nested `AGENTS.md` under skills (removed with `vercel-react-best-practices` purge).
 - Topbar moved to `Topbar/` folder + `index.ts` to match common component pattern.
 
 ## Chat footer
