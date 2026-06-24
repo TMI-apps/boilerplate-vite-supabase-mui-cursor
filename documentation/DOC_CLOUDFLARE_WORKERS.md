@@ -14,6 +14,37 @@ Deploy this Vite + React SPA to **Cloudflare Workers** with static assets, using
 
 Push → Cloudflare builds & deploys. GitHub blocks bad merges. There is no GitHub → Cloudflare deploy step.
 
+## Agent one-shot brief (fork setup)
+
+For coding agents completing the **"Put your app online (Cloudflare hosting)"** task from `src/config/app-tasks.json`. Run it after the user's Supabase env vars exist. Use `.agents/skills/quick-piv/SKILL.md` for the change, or `plan` + `implement` if rulesets/dashboard need research. Work on `feature/*` → `develop`, never `main`. The **user** confirms success — do not claim done without their test.
+
+**Target:** GitHub = CI gate only (`ci.yml` on PR + push to `main`/`develop`; rulesets require a PR + green `test` check; **no** deploy workflow; **no** `CLOUDFLARE_API_TOKEN` secret). Cloudflare Workers Builds = sole deploy path (push → build + deploy; `develop` → preview URL, `main` → production). Same Supabase project for preview and production.
+
+**Discover first (ask the user when unknown):**
+
+- Unique Worker `name` (lowercase, hyphens) for `wrangler.jsonc`.
+- Cloudflare **org** `account_id` (not a personal account) — dashboard, or `pnpm exec wrangler whoami`.
+- Production custom domain (optional) with DNS on Cloudflare.
+- Any old Cloudflare **Pages** project to retire once the Worker serves the domain.
+- All build-time `VITE_*` keys (from `.env`): at minimum `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`.
+- On the fork, the CI check is job name `test`. Find its `integration_id` with `gh api repos/OWNER/REPO/rulesets` (classic branch protection returns 404 — use the rulesets API).
+
+**Implement (fork commits):**
+
+1. `wrangler.jsonc` — set `name`; `compatibility_date` today; `workers_dev: true`; `preview_urls: true`; `assets.directory: "./dist"`; `assets.not_found_handling: "single-page-application"`; add `account_id`; add `routes: [{ "pattern": "<domain>", "custom_domain": true }]` only when using a custom domain. Do **not** set `pages_build_output_dir`. Remove a `public/_redirects` SPA rule if present (conflicts with `not_found_handling` → `Infinite loop detected`).
+2. GitHub — delete any `deploy-cloudflare-*.yml`; keep `ci.yml` unchanged. Create/verify rulesets on `main` (`~DEFAULT_BRANCH`) and `develop`: `pull_request` required, `allowed_merge_methods` merge/squash/rebase, `required_status_checks` (context `test`, the fork's `integration_id`, strict `false`), `non_fast_forward`, `deletion`.
+3. `package.json` already has `deploy` and `preview:worker` scripts and `wrangler` as a devDependency — no change needed.
+
+**Dashboard hand-off (agent usually cannot do via API — Workers Builds needs a user API token, not wrangler OAuth):** give the user exact click-path → Cloudflare → **Workers & Pages → Create → Workers → Connect to Git** → Production branch `main`; Build command `pnpm install && pnpm run build`; Deploy command `npx wrangler deploy`; **Root directory EMPTY** (a stale value causes `root directory not found`); Build variables `NODE_VERSION=20`, `CLOUDFLARE_ACCOUNT_ID`, plus every `VITE_*` the app needs; enable **non-production branch builds** for `develop`.
+
+**Auth:** add the production URL + the `develop` preview URL to Supabase **Authentication → URL configuration** (Site URL + Redirect URLs). For Google, add matching JavaScript origins and callback paths per [DOC_SUPABASE_GOOGLE_OAUTH.md](./DOC_SUPABASE_GOOGLE_OAUTH.md) (include the app's `/auth/callback` route).
+
+**Retire old Pages:** after the Worker serves the domain, disable auto-deploy on the old Pages project, then delete it.
+
+**Gotchas:** `account_id` is required in `wrangler.jsonc` when multiple CF accounts are visible; the live site must load `/assets/*.js` in view-source (not `/src/main.tsx`); `pnpm deploy` is an emergency local path only.
+
+**Gates:** `pnpm lint`, `pnpm type-check`, `pnpm build`, `pnpm validate:structure` pass; a PR with a failing lint stays blocked until CI is green; Workers Builds shows green on latest `main` and `develop`; login works on production and the `develop` preview.
+
 ## What is configured in this repo
 
 | Concern | How |
