@@ -20,14 +20,14 @@ module.exports = {
    * New files in a baseline feature fail once counts exceed the snapshot.
    */
   baseline: {
-    "auth": {
-      "totalFiles": 28,
-      "layers": {
-        "components": 5,
-        "hooks": 13,
-        "services": 8,
-        "types": 2
-      }
-    }
+    auth: {
+      totalFiles: 28,
+      layers: {
+        components: 5,
+        hooks: 13,
+        services: 8,
+        types: 2,
+      },
+    },
   },
 };
