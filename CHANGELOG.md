@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.35.0] - 2026-06-28
+
+### Added
+
+- **`caveman` skill**: Ultra-compressed agent communication mode (~75% fewer tokens) — terse responses with full technical accuracy; persists until user says "stop caveman" or "normal mode".
+
 ## [0.34.0] - 2026-06-24
 
 ### Added
