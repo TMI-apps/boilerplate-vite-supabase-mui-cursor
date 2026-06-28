@@ -1,5 +1,7 @@
-import { ArchiveOutlined, AssignmentOutlined } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import ArchiveOutlined from "@mui/icons-material/ArchiveOutlined";
+import AssignmentOutlined from "@mui/icons-material/AssignmentOutlined";
 
 type EmptyVariant = "active" | "archive";
 
@@ -34,7 +36,7 @@ export const TasksListEmptyState = ({ variant }: TasksListEmptyStateProps) => {
         borderColor: "divider",
         borderStyle: "dashed",
         borderRadius: 2,
-        bgcolor: (theme) => (theme.palette.mode === "light" ? "grey.50" : "action.hover"),
+        bgcolor: "action.hover",
       }}
     >
       <Icon sx={{ fontSize: 40, color: "text.disabled", mb: 1 }} />

@@ -4,20 +4,20 @@ import {
   orderArchiveNewestFirst,
   serializeTasksBaseline,
   tasksMatchBaseline,
-} from "../services/appTasksDomain";
+} from "@/features/tasks/services/appTasksDomain";
 import {
   archiveActiveTaskAtIndex,
   fetchActiveTasks,
   fetchArchiveTasks,
   replaceActiveTasks,
   restoreArchiveTask,
-} from "../services/appTasksApiService";
+} from "@/features/tasks/services/appTasksApiService";
 import type {
   ActiveTaskStatus,
   AppTask,
   SaveFeedback,
   TextAutosaveStatus,
-} from "../types/appTask.types";
+} from "@/features/tasks/types/appTask.types";
 
 const TEXT_SAVE_DEBOUNCE_MS = 1000;
 const AUTOSAVE_SAVED_MS = 2000;
@@ -97,10 +97,15 @@ export const useAppTasksBacklog = (enabled: boolean) => {
   const reloadForView = useCallback(async () => {
     if (!enabled) return;
     setErrorMessage(null);
-    if (view === "active") {
-      await loadActive();
-    } else {
-      await loadArchive();
+    try {
+      if (view === "active") {
+        await loadActive();
+      } else {
+        await loadArchive();
+      }
+    } catch (error) {
+      setFeedback("error");
+      setErrorMessage(error instanceof Error ? error.message : "Failed to load tasks.");
     }
   }, [enabled, view, loadActive, loadArchive]);
 

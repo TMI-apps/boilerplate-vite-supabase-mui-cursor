@@ -12,7 +12,14 @@ export const createQueryClient = (): QueryClient =>
         gcTime: 1000 * 60 * 30, // 30 min cache
         refetchOnWindowFocus: true,
         retry: (failureCount, error) => {
-          // No retry on 404 – adjust based on your API error structure
+          if (
+            error &&
+            typeof error === "object" &&
+            "code" in error &&
+            (error as { code: string }).code === "PGRST116"
+          ) {
+            return false;
+          }
           if (
             error &&
             typeof error === "object" &&

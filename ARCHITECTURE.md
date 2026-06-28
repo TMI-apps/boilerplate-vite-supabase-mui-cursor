@@ -15,34 +15,29 @@ src/
 │       ├── Card/
 │       ├── Input/
 │       ├── Modal/
-│       ├── ProfileMenu/
-│       └── Topbar.tsx
-├── config/              # Configuration files (Entreefederatie, etc.)
+│       ├── ProfileMenu/   # Cross-layout shell; uses auth profile hooks
+│       └── Topbar/
+├── config/              # Configuration files (app-tasks JSON, legal URLs)
 ├── features/            # Feature modules (business logic)
 │   ├── auth/
 │   │   ├── components/  # Feature-specific UI components
 │   │   ├── hooks/       # React hooks for feature logic
 │   │   ├── services/    # Pure functions, API calls
 │   │   └── types/       # TypeScript types for feature
-│   ├── setup/
-│   │   ├── components/  # Setup wizard UI components
-│   │   │   └── sections/ # Setup section components
-│   │   ├── hooks/       # Setup-related hooks
-│   │   └── services/    # Setup-related services (API calls)
+│   └── tasks/           # Dev-only task backlog (/tasks)
 ├── layouts/             # Layout components
 │   └── MainLayout/      # Main layout component
 ├── pages/               # Route-level page components
 ├── shared/              # Shared across features
-│   ├── context/         # React contexts (AuthContext, etc.)
+│   ├── context/         # React contexts (AuthContext, QueryProvider)
 │   ├── hooks/           # Shared hooks (useSupabaseConfig, etc.)
 │   ├── services/        # Shared services (Supabase client, Airtable client)
 │   ├── types/           # Shared types
-│   ├── utils/           # Shared utility functions
+│   ├── utils/           # Shared utility functions (redirectUtils, queryKeys, etc.)
 │   └── theme/           # MUI theme configuration
 │       ├── defaultTheme.ts    # Default theme (preserved)
 │       ├── themeLoader.ts      # Theme loading and persistence
 │       └── theme.ts            # Theme export (uses loader)
-└── utils/               # Utility functions
 ```
 
 ## Server State Management (TanStack Query)
@@ -53,9 +48,9 @@ Server state (user profiles, config, API data) is managed by **TanStack Query**.
 
 **Key conventions:**
 
-- **Query keys:** Shared keys in `src/shared/utils/queryKeys.ts` – feature keys in `features/[feature]/api/keys.ts`
+- **Query keys:** Shared keys in `src/shared/utils/queryKeys.ts`; add per-feature `api/keys.ts` when a feature grows beyond shared keys
 - **Auth boundary:** On logout, `queryClient.clear()` in `authService.logout` (before `signOut()`)
-- **Features:** `useUserProfileQuery` (auth), `useConfigurationQuery` (setup) – legacy wrappers (`useUserProfile`, `useConfigurationData`) remain for backward compatibility
+- **Features:** `useUserProfileQuery` / `useUpdateUserProfile` (auth) use canonical merge (`setQueryData` on success). `/tasks` dev backlog intentionally uses local state + fetch (not TanStack).
 
 See `documentation/DOC_TANSTACK_QUERY.md` for full reference.
 
@@ -68,7 +63,7 @@ Pages → Components → Hooks → Services → Shared Services
 ```
 
 **Rules:**
-1. **Pages** can import from: Components, Hooks, Layouts, Store
+1. **Pages** can import from: Components, Hooks, Layouts, shared context
 2. **Components** can import from: Common components, Hooks (same feature), Types
 3. **Hooks** can import from: Services (same feature), Types
 4. **Services** can import from: Shared services, Types
@@ -168,7 +163,7 @@ export const HomePage = () => {
 | Layout wrapper | `src/layouts/` |
 | Global state (Context) | `src/shared/context/` |
 | Shared service (Supabase, Airtable, data providers) | `src/shared/services/` |
-| Root-level utility (`src/utils/`) | `src/utils/` |
+| Shared utility (cross-feature) | `src/shared/utils/` |
 
 ### Examples
 
@@ -373,9 +368,7 @@ These rules are defined in `eslint.config.js` using GTS's flat config format.
 
 **Feature modules:** import with `@/features/<feature>/...` (e.g. `@/features/auth/hooks/useAuth`).
 
-**Also:** `tsconfig.app.json` / `vite.config.ts` define legacy shortcuts (`@features/*`, `@shared/*`, `@pages/*`, `@utils/*` → `src/utils`, etc.). Existing files may still use them; **prefer `@/`** for new work so imports match the architecture rule and reviews.
-
-**Note:** Root-level helpers under `src/utils/` are imported as `@/utils/...` via the `src/*` base. Shared utilities belong in `src/shared/utils/` when used across features.
+**Canonical alias:** `@/*` → `src/*` only (`tsconfig.app.json`, `vite.config.ts`, `vitest.config.ts`, root `tsconfig.json`). Import shared utilities as `@/shared/utils/...`, features as `@/features/<feature>/...`.
 
 ## API Integration
 

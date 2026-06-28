@@ -379,11 +379,7 @@ module.exports = {
           name: "types",
           children: [{ name: "*.d.ts" }],
         },
-        // Utils
-        {
-          name: "utils",
-          children: [{ name: "*.ts" }],
-        },
+        // Utils — consolidated under shared/utils (no top-level src/utils)
         // Reference (documentation)
         {
           name: "_reference",
@@ -643,8 +639,15 @@ module.exports = {
               children: [
                 { name: "SKILL.md" },
                 { name: "patterns.md" },
+                { name: "AGENTS.md" },
+                { name: "README.md" },
+                { name: "metadata.json" },
                 {
                   name: "references",
+                  children: [{ name: "*.md" }],
+                },
+                {
+                  name: "rules",
                   children: [{ name: "*.md" }],
                 },
               ],
@@ -701,6 +704,7 @@ module.exports = {
     { name: "database.rules.json" },
     { name: "firebase.json" },
     { name: "package.json" },
+    { name: "skills-lock.json" },
     { name: "projectStructure.cache.json" },
     { name: "saml-attribute-mapping.json" },
     { name: "tsconfig.json" },
@@ -713,6 +717,7 @@ module.exports = {
     { name: "eslint.ignores.js" },
     { name: ".dependency-cruiser.cjs" },
     { name: "projectStructure.config.cjs" },
+    { name: "featureBudgets.config.cjs" },
     { name: "babel.config.js" },
     { name: "rollup.config.js" },
     { name: ".prettierrc.js" },
@@ -723,6 +728,7 @@ module.exports = {
     { name: "vite.config.ts" },
     { name: "vitest.config.ts" },
     { name: "vite-plugin-dev-tasks.ts" },
+    { name: "wrangler.jsonc" },
     // YAML files (specific only, no wildcard - pure whitelist)
     { name: "pnpm-lock.yaml" },
     { name: "pnpm-workspace.yaml" },
@@ -742,6 +748,7 @@ module.exports = {
     { name: ".gitattributes" },
     { name: ".editorconfig" },
     { name: ".firebaserc" },
+    { name: ".node-version" },
     { name: "index.html" },
     // Environment files (specific only, no wildcard - pure whitelist)
     { name: ".env" },

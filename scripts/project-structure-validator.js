@@ -59,6 +59,8 @@ const DEFAULT_IGNORE_PATTERNS = [
   '.pnpm-store',
   'supabase/.temp/**', // Supabase CLI temporary files
   'supabase/.temp',
+  '.wrangler/**', // Wrangler local state (Cloudflare Workers)
+  '.wrangler',
   // Removed: 'backup/**', 'backup', 'backups/**', 'backups' - want to catch these as violations
   // Removed: '**/temp-*' - want to catch temp files as violations
   // Removed: '**/*-check.*' - want to catch check files as violations
@@ -855,8 +857,20 @@ if (require.main === module) {
     options.ignorePatterns = args[ignoreIndex].split('=')[1].split(',').map(p => p.trim());
   }
   
+  // Parse --files-from option (newline-separated paths; avoids Windows argv limits)
+  const filesFromIndex = args.findIndex((arg) => arg.startsWith('--files-from='));
+  if (filesFromIndex !== -1) {
+    const fs = require('fs');
+    const listPath = args[filesFromIndex].split('=')[1].trim();
+    options.files = fs
+      .readFileSync(listPath, 'utf8')
+      .split(/\r?\n/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+  }
+
   // Parse --files option (comma-separated file paths)
-  const filesIndex = args.findIndex(arg => arg.startsWith('--files='));
+  const filesIndex = args.findIndex((arg) => arg.startsWith('--files='));
   if (filesIndex !== -1) {
     options.files = args[filesIndex].split('=')[1].split(',').map(p => p.trim()).filter(Boolean);
   }

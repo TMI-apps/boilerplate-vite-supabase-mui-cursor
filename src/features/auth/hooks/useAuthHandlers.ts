@@ -1,11 +1,13 @@
-import { useRef } from "react";
-import * as authService from "../services/authService";
-import type { User, LoginCredentials, SignUpCredentials } from "../types/auth.types";
+import { useRef, useCallback, useMemo } from "react";
+import * as authService from "@/features/auth/services/authService";
+import type { User, LoginCredentials, SignUpCredentials } from "@/features/auth/types/auth.types";
 import {
   handleLogin as handleLoginUtil,
   handleSignUp as handleSignUpUtil,
   handleLogout as handleLogoutUtil,
-} from "./authHandlerUtils";
+  handleRequestPasswordReset as handleRequestPasswordResetUtil,
+  handleUpdatePassword as handleUpdatePasswordUtil,
+} from "@/features/auth/services/authHandlerUtils";
 
 interface UseAuthHandlersOptions {
   setUser: (user: User | null) => void;
@@ -15,54 +17,65 @@ interface UseAuthHandlersOptions {
 
 export const useAuthHandlers = ({ setUser, setLoading, setError }: UseAuthHandlersOptions) => {
   const signInInFlightRef = useRef(false);
+  const stateRef = useRef({ setUser, setLoading, setError });
+  stateRef.current = { setUser, setLoading, setError };
 
-  const executeSignIn = async (
-    signInMethod: () => Promise<{ error: Error | null }>,
-    errorMessage: string
-  ) => {
-    if (signInInFlightRef.current) return;
-    signInInFlightRef.current = true;
-    try {
-      setLoading(true);
-      setError(null);
-      const { error: signInError } = await signInMethod();
-      if (signInError) setError(signInError.message);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : errorMessage);
-    } finally {
-      setLoading(false);
-      signInInFlightRef.current = false;
-    }
-  };
-
-  const createSignInHandler = (
-    signInMethod: () => Promise<{ error: Error | null }>,
-    errorMessage: string
-  ) => {
-    return () => executeSignIn(signInMethod, errorMessage);
-  };
-
-  const state = { setUser, setLoading, setError };
-
-  const handleLogin = (credentials: LoginCredentials) => handleLoginUtil(credentials, state);
-  const handleSignUp = (credentials: SignUpCredentials) => handleSignUpUtil(credentials, state);
-  const handleLogout = () => handleLogoutUtil(state);
-
-  const handleSignInWithGoogle = createSignInHandler(
-    authService.signInWithGoogle,
-    "Failed to sign in with Google"
+  const executeSignIn = useCallback(
+    async (signInMethod: () => Promise<{ error: Error | null }>, errorMessage: string) => {
+      if (signInInFlightRef.current) return;
+      signInInFlightRef.current = true;
+      const { setLoading: setLoadingState, setError: setErrorState } = stateRef.current;
+      try {
+        setLoadingState(true);
+        setErrorState(null);
+        const { error: signInError } = await signInMethod();
+        if (signInError) setErrorState(signInError.message);
+      } catch (err) {
+        setErrorState(err instanceof Error ? err.message : errorMessage);
+      } finally {
+        setLoadingState(false);
+        signInInFlightRef.current = false;
+      }
+    },
+    []
   );
 
-  const handleSignInWithEntreefederatie = createSignInHandler(
-    authService.signInWithEntreefederatie,
-    "Failed to sign in with Entreefederatie"
+  const login = useCallback(
+    (credentials: LoginCredentials) => handleLoginUtil(credentials, stateRef.current),
+    []
+  );
+  const signUp = useCallback(
+    (credentials: SignUpCredentials) => handleSignUpUtil(credentials, stateRef.current),
+    []
+  );
+  const logout = useCallback(() => handleLogoutUtil(stateRef.current), []);
+  const requestPasswordReset = useCallback(
+    (email: string) => handleRequestPasswordResetUtil(email, stateRef.current),
+    []
+  );
+  const updatePassword = useCallback(
+    (password: string) => handleUpdatePasswordUtil(password, stateRef.current),
+    []
+  );
+  const signInWithGoogle = useCallback(
+    () => executeSignIn(authService.signInWithGoogle, "Failed to sign in with Google"),
+    [executeSignIn]
   );
 
-  return {
-    login: handleLogin,
-    signUp: handleSignUp,
-    logout: handleLogout,
-    signInWithGoogle: handleSignInWithGoogle,
-    signInWithEntreefederatie: handleSignInWithEntreefederatie,
-  };
+  const clearAuthError = useCallback(() => {
+    stateRef.current.setError(null);
+  }, []);
+
+  return useMemo(
+    () => ({
+      login,
+      signUp,
+      logout,
+      signInWithGoogle,
+      requestPasswordReset,
+      updatePassword,
+      clearAuthError,
+    }),
+    [login, signUp, logout, signInWithGoogle, requestPasswordReset, updatePassword, clearAuthError]
+  );
 };

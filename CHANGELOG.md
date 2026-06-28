@@ -7,6 +7,125 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.36.0] - 2026-06-28
+
+### Added
+
+- **Feature size enforcement**: `featureBudgets.config.cjs`, `scripts/feature-size-lib.js`, `validate-feature-size` scripts (full, staged, baseline); CI, pre-commit, and pre-push hooks.
+- **`hypothesis` skill**: Pre-registered hypothesis debugging — root-cause experiments with explicit proved/disproved outcomes.
+- **Cross-feature import rules**: `no-cross-feature-internals` dependency-cruiser rules; architecture RULE § Feature granularity.
+
+### Changed
+
+- **Validate skill consolidation**: Removed `check` skill; `validate` auto-selects depth (`plan-review`, `impl-full`, `gate`). Router, plan, feature, finish, and consolidate cross-references updated.
+- **`arch-check-staged.js`**: Filters to architecture-relevant staged paths; runs full-graph depcruise when config changes.
+
+### Removed
+
+- **`check` skill**: Merged into `validate` gate mode.
+
+## [0.35.0] - 2026-06-28
+
+### Added
+
+- **`caveman` skill**: Ultra-compressed agent communication mode (~75% fewer tokens) — terse responses with full technical accuracy; persists until user says "stop caveman" or "normal mode".
+
+## [0.34.0] - 2026-06-24
+
+### Added
+
+- **`react-perf-vite` skill**: Stack-native React performance playbook (20 on-demand rules) for Vite, TanStack Query, and Workers — replaces vendored Vercel corpus.
+- **`documentation/DOC_REACT_PERF.md`**: Human/agent overview and skill tiebreaks.
+
+### Removed
+
+- **`vercel-react-best-practices`**: Purged vendored skill (~76 files, nested `AGENTS.md` ~106 KB per-turn context bloat). Patterns adapted into `react-perf-vite`; upstream attribution in skill + doc.
+
+### Changed
+
+- **Router**: Situation row + `web-perf` / `optimize2` / `react-perf-vite` tiebreak; skill index updated.
+- **`skills-lock.json`**: Tracks local `react-perf-vite` (derived from vercel-labs/agent-skills).
+
+## [0.33.0] - 2026-06-24
+
+### Added
+
+- **Agent one-shot brief (Cloudflare fork setup)**: New "Agent one-shot brief (fork setup)" section in `documentation/DOC_CLOUDFLARE_WORKERS.md` with the full discover → implement → dashboard hand-off → auth → retire → gates playbook, so a coding agent can complete a fork's Workers Builds hosting setup in one pass.
+
+### Changed
+
+- **`develop` branch protection**: Hardened the `develop` ruleset to match `main` — now requires a pull request (merge/squash/rebase) and the green `test` CI check, plus `non_fast_forward` and deletion protection, so no direct or force push bypasses CI.
+- **Onboarding hosting task**: Rewrote the `/tasks` hosting task ("Put your app online (Cloudflare hosting)") in plain language for non-technical forkers — what to prepare and that the coding agent performs the setup — instead of an inline technical brief; full technical detail now lives in the SSOT doc. Synced the `start` skill onboarding pointers to the new task name and doc section.
+- **Wrangler**: Bumped `compatibility_date` to `2026-06-23`.
+
+## [0.32.1] - 2026-06-20
+
+### Changed
+
+- **MUI bundle imports**: Replaced `@mui/material` and `@mui/icons-material` barrel imports with direct path imports across the app for faster dev cold starts and smaller transform graphs.
+- **Route code-splitting**: Lazy-loaded `LoginPage`, `ResetPasswordPage`, and `AuthCallbackPage` so auth UI is not in the initial bundle.
+- **Auth context performance**: Memoized `useAuth` context value and stabilized `useAuthHandlers` callbacks to reduce unnecessary consumer re-renders.
+- **Query devtools**: Dynamically import `@tanstack/react-query-devtools` in dev only so it stays out of production bundles.
+
+## [0.32.0] - 2026-06-20
+
+### Added
+
+- **Vercel React best practices skill**: `.agents/skills/vercel-react-best-practices/` (SKILL.md, AGENTS.md, rules library) with `skills-lock.json` for agent-skills provenance.
+- **Inconsistency remediation job plan**: `documentation/jobs/temp_job_inconsistency-remediation/DEVELOPMENT_PLAN.md`.
+- **Shared error utilities**: `src/shared/utils/errorUtils.ts`; auth user-facing strings in `src/features/auth/types/authMessages.ts`.
+- **`useEmailAuthValidation`**: Hook bridge so `EmailAuthForm` does not import auth services directly.
+
+### Changed
+
+- **Path aliases**: Standardized on industry `@/` → `src/*` only; removed granular `@shared`, `@features`, `@pages`, `@utils` aliases from app and root TypeScript/Vite/Vitest config.
+- **Utils consolidation**: Moved `redirectUtils`, `dateFormatters`, and tests from `src/utils/` to `src/shared/utils/`; removed top-level `src/utils/`.
+- **Auth types & TanStack**: Consolidated `AuthContextValue` and profile types in `auth.types.ts`; `useUpdateUserProfile` merges via `setQueryData`; `ProfileMenu` uses `useUserProfileQuery`.
+- **Error handling**: Unified OAuth callback errors via auth context; shared `getErrorMessage`; updated unconfigured-Supabase copy (no setup-wizard wording).
+- **Layout & styling**: Auth layout tokens (`authViewLayout.ts`, `authFormSurfaceSx`); `ResetPasswordPage` and `AuthCallbackPage` aligned with shared loading/layout patterns; `Topbar` moved to folder + `index.ts`.
+- **Docs & rules**: Updated `ARCHITECTURE.md`, `README.md`, `DOC_TANSTACK_QUERY.md`, feature READMEs, cursor rules for `@/` aliases, and `finish` skill task-list staging rule.
+
+### Removed
+
+- **Orphan config**: `src/config/entreefederatie.ts`.
+- **Deprecated auth UI**: `LoginForm.tsx` wrapper; `authHandlerUtils` from hooks (now in `services/`).
+
+## [0.31.0] - 2026-06-19
+
+### Added
+
+- **Cloudflare Workers deployment**: Root `wrangler.jsonc` as a fork-safe, assets-only SPA Worker (`not_found_handling: single-page-application`, `workers_dev`, `preview_urls`); `.node-version` (20); `deploy` and `preview:worker` scripts.
+- **`documentation/DOC_CLOUDFLARE_WORKERS.md`**: Workers Builds–only deploy model with the GitHub-vs-Cloudflare responsibility split, dashboard settings (Build/Deploy commands, empty Root directory, `NODE_VERSION`/`CLOUDFLARE_ACCOUNT_ID`/`VITE_*` build vars), Pages → Workers migration mapping, and troubleshooting.
+
+### Changed
+
+- **Deploy architecture**: GitHub is the CI/quality gate only (no deploy workflow, no `CLOUDFLARE_API_TOKEN` secret); Cloudflare Workers Builds deploys on push (`develop` → preview, `main` → production).
+- **Fork-safety**: `account_id` and custom domain are intentionally not committed — disambiguate via `CLOUDFLARE_ACCOUNT_ID` and add domains per fork.
+- **Docs/rules**: README deployment section, hosting task in `app-tasks.json`, and workflow rule deployment guidance updated; `.wrangler/` ignored by the structure validator.
+
+### Removed
+
+- **`@cloudflare/vite-plugin`**: Switched to a plain assets-only Worker so the committed `wrangler.jsonc` is the single, transparent source of deploy config.
+
+## [0.30.0] - 2026-06-10
+
+### Added
+
+- **Authentication**: Full sign-in UX — Google OAuth (PKCE on `/`), email sign-in/sign-up, forgot password, `/login`, `/reset-password`, inline home sign-in, and anonymous sessions treated as logged out.
+- **Auth components**: `SignInPanel`, `EmailAuthForm`, safe redirect helpers, mapped English error messages, and auth viewport layout for responsive no-scroll pages.
+- **Favicon**: Theme-primary rocket SVG (`public/favicon.svg`).
+
+### Changed
+
+- **Branding**: Site title and topbar link set to “React app starterkit”; removed boilerplate welcome copy from home.
+- **Profile menu**: Google sign-in plus link to email login; removed schoolaccount / Entreefederatie paths.
+- **`/tasks`**: Back button top-left without style overrides; removed checklist subtitle copy.
+- **Auth preview**: Sign-in UI visible when Supabase is not configured (actions disabled with info alert).
+
+### Removed
+
+- **Vite default favicon** (`public/vite.svg`).
+
 ## [0.29.0] - 2026-06-09
 
 ### Added

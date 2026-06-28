@@ -5,8 +5,8 @@
     "status": "to-do"
   },
   {
-    "title": "Configure Hosting",
-    "description": "Set deployment target and env vars for production (see README deployment section). Configure build output, preview URL, and any host-specific VITE_* vars. Confirm pnpm build succeeds locally before first deploy.",
+    "title": "Put your app online (Cloudflare hosting)",
+    "description": "Get your app live on the internet with Cloudflare (free tier is fine). Your coding agent does the setup — just ask it to \"do the hosting task\". What you need ready: a Cloudflare account, your Supabase keys already in .env, and (optional) a domain name you own. How it works once set up: pushing your code to GitHub auto-builds and deploys it — the develop branch gives a preview link, main goes live. One step happens in the Cloudflare website (connecting your repo); the agent gives you exact click-by-click instructions and waits for you. Agent playbook + troubleshooting: documentation/DOC_CLOUDFLARE_WORKERS.md (see \"Agent one-shot brief\").",
     "status": "to-do"
   },
   {

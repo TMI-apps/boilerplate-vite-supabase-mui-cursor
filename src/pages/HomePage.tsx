@@ -1,36 +1,54 @@
-import { Box, Typography, Container } from "@mui/material";
+import { Button } from "@/components/common/Button";
 import { useAuthContext } from "@/shared/context/AuthContext";
-import { useSupabaseConfig } from "@shared/hooks/useSupabaseConfig";
+import { SignInPanel } from "@/features/auth/components/SignInPanel";
+import { useAuthCallbackHandler } from "@/features/auth/hooks/useAuthCallbackHandler";
+import { PageLoadingState } from "@/components/common/PageLoadingState";
+import { authContentSx, authContentMaxWidth } from "@/features/auth/components/authViewLayout";
+
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 
 export const HomePage = () => {
-  const { user } = useAuthContext();
-  const { isConfigured: supabaseConfigured } = useSupabaseConfig();
+  const { user, loading, error, clearAuthError } = useAuthContext();
+  const { isProcessing } = useAuthCallbackHandler();
+
+  if (loading || isProcessing) {
+    return <PageLoadingState message="Signing in…" />;
+  }
+
+  const showInlineLogin = !user;
 
   return (
-    <Container maxWidth="md">
-      <Box sx={{ textAlign: "center", py: 8 }}>
-        <Typography variant="h3" component="h1" gutterBottom>
-          Welcome to Vite MUI Supabase Starter
-        </Typography>
-        <Typography variant="h6" color="text.secondary" component="p" sx={{ mb: 2 }}>
-          A modern boilerplate with React, TypeScript, Vite, Material-UI, and Supabase
-        </Typography>
-        {user ? (
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="body1" component="p" sx={{ mb: 2 }}>
-              Welcome back, {user.email}!
-            </Typography>
-          </Box>
-        ) : (
-          <Box sx={{ mt: 4 }}>
-            {supabaseConfigured && (
-              <Typography variant="body1" color="text.secondary">
-                Use the profile icon in the topbar to sign in.
-              </Typography>
-            )}
-          </Box>
-        )}
-      </Box>
-    </Container>
+    <Box sx={{ ...authContentSx, textAlign: "center" }}>
+      {error && (
+        <Alert
+          severity="error"
+          sx={{
+            maxWidth: authContentMaxWidth,
+            width: "100%",
+            mb: { xs: 1, sm: 1.5 },
+            textAlign: "left",
+          }}
+          action={
+            <Button size="small" onClick={clearAuthError}>
+              Dismiss
+            </Button>
+          }
+        >
+          {error}
+        </Alert>
+      )}
+
+      {user ? (
+        <Box sx={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="body1" component="p">
+            Welcome back, {user.email}!
+          </Typography>
+        </Box>
+      ) : showInlineLogin ? (
+        <SignInPanel />
+      ) : null}
+    </Box>
   );
 };

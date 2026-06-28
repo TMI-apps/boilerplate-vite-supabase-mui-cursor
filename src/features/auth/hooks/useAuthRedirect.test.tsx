@@ -3,14 +3,11 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { useAuthRedirect } from "./useAuthRedirect";
 import { useAuthContext } from "@/shared/context/AuthContext";
-import * as redirectUtils from "@/utils/redirectUtils";
+import * as redirectUtils from "@/shared/utils/redirectUtils";
 
 // Mock dependencies
 vi.mock("@/shared/context/AuthContext");
-vi.mock("@/utils/redirectUtils");
-vi.mock("@config/entreefederatie", () => ({
-  getEntreefederatieDomain: vi.fn(() => "example.com"),
-}));
+vi.mock("@/shared/utils/redirectUtils");
 
 const mockNavigate = vi.fn();
 
@@ -31,7 +28,10 @@ describe("useAuthRedirect", () => {
     signUp: vi.fn(),
     logout: vi.fn(),
     signInWithGoogle: vi.fn(),
-    signInWithEntreefederatie: vi.fn(),
+    requestPasswordReset: vi.fn(),
+    updatePassword: vi.fn(),
+    clearAuthError: vi.fn(),
+    setAuthError: vi.fn(),
   };
 
   beforeEach(() => {

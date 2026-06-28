@@ -1,7 +1,7 @@
-import { Stack } from "@mui/material";
-import type { ActiveTaskStatus, AppTask } from "../types/appTask.types";
+import type { ActiveTaskStatus, AppTask } from "@/features/tasks/types/appTask.types";
 import { ArchiveTaskRow } from "./ArchiveTaskRow";
 import { TasksListEmptyState } from "./TasksListEmptyState";
+import Stack from "@mui/material/Stack";
 
 interface ArchiveTaskListProps {
   tasks: AppTask[];

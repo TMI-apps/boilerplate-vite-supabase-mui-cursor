@@ -46,6 +46,9 @@ jobs:
       - name: Structure validation
         run: pnpm validate:structure
 
+      - name: Feature size validation
+        run: pnpm validate:feature-size
+
       - name: Architecture check
         run: pnpm arch:check:ci
 

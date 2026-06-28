@@ -1,4 +1,4 @@
-export { ProfileMenu } from "../ProfileMenu";
+export { ProfileMenu } from "@/components/common/ProfileMenu";
 export { ProfileInfo } from "./ProfileInfo";
 export { ProfileChips } from "./ProfileChips";
 export { ProfileName } from "./ProfileName";

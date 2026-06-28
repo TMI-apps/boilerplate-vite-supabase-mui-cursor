@@ -38,6 +38,17 @@ Add new patterns at the bottom as they prove reusable across incidents.
 
 ---
 
+## PowerShell: `&&` chaining fails immediately (parser error)
+
+- Symptom: Shell command fails instantly with `The token '&&' is not a valid statement separator`
+- Root cause: This repo runs on **Windows PowerShell**; bash-style `&&` is invalid
+- Fix: Chain with `;` and check `$LASTEXITCODE` after each step, or run separate Shell tool calls
+- Example: `pnpm build; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; pnpm validate:structure`
+- SSOT: `.cursor/rules/workflow/RULE.md` § Platform and Commands
+- Tokens: PowerShell, `&&`, parser, Windows
+
+---
+
 ## PowerShell: command hang or missing exit code (Cursor/hooks)
 
 - Symptom: Commands like `pnpm type-check`, `pnpm lint`, or `pnpm test` appear to hang indefinitely in PowerShell/Cursor, especially in hooks or scripts

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="App">
+  <!-- Primary color: #CF13B3 (src/shared/theme/defaultTheme.ts) -->
+  <path
+    fill="#CF13B3"
+    d="M16 5l5 8h-2v7.2L17.2 22h-2.4L15 20.2V13h-2L16 5zm-3 15.5L8 25l5-2.5zm6 0L24 25l-5-2.5zM14 22h4l-2 5z"
+  />
+</svg>

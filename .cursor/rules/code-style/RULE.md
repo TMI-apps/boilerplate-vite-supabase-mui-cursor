@@ -111,14 +111,16 @@ When adding external package imports:
 
 ```typescript
 // ✅ CORRECT
-import { useTodos } from "@/hooks/useTodos";
+import { useTodos } from "@/shared/hooks/useTodos";
 import { Button } from "@/components/common/Button";
-import { userService } from "@/services/userService";
+import { userService } from "@/shared/services/userService";
+import { fetchUserProfile } from "@/features/auth/services/userProfileService";
 
 // ❌ WRONG
 import { useTodos } from "../../shared/hooks/useTodos"; // Use path alias instead
 import { Button } from "../../components/common/Button"; // Use path alias instead
 import * as todoService from "../services/todoService"; // Use path alias; prefer hooks over direct service imports
+import { useAuth } from "@features/auth/hooks/useAuth"; // Use @/features/... not @features/...
 ```
 
 **For complete import rules:** See `architecture/RULE.md` for import direction, layer boundaries, and architectural best practices.

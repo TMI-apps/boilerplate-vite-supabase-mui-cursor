@@ -5,15 +5,41 @@
 
 const REDIRECT_PATH_KEY = "auth_redirect_path";
 
+const BLOCKED_PATH_PREFIXES = ["/login", "/reset-password", "/auth", "/signup"];
+
+/**
+ * Validates that a redirect path is a safe internal path.
+ */
+export const isSafeRedirectPath = (path: string): boolean => {
+  if (!path.startsWith("/")) {
+    return false;
+  }
+
+  if (path.startsWith("//")) {
+    return false;
+  }
+
+  if (/^https?:\/\//i.test(path)) {
+    return false;
+  }
+
+  return !BLOCKED_PATH_PREFIXES.some(
+    (blockedPrefix) => path === blockedPrefix || path.startsWith(`${blockedPrefix}/`)
+  );
+};
+
 /**
  * Stores the current path as the redirect target.
  * Should be called before redirecting to login.
  */
 export const storeRedirectPath = (path: string): void => {
+  if (!isSafeRedirectPath(path)) {
+    return;
+  }
+
   try {
     sessionStorage.setItem(REDIRECT_PATH_KEY, path);
   } catch (error) {
-    // Ignore errors (e.g., in private browsing mode)
     console.warn("Failed to store redirect path:", error);
   }
 };
@@ -27,19 +53,12 @@ export const getAndClearRedirectPath = (): string | null => {
     const storedPath = sessionStorage.getItem(REDIRECT_PATH_KEY);
     if (storedPath) {
       sessionStorage.removeItem(REDIRECT_PATH_KEY);
-      // Validate that it's a valid path (starts with / and doesn't include auth-related pages)
-      if (
-        storedPath.startsWith("/") &&
-        !storedPath.startsWith("/login") &&
-        !storedPath.startsWith("/auth") &&
-        !storedPath.startsWith("/signup")
-      ) {
+      if (isSafeRedirectPath(storedPath)) {
         return storedPath;
       }
     }
     return null;
   } catch (error) {
-    // Ignore errors
     console.warn("Failed to retrieve redirect path:", error);
     return null;
   }
@@ -52,7 +71,6 @@ export const clearRedirectPath = (): void => {
   try {
     sessionStorage.removeItem(REDIRECT_PATH_KEY);
   } catch (error) {
-    // Ignore errors
     console.warn("Failed to clear redirect path:", error);
   }
 };

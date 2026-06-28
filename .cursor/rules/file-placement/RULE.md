@@ -1,5 +1,5 @@
 ---
-description: "CRITICAL: Before creating any new file or folder, validate placement against projectStructure.config.js and architecture rules. Check structure whitelist, verify allowed file patterns, and suggest correct locations if invalid. Applies when user requests file/folder creation or assistant needs to create files."
+description: "CRITICAL: Before creating any new file or folder, validate placement against projectStructure.config.cjs and architecture rules. Check structure whitelist, verify allowed file patterns, and suggest correct locations if invalid. Applies when user requests file/folder creation or assistant needs to create files."
 alwaysApply: true
 ---
 
@@ -7,18 +7,18 @@ alwaysApply: true
 
 ## Purpose
 
-Ensures files/folders are created in correct locations per `projectStructure.config.js` and architecture rules.
+Ensures files/folders are created in correct locations per `projectStructure.config.cjs` and architecture rules.
 
 **BEFORE creating any file/folder**, you MUST:
 
-1. Check `projectStructure.config.js` for allowed locations
+1. Check `projectStructure.config.cjs` for allowed locations
 2. Validate against `.cursor/rules/architecture/RULE.md`
 3. Confirm placement matches whitelist patterns
 4. Suggest corrections if invalid
 
 ## Validation Process
 
-1. **Check structure**: Run `pnpm validate:structure` or check `projectStructure.config.js`
+1. **Check structure**: Run `pnpm validate:structure` or check `projectStructure.config.cjs`
 2. **Determine location** per file type:
    - **Page Component** (`.tsx`) → `src/pages/<PageName>/<PageName>Page.tsx` (prefer named files, NOT `index.tsx`)
    - Component (`.tsx`) → `src/components/common/` or `src/features/*/components/`
@@ -57,7 +57,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
 
 ## Integration
 
-Run `pnpm validate:structure` before creating files. Update `projectStructure.config.js` only for legitimate new structures (with approval).
+Run `pnpm validate:structure` before creating files. Run `pnpm validate:feature-size` when adding many files to an existing feature. Update `projectStructure.config.cjs` only for legitimate new structures (with approval). Per-feature size waivers go in `featureBudgets.config.cjs` with a required `reason` (see `.cursor/rules/architecture/RULE.md` § Feature granularity).
 
 ## Error Prevention
 
@@ -65,7 +65,7 @@ Run `pnpm validate:structure` before creating files. Update `projectStructure.co
 - ❌ Create files in unallowed locations
 - ❌ Create directories not in the whitelist
 - ❌ Use file patterns not allowed in that directory
-- ❌ Modify `projectStructure.config.js` to accommodate violations
+- ❌ Modify `projectStructure.config.cjs` to accommodate violations
 - ❌ Skip validation "because it's just a small file"
 
 **DO**:
@@ -257,13 +257,25 @@ Let me know once you've moved them and I'll continue with the remaining changes.
 
 Always validate placement before creating. If invalid, suggest correct location per architecture rules.
 
+### Tooling artifacts (build / deploy CLIs)
+
+When adding deployment or build tooling that writes local state (e.g. Cloudflare Wrangler → `.wrangler/`):
+
+1. Add the path to **`.gitignore`**
+2. Add the same path to **`DEFAULT_IGNORE_PATTERNS`** in `scripts/project-structure-validator.js` (same pattern as `dist/`, `.firebase/`)
+3. Whitelist any new **root config files** in `projectStructure.config.cjs` (e.g. `wrangler.jsonc`)
+
+Otherwise `pnpm validate:structure` fails after the first local build. See `documentation/DOC_CLOUDFLARE_WORKERS.md`.
+
 ## Related Files
 
 When updating this rule, also check:
 - `scripts/project-structure-validator.js` - Main validator implementation
 - `scripts/feature-readme-lib.js` / `scripts/validate-feature-docs.js` / `scripts/validate-feature-docs-staged.js` - Feature-local README enforcement
+- `scripts/feature-size-lib.js` / `scripts/validate-feature-size.js` / `scripts/validate-feature-size-staged.js` - Feature size / granularity enforcement
+- `featureBudgets.config.cjs` - Feature size budget SSOT
 - `documentation/DOC_FEATURE_LOCAL_README.md` - Option 1 contract and pipeline
-- `projectStructure.config.js` - Structure configuration file
+- `projectStructure.config.cjs` - Structure configuration file
 - `package.json` - Scripts that call the validator (validate:structure)
 - `documentation/PROJECT-STRUCTURE-VALIDATION.md` - User documentation
 - `architecture.md` - Architecture documentation
@@ -272,11 +284,11 @@ When updating this rule, also check:
 ## Related Rules
 
 - `.cursor/rules/architecture/RULE.md` - Architecture standards and structure
-- `projectStructure.config.js` - Whitelist of allowed files/folders
+- `projectStructure.config.cjs` - Whitelist of allowed files/folders
 - `scripts/project-structure-validator.js` - Validation tool
 
 ## SSOT Status
 
 - This rule: SSOT for file creation workflow
 - `architecture/RULE.md`: SSOT for project structure
-- References `projectStructure.config.js` for whitelist implementation
+- References `projectStructure.config.cjs` for whitelist implementation

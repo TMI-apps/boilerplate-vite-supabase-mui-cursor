@@ -1,10 +1,15 @@
-import { Add } from "@mui/icons-material";
-import { Box, Button, Stack, Tab, Tabs } from "@mui/material";
-import { useAppTasksBacklog } from "../hooks/useAppTasksBacklog";
+import { useAppTasksBacklog } from "@/features/tasks/hooks/useAppTasksBacklog";
 import { ActiveTaskList } from "./ActiveTaskList";
 import { ArchiveTaskList } from "./ArchiveTaskList";
 import { TasksAutosaveIndicator } from "./TasksAutosaveIndicator";
 import { TasksFeedback } from "./TasksFeedback";
+
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Add from "@mui/icons-material/Add";
 
 export const TasksBacklogPanel = () => {
   const {

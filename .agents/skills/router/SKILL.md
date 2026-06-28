@@ -168,7 +168,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Execute an existing `DEVELOPMENT_PLAN.md` phase by phase | `.agents/skills/implement/SKILL.md` |
 | Small scoped change; plan+implement+validate in one pass | `.agents/skills/quick-piv/SKILL.md` |
 | Review plan or implementation **without** editing by default | `.agents/skills/validate/SKILL.md` |
-| Pre-merge / post-refactor architecture & quality gate (layer semantics + tooling) | `.agents/skills/check/SKILL.md` |
+| Pre-merge / post-refactor architecture & quality gate (layer semantics + tooling) | `.agents/skills/validate/SKILL.md` (auto-selects gate depth) |
 | Component-level rubric (props, MUI, a11y, tests) | `.agents/skills/review/SKILL.md` |
 | Version, changelog, staging gate, **local** commit | `.agents/skills/finish/SKILL.md` |
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
@@ -184,6 +184,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Simplify **one** concrete feature (flows + code), reduce steps/complexity | `.agents/skills/challenge/SKILL.md` |
 | Find cross-feature duplication and consolidation candidates (see skill § Symbiotic Relationships for cleanup pipeline) | `.agents/skills/consolidate/SKILL.md` |
 | Optimize hotspots: design → approach → efficiency → complexity | `.agents/skills/optimize2/SKILL.md` |
+| React perf patterns (bundle, waterfalls, re-renders) for Vite SPA | `.agents/skills/react-perf-vite/SKILL.md` |
 | Semantic architecture repair **after** automated checks pass | `.agents/skills/consolidate/SKILL.md` § Semantic placement mode |
 | Retro from failures/diffs; persist lessons into rules or skills | `.agents/skills/learn/SKILL.md` |
 | Audit/improve the **skill library** as a whole (overlap, SSOT, conflicts, handoffs); subagent lenses + no-loss pass | `.agents/skills/improve-skill-library/SKILL.md` |
@@ -244,14 +245,13 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`quick-piv`:** Single pass; chat-sized plan OK; small scope.
 - **`plan`:** Multi-phase, migrations, breaking changes, or anything needing a durable plan file others can follow.
 
-### `validate` vs `check`
+### `validate` (auto-selects depth)
 
-- **`validate`:** Plan-only review **or** impl vs plan + default read-only tooling report; asks user before fixes.
-- **`check`:** Merge/finish gate emphasizing **layer semantics** and architecture spot-checks on a scope/diff. Use when **structural correctness** is the worry.
+- **`validate`** auto-selects depth from context: **plan-review** (plan only), **impl-full** (rules + tooling + plan-compliance after implementing against a plan), or a lighter **gate** (pre-merge/post-refactor structural confidence on a diff with no governing plan). No user mode input needed. See `.agents/skills/validate/SKILL.md` § Mode auto-selection.
 
-### `check` vs `consolidate` § Semantic placement
+### `validate` gate vs `consolidate` § Semantic placement
 
-- **`check`:** Routine gate on current scope (scripts + checklist).
+- **`validate` (gate mode):** Routine pre-merge gate on current scope (rule subagents + scripts).
 - **`consolidate` § Semantic placement mode:** After linters pass — **semantic** placement, duplication, cross-feature boundaries, refactoring impact.
 
 ### `consolidate` vs `optimize2`
@@ -334,10 +334,13 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`building-mcp-server-on-cloudflare`:** **Expose** tools as remote MCP with OAuth/deploy.
 - **`agents-sdk`:** **Consume** or embed MCP patterns inside Agents SDK — use when agent wiring dominates.
 
-### `web-perf` vs `optimize2`
+### `web-perf` vs `optimize2` vs `react-perf-vite`
 
 - **`web-perf`:** **Browser-measured** performance (CWVs, network, traces via DevTools MCP).
-- **`optimize2`:** **Code-level** structure and complexity optimization (may include perf but not Lighthouse-centric).
+- **`optimize2`:** **Code-level** structure and complexity optimization (may include perf but not Lighthouse-centric); Rule of Three for extractions.
+- **`react-perf-vite`:** **Pattern lookup** for stack-native React perf (lazy routes, TanStack dedup, re-render rules) — read `rules/` on demand; does not replace hotspot refactor.
+
+**Order when multiple apply:** measure with **`web-perf`** if symptoms are CWV/Lighthouse → structural fix with **`optimize2`** → cite specific **`react-perf-vite`** rules while implementing.
 
 ### Plan review stack (ordered pipeline)
 
@@ -390,7 +393,19 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 
 ### `quick-piv` (orchestrator)
 
-- **Primary outcome:** Land a **small** scoped change in one session. Compresses plan/implement/check steps — defers to **`validate`**, **`finish`**, and full **`plan`** for M/L, commits, and durable plans.
+- **Primary outcome:** Land a **small** scoped change in one session. Compresses plan/implement/validate steps — defers to **`validate`**, **`finish`**, and full **`plan`** for M/L, commits, and durable plans.
+
+### Thread continuation vs backlog intake
+
+- **Thread continuation:** Mid-task `/router` — resume the active job via **Thread → next skill**; do not read `app-tasks.json` first.
+- **Backlog intake:** Idle thread + bare `/router` — pick from `app-tasks.json` per **App task backlog**.
+- **Conflict:** If thread work and backlog `in-progress` disagree, **thread wins** unless the user explicitly asks to switch tasks.
+
+### Thread continuation vs backlog intake
+
+- **Thread continuation:** Mid-task `/router` — resume the active job via **Thread → next skill**; do not read `app-tasks.json` first.
+- **Backlog intake:** Idle thread + bare `/router` — pick from `app-tasks.json` per **App task backlog**.
+- **Conflict:** If thread work and backlog `in-progress` disagree, **thread wins** unless the user explicitly asks to switch tasks.
 
 ### Thread continuation vs backlog intake
 
@@ -427,8 +442,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `documentation/DOC_APP_VISION.md` — product SSOT (problem, persona, app’s role)
 - `.agents/skills/plan/SKILL.md`
 - `.agents/skills/implement/SKILL.md`
-- `.agents/skills/validate/SKILL.md`
-- `.agents/skills/check/SKILL.md`
+- `.agents/skills/validate/SKILL.md` (auto-selects plan-review / impl-full / gate depth)
 - `.agents/skills/consolidate/SKILL.md`
 - `.agents/skills/review/SKILL.md`
 - `.agents/skills/finish/SKILL.md`
@@ -443,6 +457,8 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/rule-quality/SKILL.md`
 - `.agents/skills/improve-skill-library/SKILL.md`
 - `.agents/skills/optimize2/SKILL.md`
+- `.agents/skills/react-perf-vite/SKILL.md`
+- `documentation/DOC_REACT_PERF.md` — human overview (links to skill)
 - `.agents/skills/airtable-inspect/SKILL.md`
 - `.agents/skills/grill-me/SKILL.md`
 - `.agents/skills/pattern-review/SKILL.md`
@@ -465,4 +481,4 @@ Resolve paths via workspace MCP descriptors or `~/.cursor/plugins/cache/` — sk
 
 ## Not present in this workspace
 
-The agent inventory may list skills that are **not** checked into this repo (e.g. generic architecture/TDD/issue PRD skills). If absent on disk, substitute **`plan` / `consolidate` / `check`** or add a project skill before relying on them.
+The agent inventory may list skills that are **not** checked into this repo (e.g. generic architecture/TDD/issue PRD skills). If absent on disk, substitute **`plan` / `consolidate` / `validate`** or add a project skill before relying on them.

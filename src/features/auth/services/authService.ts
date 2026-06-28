@@ -1,39 +1,36 @@
-import { getSupabase, isSupabaseConfigured } from "@shared/services/supabaseService";
-import { queryClient } from "@shared/utils/queryClient";
-import { getEntreefederatieDomain } from "@config/entreefederatie";
-import type { User, LoginCredentials, SignUpCredentials } from "../types/auth.types";
+import { getSupabase, isSupabaseConfigured } from "@/shared/services/supabaseService";
+import { queryClient } from "@/shared/utils/queryClient";
+import { getAppOrigin, getAppUrl } from "@/shared/utils/appOrigin";
+import type { User, LoginCredentials, SignUpCredentials } from "@/features/auth/types/auth.types";
 import { supabaseUserToUser } from "@/shared/utils/userUtils";
+import { DUPLICATE_SIGNUP_MESSAGE, mapAuthError } from "./authErrorMessages";
+
+const getConfigurationError = (): Error =>
+  new Error("Authentication requires Supabase to be configured.");
 
 export const login = async (
   credentials: LoginCredentials
 ): Promise<{ user: User | null; error: Error | null }> => {
   if (!isSupabaseConfigured()) {
-    return {
-      user: null,
-      error: new Error(
-        "Authentication requires Supabase to be configured. Please set up Supabase in the setup wizard."
-      ),
-    };
+    return { user: null, error: getConfigurationError() };
   }
 
   try {
     const { data, error } = await getSupabase().auth.signInWithPassword({
-      email: credentials.email,
+      email: credentials.email.trim(),
       password: credentials.password,
     });
 
     if (error) {
-      return { user: null, error };
+      return { user: null, error: new Error(mapAuthError(error)) };
     }
 
-    // Filter out anonymous users using shared utility
     const user = supabaseUserToUser(data.user);
-
     return { user, error: null };
   } catch (error) {
     return {
       user: null,
-      error: error instanceof Error ? error : new Error("Login failed"),
+      error: new Error(mapAuthError(error)),
     };
   }
 };
@@ -42,48 +39,48 @@ export const signUp = async (
   credentials: SignUpCredentials
 ): Promise<{ user: User | null; error: Error | null }> => {
   if (!isSupabaseConfigured()) {
-    return {
-      user: null,
-      error: new Error(
-        "Authentication requires Supabase to be configured. Please set up Supabase in the setup wizard."
-      ),
-    };
+    return { user: null, error: getConfigurationError() };
   }
 
   try {
     const { data, error } = await getSupabase().auth.signUp({
-      email: credentials.email,
+      email: credentials.email.trim(),
       password: credentials.password,
     });
 
     if (error) {
-      return { user: null, error };
+      return { user: null, error: new Error(mapAuthError(error)) };
     }
 
-    // Filter out anonymous users using shared utility
-    const user = supabaseUserToUser(data.user);
+    if (data.user && (!data.user.identities || data.user.identities.length === 0)) {
+      return { user: null, error: new Error(DUPLICATE_SIGNUP_MESSAGE) };
+    }
 
+    const user = supabaseUserToUser(data.user);
     return { user, error: null };
   } catch (error) {
     return {
       user: null,
-      error: error instanceof Error ? error : new Error("Sign up failed"),
+      error: new Error(mapAuthError(error)),
     };
   }
 };
 
 export const logout = async (): Promise<{ error: Error | null }> => {
   if (!isSupabaseConfigured()) {
-    return { error: null }; // No-op when Supabase not configured
+    return { error: null };
   }
 
   try {
     queryClient.clear();
     const { error } = await getSupabase().auth.signOut();
-    return { error: error || null };
+    if (error) {
+      return { error: new Error(mapAuthError(error)) };
+    }
+    return { error: null };
   } catch (error) {
     return {
-      error: error instanceof Error ? error : new Error("Logout failed"),
+      error: new Error(mapAuthError(error)),
     };
   }
 };
@@ -93,7 +90,6 @@ export const getCurrentUser = async (): Promise<{
   error: Error | null;
 }> => {
   if (!isSupabaseConfigured()) {
-    // Return no user when Supabase is not configured (no error)
     return { user: null, error: null };
   }
 
@@ -104,17 +100,15 @@ export const getCurrentUser = async (): Promise<{
     } = await getSupabase().auth.getUser();
 
     if (error) {
-      return { user: null, error };
+      return { user: null, error: new Error(mapAuthError(error)) };
     }
 
-    // Filter out anonymous users using shared utility
     const user = supabaseUserToUser(authUser);
-
     return { user, error: null };
   } catch (error) {
     return {
       user: null,
-      error: error instanceof Error ? error : new Error("Get user failed"),
+      error: new Error(mapAuthError(error)),
     };
   }
 };
@@ -124,17 +118,11 @@ export const getCurrentUser = async (): Promise<{
  */
 export const signInWithGoogle = async (): Promise<{ error: Error | null }> => {
   if (!isSupabaseConfigured()) {
-    return {
-      error: new Error(
-        "Authentication requires Supabase to be configured. Please set up Supabase in the setup wizard."
-      ),
-    };
+    return { error: getConfigurationError() };
   }
 
   try {
-    // Clean URL hash before OAuth to prevent double-hash issue
-    // Redirect to callback page which will handle the code exchange
-    const redirectUrl = `${window.location.origin}/auth/callback`;
+    const redirectUrl = getAppOrigin();
 
     const { error: signInError } = await getSupabase().auth.signInWithOAuth({
       provider: "google",
@@ -144,55 +132,55 @@ export const signInWithGoogle = async (): Promise<{ error: Error | null }> => {
     });
 
     if (signInError) {
-      return { error: signInError };
+      return { error: new Error(mapAuthError(signInError)) };
     }
 
-    // Auth state change handler will update user
     return { error: null };
   } catch (error) {
     return {
-      error: error instanceof Error ? error : new Error("Failed to sign in with Google"),
+      error: new Error(mapAuthError(error)),
     };
   }
 };
 
-/**
- * Sign in with Entreefederatie SAML SSO
- */
-export const signInWithEntreefederatie = async (): Promise<{ error: Error | null }> => {
+export const requestPasswordReset = async (email: string): Promise<{ error: Error | null }> => {
   if (!isSupabaseConfigured()) {
-    return {
-      error: new Error(
-        "Authentication requires Supabase to be configured. Please set up Supabase in the setup wizard."
-      ),
-    };
+    return { error: getConfigurationError() };
   }
 
   try {
-    // Redirect to callback page which will handle the code exchange
-    const redirectUrl = `${window.location.origin}/auth/callback`;
-
-    const { data, error: ssoError } = await getSupabase().auth.signInWithSSO({
-      domain: getEntreefederatieDomain(),
-      options: {
-        redirectTo: redirectUrl,
-      },
+    const { error } = await getSupabase().auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: getAppUrl("/reset-password"),
     });
 
-    if (ssoError) {
-      return { error: ssoError };
+    if (error) {
+      return { error: new Error(mapAuthError(error)) };
     }
 
-    if (data?.url) {
-      // Redirect to Entreefederatie SAML endpoint
-      window.location.href = data.url;
-      return { error: null };
-    } else {
-      return { error: new Error("No redirect URL returned from SAML SSO") };
-    }
+    return { error: null };
   } catch (error) {
     return {
-      error: error instanceof Error ? error : new Error("Failed to sign in with Entreefederatie"),
+      error: new Error(mapAuthError(error)),
+    };
+  }
+};
+
+export const updatePassword = async (password: string): Promise<{ error: Error | null }> => {
+  if (!isSupabaseConfigured()) {
+    return { error: getConfigurationError() };
+  }
+
+  try {
+    const { error } = await getSupabase().auth.updateUser({ password });
+
+    if (error) {
+      return { error: new Error(mapAuthError(error)) };
+    }
+
+    return { error: null };
+  } catch (error) {
+    return {
+      error: new Error(mapAuthError(error)),
     };
   }
 };
@@ -202,35 +190,39 @@ export const signInWithEntreefederatie = async (): Promise<{ error: Error | null
  */
 export const signInAnonymously = async (): Promise<{ error: Error | null }> => {
   if (!isSupabaseConfigured()) {
-    return { error: null }; // No-op when Supabase not configured
+    return { error: null };
   }
 
   try {
     const { error } = await getSupabase().auth.signInAnonymously();
-    return { error: error || null };
+    if (error) {
+      return { error: new Error(mapAuthError(error)) };
+    }
+    return { error: null };
   } catch (error) {
     return {
-      error: error instanceof Error ? error : new Error("Failed to sign in anonymously"),
+      error: new Error(mapAuthError(error)),
     };
   }
 };
 
 /**
- * Exchange authorization code for session (used in OAuth/SAML callback)
+ * Exchange authorization code for session (used in OAuth PKCE callback)
  */
 export const exchangeCodeForSession = async (code: string): Promise<{ error: Error | null }> => {
   if (!isSupabaseConfigured()) {
-    return {
-      error: new Error("Supabase is not configured"),
-    };
+    return { error: getConfigurationError() };
   }
 
   try {
     const { error } = await getSupabase().auth.exchangeCodeForSession(code);
-    return { error: error || null };
+    if (error) {
+      return { error: new Error(mapAuthError(error)) };
+    }
+    return { error: null };
   } catch (error) {
     return {
-      error: error instanceof Error ? error : new Error("Failed to exchange code for session"),
+      error: new Error(mapAuthError(error)),
     };
   }
 };

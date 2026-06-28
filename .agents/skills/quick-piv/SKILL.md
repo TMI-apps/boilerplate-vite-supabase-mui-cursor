@@ -12,7 +12,7 @@ Lightweight Plan → Implement → Validate in one workflow. **Primary outcome:*
 
 **Critical:** Still follow repo rules. No changelog updates (`.agents/skills/finish/SKILL.md` handles that).
 
-**Related:** Full formal cycle: `.agents/skills/plan/SKILL.md` → `.agents/skills/implement/SKILL.md` → `.agents/skills/validate/SKILL.md`. Session context: `.agents/skills/prime/SKILL.md`. Architecture/quality gate: `.agents/skills/check/SKILL.md`.
+**Related:** Full formal cycle: `.agents/skills/plan/SKILL.md` → `.agents/skills/implement/SKILL.md` → `.agents/skills/validate/SKILL.md`. Session context: `.agents/skills/prime/SKILL.md`. Architecture/quality gate: `.agents/skills/validate/SKILL.md` (auto-selects gate depth).
 
 ---
 

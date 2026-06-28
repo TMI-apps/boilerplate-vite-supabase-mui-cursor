@@ -1,5 +1,4 @@
-import type { MenuProps } from "@mui/material";
-
+import type { MenuProps } from "@mui/material/Menu";
 export const getMenuProps = (
   anchorEl: HTMLElement | null,
   open: boolean,

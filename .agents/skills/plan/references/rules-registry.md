@@ -16,4 +16,4 @@ Canonical paths for `.cursor/rules/` when skills need a rules table. Full descri
 | Debugging | `.cursor/rules/debugging/RULE.md` — when diagnosing complex issues |
 | Project-specific | `.cursor/rules/project-specific/RULE.md` — when applicable |
 
-**Callers:** `plan`, `implement`, `quick-piv`, `validate`, `check` — link here; do not copy this table into skill bodies.
+**Callers:** `plan`, `implement`, `quick-piv`, `validate` — link here; do not copy this table into skill bodies.

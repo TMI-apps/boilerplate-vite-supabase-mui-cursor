@@ -18,7 +18,7 @@ Discover, classify, and prioritize opportunities to unify repeated code patterns
 ## Modes
 
 - **Default — Redundancy audit:** the discovery → classify → prioritize → present → execute workflow below (what repeats?).
-- **Semantic placement repair:** is code in the **wrong layer/feature**, or does it mix concerns? Moves and refactors behind a gate, **after** `check`/tooling is green. Full procedure: [`references/semantic-placement.md`](references/semantic-placement.md). (Formerly the `architecture-repair2` skill.)
+- **Semantic placement repair:** is code in the **wrong layer/feature**, or does it mix concerns? Moves and refactors behind a gate, **after** `validate` (gate depth)/tooling is green. Full procedure: [`references/semantic-placement.md`](references/semantic-placement.md). (Formerly the `architecture-repair2` skill.)
 
 ## Triggers
 

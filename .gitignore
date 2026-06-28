@@ -35,5 +35,9 @@ coverage
 # Build
 build
 
+# Cloudflare Workers (Wrangler local state)
+.wrangler
+.dev.vars*
+
 # ESLint
 .eslintcache

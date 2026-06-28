@@ -1,5 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { storeRedirectPath, getAndClearRedirectPath, clearRedirectPath } from "./redirectUtils";
+import {
+  storeRedirectPath,
+  getAndClearRedirectPath,
+  clearRedirectPath,
+  isSafeRedirectPath,
+} from "./redirectUtils";
 
 describe("redirectUtils", () => {
   beforeEach(() => {
@@ -13,10 +18,34 @@ describe("redirectUtils", () => {
     vi.clearAllMocks();
   });
 
+  describe("isSafeRedirectPath", () => {
+    it("rejects protocol-relative and external paths", () => {
+      expect(isSafeRedirectPath("//evil.com")).toBe(false);
+      expect(isSafeRedirectPath("https://evil.com")).toBe(false);
+      expect(isSafeRedirectPath("http://evil.com/path")).toBe(false);
+    });
+
+    it("rejects blocked auth paths", () => {
+      expect(isSafeRedirectPath("/login")).toBe(false);
+      expect(isSafeRedirectPath("/reset-password")).toBe(false);
+      expect(isSafeRedirectPath("/auth/callback")).toBe(false);
+    });
+
+    it("accepts valid internal paths", () => {
+      expect(isSafeRedirectPath("/dashboard")).toBe(true);
+      expect(isSafeRedirectPath("/")).toBe(true);
+    });
+  });
+
   describe("storeRedirectPath", () => {
     it("should store a valid path in sessionStorage", () => {
       storeRedirectPath("/dashboard");
       expect(sessionStorage.getItem("auth_redirect_path")).toBe("/dashboard");
+    });
+
+    it("should not store unsafe paths", () => {
+      storeRedirectPath("//evil.com");
+      expect(sessionStorage.getItem("auth_redirect_path")).toBeNull();
     });
 
     it("should overwrite existing path", () => {
@@ -64,6 +93,22 @@ describe("redirectUtils", () => {
 
       expect(path).toBeNull();
       expect(sessionStorage.getItem("auth_redirect_path")).toBeNull(); // Should still be cleared
+    });
+
+    it("should reject paths that start with /reset-password", () => {
+      sessionStorage.setItem("auth_redirect_path", "/reset-password");
+      const path = getAndClearRedirectPath();
+
+      expect(path).toBeNull();
+      expect(sessionStorage.getItem("auth_redirect_path")).toBeNull();
+    });
+
+    it("should reject protocol-relative paths", () => {
+      sessionStorage.setItem("auth_redirect_path", "//evil.com");
+      const path = getAndClearRedirectPath();
+
+      expect(path).toBeNull();
+      expect(sessionStorage.getItem("auth_redirect_path")).toBeNull();
     });
 
     it("should reject paths that start with /auth", () => {

@@ -13,7 +13,7 @@
 | Phase | Goal | Gate | Status |
 |-------|------|------|--------|
 | 1 | Seed default onboarding tasks | JSON valid; 5 tasks in correct order | Done |
-| 2 | Delete setup feature + dev-api plugin | No imports from `@features/setup`, `setupUtils`, or `vite-plugin-dev-api` | Done |
+| 2 | Delete setup feature + dev-api plugin | No imports from `@/features/setup`, `setupUtils`, or `vite-plugin-dev-api` | Done |
 | 3 | Trim app shell navigation & dead hooks | App routes clean; Topbar/Home/Login updated | Done |
 | 4 | CI, protected config, docs cleanup | `validate:structure` passes; user approved `projectStructure.config.cjs` | Done |
 | 5 | Rewrite agent skills (start, router, finish) | Skills describe task onboarding + env/vision sync | Done |

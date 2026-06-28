@@ -1,13 +1,15 @@
 {
   "name": "vite-mui-supabase-starter",
   "private": true,
-  "version": "0.29.0",
+  "version": "0.36.0",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "dev": "vite",
     "build": "tsc --project tsconfig.app.json && vite build",
     "preview": "vite preview",
+    "deploy": "pnpm build && wrangler deploy",
+    "preview:worker": "pnpm build && wrangler dev",
     "lint": "eslint . --cache --cache-location .eslintcache",
     "lint:fix": "eslint . --fix --cache --cache-location .eslintcache",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
@@ -40,6 +42,10 @@
     "validate:feature-docs:strict": "node scripts/validate-feature-docs.js --strict",
     "validate:feature-docs:json": "node scripts/validate-feature-docs.js --format=json",
     "validate:feature-docs:staged": "node scripts/validate-feature-docs-staged.js",
+    "validate:feature-size": "node scripts/validate-feature-size.js",
+    "validate:feature-size:json": "node scripts/validate-feature-size.js --format=json",
+    "validate:feature-size:staged": "node scripts/validate-feature-size-staged.js",
+    "validate:feature-size:baseline": "node scripts/generate-feature-baseline.js --write",
     "arch:check:staged": "node scripts/arch-check-staged.js",
     "airtable:meta-dump": "node scripts/airtable-meta-dump.js",
     "airtable:sample": "node scripts/airtable-sample-records.js"
@@ -93,7 +99,8 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.0",
     "vite": "^8.0.14",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.7",
+    "wrangler": "4.102.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -101,6 +108,9 @@
     ],
     "projectStructure.config.cjs": [
       "pnpm validate:structure"
+    ],
+    "featureBudgets.config.cjs": [
+      "pnpm validate:feature-size"
     ],
     ".dependency-cruiser.cjs": [
       "pnpm arch:check"

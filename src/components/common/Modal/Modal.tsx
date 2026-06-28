@@ -1,10 +1,7 @@
-import {
-  Dialog,
-  DialogProps as MuiDialogProps,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
+import Dialog, { type DialogProps as MuiDialogProps } from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
 
 export interface ModalProps extends Omit<MuiDialogProps, "open"> {
   open: boolean;

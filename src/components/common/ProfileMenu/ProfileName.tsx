@@ -1,5 +1,7 @@
-import { Box, Typography } from "@mui/material";
 import VerifiedIcon from "@mui/icons-material/Verified";
+
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 interface ProfileNameProps {
   displayName: string;
@@ -24,7 +26,7 @@ export const ProfileName = ({ displayName, isVerified }: ProfileNameProps) => {
         <VerifiedIcon
           fontSize="small"
           color="primary"
-          sx={{ fontSize: (theme) => theme.spacing(2), flexShrink: 0 }}
+          sx={{ fontSize: (theme) => theme.typography.body2.fontSize, flexShrink: 0 }}
         />
       )}
     </Box>

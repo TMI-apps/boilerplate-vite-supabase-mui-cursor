@@ -1,10 +1,13 @@
-import { MenuItem, Box, Divider } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import { ProfileInfo } from "./ProfileInfo";
 import { SignInMenuItems } from "./SignInMenuItems";
-import type { User } from "@features/auth/types/auth.types";
-import type { UserProfile } from "@features/auth/hooks/useUserProfile";
+import type { User } from "@/features/auth/types/auth.types";
+import type { UserProfile } from "@/features/auth/types/auth.types";
+
+import Box from "@mui/material/Box";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 
 interface ProfileMenuContentProps {
   isLoggedIn: boolean;
@@ -13,9 +16,8 @@ interface ProfileMenuContentProps {
   profile: UserProfile | null;
   profileLoading: boolean;
   onSignInWithGoogle: () => void;
-  onSignInWithEntreefederatie: () => void;
+  onGoToLogin: () => void;
   onSignOut: () => void;
-  entreefederatieEnabled: boolean;
 }
 
 export const ProfileMenuContent = ({
@@ -25,9 +27,8 @@ export const ProfileMenuContent = ({
   profile,
   profileLoading,
   onSignInWithGoogle,
-  onSignInWithEntreefederatie,
+  onGoToLogin,
   onSignOut,
-  entreefederatieEnabled,
 }: ProfileMenuContentProps) => {
   if (isLoggedIn) {
     return (
@@ -45,13 +46,7 @@ export const ProfileMenuContent = ({
   }
 
   if (supabaseConfigured) {
-    return (
-      <SignInMenuItems
-        onSignInWithGoogle={onSignInWithGoogle}
-        onSignInWithEntreefederatie={onSignInWithEntreefederatie}
-        entreefederatieEnabled={entreefederatieEnabled}
-      />
-    );
+    return <SignInMenuItems onSignInWithGoogle={onSignInWithGoogle} onGoToLogin={onGoToLogin} />;
   }
 
   return (

@@ -8,7 +8,7 @@ import {
   restoreFromArchiveDisplayIndex,
   displayIndexToArchiveIndex,
 } from "./appTasksDomain";
-import type { AppTask } from "../types/appTask.types";
+import type { AppTask } from "@/features/tasks/types/appTask.types";
 
 const activeSample: AppTask[] = [
   { title: "A", description: "first", status: "in-progress" },

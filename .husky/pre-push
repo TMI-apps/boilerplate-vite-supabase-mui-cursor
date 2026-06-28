@@ -1,3 +1,7 @@
+# Type-check before push (also runs in CI)
+echo "Running type check before push..."
+pnpm type-check || exit 1
+
 # Run tests before pushing (single run, not watch mode)
 echo "Running tests before push..."
 pnpm test:run || exit 1
