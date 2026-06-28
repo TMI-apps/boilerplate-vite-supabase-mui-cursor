@@ -35,6 +35,20 @@ Architectural patterns, module organization, and structural standards for applic
 
 Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AGENT_WORKFLOW_LAYERS.md) § Pattern / industry-standard review.
 
+### Performance cost risk (heavy DB / UI operations)
+
+**Proactively** when planning or implementing operations that could significantly slow the database or UI. Flag the cost, design a leaner alternative, then let the user choose — do not silently ship the expensive path.
+
+**Heavy-operation triggers** (non-exhaustive): N+1 / per-row queries, unbounded or large `SELECT` (no pagination/limit), missing index on a filtered/joined column, full-table scans or aggregates, multi-table joins on large tables, repeated round-trips in a loop, large client-side lists without virtualization, expensive re-renders / unmemoized derived data over big arrays, blocking work on the main thread, oversized bundle/asset loads.
+
+**Required behavior:**
+1. **Detect** — when a step matches a trigger, estimate the cost (rough order of magnitude: rows touched, round-trips, render work).
+2. **Revisit design** — first try a cheaper architecture: narrower query + index, pagination/cursor, server-side aggregation, denormalized/derived column, caching (TanStack Query keys), batching, virtualization, memoization, deferring/`startTransition`. Prefer the **reductive** option (see `workflow/RULE.md` § Reductive Strategy).
+3. **Inform & propose** — tell the user about the heavy operation and present alternatives ordered from current/expensive to leaner/faster (later options progressively stronger).
+4. **Ask** — use the multiple-choice ask tool to let the user pick the approach before implementing. Follow `workflow/RULE.md` § Decision Questioning Protocol (raw question first, research, then choices; label the option most consistent with the codebase; include the omnipresent UX-impact research option).
+
+Cross-refs: stack-native fixes `.agents/skills/react-perf-vite/SKILL.md`; query cache UX `architecture/RULE.md` § Plain optimistic + server-canonical response; DB indexes/migrations `database/RULE.md`.
+
 ## Project Structure
 
 ### Directory Organization
@@ -206,6 +220,7 @@ Project uses automated architecture enforcement via ESLint + Dependency-Cruiser.
 | `eslint-plugin-boundaries` | Layer boundary enforcement | Real-time (IDE + pre-commit) |
 | `eslint-plugin-import` | Circular dependency prevention, import ordering | Real-time (IDE + pre-commit) |
 | `dependency-cruiser` | Deep analysis, stakeholder reports, CI validation | CI/CD + on-demand |
+| `validate-feature-size.js` (+ `feature-size-lib.js`) | Feature size / granularity budgets (per-layer + per-feature file counts) | CLI; CI (`validate:feature-size`); pre-commit (`validate:feature-size:staged`) |
 | `validate-feature-docs.js` (+ `feature-readme-lib.js`) | Feature-local `README.md` presence (and optional strict headings) | CLI; CI (`validate:feature-docs:strict`); pre-commit (`validate:feature-docs:staged`) |
 
 ### Import Direction (Downward Only)
@@ -253,7 +268,10 @@ Use `pnpm validate:structure` to validate:
 
 **Related Files:**
 - `scripts/project-structure-validator.js` - Main validator implementation
+- `scripts/validate-feature-size.js` - Feature size / granularity validator
+- `scripts/feature-size-lib.js` - Shared feature size logic
 - `projectStructure.config.cjs` - Structure configuration file
+- `featureBudgets.config.cjs` - Feature size budget configuration (SSOT for limits and waivers)
 - `package.json` - Scripts that call the validator
 - `documentation/PROJECT-STRUCTURE-VALIDATION.md` - User documentation
 - `architecture.md` - Architecture documentation
@@ -304,16 +322,17 @@ For legitimate cross-layer imports (rare cases), use ESLint disable comments wit
 
 ### Baseline Approach
 
-- Existing violations: Ignored via baseline (`.dependency-cruiser-baseline.json`)
-- New violations: Will be flagged and must be fixed
-- Gradual remediation: Fix violations incrementally over time
+- **Dependency-cruiser:** Existing violations ignored via baseline (`.dependency-cruiser-baseline.json`); new violations flagged and must be fixed.
+- **Feature size:** Existing oversized features grandfathered via `featureBudgets.config.cjs` → `baseline` snapshots; new growth beyond snapshot blocked until split or justified override.
+- Gradual remediation: Fix violations incrementally over time.
 
 ### Architecture Checking Commands
 
 **Full Validation (Comprehensive):**
 - `pnpm validate:all` - Full structure + architecture check
 - `pnpm validate:structure` - Full structure validation
-- `pnpm arch:check` - Full architecture check
+- `pnpm validate:feature-size` - Feature size / granularity validation
+- `pnpm arch:check` - Full architecture check (includes cross-feature import rules)
 - `pnpm arch:check:ci` - CI-friendly verbose output
 - `pnpm arch:graph` - Generate SVG dependency graph
 - `pnpm arch:graph:html` - Generate HTML report for stakeholders
@@ -323,13 +342,35 @@ For legitimate cross-layer imports (rare cases), use ESLint disable comments wit
 **Staged Files Only (Fast, for commits):**
 - `pnpm validate:all:staged` - Staged structure + architecture check
 - `pnpm validate:structure:staged` - Staged structure validation only
+- `pnpm validate:feature-size:staged` - Feature size validation for touched features (counts whole feature)
 - `pnpm arch:check:staged` - Architecture check (runs full, but reports staged)
 
 **Note:** Pre-commit hook automatically runs staged checks. Use full validation commands for comprehensive checks before major changes or when troubleshooting.
 
-### Legacy Enforcement (Still Valid)
+### Feature Granularity / Bounded Context (Enforced)
 
-- Folder Peeking: If a folder has more than 10 files, it must be broken down into sub-folders
+Layer rules alone do not prevent monolithic features. A single `src/features/<name>/` folder can hold an entire product domain and still pass layer lint. **One feature = one bounded domain concept** — one reason to change, one cohesive vocabulary users and devs share.
+
+**Heuristic:** If you can name two or more independent domain concepts inside one feature (e.g. game *world*, *combat*, *inventory*, *quests* in one folder), split them into separate features under `src/features/`. Move cross-cutting engine code to `src/shared/`.
+
+**Budgets (SSOT: `featureBudgets.config.cjs`):**
+- `defaults.maxFilesPerLayer` — max `.ts`/`.tsx` files per layer subfolder (`components/`, `hooks/`, `services/`, etc.), recursively.
+- `defaults.maxFilesPerFeature` — max `.ts`/`.tsx` files across the whole feature.
+- `overrides.<featureKey>` — per-feature waiver with **required non-empty `reason`** (e.g. `auth`, `admin/billing`).
+- `baseline.<featureKey>` — grandfathered snapshot; new files fail once counts exceed snapshot. Regenerate: `pnpm validate:feature-size:baseline`.
+
+**Cross-feature imports:** One feature must not deep-import another feature's internals (`components/`, `hooks/`, `services/`, `store/`, `context/`, `types/`). Consume sibling features via their public barrel (`index.ts`) or `api/` layer, or extract shared code to `src/shared/`. Enforced by dependency-cruiser rules `no-cross-feature-internals` and `no-cross-feature-internals-nested`.
+
+**Agent obligation:** Before creating files for new work, enumerate domain concepts. If more than one cohesive concept applies, or projected size exceeds budgets, split into multiple features in the plan — do not wait for the user to request architecture.
+
+**Example split (game):**
+```
+src/features/world/       # map, tiles, rendering
+src/features/combat/      # damage, turns, abilities
+src/features/inventory/   # items, equipment
+src/features/quests/      # objectives, dialogue hooks
+src/shared/               # ECS core, math, asset loader (2+ consumers)
+```
 
 ## Patterns
 
@@ -545,6 +586,7 @@ When reducing code complexity through refactoring, all changes must comply with 
   - Path alias definitions (`@/hooks/*`, `@/components/*`, etc.)
   - Code placement and layer boundaries
   - `common/` vs `shared/` folder distinction
+  - Feature granularity budgets and cross-feature import boundaries (`featureBudgets.config.cjs`, dependency-cruiser)
   - Plain optimistic + server-canonical response patterns for TanStack Query (mutation UX, cache merge vs. invalidation on success)
 - Other rules reference this rule for structure guidelines
 - `code-style/RULE.md` references this rule for path aliases instead of duplicating them

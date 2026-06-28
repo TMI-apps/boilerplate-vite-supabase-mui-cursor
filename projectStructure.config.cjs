@@ -717,6 +717,7 @@ module.exports = {
     { name: "eslint.ignores.js" },
     { name: ".dependency-cruiser.cjs" },
     { name: "projectStructure.config.cjs" },
+    { name: "featureBudgets.config.cjs" },
     { name: "babel.config.js" },
     { name: "rollup.config.js" },
     { name: ".prettierrc.js" },

@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.36.0] - 2026-06-28
+
+### Added
+
+- **Feature size enforcement**: `featureBudgets.config.cjs`, `scripts/feature-size-lib.js`, `validate-feature-size` scripts (full, staged, baseline); CI, pre-commit, and pre-push hooks.
+- **`hypothesis` skill**: Pre-registered hypothesis debugging — root-cause experiments with explicit proved/disproved outcomes.
+- **Cross-feature import rules**: `no-cross-feature-internals` dependency-cruiser rules; architecture RULE § Feature granularity.
+
+### Changed
+
+- **Validate skill consolidation**: Removed `check` skill; `validate` auto-selects depth (`plan-review`, `impl-full`, `gate`). Router, plan, feature, finish, and consolidate cross-references updated.
+- **`arch-check-staged.js`**: Filters to architecture-relevant staged paths; runs full-graph depcruise when config changes.
+
+### Removed
+
+- **`check` skill**: Merged into `validate` gate mode.
+
+## [0.35.0] - 2026-06-28
+
+### Added
+
+- **`caveman` skill**: Ultra-compressed agent communication mode (~75% fewer tokens) — terse responses with full technical accuracy; persists until user says "stop caveman" or "normal mode".
+
 ## [0.34.0] - 2026-06-24
 
 ### Added

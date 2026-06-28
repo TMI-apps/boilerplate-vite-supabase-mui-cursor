@@ -215,6 +215,30 @@ module.exports = {
       },
     },
 
+    // === FEATURE BOUNDARY RULES ===
+    {
+      name: "no-cross-feature-internals",
+      severity: "error",
+      comment:
+        "Features must consume other features via their public barrel (index.ts/api), not deep-import internals. Forces real bounded-context seams.",
+      from: { path: "^src/features/([^/]+)/" },
+      to: {
+        path: "^src/features/([^/]+)/(components|hooks|services|store|context|types)/",
+        pathNot: "^src/features/$1/",
+      },
+    },
+    {
+      name: "no-cross-feature-internals-nested",
+      severity: "error",
+      comment:
+        "Nested features must not deep-import sibling nested feature internals; use public barrels or shared/.",
+      from: { path: "^src/features/([^/]+)/([^/]+)/" },
+      to: {
+        path: "^src/features/([^/]+)/([^/]+)/(components|hooks|services|store|context|types)/",
+        pathNot: "^src/features/$1/$2/",
+      },
+    },
+
     // === DIRECT SERVICE ACCESS PREVENTION ===
     {
       name: "no-direct-service-in-components",

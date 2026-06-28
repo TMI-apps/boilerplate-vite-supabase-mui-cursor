@@ -205,6 +205,7 @@ Identify **subjective** choices requiring user input.
 ## Phase 3: Architecture & Structure Planning
 
 ### 3.1 Architecture Planning
+- [ ] **Feature decomposition self-check (mandatory, no user stop):** Enumerate domain concepts. If >1 cohesive concept, or projected size exceeds `featureBudgets.config.cjs`, split into multiple features before file creation. See `.cursor/rules/architecture/RULE.md` § Feature granularity.
 - [ ] Determine feature structure (feature-based vs shared) - `architecture/RULE.md`
 - [ ] Choose layer placement (components/hooks/services/utils) - `architecture/RULE.md`
 - [ ] Understand import direction (downward only) - `architecture/RULE.md`
@@ -413,7 +414,8 @@ If implementation touches `src/features/*`, also create/update:
 ### 5.5 Architecture Validation (Post-Implementation)
 Run actual validation commands on created files:
 - [ ] `pnpm validate:structure` - Verify file placements
-- [ ] `pnpm arch:check` - Verify no circular dependencies
+- [ ] `pnpm validate:feature-size` - Verify feature size / granularity budgets
+- [ ] `pnpm arch:check` - Verify no circular dependencies and cross-feature import rules
 - [ ] Fix any violations before proceeding
 
 ---

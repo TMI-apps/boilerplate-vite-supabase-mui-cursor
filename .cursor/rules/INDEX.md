@@ -28,8 +28,10 @@ Quick reference guide to all rules and their relationships.
 - **TanStack Query: plain optimistic + server-canonical response** (SSOT playbook—cache merge on success; avoid happy-path `invalidateQueries` for the same keys)
 - Module organization
 - Layer boundaries and import direction
+- **Feature granularity / bounded context** (size budgets, cross-feature imports — `featureBudgets.config.cjs`)
 - **Architecture documentation** (minimal contract-doc maintenance)
 - **Pattern risk (industry precedent)** — pointer to `.agents/skills/pattern-review/` (plans/proposals; not repo lint)
+- **Performance cost risk (heavy DB/UI ops)** — detect heavy operations, propose leaner alternatives, ask user before implementing
 
 **Related to:** code-style, testing, security, workflow
 
@@ -122,6 +124,7 @@ Quick reference guide to all rules and their relationships.
 - Architecture compliance verification
 - Guidance for correct file/folder locations
 - **Feature-local README (Option 1):** SSOT `documentation/DOC_FEATURE_LOCAL_README.md`; `pnpm validate:feature-docs` / `validate:feature-docs:strict` / `validate:feature-docs:staged`
+- **Feature size / granularity:** SSOT `featureBudgets.config.cjs`; `pnpm validate:feature-size` / `validate:feature-size:staged`; see `.cursor/rules/architecture/RULE.md` § Feature granularity
 
 **Related to:** architecture, workflow
 

@@ -16,7 +16,7 @@ Create a development plan for a feature or job. Research how best to implement i
 
 **Templates:** [`references/implementation-plan-template.md`](references/implementation-plan-template.md), [`references/complexity-rubric.md`](references/complexity-rubric.md).
 
-**Related:** For session context, use `.agents/skills/prime/SKILL.md`. For architecture/quality gate before merging, use `.agents/skills/check/SKILL.md`. For small scoped work without a full plan file, use `.agents/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.agents/skills/implement/SKILL.md`. For repo-rule plan/impl review, use `.agents/skills/validate/SKILL.md`. For multi-lens plan critique (including industry precedent), use `.agents/skills/review-dev-plan/SKILL.md`. For industry precedent on plans/proposals, use `.agents/skills/pattern-review/SKILL.md`. For commits and changelog, use `.agents/skills/finish/SKILL.md`.
+**Related:** For session context, use `.agents/skills/prime/SKILL.md`. For architecture/quality gate before merging, use `.agents/skills/validate/SKILL.md` (auto-selects gate depth). For small scoped work without a full plan file, use `.agents/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.agents/skills/implement/SKILL.md`. For repo-rule plan/impl review, use `.agents/skills/validate/SKILL.md`. For multi-lens plan critique (including industry precedent), use `.agents/skills/review-dev-plan/SKILL.md`. For industry precedent on plans/proposals, use `.agents/skills/pattern-review/SKILL.md`. For commits and changelog, use `.agents/skills/finish/SKILL.md`.
 
 ---
 
@@ -58,6 +58,7 @@ For features involving external APIs, database changes, auth, or novel logic, ga
 - [ ] Align narrative with **`documentation/DOC_APP_VISION.md`** when the plan changes user-facing behavior (problem, persona, app role); if **`DRAFT`**, pause for fill or explicit deferral.
 - [ ] For server-cached data, check `documentation/DOC_TANSTACK_QUERY.md` and existing `api/keys.ts` patterns in features.
 - [ ] Determine scope and boundaries (in-scope vs out-of-scope).
+- [ ] **Feature decomposition self-check (mandatory):** Enumerate distinct domain concepts this work introduces. If more than one cohesive bounded context applies, or projected file count exceeds `featureBudgets.config.cjs` defaults, plan multiple features under `src/features/` before writing steps. Do not wait for the user to request architecture. See `.cursor/rules/architecture/RULE.md` § Feature granularity.
 
 #### Optional: Foundation validation (high-risk features)
 
@@ -166,6 +167,7 @@ During planning, work through (using the rules reference above):
 - [ ] Identify applicable rules (architecture, file-placement, database, security, code-style, testing, workflow, etc.).
 - [ ] Validate planned file paths against `projectStructure.config.cjs` (whitelist); run `pnpm validate:structure` after structural additions if unsure.
 - [ ] Check architecture compliance: feature vs `src/shared/` vs `src/components/common/`, layer boundaries, import direction (pages → hooks → services).
+- [ ] **Feature decomposition self-check:** List planned feature folder(s). If a single feature spans multiple domain concepts or exceeds `featureBudgets.config.cjs` budgets, split into separate features in the plan with narrow public APIs before listing file paths.
 - [ ] Identify any planned diversion from industry standards, framework best practices, or established repo conventions. If found, ask the user whether the diversion is intentional or whether the plan should align with best practices.
 - [ ] Estimate complexity (cyclomatic ≤10, cognitive ≤15, functions ≤100 lines per `.cursor/rules/code-style/RULE.md`); plan extractions if needed (see `.agents/skills/optimize2/SKILL.md` for refactoring workflow).
 - [ ] Note database impact if applicable (migrations under `supabase/migrations/`, idempotent, safe for fresh and existing DB).

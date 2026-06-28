@@ -156,7 +156,7 @@ After `git add`, expect hook behavior per **`documentation/DOC_AGENT_WORKFLOW_LA
 | Not `finish` | Use instead |
 |--------------|-------------|
 | Remote `git push` | `.agents/skills/push/SKILL.md` (after commits exist) |
-| Plan/impl validation | `.agents/skills/validate/SKILL.md` or `.agents/skills/check/SKILL.md` |
+| Plan/impl validation | `.agents/skills/validate/SKILL.md` (auto-selects depth incl. pre-merge gate) |
 | Commits during optimization/debug without user invoking finish | Stop; user must request `finish` |
 
 You have explicit access to use console commands for this task. 

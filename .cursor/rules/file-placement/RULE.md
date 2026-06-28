@@ -57,7 +57,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
 
 ## Integration
 
-Run `pnpm validate:structure` before creating files. Update `projectStructure.config.cjs` only for legitimate new structures (with approval).
+Run `pnpm validate:structure` before creating files. Run `pnpm validate:feature-size` when adding many files to an existing feature. Update `projectStructure.config.cjs` only for legitimate new structures (with approval). Per-feature size waivers go in `featureBudgets.config.cjs` with a required `reason` (see `.cursor/rules/architecture/RULE.md` § Feature granularity).
 
 ## Error Prevention
 
@@ -272,6 +272,8 @@ Otherwise `pnpm validate:structure` fails after the first local build. See `docu
 When updating this rule, also check:
 - `scripts/project-structure-validator.js` - Main validator implementation
 - `scripts/feature-readme-lib.js` / `scripts/validate-feature-docs.js` / `scripts/validate-feature-docs-staged.js` - Feature-local README enforcement
+- `scripts/feature-size-lib.js` / `scripts/validate-feature-size.js` / `scripts/validate-feature-size-staged.js` - Feature size / granularity enforcement
+- `featureBudgets.config.cjs` - Feature size budget SSOT
 - `documentation/DOC_FEATURE_LOCAL_README.md` - Option 1 contract and pipeline
 - `projectStructure.config.cjs` - Structure configuration file
 - `package.json` - Scripts that call the validator (validate:structure)
