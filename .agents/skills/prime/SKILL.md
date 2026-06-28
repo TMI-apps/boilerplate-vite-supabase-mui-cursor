@@ -3,7 +3,7 @@ name: prime
 description: >-
   Loads project context at session start (structure, governance, active jobs, enforced boundaries).
   Use for a new chat, ambiguous tasks, or before larger refactors. Not human onboarding (start)
-  or pre-merge gates (check).
+  or pre-merge gates (validate gate depth).
 ---
 
 # prime
@@ -11,7 +11,7 @@ description: >-
 Load project context at the start of a new session. Build an understanding of this boilerplate’s structure, governance, and active state before tackling tasks.
 
 **When to use:** New chat, ambiguous task, or before larger refactors.  
-**Related:** For architecture/quality gate, use `.agents/skills/check/SKILL.md`. For planning features, use `.agents/skills/plan/SKILL.md`. For onboarding a human, use `.agents/skills/start/SKILL.md`.
+**Related:** For architecture/quality gate, use `.agents/skills/validate/SKILL.md` (auto-selects gate depth). For planning features, use `.agents/skills/plan/SKILL.md`. For onboarding a human, use `.agents/skills/start/SKILL.md`.
 
 ## Objective
 

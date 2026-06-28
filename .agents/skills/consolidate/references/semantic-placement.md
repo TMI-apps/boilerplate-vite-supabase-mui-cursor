@@ -2,7 +2,7 @@
 
 Complement automated architecture enforcement by identifying **semantic** violations and code-organization issues that scripts cannot detect, and by guiding refactoring **moves**. Focuses on architectural intent and refactoring execution, not duplicate checks already covered by tooling. (Formerly the `architecture-repair2` skill.)
 
-**Prerequisite:** Run **`.agents/skills/check/SKILL.md`** first (or confirm `pnpm validate:structure`, `pnpm lint:arch`, `pnpm arch:check` are green). This mode assumes tool-caught violations are already fixed; it focuses on what tools miss.
+**Prerequisite:** Run **`.agents/skills/validate/SKILL.md`** (gate depth) first (or confirm `pnpm validate:structure`, `pnpm lint:arch`, `pnpm arch:check` are green). This mode assumes tool-caught violations are already fixed; it focuses on what tools miss.
 
 ---
 

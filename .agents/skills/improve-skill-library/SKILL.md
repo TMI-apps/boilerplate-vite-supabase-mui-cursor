@@ -122,7 +122,7 @@ Confirm the router still lists every skill exactly once, all cross-links resolve
 | Whole-library coherence: overlap, SSOT, conflicts, handoffs across **skills** | — |
 | Duplication across **`src/` application code** | `consolidate` |
 | Repo **rule** (`.cursor/rules`) compliance of a plan/impl | `validate` |
-| Architecture/layer correctness of **app code** | `check`, `consolidate` § Semantic placement |
+| Architecture/layer correctness of **app code** | `validate` (gate depth), `consolidate` § Semantic placement |
 | Grading or rewriting a **single** rule/command file | `rule-quality` |
 | Authoring/refactoring a **single new** skill's structure | `create-skill` (`~/.cursor/skills-cursor/`) |
 | Deciding **where** a lesson belongs (rule vs skill vs doc) | `learn` |

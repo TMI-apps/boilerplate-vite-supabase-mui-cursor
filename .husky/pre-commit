@@ -11,30 +11,22 @@ pnpm lint-staged || exit 1
 echo "Running feature documentation validation for staged files..."
 pnpm validate:feature-docs:staged || exit 1
 
-# Light path: docs, migrations, or tooling-only — skip type-check, structure, arch
+# Light path: docs, migrations, or tooling-only — skip structure, feature-size, arch
 # SSOT: scripts/change-classify.cjs
 LIGHT_KIND=$(node scripts/is-staged-precommit-light.js --echo-kind 2>/dev/null) || true
 if [ -n "$LIGHT_KIND" ]; then
   if [ "$LIGHT_KIND" = "docs" ]; then
-    echo "pre-commit: docs-only staged files — skipping type-check, structure, and arch"
+    echo "pre-commit: docs-only staged files — skipping structure, feature-size, and arch"
     pnpm validate:docs || exit 1
     exit 0
   fi
-  echo "pre-commit: ${LIGHT_KIND} staged files — skipping type-check, structure, and arch"
+  echo "pre-commit: ${LIGHT_KIND} staged files — skipping structure, feature-size, and arch"
   exit 0
 fi
 
-# Full path: app or TS toolchain surface staged
-echo "Running documentation reference validation..."
-pnpm validate:docs || exit 1
-
-# Run type checking (fast, catches TypeScript errors)
-# Exit code handling prevents Cursor hangs (see workflow/RULE.md lines 312-349)
-echo "Running type check..."
-pnpm type-check || exit 1
-
-# Run architecture validation for staged files only
-# Full validation available via: pnpm validate:all
+# Full path: app or TS toolchain surface staged (staged structural checks only)
+# Type-check runs on pre-push and CI; full docs validation runs on docs-only path and CI
 echo "Running architecture validation for staged files..."
 pnpm validate:structure:staged || exit 1
+pnpm validate:feature-size:staged || exit 1
 pnpm arch:check:staged || exit 1
