@@ -19,6 +19,19 @@ Guide a new user through first-time setup of this boilerplate by following the R
 - Never claim setup is complete without user confirmation and successful verification checks.
 - If a step requires a web interface or account action the assistant cannot do itself (GitHub, Supabase dashboard, browser auth prompts, settings pages, etc.), clearly hand it to the user with exact click-by-click instructions and then wait for confirmation.
 
+## Template repo vs fork (read first)
+
+**Working on this boilerplate template** (improving the starter itself — not building an app from a fork):
+
+- **Skip Supabase (task #1)** and **Cloudflare hosting (task #2)**. No project, no Workers Builds link, no `.env` required for most template work. The app runs locally without auth configured.
+- **Skip Airtable (task #4)** unless you are testing that integration.
+- **App vision (task #3):** may stay **`DRAFT`** while exploring or contributing to the template; do not block template PRs on it unless the change is product-facing.
+- **Still do:** prerequisites, branch workflow (`feature/*` → `main`), `pnpm dev`, and the verification checklist (§ Mandatory verification checklist).
+
+**Working on a fork** (someone cloned this to build their own app): full backlog applies — Supabase, hosting, vision **`ACTIVE`**, etc.
+
+When the user says they are on the **template** (or context is clearly boilerplate maintenance), default to the skip list above. Only walk Supabase/Cloudflare gates when they are onboarding a fork or explicitly ask to wire up services.
+
 ## Dev task backlog (onboarding SSOT)
 
 Fresh clones ship five pre-seeded tasks in priority order:
@@ -66,7 +79,9 @@ Only continue when all three checks pass.
 
 ### 2) App vision & goals gate (mandatory before fork/clone and setup)
 
-This fork's **product SSOT** is `documentation/DOC_APP_VISION.md` (problem statement, user persona, app's role).
+**Template repo:** skip this gate unless the user is preparing a fork or the work changes user-facing product behavior. Record in chat that vision can stay **`DRAFT`** for template-only work.
+
+**Fork / app onboarding:** This fork's **product SSOT** is `documentation/DOC_APP_VISION.md` (problem statement, user persona, app's role).
 
 - Read that file **now**.
 - If the vision line still shows **`DRAFT`** (per the status callout at the top), **stop forward progress** on onboarding until task #3 (Define app vision) is addressed: walk the user through filling each section in their own words. Use the placeholders only as prompts; they must be **replaced** with real prose, then set the status token to **`ACTIVE`** on that same line.
@@ -118,7 +133,9 @@ Confirm app is reachable at the shown localhost URL. In dev, open `/tasks` via t
 
 ### 7) Configuration tasks gate (work through backlog)
 
-Walk through backlog tasks in order (skip or archive optional items the user declines):
+**Template repo:** skip tasks #1 (Supabase), #2 (Cloudflare), and #4 (Airtable) unless explicitly testing those paths. Archive or leave them `to-do`; do not treat missing `.env` as a failure.
+
+**Fork onboarding:** walk through backlog tasks in order (skip or archive optional items the user declines):
 
 **Supabase (task #1):**
 
@@ -182,11 +199,15 @@ If any check fails:
   - what to click
   - what value to copy/paste
   - what outcome to expect
-- Do not skip gates even if user is experienced, unless user explicitly asks to skip.
+- Do not skip gates even if user is experienced, unless user explicitly asks to skip **or** context is **template repo** work (see § Template repo vs fork).
 
 ## Completion criteria
 
 Only consider onboarding complete when:
+
+**Template repo:** verification checklist passes and user confirms they are ready — Supabase/Cloudflare/vision **`ACTIVE`** not required.
+
+**Fork / app onboarding:**
 
 1. **`documentation/DOC_APP_VISION.md`** is **`ACTIVE`** (or user explicitly deferred with reason recorded)
 2. User confirms configuration tasks they wanted are done (backlog archived or updated)

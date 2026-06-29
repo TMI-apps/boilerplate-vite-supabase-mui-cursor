@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **start skill**: Distinguish template repo work (skip Supabase, Cloudflare, Airtable) from fork onboarding.
+
 ## [0.37.0] - 2026-06-29
 
 ### Changed
