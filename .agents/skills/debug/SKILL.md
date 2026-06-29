@@ -231,6 +231,7 @@ When the user **confirms** the issue is resolved, optionally offer **`.agents/sk
 
 | Not `debug` | Use instead |
 |-------------|-------------|
+| Pre-registered experiment after failed fixes | `hypothesis` |
 | Known small scoped fix | `quick-piv` |
 | Persist lessons after resolution | `learn` |
 | Plan-driven feature work | `implement` |

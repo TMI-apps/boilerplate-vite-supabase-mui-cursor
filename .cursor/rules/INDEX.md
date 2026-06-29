@@ -101,8 +101,7 @@ Quick reference guide to all rules and their relationships.
 
 ### Debugging (`debugging/RULE.md`)
 - Debugging strategies and logging practices
-- Scientific Method Debugging process
-- Issue analysis and flow reconstruction
+- Pointers to `debug` and `hypothesis` skills for scientific-method procedure
 - Reductive strategy for bugs and new features
 
 **Related to:** workflow, testing, architecture
@@ -120,7 +119,7 @@ Quick reference guide to all rules and their relationships.
 
 ### File Placement (`file-placement/RULE.md`)
 - **Validate file and folder placement before creation** (mandatory pre-creation check)
-- Project structure validation using `projectStructure.config.js`
+- Project structure validation using `projectStructure.config.cjs`
 - Architecture compliance verification
 - Guidance for correct file/folder locations
 - **Feature-local README (Option 1):** SSOT `documentation/DOC_FEATURE_LOCAL_README.md`; `pnpm validate:feature-docs` / `validate:feature-docs:strict` / `validate:feature-docs:staged`
@@ -149,8 +148,8 @@ When modifying a rule, check these related rules:
 
 ## Adding a New Rule
 
-1. Create folder: `rules/[category]/[rule-name]/`
-2. Create `RULE.md` following the template
+1. Create folder: `rules/[category]/` (e.g. `rules/my-category/`)
+2. Create `RULE.md` following the template in an existing rule
 3. Add "Related Rules" section at the bottom
 4. Update this INDEX.md
 5. Update related rules to reference the new rule

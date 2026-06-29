@@ -397,3 +397,5 @@ This skill is independently complete but works best in concert with sibling skil
 - For architectural *location* correctness beyond placement of new shared code, use this skill's **Semantic placement mode** (`references/semantic-placement.md`).
 - This skill does not simplify individual feature workflows (use `challenge`).
 - Never claim success without user testing confirmation.
+
+**Next:** Approved refactors → **`implement`** or **`quick-piv`** → **`validate`** → **`finish`**; hotspot follow-up → **`optimize2`**.

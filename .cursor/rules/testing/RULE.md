@@ -125,18 +125,18 @@ describe("test", () => {
 - Test thoroughly in development before deployment
 - Use manual testing workflows
 - Document test procedures for each function
-- Include explicit release validation before merging `develop` -> `main` when Edge Function behavior changed
+- Include explicit release validation before **Promote to production** when Edge Function behavior changed
 
 **Frontend Logic Testing** (preferred when possible):
 
 - Test on develop branch first
-- User testing before merging to main
+- User testing before promoting to production
 - Easy rollback if issues found
 - Better isolation and testability
 
 ### Release Validation Gate
 
-Before merging `develop` -> `main`, verify:
+Before **Promote to production**, verify:
 - Required CI checks are green
 - Manual happy-path and key error-path tests are completed
 - Any Edge Function-related behavior in scope has been re-tested against the currently deployed function version

@@ -22,6 +22,11 @@ Create a development plan for a feature or job. Research how best to implement i
 
 ## Flow
 
+### 0. Branch gate (when plan will lead to code)
+
+- [ ] Verify current git branch. If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
+- [ ] Planning may run on any branch; **do not** start file creation on `main` or `develop`.
+
 ### 1. Input
 
 - User describes what they want (e.g. add a capability, migrate X to Y).

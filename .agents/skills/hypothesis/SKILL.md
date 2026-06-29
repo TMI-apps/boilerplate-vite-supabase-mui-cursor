@@ -77,3 +77,13 @@ Each failure cuts the space roughly in half. That's the point.
 ## When NOT to over-apply
 
 For a one-line obvious typo or a clear stack trace pointing at a single line, just fix it — don't ceremony it up. This skill earns its keep when the cause is genuinely unclear or naive fixes have already failed.
+
+## Boundaries
+
+| Not `hypothesis` | Use instead |
+|------------------|-------------|
+| Default runtime incident (first pass) | `.agents/skills/debug/SKILL.md` |
+| Obvious one-line fix | Fix directly |
+| Persist reusable bug class | `.agents/skills/debug/patterns.md` via `finish` or `learn` |
+
+**Router tiebreak:** `.agents/skills/router/SKILL.md` § `debug` vs `hypothesis`.

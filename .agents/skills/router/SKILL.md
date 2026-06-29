@@ -167,8 +167,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Goal or scope **not** ready — clarify only (no `DEVELOPMENT_PLAN.md` yet); **one** primary by missing dimension (see **Clarification-first routing**) | Product/vision → `grill-me`; acceptance/APIs → `plan` **§ Refine** only |
 | Execute an existing `DEVELOPMENT_PLAN.md` phase by phase | `.agents/skills/implement/SKILL.md` |
 | Small scoped change; plan+implement+validate in one pass | `.agents/skills/quick-piv/SKILL.md` |
-| Review plan or implementation **without** editing by default | `.agents/skills/validate/SKILL.md` |
-| Pre-merge / post-refactor architecture & quality gate (layer semantics + tooling) | `.agents/skills/validate/SKILL.md` (auto-selects gate depth) |
+| Review plan or implementation **without** editing by default; pre-merge / post-refactor gate (auto-selects plan-review / impl-full / gate depth) | `.agents/skills/validate/SKILL.md` |
 | Component-level rubric (props, MUI, a11y, tests) | `.agents/skills/review/SKILL.md` |
 | Version, changelog, staging gate, **local** commit | `.agents/skills/finish/SKILL.md` |
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
@@ -181,12 +180,13 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 |-----------|--------|
 | Full feature request with mandatory decision stops and phased spec | `.agents/skills/feature/SKILL.md` |
 | Scientific debugging; hypotheses; user supplies runtime evidence | `.agents/skills/debug/SKILL.md` |
+| Pre-registered hypothesis loop; naive fixes failed or user invokes hypothesis mode | `.agents/skills/hypothesis/SKILL.md` |
+| Ultra-compressed communication (`/caveman`, "be brief", "less tokens") | `.agents/skills/caveman/SKILL.md` (overlay — not a workflow step) |
 | Stress-test product/design when gates 1–2 already pass (not gate-1 ambiguity) | `.agents/skills/grill-me/SKILL.md` |
 | Simplify **one** concrete feature (flows + code), reduce steps/complexity | `.agents/skills/challenge/SKILL.md` |
-| Find cross-feature duplication and consolidation candidates (see skill § Symbiotic Relationships for cleanup pipeline) | `.agents/skills/consolidate/SKILL.md` |
+| Find cross-feature duplication, consolidation candidates, or semantic placement repair (after tooling is green) | `.agents/skills/consolidate/SKILL.md` |
 | Optimize hotspots: design → approach → efficiency → complexity | `.agents/skills/optimize2/SKILL.md` |
 | React perf patterns (bundle, waterfalls, re-renders) for Vite SPA | `.agents/skills/react-perf-vite/SKILL.md` |
-| Semantic architecture repair **after** automated checks pass | `.agents/skills/consolidate/SKILL.md` § Semantic placement mode |
 | Retro from failures/diffs; persist lessons into rules or skills | `.agents/skills/learn/SKILL.md` |
 | Audit/improve the **skill library** as a whole (overlap, SSOT, conflicts, handoffs); subagent lenses + no-loss pass | `.agents/skills/improve-skill-library/SKILL.md` |
 | Grade **or** improve an attached rule/command file (rubric score and/or quality rewrite) | `.agents/skills/rule-quality/SKILL.md` |
@@ -269,6 +269,12 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 
 - **`challenge`:** Question whether the **feature or workflow** should exist or be simpler (remove/merge steps).
 - **`optimize2`:** Improve existing code **without** necessarily changing product scope.
+
+### `debug` vs `hypothesis`
+
+- **`debug`:** Default for runtime incidents — event chains, user-supplied evidence, iterative narrowing (`.agents/skills/debug/SKILL.md`).
+- **`hypothesis`:** Pre-registered root-cause experiment when naive fixes already failed or the user invokes hypothesis mode (`.agents/skills/hypothesis/SKILL.md`).
+- **Tiebreak:** User asks for hypothesis / repeated failed fixes → `hypothesis`; otherwise → `debug`. Cross-link both skills; do not run both as equal primaries in one pass.
 
 ### `debug` vs `learn`
 
@@ -443,6 +449,8 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/challenge/SKILL.md`
 - `.agents/skills/feature/SKILL.md`
 - `.agents/skills/debug/SKILL.md`
+- `.agents/skills/hypothesis/SKILL.md`
+- `.agents/skills/caveman/SKILL.md` (communication overlay — not workflow)
 - `.agents/skills/rule-quality/SKILL.md`
 - `.agents/skills/improve-skill-library/SKILL.md`
 - `.agents/skills/optimize2/SKILL.md`

@@ -275,3 +275,4 @@ Which option should I implement?
 - If simplification conflicts with security/compliance requirements, keep the requirement and simplify around it.
 - By default, challenge a feature through both Flow Mode and Code Mode in the same pass.
 
+**Next:** User picks option → **`quick-piv`** or **`implement`** for approved simplification; repo-wide patterns → **`consolidate`**; hotspot polish → **`optimize2`**.

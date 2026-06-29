@@ -271,3 +271,5 @@ Before detailed scoring, quick-check these critical items:
 - [ ] **Secure?** (H4)
 
 If any critical item fails, address before detailed review.
+
+**Next:** Fixes → **`quick-piv`** or **`implement`**; before merge → **`validate`**; ship → **`finish`**.

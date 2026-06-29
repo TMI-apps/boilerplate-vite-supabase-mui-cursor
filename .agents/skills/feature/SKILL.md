@@ -236,7 +236,7 @@ Identify **subjective** choices requiring user input.
 - [ ] Rate limiting if Edge Functions (`project-specific/RULE.md`)
 
 ### 3.5 File Placement Validation
-- [ ] Validate against `projectStructure.config.js` (run `pnpm validate:structure`)
+- [ ] Validate against `projectStructure.config.cjs` (run `pnpm validate:structure`)
 - [ ] Confirm correct location per `file-placement/RULE.md`
 - [ ] Check whitelist compliance
 - [ ] Determine file locations BEFORE creating
@@ -318,14 +318,14 @@ Identify **subjective** choices requiring user input.
 
 ### 4.7 Architecture Compliance Check (Plan Validation)
 Verify the PLAN complies before implementation:
-- [ ] Planned file placements comply with `projectStructure.config.js`
+- [ ] Planned file placements comply with `projectStructure.config.cjs`
 - [ ] Planned layer boundaries respect `architecture/RULE.md`
 - [ ] No planned circular dependencies
 - [ ] Planned complexity within thresholds (SSOT: `.eslintrc.json` lines 65-70)
 - [ ] No unresolved ambiguity remains
 - [ ] Any standards or best-practice divergence is documented with explicit user confirmation
 
-*Note: Actual validation commands run after implementation in Phase 5.*
+*Note: Actual validation commands run during **`implement`** → **`validate`**, not in this skill.*
 
 **🔴 DECISION POINT:** 
 - **STOP** all implementation activities
@@ -344,160 +344,17 @@ Verify the PLAN complies before implementation:
 
 ---
 
-## Handoff to engineering delivery (before Phase 5)
+## Handoff to engineering delivery (after Phase 4)
 
 When Phases 1–4 are complete and the user approved the implementation plan:
 
 1. Run **`.agents/skills/plan/SKILL.md`** to produce **`documentation/jobs/temp_job_<name>/DEVELOPMENT_PLAN.md`** (engineering SSOT), **or** confirm that file already exists and matches the approved spec.
-2. Do **not** start Phase 5 coding until **`DEVELOPMENT_PLAN.md`** exists and required gates (`pattern-review`, `review-dev-plan` for M/L) are satisfied per [dev-cycle matrix](../router/references/dev-cycle-matrix.md).
-3. For execution after the plan exists, prefer **`.agents/skills/implement/SKILL.md`** over ad-hoc coding in this skill.
+2. Satisfy required gates per [dev-cycle matrix](../router/references/dev-cycle-matrix.md): `pattern-review` when M/L; `review-dev-plan` when Complexity M/L; `validate` (plan-review) when warranted.
+3. Run **`.agents/skills/implement/SKILL.md`** for phase-by-phase execution — **do not implement product code in this skill**.
 
-**Next after Phase 7:** **`.agents/skills/validate/SKILL.md`** → user acceptance → **`.agents/skills/finish/SKILL.md`** (changelog/commit only in `finish`).
+**Next (execution chain):** `implement` → **`.agents/skills/validate/SKILL.md`** → user acceptance → **`.agents/skills/finish/SKILL.md`** (changelog/commit only in `finish`).
 
----
-
-## Phase 5: Implementation
-
-### 5.1 Re-check Required Information
-- [ ] Repeat Phase 1.2 for any missing information
-- [ ] **STAY HERE UNTIL ALL REQUIRED INFORMATION IS COLLECTED**
-- [ ] Verify all user questions from Phase 2.5 have documented answers
-- [ ] Verify user journey map (2.1.1) is complete and approved
-- [ ] Verify implementation plan (Phase 4) has explicit user approval
-
-**🔴 VALIDATION CHECKPOINT:** 
-Before proceeding to 5.2, confirm:
-- [ ] All 🔴 decision points from previous phases have user answers documented
-- [ ] User journey map exists and is complete
-- [ ] Implementation plan has explicit user approval
-- If ANY item is missing → **STOP** and complete it before proceeding
-
-### 5.2 Create Implementation Document
-Create/update `/documentation/jobs/temp_job_[jobname]` (create folder if needed) with:
-- User stories with acceptance criteria
-- **User journey & state transition map** (from 2.1.1)
-- **All user questions and answers** (from 2.5, formatted as Q/A pairs)
-- Chosen implementation plan
-- Chosen approach with concrete scope and rationale (from 2.4)
-- Component/API design decisions
-- State management approach
-- File placements (validated)
-- Accessibility requirements
-- Manual testing steps
-- Files to create/modify
-- **User approval confirmation** (from Phase 4.7)
-
-If implementation touches `src/features/*`, also create/update:
-- `src/features/<feature>/README.md` (or `src/features/<group>/<feature>/README.md` for nested features)
-- `src/features/<feature>/docs/*.md` when deeper reference material is needed
-
-### 5.3 Execute Implementation
-- [ ] Follow implementation plan
-- [ ] Make minimal code changes (reductive strategy)
-- [ ] Avoid cyclomatic/cognitive complexity
-- [ ] Follow code-style rules (`code-style/RULE.md`)
-- [ ] Use safe patterns (`database/RULE.md` if applicable)
-- [ ] Implement logging per `debugging/RULE.md`
-
-**🔴 HITL CHECKPOINTS:**
-- After high-risk operations → Pause for user confirmation
-- When subjective choices arise (no codebase precedent) → Ask user
-- Before architecture-impacting decisions → Confirm with user
-
-### 5.4 Code Quality Checks
-- [ ] TypeScript strict mode compliance (`code-style/RULE.md`)
-- [ ] Import ordering (external → internal) (`code-style/RULE.md`)
-- [ ] Naming conventions (`code-style/RULE.md`)
-- [ ] Complexity standards met (`code-style/RULE.md`)
-- [ ] Linting passes (`pnpm lint`)
-
-### 5.5 Architecture Validation (Post-Implementation)
-Run actual validation commands on created files:
-- [ ] `pnpm validate:structure` - Verify file placements
-- [ ] `pnpm validate:feature-size` - Verify feature size / granularity budgets
-- [ ] `pnpm arch:check` - Verify no circular dependencies and cross-feature import rules
-- [ ] Fix any violations before proceeding
-
----
-
-## Phase 6: Quality Assurance
-
-### 6.1 Testing Strategy
-
-**Default: User Testing**
-- User validates functionality through manual testing
-- Avoids bloating codebase with test files
-
-**Suggest Automated Tests When:**
-- Complex business logic or calculations
-- Reusable utilities/helpers used across codebase
-- Critical paths with high failure impact
-- Edge-case-heavy code
-- Code that is difficult to manually test
-
-**🔴 DECISION POINT:** 
-- If automated tests are warranted → **STOP**
-- Present recommendation with reasoning
-- Ask: "Should I create automated tests for this feature?"
-- **WAIT** for user decision (yes/no)
-- Document decision before proceeding
-
-If automated tests are approved:
-- Follow `testing/RULE.md` for patterns and organization
-- Run tests: `pnpm test`
-
-### 6.2 User Testing Checklist
-- [ ] Happy path verified
-- [ ] Error states verified
-- [ ] Edge cases verified
-- [ ] Loading states verified
-- [ ] Empty states verified
-- [ ] Accessibility verified (keyboard navigation, screen reader)
-- [ ] Responsive behavior verified
-
-### 6.3 Requirements Verification
-- [ ] Implementation matches user stories
-- [ ] Acceptance criteria met
-- [ ] No scope creep or missing features
-- [ ] Edge cases from requirements handled
-
-### 6.4 Debugging & Logging
-- [ ] Logging practices followed (`debugging/RULE.md`)
-- [ ] Reductive strategy applied (`debugging/RULE.md`)
-- [ ] Scientific method debugging approach (`debugging/RULE.md`)
-
----
-
-## Phase 7: Completion
-
-### 7.1 Final Validation
-- [ ] Requirements match (H1 from review.md)
-- [ ] Tech stack fit (H2 from review.md)
-- [ ] Integration & regression (H3 from review.md)
-- [ ] Security & authorization (H4 from review.md)
-- [ ] Type safety (I3 from review.md)
-
-### 7.2 Documentation Update
-- [ ] Update architecture docs if structural changes (`.cursor/rules/workflow/RULE.md` — do **not** update changelog here; **`finish`** owns changelog)
-- [ ] Do not create new deep docs by default; only add with explicit user approval
-- [ ] If feature code changed, stage corresponding `src/features/*/README.md` updates
-
-### 7.3 Code Review Checklist (`workflow/RULE.md`)
-- [ ] Commit/changelog deferred to **`.agents/skills/finish/SKILL.md`** when user wants to ship
-- [ ] Code follows style guidelines (`code-style/RULE.md`)
-- [ ] Architecture patterns followed (`architecture/RULE.md`)
-- [ ] Architecture documentation updated (if structural changes)
-- [ ] Automated tests included and passing (if approved in 6.1)
-- [ ] Security considerations addressed (`security/RULE.md`)
-- [ ] Documentation obligations met with objective contract docs only
-- [ ] No console.log or debug code left behind
-- [ ] Linting passes
-
-### 7.4 User Acceptance
-**🔴 DECISION POINT:** User validates implementation.
-- Never claim success without user test
-- User decides if implementation is successful
-- Wait for user confirmation before marking complete
+Phases 5–7 below are **retired** — implementation, QA, and completion live in `implement` → `validate` → `finish`. Do not execute them here.
 
 ---
 
@@ -564,7 +421,7 @@ Ensures:
 | Not `feature` | Use instead |
 |---------------|-------------|
 | Durable phased execution plan | `plan` → `DEVELOPMENT_PLAN.md` |
-| Phase-by-phase execution | `implement` |
+| Phase-by-phase execution | `implement` (after handoff from Phase 4) |
 | Small XS/S scoped change | `quick-piv` |
 | Product Q&A when gates 1–2 fail | `grill-me` |
 | Changelog / commit / push | `finish` / `push` |

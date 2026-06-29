@@ -119,7 +119,7 @@ git switch develop && git pull origin develop
 git switch -c feature/<name>
 ```
 
-Guide the user to configure GitHub rulesets:
+Guide the user to configure GitHub rulesets (detail SSOT: `.cursor/rules/workflow/RULE.md` § Branch Protection and § Promote to production):
 - **`develop` protection:** PR required, `test` status check, squash merge, deletion + non-fast-forward.
 - **`main` protection:** **deletion + non-fast-forward only** (no PR rule, no status check). This lets the promote workflow's built-in `GITHUB_TOKEN` fast-forward `main` to `develop` with no PAT or bypass actor.
 - Enable "Automatically delete head branches".
@@ -231,3 +231,5 @@ Only consider onboarding complete when:
 
 **App vision procedure SSOT:** § App vision in this skill; content SSOT: `documentation/DOC_APP_VISION.md`.
 **Onboarding checklist SSOT:** `src/config/app-tasks.json` + `src/features/tasks/README.md`.
+
+**Next:** Onboarding complete → **`prime`** for agent context; feature work → **`plan`** or **`feature`** per router gates.

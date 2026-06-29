@@ -49,68 +49,9 @@ Development workflows, code review standards, and process requirements. Includes
 
 ### Version Control Standards
 
-#### Semantic Versioning
+**SSOT:** `.agents/skills/finish/SKILL.md` — semantic versioning, changelog gate (including no-bump types), commit format, and `package.json` / `CHANGELOG.md` sync when a bump is required.
 
-**SSOT:** See `.agents/skills/finish/SKILL.md` for semantic versioning rules (MAJOR.MINOR.PATCH format, version bump criteria, and conventional commit type mappings).
-
-**Version Release Rule:**
-- One commit per released version: Each version release should be a single commit
-
-#### Changelog Synchronization
-Commits and changelog must be synchronized:
-- Always add a new version entry at the top of changelog before committing
-- Git commit message must match the changelog version heading
-- Version number should be first in the commit message
-
-#### Commit Messages
-
-**SSOT:** See `.agents/skills/finish/SKILL.md` for commit message format and standards.
-
-**Key Requirements:**
-- Format: `[VERSION] type: Feature/Change Title`
-- Version number must be first (e.g., `[3.19.0] feat: User Profile Settings`)
-- Commit message subject must exactly match changelog feature title (with type prefix)
-- Commit body is required: Must include details about what changed
-- Reference issue/ticket numbers when applicable
-- Keep commits focused (one logical change per commit)
-
-**Changelog Sections:**
-Changelog entries use Keep-a-Changelog style sections:
-- `### Added` - New features
-- `### Changed` - Changes in existing functionality
-- `### Deprecated` - Soon-to-be removed features
-- `### Removed` - Removed features
-- `### Fixed` - Bug fixes
-- `### Security` - Security vulnerability fixes
-- `### Documentation` - Documentation changes
-- `### Tests` - Test-related changes
-- `### Performance` - Performance improvements
-
-**Changelog Update Requirements:**
-- User-facing features: Required
-- Bug fixes: Required
-- Documentation: Required
-- Internal refactoring: Optional (but commit must still be descriptive)
-- Dependency updates: Optional
-
-**Example Workflow:**
-1. Update changelog: Add `## 3.19.0 - 2024-11-01` with feature description
-2. Commit with matching message: `[3.19.0] feat: User Profile Settings` (see `.agents/skills/finish/SKILL.md` for format details)
-3. Verify: Changelog title matches commit subject (minus version prefix)
-
-#### Version Synchronization
-
-**SSOT for release version:** `package.json` and `CHANGELOG.md` are the canonical sources. See `.agents/skills/finish/SKILL.md` for the full workflow.
-
-When updating the changelog with a new version, update two locations to maintain consistency:
-
-1. **Update `package.json`**: Change the `version` field to match the new changelog version
-   - File: `package.json` (root level)
-   - Ensures console output shows correct version when running `pnpm dev`
-
-2. **Update changelog**: Add new entry at the top of `CHANGELOG.md` (root directory)
-
-Both locations must use the same version number. If the app displays version in the UI (e.g. via `VITE_APP_VERSION`), update that location too; this boilerplate does not display version in ProfileMenu by default.
+**Review checklist (this rule only):** changelog updated when user-facing; commit subject matches changelog when bumped; one logical change per commit.
 
 **Note:** Configuration lives in `.env` only. Onboarding checklist: `src/config/app-tasks.json` (see `src/features/tasks/README.md`).
 
@@ -255,6 +196,11 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 
 **Setup (one-time per repo):** none beyond the `main` ruleset (`deletion` + `non_fast_forward`) and the `develop` ruleset. Workflow → Settings → Actions → Workflow permissions must allow **Read and write** (GitHub default for most repos).
 
+**Ruleset design (do not regress):**
+- **Never** instruct users to add **GitHub Actions** to a ruleset bypass list — `github-actions[bot]` is not a selectable bypass actor; the REST API rejects it.
+- **Never** require a fine-grained PAT (`PROMOTE_GH_TOKEN`) for fork onboarding — that adds setup friction boilerplate users should not need.
+- **Preferred pattern:** `develop` carries PR + `test` + non-ff + deletion; `main` carries **only** `deletion` + `non_fast_forward` so the promote workflow's built-in `GITHUB_TOKEN` can fast-forward push. Alternative (heavier): custom GitHub App on bypass + `actions/create-github-app-token` — only when `main` must also require PRs.
+
 **Failure modes:**
 - `403` / `Changes must be made through a pull request` — `main`'s ruleset has a `pull_request` or `required_status_checks` rule that should not be there; reduce it to `deletion` + `non_fast_forward`.
 - `main is not an ancestor of develop` — someone merged to `main` outside this workflow; do not squash-merge or back-merge; escalate.
@@ -273,14 +219,18 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 - Plan the approach before coding
 
 ### During Development
+
+**Agents:** Do not commit during `plan` or `implement` — commits happen in **`finish`** only (`.agents/skills/finish/SKILL.md`).
+
+**Humans on `feature/*` branches:** May commit frequently with meaningful messages; still use `finish` workflow when agents wrap up work.
+
 - Write tests alongside code (TDD when appropriate)
-- Commit frequently with meaningful messages
 - Refactor as you go (don't accumulate technical debt)
 - Follow established patterns and conventions
 
 ### Before Submitting
-- Update changelog if changes are user-facing (features, fixes, docs)
-- Create commit with version number first and matching changelog title
+
+- Changelog and version sync: **`.agents/skills/finish/SKILL.md`** (not during plan/implement)
 - Run linters and fix all issues
 - Run tests and ensure they pass
 - Review your own code
@@ -533,32 +483,14 @@ command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }
 - When cloud functions have to be deployed (again) for changes to have effect, deploy them yourself
 - Don't ask user to deploy unless there's a specific reason they need to do it
 - Verify deployment was successful
+- **SSOT:** `.cursor/rules/cloud-functions/RULE.md` for deploy commands, lint, and Supabase Edge workflow — do not duplicate legacy `npm --prefix functions` paths here
 
-### Pre-Deployment Linting
-- Always run and pass the exact predeploy lint locally for the specific package before deployment
-- Command: `npm --prefix functions run lint[:fix]`
-- Fix all lints until clean:
-  - max-len violations
-  - JSDoc requirements
-  - Unused variables
-  - Escaping issues
-- Never deploy with linting errors
+### Pre-Deployment Linting (Edge Functions)
+- Always run and pass predeploy lint per **`cloud-functions/RULE.md`** before deployment
 
 ## Examples
 
-### Good Commit Message (with changelog sync)
-
-**Changelog entry:**
-- Version heading: `## 3.19.0 - 2024-11-01`
-- Section: `### Added`
-- Entry: User Authentication with JWT token-based authentication system
-
-**Commit message:**
-- Format: `[3.19.0] feat: User Authentication` (see `.agents/skills/finish/SKILL.md` for format SSOT)
-- Body includes: Implementation details, middleware updates, service changes, test coverage
-- References: Closes #123
-
-Note: Commit body is required and must include details about what changed. Version number is first, commit type and title match changelog exactly. See `.agents/skills/finish/SKILL.md` for complete commit message standards.
+Commit/changelog examples: **`.agents/skills/finish/SKILL.md`** § Commit Message Standards.
 
 ### Bad Commit Message
 - Generic messages like "fix stuff" without version, type, or details

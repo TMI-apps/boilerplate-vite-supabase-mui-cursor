@@ -2,11 +2,11 @@
 
 This directory contains global User Rules that apply across all your projects.
 
-## Single Source of Truth (SSOT)
+## SSOT catalog
 
-**This README is the leading document for SSOT declarations.**
+**`.cursor/rules/INDEX.md`** is the rule catalog and cross-reference matrix. Individual `RULE.md` files are SSOT for their domain.
 
-Each rule category serves as the SSOT for its domain:
+This README describes folder layout and maintenance — it does **not** override INDEX or per-rule SSOT declarations.
 
 - **`architecture/RULE.md`**: SSOT for project structure, directory organization, code placement, path aliases (`@/hooks/*`, `@/components/*`, etc.), and layer boundaries
 - **`testing/RULE.md`**: SSOT for testing standards, patterns, and quality requirements
@@ -17,6 +17,7 @@ Each rule category serves as the SSOT for its domain:
 - **`database/RULE.md`**: SSOT for database migration best practices and patterns
 - **`debugging/RULE.md`**: SSOT for debugging strategies, logging, and issue analysis
 - **`file-placement/RULE.md`**: SSOT for file and folder placement validation before creation
+- **`project-specific/RULE.md`**: SSOT for project-specific patterns (rate limiting, etc.)
 
 **When rules reference content from other domains, they must explicitly reference the SSOT rule.**
 
@@ -45,7 +46,7 @@ Each rule is a folder containing a `RULE.md` file with:
 
 ## Adding a New Rule
 
-1. Create a new folder: `rules/[category]/[rule-name]/`
+1. Create a new folder: `rules/[category]/`
 2. Create `RULE.md` with the standard template
 3. Update this README with the new rule and its SSOT scope
 4. Add cross-references to related rules

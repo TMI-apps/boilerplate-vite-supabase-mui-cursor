@@ -12,9 +12,10 @@ Compact guidance for **next-step mode**. Compress, skip, or reorder when scope, 
 2. **Plan** — `plan` writes `DEVELOPMENT_PLAN.md` with Complexity and compliance.
 3. **Pattern & precedent** — `pattern-review` `plan-section` when M/L or material behavioral design (part of `plan` step 5).
 4. **Plan review** — `review-dev-plan` required for Complexity **M** or **L**; optional for **XS/S** unless risk or user request.
-5. **Implement** — `implement` executes phases and gates.
-6. **Validate** — repo rules and/or architecture gate when warranted (auto-selects plan-review / impl-full / gate depth).
-7. **Finish** → **Push**.
+5. **Plan compliance** — `validate` (plan-review mode) for repo-rule compliance on the plan when M/L or user requests.
+6. **Implement** — `implement` executes phases and gates.
+7. **Validate** — repo rules and/or architecture gate when warranted (auto-selects impl-full / gate depth).
+8. **Finish** → **Push**.
 
 Optional: `prime` when codebase or branch context is unfamiliar.
 
