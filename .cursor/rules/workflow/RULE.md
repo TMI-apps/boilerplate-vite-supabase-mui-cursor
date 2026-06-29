@@ -116,34 +116,30 @@ Both locations must use the same version number. If the app displays version in 
 
 ### Branch Strategy
 
-#### Project Branch Pattern
+#### Project Branch Pattern (trunk-based)
 
-Project supports:
-- `develop` branch: Primary long-lived integration branch (protected)
-- `main` branch: Production branch (protected, **never develop on main**)
-- Feature branches: Short-lived branches created from `develop` for implementation work
-- Hotfix branches: `hotfix/*` branches created from `main` for production emergencies
+Project uses a **single long-lived branch**:
+- `main` branch: The trunk and production source of truth (protected). Every merge to `main` deploys to production via Cloudflare Workers Builds.
+- Feature branches: Short-lived `feature/*` (and `fix/*`) branches created **from `main`** for all work, merged back via Pull Request.
+- There is **no `develop` branch.** A single trunk cannot diverge from itself, so there is no release/back-merge ritual.
 
 **Workflow:**
-- **Never develop directly on `main`.** All non-emergency code changes must be made on feature branches or `develop`.
-- Start feature work from the latest `develop` state (`git switch develop` + `git pull origin develop`) to reduce stale-branch conflicts.
-- Preferred daily flow: `feature/*` -> `develop` via Pull Request.
-- Release flow: `develop` -> `main` via Pull Request after required checks are green; then merge `main` back into `develop` so branches do not diverge (see § `develop` → `main` PR conflicts).
-- Do not push directly to `main` except an explicit emergency override.
-- Avoid direct pushes to long-lived branches (`develop`, `main`) in shared workflows; use PRs whenever possible.
-- `develop` is long-lived; do not rely on auto-deleting it after PR merge.
+- **Never commit directly to `main`.** All changes land via a `feature/*` Pull Request; the ruleset enforces this.
+- Start work from the latest `main` (`git switch main` + `git pull origin main`), then `git switch -c feature/<name>`.
+- Daily flow: `feature/*` -> `main` via squash Pull Request after the `test` check is green.
+- Merging to `main` **is** the release — it ships production. Preview a branch on its own Cloudflare preview URL before merging.
+- Hotfixes are ordinary `feature/*` (or `fix/*`) branches off `main` — no special path.
 
 #### Branch Protection
 
-**Critical Rule: Never Develop on Main**
+**Critical Rule: Never Commit Directly to Main**
 
-The AI must verify the current git branch before editing any code file. **Development on `main` is prohibited.** `main` is for production-ready code only; all development happens on `develop` or feature branches.
+The AI must verify the current git branch before editing any code file. **Direct commits to `main` are prohibited.** `main` is the protected trunk; all work happens on `feature/*` branches and lands via Pull Request.
 
 **Protected Branch Merge Model (Current Repo Decision):**
-- Require Pull Request for `main` updates (no direct push flow).
-- Require Pull Request for `develop` updates in shared-team workflows.
-- Preferred merge method for `main`: **Squash merge** unless user explicitly requests otherwise.
-- Keep `develop` as a persistent branch (do not auto-delete it as a default workflow behavior).
+- Require a Pull Request for every `main` update (no direct-push flow).
+- Merge method for `main`: **Squash merge** (the only method enabled).
+- Enable "Automatically delete head branches" so merged `feature/*` branches are cleaned up.
 
 ##### Verification Process
 
@@ -153,22 +149,20 @@ The AI must verify the current git branch before editing any code file. **Develo
 
 ##### Branch-Specific Rules
 
-- `develop`: All code changes allowed (primary development branch)
-- Feature branches: All code changes allowed (created from develop)
-- `main`: **Code changes blocked.** Never develop on main. Emergency override only (see below).
-- Other branches: Ask user before proceeding
+- Feature branches (`feature/*`, `fix/*`): All code changes allowed (created from `main`).
+- `main`: **Direct code changes blocked.** Work on a feature branch and open a PR. Emergency override only (see below).
+- Other branches: Ask user before proceeding.
 
 ##### When User is on Main Branch
 
 If code changes are requested while on `main`:
 
 **Stop immediately.** Do not make any code changes. Display warning:
-- You are on the `main` branch. **Never develop on main.**
-- All code changes must be made on `develop` or feature branches
-- Switch branches: `git checkout develop`
+- You are on the `main` branch. **Never commit directly to `main`.**
+- Create a feature branch first: `git switch -c feature/<name>` (from the latest `main`)
 - Once switched, proceed with requested changes
 
-Do not make code changes until user confirms they've switched.
+Do not make code changes until on a feature branch.
 
 ##### Exceptions
 
@@ -186,40 +180,38 @@ Only proceed with main branch code changes when ALL of the following are true:
 2. User confirms with "yes, proceed on main"
 3. User acknowledges the risk
 
-Default: **Never develop on main.** When in doubt, require branch switch to `develop`.
+Default: **Never commit directly to `main`.** When in doubt, create a `feature/*` branch.
 
 ##### Implementation Checklist
 
 Before editing code files:
 - [ ] Verify current branch (ask user if unsure)
-- [ ] Confirm branch is `develop`, a feature branch, OR user gave explicit override
-- [ ] If on `main`, show warning and wait for branch switch
+- [ ] Confirm branch is a `feature/*` branch, OR user gave explicit override
+- [ ] If on `main`, show warning and wait for a feature-branch switch
 - [ ] Proceed with changes only after confirmation
 
 ##### Integration with Workflow
 
 **During Development:**
 - Start of session: "Which branch are you working on?"
-- Before first code edit: Verify branch
-- After user mentions testing: Confirm develop branch
-- Before deployment: Remind about branch-specific deploys
+- Before first code edit: Verify branch is a `feature/*` branch, not `main`
+- Before merge: Remind that merging to `main` ships production
 
 **During Git Operations:**
-- Before providing commit instructions: Confirm correct branch
-- When user requests merge: Verify `feature/*` -> `develop` for development, and `develop` -> `main` for release
-- During changelog updates: Note which branch changes apply to
+- Before providing commit instructions: Confirm on a `feature/*` branch
+- When user requests merge: Verify `feature/*` -> `main` (squash); no other long-lived target exists
+- During changelog updates: Note which changes are user-facing
 
 ### Pull Requests
 - Keep PRs focused and reasonably sized
 - Include clear description of changes
 - Link related issues or tickets
 - Request reviews from appropriate team members
-- For development work, use PRs from `feature/*` -> `develop`
-- For promotions to `main`, use PRs from `develop` -> `main`
-- Wait for required GitHub checks to pass before merging
-- Ensure the PR branch is up to date with the target branch before merge
-- Use squash merge for `main` unless user explicitly requests a different merge strategy
-- If repository setting "Automatically delete head branches" is enabled, ensure it does not remove long-lived `develop`
+- Use PRs from `feature/*` -> `main` for all work.
+- Wait for the required `test` check to pass before merging.
+- Ensure the PR branch is up to date with `main` before merge.
+- Use squash merge (the only enabled method).
+- "Automatically delete head branches" cleans up merged feature branches; `main` is never deleted (deletion-protected).
 
 #### Diagnosing "merge blocked" / "rule violation"
 
@@ -229,37 +221,9 @@ When a user reports a merge was blocked, do not assume the ruleset is broken. Fi
 - `mergeable: MERGEABLE` + `mergeStateStatus: BLOCKED` almost always means a **required status check is still `IN_PROGRESS` or missing** — wait with `gh pr checks <N> --watch`, then re-check.
 - Only investigate deeper (stale branch, missing approval, signed-commits, etc.) once `statusCheckRollup` is fully green but state is still `BLOCKED`.
 
-#### `develop` → `main` PR conflicts (`CONFLICTING` / `DIRTY`)
+#### Single-trunk note (no divergence class)
 
-When `mergeable: CONFLICTING` or `mergeStateStatus: DIRTY`, CI can still be green — this is **git history divergence**, not a failed check.
-
-**Common cause:** `main` was updated by a prior release PR (squash merge) while `develop` continued with new commits that never incorporated that `main` tip. Both branches then edit the same release surfaces (`CHANGELOG.md`, `package.json`, rules, agent skills).
-
-**Verify divergence:**
-
-```bash
-git fetch origin
-git merge-base --is-ancestor origin/main origin/develop
-```
-
-Exit code **1** means `main` is **not** fully contained in `develop` — branches diverged.
-
-**Fix order (agent-executable):**
-
-1. On `develop`: `git merge origin/main` and resolve conflicts (treat **`develop` as SSOT** for in-flight integration work — drop obsolete paths `main` reintroduces, e.g. merged-away skills or `CLAUDE.md` when `AGENTS.md` is current).
-2. Push `develop`; re-check the PR — expect `mergeable: MERGEABLE` (may show `BLOCKED` only while CI runs).
-3. Merge the release PR with **`gh pr merge --squash`** — rulesets disallow merge commits on this repo.
-4. **Immediately** (step 5 below) back-merge `main` into `develop` **before** any new `develop` commit.
-
-**Prevention (mandatory, not optional cleanup):** A **squash merge always creates a NEW commit on `main` that `develop` does not contain**, so `main` is *never* a fast-forward of `develop` after a release. Therefore, **the moment** a `develop` → `main` release PR merges:
-
-```bash
-git fetch origin && git switch develop
-git merge origin/main   # brings in the squash commit; resolve trivial CHANGELOG/version overlap
-git push origin develop
-```
-
-Do this **before** landing any further work (including `finish`/`push`) on `develop`. Skipping it **guarantees** the next `develop` → `main` PR conflicts on `CHANGELOG.md` / `package.json` (and often rules). Verify with `git merge-base --is-ancestor origin/main origin/develop` → exit **0** means synced. There is no auto-sync workflow; this manual back-merge is part of "release done."
+There is one long-lived branch (`main`). A trunk cannot diverge from itself, so the old `develop` → `main` release/back-merge conflict class **no longer exists**. If a `feature/*` PR shows `CONFLICTING`, the branch is simply behind `main`: merge the latest `main` into the feature branch (`git switch feature/<name>` → `git merge origin/main`), resolve, push, then re-check.
 
 This repo enforces merge requirements via GitHub **Rulesets**, not classic branch protection:
 - Classic endpoint `gh api repos/OWNER/REPO/branches/main/protection` returns `404 Branch not protected` — that is **not** evidence that `main` is unprotected.

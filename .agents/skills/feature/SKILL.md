@@ -30,9 +30,9 @@ Follow phases sequentially.
 - [ ] Read `documentation/DOC_APP_VISION.md`. If vision status is **`DRAFT`**, **STOP** and direct the user to fill it (see `.agents/skills/start/SKILL.md` § App vision) or obtain explicit written deferral before Phase 1 coding. Feature specs must not invent product scope when this file is empty of real prose.
 
 ### 1.1 Branch & Workflow Check
-- [ ] Verify current git branch. If on `main`, **stop immediately** and instruct: `git checkout develop`
-- [ ] Never develop on `main`. Branch must be `develop` or a feature branch (workflow/RULE.md § Branch Strategy)
-- [ ] If starting new work, sync with latest `origin/develop` before creating `feature/*` to avoid stale-base conflicts
+- [ ] Verify current git branch. If on `main`, **stop immediately** and instruct: `git switch -c feature/<name>`
+- [ ] Never commit directly to `main`. Branch must be a `feature/*` branch (workflow/RULE.md § Branch Strategy)
+- [ ] If starting new work, sync with latest `origin/main` before creating `feature/*` to avoid stale-base conflicts
 
 ### 1.2 Rule Decision Tree
 Check each rule category systematically:
@@ -61,7 +61,7 @@ Check each rule category systematically:
 ### 1.3 Risk & Impact Assessment
 - [ ] Identify breaking changes
 - [ ] Assess impact on existing functionality
-- [ ] Determine testability (develop branch safe? Edge functions backup? Database has staging?)
+- [ ] Determine testability (feature-branch preview deploy? Edge functions backup? Database has staging?)
 - [ ] Flag high-risk decisions requiring user approval
 
 **🔴 DECISION POINT:** 
