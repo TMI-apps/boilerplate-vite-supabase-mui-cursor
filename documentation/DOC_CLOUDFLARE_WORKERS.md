@@ -8,17 +8,17 @@ Deploy this Vite + React SPA to **Cloudflare Workers** with static assets, using
 
 | System | Responsibility |
 |--------|----------------|
-| **GitHub (this repo)** | Source + `wrangler.jsonc`. `ci.yml` runs type-check / lint / tests / build on PR + push. Branch **rulesets** require a PR and the `test` check before merge to `main`/`develop`. **No deploy workflow. No `CLOUDFLARE_API_TOKEN` secret.** |
-| **Cloudflare Workers Builds** | Builds and deploys on push. `develop` → preview build; `main` → production. Account, build command, and `VITE_*`/`CLOUDFLARE_ACCOUNT_ID` env live in the dashboard connection. |
+| **GitHub (this repo)** | Source + `wrangler.jsonc`. `ci.yml` runs type-check / lint / tests / build on every PR + push to `main`. The `main` **ruleset** requires a PR and the `test` check before merge. **No deploy workflow. No `CLOUDFLARE_API_TOKEN` secret.** |
+| **Cloudflare Workers Builds** | Builds and deploys on push. `main` → production; every other branch / PR → its own **preview** build (non-production branch builds). Account, build command, and `VITE_*`/`CLOUDFLARE_ACCOUNT_ID` env live in the dashboard connection. |
 | **Supabase** | Same project for preview and production; auth URLs include the deployed origin(s). |
 
 Push → Cloudflare builds & deploys. GitHub blocks bad merges. There is no GitHub → Cloudflare deploy step.
 
 ## Agent one-shot brief (fork setup)
 
-For coding agents completing the **"Put your app online (Cloudflare hosting)"** task from `src/config/app-tasks.json`. Run it after the user's Supabase env vars exist. Use `.agents/skills/quick-piv/SKILL.md` for the change, or `plan` + `implement` if rulesets/dashboard need research. Work on `feature/*` → `develop`, never `main`. The **user** confirms success — do not claim done without their test.
+For coding agents completing the **"Put your app online (Cloudflare hosting)"** task from `src/config/app-tasks.json`. Run it after the user's Supabase env vars exist. Use `.agents/skills/quick-piv/SKILL.md` for the change, or `plan` + `implement` if rulesets/dashboard need research. Work on `feature/*` → `main`, never commit directly to `main`. The **user** confirms success — do not claim done without their test.
 
-**Target:** GitHub = CI gate only (`ci.yml` on PR + push to `main`/`develop`; rulesets require a PR + green `test` check; **no** deploy workflow; **no** `CLOUDFLARE_API_TOKEN` secret). Cloudflare Workers Builds = sole deploy path (push → build + deploy; `develop` → preview URL, `main` → production). Same Supabase project for preview and production.
+**Target:** GitHub = CI gate only (`ci.yml` on every PR + push to `main`; the `main` ruleset requires a PR + green `test` check; **no** deploy workflow; **no** `CLOUDFLARE_API_TOKEN` secret). Cloudflare Workers Builds = sole deploy path (push → build + deploy; `main` → production, every other branch/PR → its own preview URL). Same Supabase project for preview and production.
 
 **Discover first (ask the user when unknown):**
 
@@ -32,18 +32,18 @@ For coding agents completing the **"Put your app online (Cloudflare hosting)"** 
 **Implement (fork commits):**
 
 1. `wrangler.jsonc` — set `name`; `compatibility_date` today; `workers_dev: true`; `preview_urls: true`; `assets.directory: "./dist"`; `assets.not_found_handling: "single-page-application"`; add `account_id`; add `routes: [{ "pattern": "<domain>", "custom_domain": true }]` only when using a custom domain. Do **not** set `pages_build_output_dir`. Remove a `public/_redirects` SPA rule if present (conflicts with `not_found_handling` → `Infinite loop detected`).
-2. GitHub — delete any `deploy-cloudflare-*.yml`; keep `ci.yml` unchanged. Create/verify rulesets on `main` (`~DEFAULT_BRANCH`) and `develop`: `pull_request` required, `allowed_merge_methods` merge/squash/rebase, `required_status_checks` (context `test`, the fork's `integration_id`, strict `false`), `non_fast_forward`, `deletion`.
+2. GitHub — delete any `deploy-cloudflare-*.yml`; keep `ci.yml` unchanged. Create/verify the ruleset on `main` (`~DEFAULT_BRANCH`): `pull_request` required, `allowed_merge_methods` squash, `required_status_checks` (context `test`, the fork's `integration_id`, strict `false`), `non_fast_forward`, `deletion`.
 3. `package.json` already has `deploy` and `preview:worker` scripts and `wrangler` as a devDependency — no change needed.
 
-**Dashboard hand-off (agent usually cannot do via API — Workers Builds needs a user API token, not wrangler OAuth):** give the user exact click-path → Cloudflare → **Workers & Pages → Create → Workers → Connect to Git** → Production branch `main`; Build command `pnpm install && pnpm run build`; Deploy command `npx wrangler deploy`; **Root directory EMPTY** (a stale value causes `root directory not found`); Build variables `NODE_VERSION=20`, `CLOUDFLARE_ACCOUNT_ID`, plus every `VITE_*` the app needs; enable **non-production branch builds** for `develop`.
+**Dashboard hand-off (agent usually cannot do via API — Workers Builds needs a user API token, not wrangler OAuth):** give the user exact click-path → Cloudflare → **Workers & Pages → Create → Workers → Connect to Git** → Production branch `main`; Build command `pnpm install && pnpm run build`; Deploy command `npx wrangler deploy`; **Root directory EMPTY** (a stale value causes `root directory not found`); Build variables `NODE_VERSION=20`, `CLOUDFLARE_ACCOUNT_ID`, plus every `VITE_*` the app needs; enable **non-production branch builds** so each `feature/*` branch / PR gets its own preview.
 
-**Auth:** add the production URL + the `develop` preview URL to Supabase **Authentication → URL configuration** (Site URL + Redirect URLs). For Google, add matching JavaScript origins and callback paths per [DOC_SUPABASE_GOOGLE_OAUTH.md](./DOC_SUPABASE_GOOGLE_OAUTH.md) (include the app's `/auth/callback` route).
+**Auth:** add the production URL + a wildcard preview pattern (e.g. `https://*.<your-subdomain>.workers.dev/**`) to Supabase **Authentication → URL configuration** (Site URL + Redirect URLs), so per-branch preview URLs keep working without per-branch edits. For Google, add matching JavaScript origins and callback paths per [DOC_SUPABASE_GOOGLE_OAUTH.md](./DOC_SUPABASE_GOOGLE_OAUTH.md) (include the app's `/auth/callback` route).
 
 **Retire old Pages:** after the Worker serves the domain, disable auto-deploy on the old Pages project, then delete it.
 
 **Gotchas:** `account_id` is required in `wrangler.jsonc` when multiple CF accounts are visible; the live site must load `/assets/*.js` in view-source (not `/src/main.tsx`); `pnpm deploy` is an emergency local path only.
 
-**Gates:** `pnpm lint`, `pnpm type-check`, `pnpm build`, `pnpm validate:structure` pass; a PR with a failing lint stays blocked until CI is green; Workers Builds shows green on latest `main` and `develop`; login works on production and the `develop` preview.
+**Gates:** `pnpm lint`, `pnpm type-check`, `pnpm build`, `pnpm validate:structure` pass; a PR with a failing lint stays blocked until CI is green; Workers Builds shows green on latest `main` and on the PR's preview build; login works on production and on the branch preview.
 
 ## What is configured in this repo
 
@@ -84,7 +84,7 @@ In the Cloudflare dashboard → **Workers & Pages → Create → Workers → Con
 | **Root directory** | **EMPTY (repo root)** — a stale root directory causes `Failed: root directory not found` |
 | Build variables | `NODE_VERSION=20`, `CLOUDFLARE_ACCOUNT_ID=<your account id>`, plus build-time `VITE_*` (e.g. `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`) |
 
-Then enable **non-production branch builds** so `develop` produces a preview deployment.
+Then enable **non-production branch builds** so each `feature/*` branch / PR produces its own preview deployment.
 
 > `VITE_*` variables are embedded at **build time**. Workers Builds does **not** share runtime and build env vars — set every `VITE_*` your app needs in the build variables, or production will load an app with missing config.
 
@@ -93,7 +93,7 @@ Then enable **non-production branch builds** so `develop` produces a preview dep
 Add the deployed origins to Supabase **Authentication → URL configuration** (Site URL + Redirect URLs), e.g.:
 
 - `https://<your-worker>.<subdomain>.workers.dev/**` (production)
-- the `develop` preview URL Workers Builds reports
+- a wildcard preview pattern for branch builds, e.g. `https://*.<your-subdomain>.workers.dev/**`
 
 For Google OAuth, also add those origins to Google Cloud **Authorized JavaScript origins** and the callback path. Full checklist: [DOC_SUPABASE_GOOGLE_OAUTH.md](./DOC_SUPABASE_GOOGLE_OAUTH.md).
 

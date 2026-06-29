@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.37.0] - 2026-06-29
+
+### Changed
+
+- **Trunk-based pipeline**: Collapsed the two-branch (`develop` + `main`) model to a single long-lived `main` trunk. All work flows `feature/*` → `main` via squash PR; merging to `main` ships production. Removes the permanent `develop`↔`main` history divergence and the mandatory back-merge ritual (root cause of PR #31's recurring conflicts).
+- **Cloudflare previews**: Preview deployments are now per-branch / per-PR (non-production branch builds) instead of a single `develop` preview. Supabase auth uses a wildcard preview redirect pattern.
+- **CI**: `ci.yml` triggers on `main` only (push + PR); dropped `develop` triggers.
+- **Workflow rule + docs**: Rewrote `workflow/RULE.md` branch strategy, and updated `start`, `feature`, `push`, `validate` skills, `DOC_CLOUDFLARE_WORKERS.md`, `DOC_CONTRIBUTING.md`, `DOC_CHANGESETS.md`, `DOC_AGENT_WORKFLOW_LAYERS.md`, and `rules/INDEX.md` for the single-trunk model.
+
 ## [0.36.0] - 2026-06-28
 
 ### Added

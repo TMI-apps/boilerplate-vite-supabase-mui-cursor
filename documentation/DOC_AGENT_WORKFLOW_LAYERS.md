@@ -74,7 +74,7 @@ See `.cursor/rules/workflow/RULE.md` for branch strategy and protected files.
 ## Release and versioning
 
 - Feature branches: `.changeset/*.md` + conventional commits (`finish` SSOT).
-- Version bump on `develop`: `documentation/DOC_CHANGESETS.md` + `.github/workflows/version-packages.yml`.
+- Version bump lands with each feature PR to `main`: `documentation/DOC_CHANGESETS.md`.
 
 ## When you change something
 

@@ -97,14 +97,14 @@ If assistant cannot perform the fork UI step, instruct user exactly what to clic
 
 ### 5) Branch workflow gate
 
-Set up long-lived integration branch:
+This repo is **trunk-based**: `main` is the single long-lived branch. No `develop` branch is created. All work happens on short-lived `feature/*` branches off `main`:
 
 ```bash
-git switch -c develop
-git push -u origin develop
+git switch main && git pull origin main
+git switch -c feature/<name>
 ```
 
-Then guide user to configure GitHub branch protection rules for `main` and `develop` (PRs required, status checks required, force-push disabled). If this is web-UI only, provide exact steps and wait for user confirmation.
+Then guide the user to configure the GitHub `main` ruleset (PR required, `test` status check required, deletion + non-fast-forward protection) and enable "Automatically delete head branches". If this is web-UI only, provide exact steps and wait for user confirmation.
 
 ### 6) Dev server gate
 
