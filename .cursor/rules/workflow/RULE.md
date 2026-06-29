@@ -258,6 +258,8 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 
 **One-time fork setup:** After forking, create `develop` from `main` (`git push origin main:develop`) and configure `develop` + `main` rulesets per onboarding (`start` skill).
 
+**First promotion bootstrap:** The promote workflow file must exist on `main` before GitHub registers `workflow_dispatch`. After the first Model A PR merges to `develop`, perform **one** fast-forward of `main` to `develop` (local `git merge --ff-only origin/develop` + `git push origin main` as a repo admin, or the promote workflow once it is on `main`). Requires **GitHub Actions** (or admin) bypass on the `main` ruleset. Subsequent releases use **Promote to production** only.
+
 ## Development Process
 
 ### Before Starting Work
