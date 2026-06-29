@@ -143,7 +143,7 @@ The AI must verify the current git branch before editing any code file. **Direct
 **Protected Branch Merge Model (Current Repo Decision):**
 - Require a Pull Request for every `develop` update (no direct-push flow).
 - Merge method for `develop`: **Squash merge** (primary for `feature/*` PRs).
-- `main` updates only via **Promote to production** workflow (fast-forward push using `PROMOTE_GH_TOKEN` secret; PAT owner must be on the `main` ruleset bypass list).
+- `main` updates only via **Promote to production** workflow (fast-forward push using the built-in `GITHUB_TOKEN`; no PAT or bypass actor needed — see § Promote to production).
 - Enable "Automatically delete head branches" so merged `feature/*` branches are cleaned up.
 
 ##### Verification Process
@@ -251,20 +251,18 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 
 **Agent UX:** When the user says "promote to production", run `gh workflow run promote-to-production.yml` and watch the run (`gh run watch`).
 
-**Setup (one-time per repo):**
+**Why no PAT or bypass actor is needed:** `main`'s ruleset only enforces `deletion` + `non_fast_forward`. Those rules block force-pushes and deletion but **allow** an ordinary fast-forward push, so the workflow's built-in `GITHUB_TOKEN` (with `contents: write`) can promote. There is **no** PR-required or status-check rule on `main` — daily integration and CI happen on `develop`, and the workflow re-checks `develop`'s tip is green before pushing. This keeps fork onboarding zero-config: no PAT, no secret, no bypass list entry.
 
-1. **Bypass list** on `main` ruleset: Settings → Rules → Rulesets → **main protection** → Bypass list → **Add bypass** → select **Administrator** (or the GitHub user who owns the promote PAT). `github-actions[bot]` is **not** a bypass option — workflows cannot use the default `GITHUB_TOKEN` to bypass rulesets.
-2. **Repository secret:** Settings → Secrets and variables → Actions → **New repository secret** → name `PROMOTE_GH_TOKEN` → value = fine-grained PAT for that user with **Contents: Read and write** on this repository.
+**Setup (one-time per repo):** none beyond the `main` ruleset (`deletion` + `non_fast_forward`) and the `develop` ruleset. Workflow → Settings → Actions → Workflow permissions must allow **Read and write** (GitHub default for most repos).
 
 **Failure modes:**
-- `Missing repository secret PROMOTE_GH_TOKEN` — add the secret (step 2).
-- `403` / ruleset blocked push — PAT owner is not on the `main` ruleset bypass list (step 1).
+- `403` / `Changes must be made through a pull request` — `main`'s ruleset has a `pull_request` or `required_status_checks` rule that should not be there; reduce it to `deletion` + `non_fast_forward`.
 - `main is not an ancestor of develop` — someone merged to `main` outside this workflow; do not squash-merge or back-merge; escalate.
 - `develop and main are already at the same commit` — nothing to promote.
 
 **One-time fork setup:** After forking, create `develop` from `main` (`git push origin main:develop`) and configure `develop` + `main` rulesets per onboarding (`start` skill).
 
-**First promotion bootstrap:** The promote workflow file must exist on `main` before GitHub registers `workflow_dispatch`. After the first Model A PR merges to `develop`, fast-forward `main` once: add **Administrator** to the `main` bypass list, then `git fetch origin && git checkout main && git merge --ff-only origin/develop && git push origin main` (as that admin user). Subsequent releases use **Promote to production** with `PROMOTE_GH_TOKEN`.
+**First promotion bootstrap:** GitHub only registers `workflow_dispatch` once the workflow file exists on the default branch (`main`). On a fresh fork, after the first Model A PR merges to `develop`, fast-forward `main` once locally (`git fetch origin && git checkout main && git merge --ff-only origin/develop && git push origin main`) to seed the workflow onto `main`. Subsequent releases use **Promote to production**.
 
 ## Development Process
 

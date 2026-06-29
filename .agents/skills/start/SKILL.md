@@ -121,7 +121,7 @@ git switch -c feature/<name>
 
 Guide the user to configure GitHub rulesets:
 - **`develop` protection:** PR required, `test` status check, squash merge, deletion + non-fast-forward.
-- **`main` protection:** PR required (discourage feature PRs to `main`), `test` check, deletion + non-fast-forward, **Administrator** (or PAT owner) on bypass list + `PROMOTE_GH_TOKEN` secret for promote workflow — not `github-actions[bot]` (not selectable).
+- **`main` protection:** **deletion + non-fast-forward only** (no PR rule, no status check). This lets the promote workflow's built-in `GITHUB_TOKEN` fast-forward `main` to `develop` with no PAT or bypass actor.
 - Enable "Automatically delete head branches".
 
 If steps are web-UI only, provide exact click-path and wait for user confirmation.
