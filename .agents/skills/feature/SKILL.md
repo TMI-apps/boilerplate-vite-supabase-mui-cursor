@@ -30,9 +30,9 @@ Follow phases sequentially.
 - [ ] Read `documentation/DOC_APP_VISION.md`. If vision status is **`DRAFT`**, **STOP** and direct the user to fill it (see `.agents/skills/start/SKILL.md` § App vision) or obtain explicit written deferral before Phase 1 coding. Feature specs must not invent product scope when this file is empty of real prose.
 
 ### 1.1 Branch & Workflow Check
-- [ ] Verify current git branch. If on `main`, **stop immediately** and instruct: `git switch -c feature/<name>`
-- [ ] Never commit directly to `main`. Branch must be a `feature/*` branch (workflow/RULE.md § Branch Strategy)
-- [ ] If starting new work, sync with latest `origin/main` before creating `feature/*` to avoid stale-base conflicts
+- [ ] Verify current git branch. If on `main` or `develop`, **stop immediately** and instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>`
+- [ ] Never commit directly to `main` or `develop`. Branch must be a `feature/*` branch (workflow/RULE.md § Branch Strategy)
+- [ ] If starting new work, sync with latest `origin/develop` before creating `feature/*` to avoid stale-base conflicts
 
 ### 1.2 Rule Decision Tree
 Check each rule category systematically:

@@ -1,0 +1,52 @@
+# Fast-forward main to develop (production promotion).
+# Requires "GitHub Actions" bypass on the main ruleset (Settings → Rules → main protection).
+name: Promote to production
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify fast-forward preconditions
+        run: |
+          git fetch origin main develop
+
+          if git merge-base --is-ancestor origin/main origin/develop; then
+            echo "main is an ancestor of develop — fast-forward promotion is allowed."
+          else
+            echo "::error::main is not an ancestor of develop. Promotion requires a fast-forward only."
+            echo "::error::Do not squash-merge develop into main or back-merge main into develop."
+            exit 1
+          fi
+
+          if [ "$(git rev-parse origin/main)" = "$(git rev-parse origin/develop)" ]; then
+            echo "::error::develop and main are already at the same commit — nothing to promote."
+            exit 1
+          fi
+
+      - name: Require green test check on develop tip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHA="$(git rev-parse origin/develop)"
+          STATUS="$(gh api "repos/${{ github.repository }}/commits/${SHA}/status" --jq '.state')"
+          if [ "$STATUS" != "success" ]; then
+            echo "::error::Latest commit on develop does not have a successful combined status (state: ${STATUS})."
+            exit 1
+          fi
+
+      - name: Fast-forward main to develop
+        run: |
+          git checkout main
+          git merge --ff-only origin/develop
+          git push origin main

@@ -26,7 +26,7 @@ Guide a new user through first-time setup of this boilerplate by following the R
 - **Skip Supabase (task #1)** and **Cloudflare hosting (task #2)**. No project, no Workers Builds link, no `.env` required for most template work. The app runs locally without auth configured.
 - **Skip Airtable (task #4)** unless you are testing that integration.
 - **App vision (task #3):** may stay **`DRAFT`** while exploring or contributing to the template; do not block template PRs on it unless the change is product-facing.
-- **Still do:** prerequisites, branch workflow (`feature/*` → `main`), `pnpm dev`, and the verification checklist (§ Mandatory verification checklist).
+- **Still do:** prerequisites, branch workflow (`feature/*` → `develop`), `pnpm dev`, and the verification checklist (§ Mandatory verification checklist).
 
 **Working on a fork** (someone cloned this to build their own app): full backlog applies — Supabase, hosting, vision **`ACTIVE`**, etc.
 
@@ -112,14 +112,19 @@ If assistant cannot perform the fork UI step, instruct user exactly what to clic
 
 ### 5) Branch workflow gate
 
-This repo is **trunk-based**: `main` is the single long-lived branch. No `develop` branch is created. All work happens on short-lived `feature/*` branches off `main`:
+This repo uses **Model A** (`develop` staging + ff-only promotion to `main`). On a **fork**, create `develop` from `main` once (`git push origin main:develop`) and configure both branch rulesets. All work happens on short-lived `feature/*` branches off `develop`:
 
 ```bash
-git switch main && git pull origin main
+git switch develop && git pull origin develop
 git switch -c feature/<name>
 ```
 
-Then guide the user to configure the GitHub `main` ruleset (PR required, `test` status check required, deletion + non-fast-forward protection) and enable "Automatically delete head branches". If this is web-UI only, provide exact steps and wait for user confirmation.
+Guide the user to configure GitHub rulesets:
+- **`develop` protection:** PR required, `test` status check, squash merge, deletion + non-fast-forward.
+- **`main` protection:** PR required (discourage feature PRs to `main`), `test` check, deletion + non-fast-forward, **GitHub Actions bypass** (required for promote workflow).
+- Enable "Automatically delete head branches".
+
+If steps are web-UI only, provide exact click-path and wait for user confirmation.
 
 ### 6) Dev server gate
 

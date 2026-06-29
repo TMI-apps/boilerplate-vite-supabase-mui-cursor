@@ -151,6 +151,11 @@ After `git add`, expect hook behavior per **`documentation/DOC_AGENT_WORKFLOW_LA
 - `git commit --amend` with an empty index may run the full hook; re-stage or accept.
 - Tests run on **push** (`.husky/pre-push`), not on commit.
 
+## Production promotion (separate from finish)
+
+- **`finish`** lands version + changelog on the feature branch; squash merge to **`develop`** updates staging.
+- **Do not** use `finish` or a squash PR to ship production. After the user confirms staging on `develop`, run **Promote to production** (`promote-to-production.yml`) per `.cursor/rules/workflow/RULE.md`.
+
 ## Boundaries
 
 | Not `finish` | Use instead |

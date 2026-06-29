@@ -74,7 +74,7 @@ See `.cursor/rules/workflow/RULE.md` for branch strategy and protected files.
 ## Release and versioning
 
 - Feature branches: `.changeset/*.md` + conventional commits (`finish` SSOT).
-- Version bump lands with each feature PR to `main`: `documentation/DOC_CHANGESETS.md`.
+- Version bump lands with each feature PR to `develop`: `documentation/DOC_CHANGESETS.md`. Production promotion (`main`) is a separate **Promote to production** workflow step.
 
 ## When you change something
 
