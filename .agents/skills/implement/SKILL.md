@@ -30,6 +30,11 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 ## Flow
 
+### 0. Branch gate
+
+- [ ] Verify current git branch (`git branch --show-current`). If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
+- [ ] Never commit directly to `main` or `develop` during implementation.
+
 ### 1. Load plan
 
 - [ ] Read `DEVELOPMENT_PLAN.md` for the resolved job folder.

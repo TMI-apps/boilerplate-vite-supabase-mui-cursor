@@ -24,6 +24,10 @@ Lightweight Plan → Implement → Validate in one workflow. **Primary outcome:*
 
 **When NOT to use:** Large features, multi-phase work, database migrations, breaking changes, **Complexity M/L**, pending **Plan review**, or missing **Pattern & precedent** when required → use full `plan` → `implement` → `validate` instead.
 
+## Branch gate
+
+- [ ] Before any code edit, verify current git branch. If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
+
 ## Hard stops (M/L and gates)
 
 Before implementing, if **Branch A** loads a plan with **Complexity M** or **L**, or **Plan review: Required: pending**, or incomplete **Pattern & precedent** when required — **stop** and route to **`.agents/skills/implement/SKILL.md`** (after `review-dev-plan` / `pattern-review` per [dev-cycle matrix](../router/references/dev-cycle-matrix.md)). Do **not** continue in `quick-piv`.

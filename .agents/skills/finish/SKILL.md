@@ -71,8 +71,22 @@ Call **AskQuestion** once with **exactly** these four options (you may shorten l
     - Can this be recognized from symptoms before reading this repo's specific code?
     - Does it suggest at least one falsifiable check?
     - Would a different team/project still benefit from this guidance?
-- **MANDATORY:** Update version number in `package.json` to match changelog version
-- **MANDATORY:** Update changelog (fetch date if unsure of date) - see `.cursor/rules/workflow/RULE.md` for Keep a Changelog format
+
+## Version and changelog gate
+
+Before editing `package.json` or `CHANGELOG.md`, classify staged changes per **`scripts/change-classify.cjs`** (matrix SSOT: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git).
+
+| Class | Version + changelog |
+|-------|---------------------|
+| `feat`, `fix`, `perf`, breaking, user-facing | **Required** — bump per [Semantic Versioning](#semantic-versioning-ssot) |
+| `docs`, `style`, `refactor`, `test`, `chore`, internal-only | **Skip** — do not edit `package.json` or `CHANGELOG.md` |
+
+When skipping version/changelog: commit message uses `type: Subject` **without** `[VERSION]` prefix (still include required body).
+
+**Changesets (optional):** Add `.changeset/*.md` when the change should appear in release narrative across PRs — see **`documentation/DOC_CHANGESETS.md`**. `finish` still owns `package.json` + `CHANGELOG.md` on the feature branch.
+
+- **MANDATORY (when bump required):** Update version number in `package.json` to match changelog version
+- **MANDATORY (when bump required):** Update changelog (fetch date if unsure of date) — Keep a Changelog format; section list SSOT in `.agents/skills/finish/SKILL.md` § Semantic Versioning cross-ref
 - **MANDATORY:** If staged changes include `src/features/*` code, stage matching feature README updates (`src/features/*/README.md`)
 - **MANDATORY:** Run feature-doc validation for staged files (`pnpm validate:feature-docs:staged`)
 - **MANDATORY: Staging Decision Gate before commit**
@@ -88,7 +102,7 @@ Call **AskQuestion** once with **exactly** these four options (you may shorten l
   - Never stage all changes automatically when unrelated unstaged work exists without explicit user confirmation.
 - commit with proper message format (see commit message standards below)
 - fix any issues found by pre-commit hook
-- **CRITICAL:** If fixing requires modifying protected files (`.gitignore`, `projectStructure.config.cjs`, `.eslintrc.json`, `.cursor/**`, `.husky/**`, etc.), STOP and ASK the user first. See `workflow/RULE.md` § "Protected Files" for full list. NEVER modify these files without explicit user approval.
+- **CRITICAL:** If fixing requires modifying protected files, STOP and ASK the user first. Full manifest: `.cursor/rules/workflow/RULE.md` § Protected Files. NEVER modify protected files without explicit user approval.
 - check if architecture.md needs update
 - do not create new deep docs during finish unless user explicitly requests it
 - **Do NOT push in this command.** `finish` is local-only and ends at a successful commit.

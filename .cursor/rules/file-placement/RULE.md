@@ -23,7 +23,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
    - **Page Component** (`.tsx`) → `src/pages/<PageName>/<PageName>Page.tsx` (prefer named files, NOT `index.tsx`)
    - Component (`.tsx`) → `src/components/common/` or `src/features/*/components/`
    - Hook/Service/Util (`.ts`) → `src/shared/{hooks|services|utils}/` or `src/features/*/{hooks|services}/`
-   - Types (`.ts`) → `src/shared/types/`
+   - Types (`.ts`) → `src/features/*/types/` for feature-specific types; `src/shared/types/` for cross-feature types (see `architecture/RULE.md`)
    - Edge Function → `supabase/functions/<name>/index.ts`
    - Cloud Function → `cloud-functions/<name>/`
    - Feature docs (`.md`) → `src/features/*/README.md` or `src/features/*/docs/*.md`

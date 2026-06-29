@@ -91,7 +91,7 @@ When adding external package imports:
 
 1. **Verify the package is installed**: Check `package.json` dependencies
 2. **Types may come from wrappers**: If using a library through a wrapper (e.g., TipTap through `mui-tiptap`), types often come from the wrapper, not the original package
-3. **When in doubt, use inline types**: Define types locally or use `any` with eslint-disable rather than importing from potentially unavailable packages
+3. **When in doubt, use inline types**: Define types locally rather than importing from potentially unavailable packages. **`any` is still forbidden** — use a narrow type, `unknown`, or a local interface; only as last resort for third-party gaps, `// eslint-disable-next-line @typescript-eslint/no-explicit-any` with a one-line justification.
 
 ## Code Organization
 

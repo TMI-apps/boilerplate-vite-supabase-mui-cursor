@@ -178,11 +178,11 @@ When considering adding an Edge Function, ask:
 **Frontend Logic Testing Considerations:**
 
 - Test on develop branch
-- User testing before merging to main
+- User testing before promoting to production (not a squash merge to `main`)
 - Easy rollback if issues found
 
 **Release Gate Reminder:**
-- For `develop` -> `main` releases, re-validate critical flows that depend on currently deployed Edge Functions before merge
+- Before running **Promote to production**, re-validate critical flows that depend on currently deployed Edge Functions
 
 For complete testing guidelines and patterns, refer to `testing/RULE.md`.
 
@@ -192,7 +192,7 @@ If an existing Edge Function could be replaced with frontend logic:
 
 1. Implement frontend version on develop branch
 2. Test thoroughly
-3. Deploy frontend changes to main
+3. Promote frontend to production via **Promote to production** workflow (fast-forward `main` to `develop`)
 4. Monitor for issues
 5. Only after proven stable, remove Edge Function
 6. Document the architectural decision

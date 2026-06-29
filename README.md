@@ -160,7 +160,7 @@ Then configure branch protection in GitHub:
 
 Recommended PR flow:
 - Daily work: `feature/*` -> `develop`
-- Release: `develop` -> `main`
+- Production: promote `develop` to `main` via **Promote to production** workflow (fast-forward only) — see `.cursor/rules/workflow/RULE.md` § Promote to production
 
 Optional (to pull future boilerplate updates):
 

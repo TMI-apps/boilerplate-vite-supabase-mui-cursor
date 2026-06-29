@@ -552,7 +552,7 @@ When extracting code, place in correct layer:
 ### Folder Structure
 
 - **Prefer existing folders** when extracting code
-- **If new folder needed:** Update `projectStructure.config.js` FIRST
+- **If new folder needed:** Update `projectStructure.config.cjs` FIRST
 - **Never create unauthorized folders** - ESLint will error
 - **Validate structure:** Run `pnpm validate:structure` to verify folder structure compliance
 
@@ -651,3 +651,5 @@ Common indicators for each level:
 | Simplify whether feature should exist | `challenge` |
 | Browser-measured perf (CWVs) | `web-perf` plugin skill |
 | Commit / changelog | `finish` |
+
+**Next:** User picks option → **`implement`** or **`quick-piv`** → **`validate`** → **`finish`**.
