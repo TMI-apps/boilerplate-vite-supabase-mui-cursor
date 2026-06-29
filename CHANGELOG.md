@@ -7,9 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.38.0] - 2026-06-29
+
+### Added
+
+- **Promote to production workflow** (`.github/workflows/promote-to-production.yml`): `workflow_dispatch` fast-forwards `main` to `develop` with ancestor checks and green `test` gate on `develop` tip.
+
 ### Changed
 
-- **start skill**: Distinguish template repo work (skip Supabase, Cloudflare, Airtable) from fork onboarding.
+- **Model A branch strategy**: Restored `develop` as integration + stable Cloudflare staging; `main` is production-only, updated only via ff-only promote workflow. Forbids squash `develop`→`main` and `main`→`develop` back-merge (fixes the old divergence class).
+- **CI**: `ci.yml` triggers on `main` and `develop` (push + PR).
+- **Workflow rule + docs + skills**: Rewrote `workflow/RULE.md`, `DOC_CLOUDFLARE_WORKERS.md`, `DOC_CONTRIBUTING.md`, `DOC_CHANGESETS.md`, `DOC_AGENT_WORKFLOW_LAYERS.md`, `rules/INDEX.md`, `app-tasks.json`, and `start`, `feature`, `push`, `validate`, `finish`, `router` skills for develop-first flow.
+
+### Removed
+
+- **Trunk-only model** (0.37.0): single-branch `feature/*`→`main` daily flow reverted for fork staging URL UX.
 
 ## [0.37.0] - 2026-06-29
 

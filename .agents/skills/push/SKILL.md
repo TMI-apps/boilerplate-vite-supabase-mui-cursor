@@ -29,7 +29,7 @@ Push previously finished work to remote. This command is push-only.
 
 ## Push Safety Flow
 
-1. Verify branch (never push from `main` for development flow).
+1. Verify branch (never push from `main` or `develop` for development flow).
 2. Verify clean working tree.
 3. Verify commits exist to push.
 4. Verify remote freshness before push:
@@ -37,8 +37,8 @@ Push previously finished work to remote. This command is push-only.
    - Check whether local branch is behind its remote counterpart
    - If behind, STOP and sync first (rebase or merge) before pushing
 5. Confirm push target relevance:
-   - **Preferred**: push feature branch (`feature/*`) and merge to `main` via PR
-   - **`main`**: never push directly — the ruleset blocks it; always go through a PR
+   - **Preferred**: push feature branch (`feature/*`) and open a PR to `develop`
+   - **`develop` / `main`**: never push directly — rulesets block it; integration goes to `develop` via PR; production via promote workflow only
    - **App-specific changes**: ensure remote points to app repo, not boilerplate repo
 6. Ask user for explicit confirmation: "Ready to push these already-committed changes?"
 7. Execute push only after confirmation.
@@ -57,4 +57,4 @@ You have explicit access to use console commands for this task.
 | Not `push` | Use instead |
 |------------|-------------|
 | Stage, commit, version, changelog | `finish` |
-| First push of a new `feature/*` branch | Normal flow — push with `-u`, then open a PR to `main` |
+| First push of a new `feature/*` branch | Normal flow — push with `-u`, then open a PR to `develop` |

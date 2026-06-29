@@ -65,7 +65,7 @@ Err toward inclusion in all modes — `applicable: false` is cheap.
 
 ### Branch verification (impl-full / gate)
 
-Verify not on `main`. If on `main`, **stop** — instruct `git switch -c feature/<name>` (see `.cursor/rules/workflow/RULE.md` § Branch Strategy).
+Verify not on `main` or `develop`. If on either, **stop** — instruct `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` (see `.cursor/rules/workflow/RULE.md` § Branch Strategy).
 
 ---
 
