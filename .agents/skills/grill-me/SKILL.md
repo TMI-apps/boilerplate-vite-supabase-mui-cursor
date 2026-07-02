@@ -27,9 +27,15 @@ Resolve in roughly this priority; follow dependencies where a branch opens anoth
 1. **Problem + success** — one sentence each.
 2. **Perimeter (in scope)** — smallest set of capabilities that counts as this feature.
 3. **Non-goals (out of scope)** — what it will **NOT do** and **NOT touch** (see below).
-4. **Neighbor map** — existing functionality this feature meets, by **user-visible name** (auth, settings, notifications, existing CRUD, admin, billing…), not by file.
+4. **Neighbor map** — existing functionality this feature meets, by **user-visible name** (auth, settings, notifications, existing CRUD, admin, billing…), not by file. For each neighbor, resolve **ride vs new** (below).
 5. **Edge decisions** — one question per boundary: handoff, ownership, atomicity, precedence vs existing behavior.
 6. **Interior** — only where an edge choice already constrains it.
+
+### Ride vs new (default-greenfield check)
+
+Agents tend to propose a new path for everything. Counter it: for each neighbor, ask whether this feature **rides the existing pipeline** (same flow/data path, extended) or runs a **parallel/new** one. **Burden of proof is on greenfield** — a new pipeline needs a stated reason the existing one can't absorb it (divergent product concept, incompatible constraints, unacceptable coupling), not just convenience.
+
+This is not a "which file/mechanism" question (that stays with the agent). It is a **scope/boundary** question because riding vs forking changes consistency, divergence risk, and future coupling. Resolve it in chat when the answer moves any of those.
 
 When stuck or the route is unclear, step back first: state the problem and chosen route, recap recent attempts, and weigh a wider alternative against the current best option — then resume the questions.
 
@@ -44,7 +50,7 @@ For each, confirm it's intentional and mark **deferred** ("not now") vs **exclud
 
 ## Roles
 
-The user keeps the app aligned with the vision: behavior, product feel, direction, priorities, risk, tradeoffs. The agent translates that into code. Don't ask the user to choose files, functions, layers, or mechanisms unless the choice changes product direction, scope, or a boundary with other functionality.
+The user keeps the app aligned with the vision: behavior, product feel, direction, priorities, risk, tradeoffs. The agent translates that into code. Don't ask the user to choose files, functions, layers, or mechanisms unless the choice changes product direction, scope, or a boundary with other functionality. **Note:** whether a feature *rides an existing pipeline or forks a new one* is such a boundary — surface it (see Ride vs new), even though the specific files/mechanism stay with the agent.
 
 ## Question style
 
@@ -59,6 +65,7 @@ Keep questions at the level the user can answer — behavior, scope, edges, not 
 - Good (edge): "If import fails on row 47 of 200, are rows 1–46 already committed, or is the whole batch atomic?"
 - Good (precedence): "When this fires on an action that already shows a success toast, does it replace it, duplicate it, or only fire for async outcomes?"
 - Good (non-goal): "Should admin edits to a user's record be invisible, or appear in their history as 'edited by support'?"
+- Good (ride vs new): "Should this send through the existing notifications pipeline (same delivery, prefs, history), or is it different enough to justify its own path — and if so, why can't the existing one absorb it?"
 - Bad: "Should I use `functionA()` or `functionB()`?" / "Hook or service?"
 
 If a question can be answered by exploring the codebase, explore instead, then convert remaining uncertainty into a scope/behavior/boundary question. For any boundary question touching existing code: (1) ask the raw question in plain text to frame the research, (2) research which answer is most consistent with existing behavior/patterns/domain language, (3) ask the multiple-choice question, (4) mark the option most consistent with the codebase while letting the user pick a different direction.
@@ -74,7 +81,7 @@ When there is shared understanding, close with a **chat summary** (not a file):
 - **Vision & constraints** — concise.
 - **In scope** — the agreed perimeter.
 - **Non-goals** — explicit "will NOT do" / "will NOT touch", each marked *deferred* or *excluded*.
-- **Neighbor/boundary map** — each existing feature it meets and the resolved edge (ownership, precedence, atomicity).
+- **Neighbor/boundary map** — each existing feature it meets and the resolved edge (ride vs new, ownership, precedence, atomicity); note any greenfield path with its justification.
 - **Open tradeoffs** — product-framed.
 - **Recommended direction** — code left to the agent unless a technical choice materially affects the vision.
 

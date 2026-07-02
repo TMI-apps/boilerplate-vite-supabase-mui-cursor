@@ -170,6 +170,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Review plan or implementation **without** editing by default; pre-merge / post-refactor gate (auto-selects plan-review / impl-full / gate depth) | `.agents/skills/validate/SKILL.md` |
 | Component-level rubric (props, MUI, a11y, tests) | `.agents/skills/review/SKILL.md` |
 | Version, changelog, staging gate, **local** commit | `.agents/skills/finish/SKILL.md` |
+| Bundle **all** uncommitted work from multiple agent threads (same checkout), then push | `.agents/skills/bundle-ship/SKILL.md` |
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
 | Promote `develop` staging to production (`main`) | `gh workflow run promote-to-production.yml` — see `.cursor/rules/workflow/RULE.md` § Promote to production (not `finish`, not a squash PR) |
 | Human onboarding; README quick start + dev task backlog | `.agents/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
@@ -306,9 +307,10 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`prime`:** Agent loads **technical** context for implementation.
 - **`start`:** Human **first-time setup** walkthrough.
 
-### `finish` vs `push`
+### `finish` vs `push` vs `bundle-ship`
 
 - **`finish`:** Commit-ready locally (version, changelog, staging rules).
+- **`bundle-ship`:** Multi-thread same-checkout landing — one bundled `finish` commit, then `push` in one invocation.
 - **`push`:** Remote sync only **after** commits exist; never commit inside push.
 
 ### `canvas` vs `validate` / reporting
@@ -441,6 +443,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/consolidate/SKILL.md`
 - `.agents/skills/review/SKILL.md`
 - `.agents/skills/finish/SKILL.md`
+- `.agents/skills/bundle-ship/SKILL.md`
 - `.agents/skills/push/SKILL.md`
 - `.agents/skills/quick-piv/SKILL.md`
 - `.agents/skills/prime/SKILL.md`
