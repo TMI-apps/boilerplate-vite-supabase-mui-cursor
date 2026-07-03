@@ -40,9 +40,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           SHA="$(git rev-parse origin/develop)"
-          STATUS="$(gh api "repos/${{ github.repository }}/commits/${SHA}/status" --jq '.state')"
-          if [ "$STATUS" != "success" ]; then
-            echo "::error::Latest commit on develop does not have a successful combined status (state: ${STATUS})."
+          CONCLUSION="$(gh api "repos/${{ github.repository }}/commits/${SHA}/check-runs" --jq '[.check_runs[] | select(.name=="test" and .status=="completed")] | .[0].conclusion // "missing"')"
+          if [ "$CONCLUSION" != "success" ]; then
+            echo "::error::test check on develop tip did not succeed (conclusion: ${CONCLUSION})."
             exit 1
           fi
 
