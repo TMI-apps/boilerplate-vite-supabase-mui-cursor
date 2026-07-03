@@ -103,7 +103,7 @@ Before forming hypotheses:
 
 If a pattern matches, promote it into the hypothesis set with a falsifier. If no pattern matches, record the searched tokens.
 
-When a fixing session yields a **new reusable** pattern, add it to `patterns.md` per `.agents/skills/finish/SKILL.md` (quality gate applies).
+When a fixing session yields a **new reusable** pattern, **defer the write**: `patterns.md` sits under protected `.agents/skills/**` — add the entry during `.agents/skills/finish/SKILL.md` (or user-approved `learn`), never mid-debug (quality gate applies).
 
 ---
 

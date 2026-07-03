@@ -14,11 +14,7 @@ disable-model-invocation: false
 
 ## Config
 
-```text
-SUBAGENT_MODEL=composer-2.5
-```
-
-Every **Task** subagent uses `model` = slug above (must be valid for your Cursor build; edit the value only). Subagents are **self-contained** — they do not see this chat. Each brief is in [`references/subagent-briefs.md`](references/subagent-briefs.md).
+`SUBAGENT_MODEL` per [`router/references/subagent-config.md`](../router/references/subagent-config.md) (shared SSOT). Subagents are **self-contained** — they do not see this chat. Each brief is in [`references/subagent-briefs.md`](references/subagent-briefs.md).
 
 ## Purpose
 

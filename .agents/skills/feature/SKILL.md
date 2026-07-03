@@ -21,6 +21,10 @@ Follow phases sequentially.
 
 **Violating decision points is a critical failure.**
 
+> **Path shorthand:** bare rule paths below (e.g. `architecture/RULE.md`) mean `.cursor/rules/<category>/RULE.md`. Full map: [`plan/references/rules-registry.md`](../plan/references/rules-registry.md).
+
+> **Entry gate:** if router gates 1–2 (vision / scope) fail, run [`grill-me`](../grill-me/SKILL.md) first — do not start Phase 1 Q&A as a substitute.
+
 ---
 
 ## Phase 1: Pre-Development Analysis
@@ -30,33 +34,10 @@ Follow phases sequentially.
 - [ ] Read `documentation/DOC_APP_VISION.md`. If vision status is **`DRAFT`**, **STOP** and direct the user to fill it (see `.agents/skills/start/SKILL.md` § App vision) or obtain explicit written deferral before Phase 1 coding. Feature specs must not invent product scope when this file is empty of real prose.
 
 ### 1.1 Branch & Workflow Check
-- [ ] Verify current git branch. If on `main` or `develop`, **stop immediately** and instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>`
-- [ ] Never commit directly to `main` or `develop`. Branch must be a `feature/*` branch (workflow/RULE.md § Branch Strategy)
-- [ ] If starting new work, sync with latest `origin/develop` before creating `feature/*` to avoid stale-base conflicts
+- [ ] Run the branch gate per `.cursor/rules/workflow/RULE.md` § Branch Strategy (stop on `main`/`develop`; work on a synced `feature/*` branch)
 
-### 1.2 Rule Decision Tree
-Check each rule category systematically:
-
-**Backend/Secrets?**
-- YES → Check `cloud-functions/RULE.md` (decision framework: security, secrets, testability)
-- NO → Skip
-
-**Database changes?**
-- YES → Check `database/RULE.md` (migration patterns: idempotent, IF EXISTS, safe for fresh/existing DBs)
-- NO → Skip
-
-**File placement?**
-- Check `file-placement/RULE.md` → `architecture/RULE.md`
-- Determine location BEFORE creating files
-
-**Code structure?**
-- Check `architecture/RULE.md` (feature vs shared, layers, import direction, path aliases)
-
-**Security?**
-- Check `security/RULE.md` (auth, RLS, validation, secrets management)
-
-**Implementation details?**
-- Check `code-style/RULE.md` (naming, formatting, complexity: ≤10 cyclomatic, ≤15 cognitive, ≤100 lines)
+### 1.2 Rule check
+- [ ] Walk the conditional rule map in [`plan/references/rules-registry.md`](../plan/references/rules-registry.md) (SSOT) — check every category that applies (backend/secrets, database, file placement, code structure, security, code style)
 
 ### 1.3 Risk & Impact Assessment
 - [ ] Identify breaking changes
@@ -215,8 +196,8 @@ Identify **subjective** choices requiring user input.
 ### 3.1b Pattern & industry precedent (proactive — when applicable)
 
 - [ ] Run [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) (`scan` or `lite`) **without waiting for the user to ask** — follow [`references/rubric.md`](../pattern-review/references/rubric.md); **select aspects** relevant to this feature.
-- [ ] If material divergence from common industry practice: add **Pattern & precedent** to `DEVELOPMENT_PLAN.md` and post the **Pattern risk** alert in chat.
-- [ ] **STOP** at 🔴 DECISION POINT until the owner picks an approach (A/B/C) or waives non-standard design—same as other subjective architecture choices.
+- [ ] If material divergence from common industry practice: post the **Pattern risk** alert in chat. **Do not write into `DEVELOPMENT_PLAN.md`** — that file is `plan` SSOT; the plan § Pattern & precedent section is filled later by `plan` step 5 (`pattern-review` `plan-section` mode).
+- [ ] **STOP** at 🔴 DECISION POINT until the owner picks an approach (A/B/C) or waives non-standard design—same as other subjective architecture choices. Record the pick in this skill's requirements artifact for handoff.
 
 ### 3.2 Cloud Functions Planning (if backend needed)
 - [ ] Use decision framework (`cloud-functions/RULE.md`): security, secrets, testability
@@ -337,9 +318,9 @@ Verify the PLAN complies before implementation:
   - Architecture decisions
   - File structure plan
   - State management approach
-- Ask: "Does this implementation plan look correct? Should I proceed with implementation?"
+- Ask: "Does this plan look correct? Should I proceed to **`plan`** (engineering execution plan)?"
 - **WAIT** for explicit user approval ("yes", "proceed", "looks good", etc.)
-- **DO NOT START CODING** until user explicitly approves
+- **DO NOT START CODING** — the next step is `plan`, never implementation inside this skill
 - Document approval in implementation document
 
 ---
@@ -352,7 +333,7 @@ When Phases 1–4 are complete and the user approved the implementation plan:
 2. Satisfy required gates per [dev-cycle matrix](../router/references/dev-cycle-matrix.md): `pattern-review` when M/L; `review-dev-plan` when Complexity M/L; `validate` (plan-review) when warranted.
 3. Run **`.agents/skills/implement/SKILL.md`** for phase-by-phase execution — **do not implement product code in this skill**.
 
-**Next (execution chain):** `implement` → **`.agents/skills/validate/SKILL.md`** → user acceptance → **`.agents/skills/finish/SKILL.md`** (changelog/commit only in `finish`).
+**Next (execution chain):** `plan` → gates per dev-cycle matrix (`pattern-review`, `review-dev-plan`, `validate` plan-review as required) → `implement` → **`.agents/skills/validate/SKILL.md`** → user acceptance → **`.agents/skills/finish/SKILL.md`** (changelog/commit only in `finish`).
 
 Phases 5–7 below are **retired** — implementation, QA, and completion live in `implement` → `validate` → `finish`. Do not execute them here.
 

@@ -652,4 +652,4 @@ Common indicators for each level:
 | Browser-measured perf (CWVs) | `web-perf` plugin skill |
 | Commit / changelog | `finish` |
 
-**Next:** User picks option → **`implement`** or **`quick-piv`** → **`validate`** → **`finish`**.
+**Next:** User picks option → **`quick-piv`** (XS/S) or **`plan`** → **`implement`** (M/L; `implement` requires a `DEVELOPMENT_PLAN.md`) → **`validate`** → **`finish`**.

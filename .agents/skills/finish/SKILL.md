@@ -107,6 +107,7 @@ When skipping version/changelog: commit message uses `type: Subject` **without**
 - do not create new deep docs during finish unless user explicitly requests it
 - **Do NOT push in this command.** `finish` is local-only and ends at a successful commit.
 - **After a successful commit:** Tell the user the commit succeeded and offer **`.agents/skills/push/SKILL.md`** — do **not** invoke `push` in the same turn unless the user explicitly asks to push. Push requires its own confirmation (see `push` skill and `.cursor/rules/workflow/RULE.md`).
+- **Documented exceptions to "no push same turn":** (1) **Stash lane** (Option 3 above) — the user's explicit lane pick covers running `push` after the commit so the other thread can resume; (2) **`bundle-ship`** orchestration — that skill chains `finish` → `push` in one invocation by design. No other path pushes from `finish`.
 
 ## Ready to commit? (required)
 

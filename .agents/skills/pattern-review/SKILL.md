@@ -98,8 +98,23 @@ Pattern review: <skipped — reason | aligned | non-standard — see below>
 If non-standard, include **Pattern risk** block, then:
 
 ```markdown
-Next: owner pick A/B/C or waive → then plan / implementation
+Next: owner pick A/B/C or waive → then plan (update § Pattern & precedent)
 ```
+
+**Successor rule:** when the verdict is non-standard, the only valid successor is **`plan`** (record the owner's pick/waiver in the plan) — never jump to `implement` before the pick is recorded.
+
+---
+
+## Boundaries
+
+| Not `pattern-review` | Use instead |
+|----------------------|-------------|
+| Repo-rule compliance of plan/impl | `validate` |
+| Six-lens qualitative plan critique (industry lens included) | `review-dev-plan` — do not run a duplicate standalone `scan` in the same session |
+| Writing the rest of the plan | `plan` |
+| Component quality score | `review` |
+
+**Mode posture:** `scan` / `lite` are read-only; only `plan-section` (invoked by `plan` step 5) writes the plan's § Pattern & precedent.
 
 ---
 

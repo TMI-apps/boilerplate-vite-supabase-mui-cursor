@@ -186,22 +186,20 @@ Stop and ask:
 
 Do not implement until the user explicitly chooses.
 
-### Phase 7: Execute Chosen Option
+### Phase 7: Hand off Chosen Option
 
-Implementation rules:
-- Keep changes minimal and local
-- Reuse existing patterns and components
+**This skill does not implement.** Its deliverable is the challenge report + the user's option pick. Hand the chosen option to a delivery skill:
+
+- XS/S scope → invoke [`quick-piv`](../quick-piv/SKILL.md) with the challenge report as the quick-plan input
+- M/L scope → run [`plan`](../plan/SKILL.md) first, then `implement`
+
+Carry these constraints into the handoff:
+- Keep changes minimal and local; reuse existing patterns and components
 - Avoid new abstraction unless clearly justified
 - Preserve required constraints from input
-- Prefer guard clauses over deep nesting when it improves clarity
-- Prefer fewer, clearer transformations when behavior stays equivalent
+- Prefer guard clauses over deep nesting; fewer, clearer transformations when behavior stays equivalent
 
-After changes:
-- Run relevant project checks (lint/type/build/tests as applicable)
-- Report what changed and what was intentionally not changed
-- Request user validation of behavior
-
-Never claim success without user testing confirmation.
+Commits happen only in `finish`. Never claim success without user testing confirmation.
 
 ---
 
@@ -275,4 +273,4 @@ Which option should I implement?
 - If simplification conflicts with security/compliance requirements, keep the requirement and simplify around it.
 - By default, challenge a feature through both Flow Mode and Code Mode in the same pass.
 
-**Next:** User picks option → **`quick-piv`** or **`implement`** for approved simplification; repo-wide patterns → **`consolidate`**; hotspot polish → **`optimize2`**.
+**Next:** User picks option → **`quick-piv`** (XS/S) or **`plan`** → **`implement`** (M/L; `implement` requires a `DEVELOPMENT_PLAN.md`); repo-wide patterns → **`consolidate`**; hotspot polish → **`optimize2`**; commit → **`finish`**.

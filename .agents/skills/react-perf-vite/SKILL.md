@@ -54,6 +54,8 @@ On-demand performance playbook for **this repo's stack**. Rules live in `rules/`
 3. Apply with repo conventions (`@/` imports, feature layers, TanStack keys).
 4. If the fix needs structural redesign, hand off to `optimize2`.
 
+**Next:** Structural redesign needed → **`optimize2`**; symptom is CWV/Lighthouse-shaped and unmeasured → **`web-perf`** first; otherwise apply the rule inline and continue the active delivery skill.
+
 ## Upstream
 
 Adapted from [Vercel React Best Practices](https://github.com/vercel-labs/agent-skills) (MIT). Next.js / RSC / SWR rules were dropped; Vite + TanStack + Workers mappings added. Re-vendor upstream only into `documentation/vendor/` if refreshing — never restore a nested `AGENTS.md` under `.agents/skills/`.

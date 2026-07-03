@@ -65,7 +65,7 @@ Err toward inclusion in all modes — `applicable: false` is cheap.
 
 ### Branch verification (impl-full / gate)
 
-Verify not on `main` or `develop`. If on either, **stop** — instruct `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` (see `.cursor/rules/workflow/RULE.md` § Branch Strategy).
+Run the branch gate per `.cursor/rules/workflow/RULE.md` § Branch Strategy (SSOT — stop on `main`/`develop`; work on a synced `feature/*` branch).
 
 ---
 
@@ -206,26 +206,15 @@ Spawn one subagent per applicable rule. Registry SSOT: [`.cursor/rules/INDEX.md`
 
 ---
 
-## Not in scope (use other skills)
-
-| Topic | Use instead |
-|-------|-------------|
-| Industry standards / best practice vs plans and proposals (agent-chosen aspects) | [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) |
-| Multi-lens qualitative plan critique (rebel, scale, industry precedent, …) | [`.agents/skills/review-dev-plan/SKILL.md`](../review-dev-plan/SKILL.md) |
-| Single React component rubric | [`.agents/skills/review/SKILL.md`](../review/SKILL.md) |
-| Commit / changelog / push | [`.agents/skills/finish/SKILL.md`](../finish/SKILL.md) / `push` |
-
-For Complexity **M/L** plans, run **`review-dev-plan`** before implementation when the plan requires it; **`validate`** does not replace industry-precedent review.
-
----
-
-## Boundaries
+## Boundaries (not `validate` — use other skills)
 
 | Not `validate` | Use instead |
 |----------------|-------------|
-| Industry / product precedent | `pattern-review` |
-| Six-lens qualitative plan critique | `review-dev-plan` |
-| Single React component rubric | `review` |
-| Commit / changelog | `finish` |
-| Push only | `push` |
-| Semantic wrong-layer repair (after tooling green) | `consolidate` § Semantic placement |
+| Industry standards / best practice vs plans and proposals (agent-chosen aspects) | [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) |
+| Multi-lens qualitative plan critique (rebel, scale, industry precedent, …) | [`.agents/skills/review-dev-plan/SKILL.md`](../review-dev-plan/SKILL.md) |
+| Single React component rubric | [`.agents/skills/review/SKILL.md`](../review/SKILL.md) |
+| Commit / changelog | [`.agents/skills/finish/SKILL.md`](../finish/SKILL.md) |
+| Push only | [`.agents/skills/push/SKILL.md`](../push/SKILL.md) |
+| Semantic wrong-layer repair (after tooling green) | [`.agents/skills/consolidate/SKILL.md`](../consolidate/SKILL.md) § Semantic placement |
+
+For Complexity **M/L** plans, run **`review-dev-plan`** before implementation when the plan requires it; **`validate`** does not replace industry-precedent review.

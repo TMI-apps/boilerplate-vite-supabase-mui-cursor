@@ -115,6 +115,8 @@ If the emerging direction would diverge from industry standards, framework best 
 | Concrete behavior, APIs, data, acceptance examples | Follow **Refine** in `.agents/skills/plan/SKILL.md` (questions and tables there — stop before **Investigate** until gates pass); frame questions around the user's intended app usage when product meaning is unclear |
 | You lack repo grounding while clarifying | `.agents/skills/prime/SKILL.md` **before or mixed with** clarification |
 
+**Both gates fail (vision AND acceptance unclear):** deterministic order — `grill-me` first (product/vision), then `plan` § Refine (acceptance/APIs). One primary per turn; never run both in the same pass.
+
 After gates 1–2 pass, **re-run** the flowchart from the top (especially if the user changed scope).
 
 ### Matrix (compact)
@@ -181,7 +183,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 |-----------|--------|
 | Full feature request with mandatory decision stops and phased spec | `.agents/skills/feature/SKILL.md` |
 | Scientific debugging; hypotheses; user supplies runtime evidence | `.agents/skills/debug/SKILL.md` |
-| Pre-registered hypothesis loop; naive fixes failed or user invokes hypothesis mode | `.agents/skills/hypothesis/SKILL.md` |
+| Pre-registered hypothesis loop — **explicit invocation only** (user says "hypothesis" or repeated failed fixes in `debug`) | `.agents/skills/hypothesis/SKILL.md` (overlay of `debug`, never default incident entry) |
 | Ultra-compressed communication (`/caveman`, "be brief", "less tokens") | `.agents/skills/caveman/SKILL.md` (overlay — not a workflow step) |
 | Stress-test product/design when gates 1–2 already pass (not gate-1 ambiguity) | `.agents/skills/grill-me/SKILL.md` |
 | Simplify **one** concrete feature (flows + code), reduce steps/complexity | `.agents/skills/challenge/SKILL.md` |
@@ -255,6 +257,7 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 
 - **`validate` (gate mode):** Routine pre-merge gate on current scope (rule subagents + scripts).
 - **`consolidate` § Semantic placement mode:** After linters pass — **semantic** placement, duplication, cross-feature boundaries, refactoring impact.
+- **Tiebreak ("audit the codebase"):** routine pre-merge / post-refactor confidence → `validate` (gate); cross-feature duplication **discovery** → `consolidate` (default redundancy audit).
 
 ### `consolidate` vs `optimize2`
 
@@ -273,14 +276,29 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 
 ### `debug` vs `hypothesis`
 
-- **`debug`:** Default for runtime incidents — event chains, user-supplied evidence, iterative narrowing (`.agents/skills/debug/SKILL.md`).
-- **`hypothesis`:** Pre-registered root-cause experiment when naive fixes already failed or the user invokes hypothesis mode (`.agents/skills/hypothesis/SKILL.md`).
-- **Tiebreak:** User asks for hypothesis / repeated failed fixes → `hypothesis`; otherwise → `debug`. Cross-link both skills; do not run both as equal primaries in one pass.
+- **`debug`:** Default — **always** the entry skill for runtime incidents: event chains, user-supplied evidence, iterative narrowing (`.agents/skills/debug/SKILL.md`).
+- **`hypothesis`:** Explicit-invoke **overlay** on an active `debug` incident — pre-registered experiment blocks when naive fixes already failed or the user invokes hypothesis mode (`.agents/skills/hypothesis/SKILL.md`). Never the default incident entry.
+- **Tiebreak:** All incidents → `debug`; layer `hypothesis` on top only on explicit user request or after repeated failed fixes. Do not run both as equal primaries in one pass.
 
 ### `debug` vs `learn`
 
 - **`debug`:** Active incident; hypotheses; runtime evidence; possibly temporary instrumentation.
 - **`learn`:** After resolution or struggle — **capture durable** rule/skill/debug-pattern updates.
+
+### `feature` vs `grill-me`
+
+- **`grill-me`:** Gates 1–2 fail on a new-feature request → clarify product ambiguity in chat first. `/feature` invoked early does **not** skip this: run `grill-me` (or confirm gates pass), then `feature`.
+- **`feature`:** Gates 1–2 pass (or resolved via `grill-me`) and the work needs the full requirements process with 🔴 decision stops.
+
+### `rule-quality` vs `validate`
+
+- **`rule-quality`:** Grade or rewrite the **text quality** of an attached rule/command file.
+- **`validate`:** Audit a plan or implementation's **compliance with** `.cursor/rules/`. "Is our architecture rule good?" → `rule-quality`; "does this code follow the architecture rule?" → `validate`.
+
+### `improve-skill-library` vs `create-skill` (user)
+
+- **`create-skill`** (`~/.cursor/skills-cursor/`): author or refactor **one** skill file's structure.
+- **`improve-skill-library`:** corpus-wide audit (overlap, SSOT, conflicts, handoffs) across all `.agents/skills/`.
 
 ### `rule-quality` vs `learn`
 
@@ -326,6 +344,8 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 
 - **`supabase`:** Product workflows, Auth, RLS correctness, CLI/MCP, migrations narrative.
 - **`supabase-postgres-best-practices`:** **Performance** tuning, query plans, indexing, pooling — narrow DB optimization.
+- **vs `debug`:** Runtime Supabase incident (auth/RLS error in the app) → `debug` first, citing the plugin as reference; greenfield setup/migrations → `supabase` plugin.
+- **vs `optimize2`:** Query-level slowness (EXPLAIN, indexing, pooling) → `supabase-postgres-best-practices`; app-layer hotspot → `optimize2`.
 
 ### Cloudflare: `cloudflare` vs `wrangler` vs `workers-best-practices`
 
@@ -426,7 +446,8 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
   - If `in-progress` exists: ask continue that task vs first `to-do` by list order.
   - Else select first `to-do` by list order.
   - Apply pick up for the chosen task (skip if already `in-progress`).
-  - Then `prime` (if needed) → `grill-me` unless `title` + `description` satisfy gates 1–2 → `quick-piv` or `plan` / `feature` per gate 3.
+  - **Vision-shaped tasks** (e.g. "Define app vision"): route to `start` § App vision first — `grill-me` only after `DOC_APP_VISION.md` is ACTIVE or the user explicitly defers.
+  - Then `prime` (if needed) → `grill-me` unless `title` + `description` satisfy **both** gates 1 and 2 (a complete-looking description with unbounded scope still fails gate 2) → `quick-piv` or `plan` / `feature` per gate 3.
 - If no actionable `to-do` or `in-progress`: say so; optional `prime` for repo context — do **not** invent tasks and do **not** default to `finish`.
 
 ---
@@ -468,6 +489,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 ### Router references (not skills)
 
 - `.agents/skills/router/references/dev-cycle-matrix.md` — dev-cycle happy path and M/L gates (SSOT)
+- `.agents/skills/router/references/subagent-config.md` — shared `SUBAGENT_MODEL` for fan-out skills (SSOT)
 
 ### User Cursor bundle (`~/.cursor/skills-cursor/`)
 

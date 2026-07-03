@@ -13,7 +13,7 @@ Use when pattern review finds **material** divergence from common industry pract
 |-----------------------|-------------|-----------------|-------------------|
 | … | … | … | … |
 
-**Verdict:** `Aligns with precedent` | `Acceptable product-specific` | `Non-standard — waiver recommended`
+**Verdict:** one of the labels in [`rubric.md`](rubric.md) § Verdict labels (SSOT)
 
 **Options (if non-standard):**
 - **A** — Align with common practice: …

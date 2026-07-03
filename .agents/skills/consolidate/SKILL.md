@@ -201,7 +201,7 @@ Before recommending consolidation, ask:
 
 If usage intent is ambiguous, stop and ask the user a question about how the app will be used so the answer determines whether to consolidate, standardize, or intentionally keep duplication.
 
-If a recommendation would preserve or introduce a standards diversion, ask whether the diversion is intentional or whether to align the plan with best practices.
+If a recommendation would preserve or introduce a standards diversion, run the standards-diversion check (wording SSOT: `router` Gate 2 / `plan` § Conflict & compliance): ask whether the diversion is intentional or whether to align with best practices.
 
 ---
 
@@ -398,4 +398,4 @@ This skill is independently complete but works best in concert with sibling skil
 - This skill does not simplify individual feature workflows (use `challenge`).
 - Never claim success without user testing confirmation.
 
-**Next:** Approved refactors → **`implement`** or **`quick-piv`** → **`validate`** → **`finish`**; hotspot follow-up → **`optimize2`**.
+**Next:** Approved refactors → **`quick-piv`** (XS/S) or **`plan`** → **`implement`** (M/L; `implement` requires a `DEVELOPMENT_PLAN.md`) → **`validate`** → **`finish`**; hotspot follow-up → **`optimize2`**.

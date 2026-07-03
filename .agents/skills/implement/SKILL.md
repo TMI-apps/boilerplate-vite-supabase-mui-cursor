@@ -12,7 +12,7 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 **Critical:** Follow the plan. Follow repo rules during implementation. No shortcuts.
 
-**Do NOT update the changelog.** Changelog updates are done in the finish command, not during implementation.
+**Do NOT update the changelog** — changelog lives only in [`finish`](../finish/SKILL.md) (SSOT).
 
 **Related:** Create or refresh plans with `.agents/skills/plan/SKILL.md`. For small tasks in one pass, `.agents/skills/quick-piv/SKILL.md`. Before starting (when plan says so), run `.agents/skills/review-dev-plan/SKILL.md`. After phases, use `.agents/skills/validate/SKILL.md` for a rules-and-tooling review before finish. Industry precedent: `.agents/skills/pattern-review/SKILL.md`. For session context, `.agents/skills/prime/SKILL.md`. For commits and changelog, `.agents/skills/finish/SKILL.md`.
 
@@ -32,8 +32,7 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 ### 0. Branch gate
 
-- [ ] Verify current git branch (`git branch --show-current`). If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
-- [ ] Never commit directly to `main` or `develop` during implementation.
+- [ ] Run the branch gate per `.cursor/rules/workflow/RULE.md` § Branch Strategy (SSOT — stop on `main`/`develop`; work on a synced `feature/*` branch; never commit directly to `main` or `develop`).
 
 ### 1. Load plan
 

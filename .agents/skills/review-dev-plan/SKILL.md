@@ -10,13 +10,9 @@ disable-model-invocation: false
 
 ## Config
 
-```text
-SUBAGENT_MODEL=composer-2.5
-```
+`SUBAGENT_MODEL` per [`router/references/subagent-config.md`](../router/references/subagent-config.md) (shared SSOT). Every **Task** subagent uses that model slug.
 
-Every **Task** subagent: `model` = slug above (must be valid for your Cursor build; edit the value only).
-
-> **Feedback only** — do not change code, rules, or the plan unless the user asks afterward. Reply with a **short synthesis** in chat.
+> **Feedback only** — do not change code, rules, or the plan, **except** the plan's **Plan review** row and **Decisions made** rows when the user accepts the critique (see § After). Reply with a **short synthesis** in chat.
 
 ## Which plan?
 
@@ -53,7 +49,7 @@ Synthesize: agreements, **must-fix vs nice-to-have**, items **≥2 agents** flag
 
 Update the plan’s **Plan review** row to `Done <date>` when the user accepts the critique (or record waiver in **Decisions made**).
 
-**Next:** **`.agents/skills/implement/SKILL.md`** when **Plan review** is `Done` and gates pass — or back to **`plan`** if the plan must change materially.
+**Next:** Complexity **M/L** → run **`validate`** (plan-review) before **`.agents/skills/implement/SKILL.md`** (per [dev-cycle matrix](../router/references/dev-cycle-matrix.md)). Otherwise → **`implement`** when **Plan review** is `Done` and gates pass — or back to **`plan`** if the plan must change materially.
 
 ## Boundaries
 

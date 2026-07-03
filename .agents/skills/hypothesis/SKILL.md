@@ -1,9 +1,11 @@
 ---
-name: hypothesis-debugging
-description: Debug by pre-registered hypothesis instead of guess-and-patch. Before touching code, the agent states what it believes the root cause is, predicts what a successful fix proves, and — critically — pre-registers what a FAILED fix would teach and how that narrows the space of remaining causes. Use this whenever debugging a bug, error, test failure, or "why isn't this working" issue, OR whenever the user explicitly invokes hypothesis mode (e.g. "use the hypothesis skill", "debug this with hypotheses", "hypothesis debugging"). Especially use it for non-obvious bugs where the cause is unclear, intermittent failures, or bugs that have already survived one or more naive fix attempts. The goal is to corner the cause across iterations, not to fix in one shot.
+name: hypothesis
+description: Explicit-invoke overlay on an active debug incident — pre-registered hypothesis experiments instead of guess-and-patch. Before touching code, the agent states the believed root cause, predicts what a successful fix proves, and — critically — pre-registers what a FAILED fix would teach and how that narrows the space of remaining causes. Use ONLY when the user explicitly invokes hypothesis mode (e.g. "use the hypothesis skill", "debug this with hypotheses") or when naive fixes inside `debug` have already failed one or more times. Default incident entry is `debug`, not this skill. The goal is to corner the cause across iterations, not to fix in one shot.
 ---
 
-# Hypothesis Debugging
+# Hypothesis Debugging (overlay of `debug`)
+
+**Not a standalone incident skill.** Runtime incidents always enter through [`debug`](../debug/SKILL.md); layer this experiment procedure on top only on explicit user request or after repeated failed fixes.
 
 The aim is not to fix the bug this turn. The aim is to shrink the set of possible causes every turn, so the bug has nowhere left to hide. A fix that lands is a bonus. A fix that fails is data — but only if you said in advance what its failure would mean.
 
@@ -87,3 +89,5 @@ For a one-line obvious typo or a clear stack trace pointing at a single line, ju
 | Persist reusable bug class | `.agents/skills/debug/patterns.md` via `finish` or `learn` |
 
 **Router tiebreak:** `.agents/skills/router/SKILL.md` § `debug` vs `hypothesis`.
+
+**Next:** User confirms resolved → optional **`learn`** for durable lessons and **`finish`** to commit (reusable symptom→fix pattern goes to `debug/patterns.md` via `finish`/`learn`). Still open → next iteration block, or back to plain `debug` narrowing.
