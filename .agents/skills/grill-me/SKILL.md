@@ -54,7 +54,20 @@ The user keeps the app aligned with the vision: behavior, product feel, directio
 
 ## Question style
 
-Ask one at a time. Use a question tool call when available so the user can click options; prefer multiple-choice when branches are clear. Every multiple-choice question includes two omnipresent options:
+Ask one at a time. Use a question tool call when available so the user can click options; prefer multiple-choice when branches are clear.
+
+**Options must be Pareto-optimal.** Never include an option that is worse than another option on every axis the user cares about — if one choice dominates, don't ask; state it and move on. Each option must be the winner on a distinct, valuable dimension, e.g.:
+
+- Best performance (runtime speed)
+- Best code consistency (matches repo patterns)
+- Least code / fastest to implement
+- Most reusable or extensible (future features cheap)
+- Best UX
+- Best separation / easiest to cut later
+
+Label each option with the dimension it wins on, so the user is choosing between real tradeoffs, not spotting the obvious answer.
+
+Every multiple-choice question includes two omnipresent options:
 
 - **"Explain the UX impact first"** — research the flow/code, explain what each branch means for users, then re-ask.
 - **"Dig deeper in the codebase"** — explore architecture, adjacent features, and industry-standard patterns to propose the most elegant boundary; summarize, then re-ask.
