@@ -47,3 +47,7 @@ Example -- destructive op:
 > ```
 >
 > Caveman resume. Verify backup exist first.
+
+## Boundaries
+
+Communication **overlay only** — not a workflow step. It never replaces `plan`, `implement`, `debug`, or any other skill; it only compresses how their output is written.

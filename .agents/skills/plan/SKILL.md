@@ -12,7 +12,7 @@ Create a development plan for a feature or job. Research how best to implement i
 
 **Critical:** Conflict and compliance is researched first; steps in each phase must reflect that (file placements, architecture, patterns). The plan documents *how* to implement according to repo rules.
 
-**Do NOT update the changelog.** Changelog updates are done in the finish command, not during planning.
+**Do NOT update the changelog** — changelog lives only in [`finish`](../finish/SKILL.md) (SSOT).
 
 **Templates:** [`references/implementation-plan-template.md`](references/implementation-plan-template.md), [`references/complexity-rubric.md`](references/complexity-rubric.md).
 
@@ -24,13 +24,14 @@ Create a development plan for a feature or job. Research how best to implement i
 
 ### 0. Branch gate (when plan will lead to code)
 
-- [ ] Verify current git branch. If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
+- [ ] Run the branch gate per `.cursor/rules/workflow/RULE.md` § Branch Strategy (SSOT — stop on `main`/`develop`; work on a synced `feature/*` branch).
 - [ ] Planning may run on any branch; **do not** start file creation on `main` or `develop`.
 
 ### 1. Input
 
 - User describes what they want (e.g. add a capability, migrate X to Y).
 - Optional: job name, reference to spec or ticket.
+- Optional: approved requirements/spec artifact from `feature` (Phase 4 handoff) and/or resolved scope summary from `grill-me` — treat these as settled decisions; do not re-litigate them in § Refine.
 
 ### 2. Refine (if needed)
 
@@ -106,8 +107,14 @@ Set **Plan review** in Summary per [dev-cycle matrix](../router/references/dev-c
 ```markdown
 Plan: documentation/jobs/temp_job_<name>/DEVELOPMENT_PLAN.md
 Complexity: <XS|S|M|L> — <one line>
-Next: <review-dev-plan | implement | blocked> — <one-line gate>
+Next: <review-dev-plan | validate (plan-review) | implement | blocked> — <one-line gate>
 ```
+
+## Next
+
+- **Complexity M/L:** `review-dev-plan` → `validate` (plan-review) → `implement` (order per [dev-cycle matrix](../router/references/dev-cycle-matrix.md)).
+- **Complexity XS/S:** `implement` directly (or `quick-piv` if no plan file was warranted).
+- **Blocked:** resolve open questions with the user; re-run § Refine.
 
 ---
 

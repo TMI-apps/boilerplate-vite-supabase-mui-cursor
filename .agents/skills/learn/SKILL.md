@@ -97,6 +97,7 @@ Confirm ownership via `.cursor/rules/INDEX.md`.
 - **Imperatives:** Direct verbs (“Always…”, “Never…”).
 - **Examples:** Short `// BAD` / `// GOOD` only where this repo already uses code in that file (e.g. `debug.md` patterns). For `RULE.md` edits, prefer concise bullets; follow `.agents/skills/rule-quality/SKILL.md` when tightening prose.
 - **Minimal diff:** Small subsection or bullet group; merging duplicates in the same section is fine. Large rewrites need **explicit user confirmation**.
+- **Protected paths:** `.cursor/rules/**` and `.agents/skills/**` are protected (`.cursor/rules/workflow/RULE.md` § Protected Files) — present the proposed edit (including additive bullets) and get explicit user approval **before** applying any mutation there.
 - **Deletions & narrowing (from Step 1b):** When the Reverse Audit flagged misleading or outdated guidance, present each proposed removal or rewrite to the user **before** applying. Never delete or substantially rewrite rule content without explicit user approval.
 
 ### 5. Report
@@ -106,6 +107,18 @@ Confirm ownership via `.cursor/rules/INDEX.md`.
 - **Removals:** List any rules proposed for deletion or narrowing, with the user's decision (applied / deferred / rejected). If none, omit this line.
 - **Omissions:** Briefly list anything explicitly *not* saved and why.
 - **Stop.** Wait for next instructions. Do not print the whole file or long code blocks.
+
+---
+
+## Boundaries
+
+| Not `learn` | Use instead |
+|-------------|-------------|
+| Grade or rewrite one rule/command file | `rule-quality` |
+| Corpus-wide skill audit (overlap, SSOT, conflicts) | `improve-skill-library` |
+| Active incident investigation | `debug` (learn only after user confirms resolved) |
+| Commit the lesson / archive tasks | `finish` |
+| Score a component | `review` |
 
 ---
 

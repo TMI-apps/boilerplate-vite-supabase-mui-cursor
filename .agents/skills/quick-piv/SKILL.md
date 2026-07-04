@@ -26,7 +26,7 @@ Lightweight Plan → Implement → Validate in one workflow. **Primary outcome:*
 
 ## Branch gate
 
-- [ ] Before any code edit, verify current git branch. If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
+- [ ] Before any code edit, run the branch gate per `.cursor/rules/workflow/RULE.md` § Branch Strategy (SSOT — stop on `main`/`develop`; work on a synced `feature/*` branch).
 
 ## Hard stops (M/L and gates)
 
@@ -73,7 +73,7 @@ If unclear, **ask** which branch applies.
 1. If the request is vague, or ambiguity appears during quick investigation, stop and ask 1–2 clarifying questions about the user's vision for how the app will be used. Do not choose between plausible interpretations silently.
 2. Quick investigation: search codebase; skim `.cursor/rules/INDEX.md` for applicable rules; use `documentation/DOC_TANSTACK_QUERY.md` if server state / queries are involved.
 3. Sanity-check file placement against `.cursor/rules/file-placement/RULE.md` and `projectStructure.config.cjs`.
-4. Check whether the quick plan would diverge from industry standards, framework best practices, or established repo conventions. If yes, ask whether the diversion is intentional or whether to align with best practices before implementing.
+4. Run the standards-diversion check (wording SSOT: `router` Gate 2 / `plan` § Conflict & compliance): if the quick plan would diverge from industry standards or repo conventions, ask whether the diversion is intentional before implementing.
 5. **Branch B:** Output the quick plan in chat (vital). **Branch A:** Optionally extend the plan document.
 6. Proceed to implementation (no separate approval wait unless the user stops you).
 
@@ -91,16 +91,11 @@ If unclear, **ask** which branch applies.
 
 ## Validate (quick pass — not the `validate` skill)
 
-After implementation, run **inline tooling** only (subset of `.agents/skills/validate/SKILL.md` § Tooling pass):
+After implementation, run **inline tooling** only — the commands of `.agents/skills/validate/SKILL.md` § Tooling pass **gate list minus tests** (SSOT there; currently `validate:structure`, `lint`, `type-check`, `arch:check`):
 
-1. `pnpm validate:structure` — report failures.
-2. `pnpm lint` — report failures.
-3. `pnpm type-check` — report failures.
-4. `pnpm arch:check` — report failures (dependency-cruiser; defined in `package.json`).
-5. **Report:** Brief summary: “✅ All checks pass” or list findings with severity (blocker / warning / suggestion).
-6. **If failures:** Ask: “Fix these? (all / specific / skip)” — only fix after the user chooses (same spirit as `.agents/skills/validate/SKILL.md`, compressed).
-
-**Next:** Offer full **`.agents/skills/validate/SKILL.md`** before merge/finish when rule fan-out or plan-compliance is needed. Offer **`.agents/skills/finish/SKILL.md`** only when the user wants to commit.
+1. Run the subset above; report failures.
+2. **Report:** Brief summary: “✅ All checks pass” or list findings with severity (blocker / warning / suggestion).
+3. **If failures:** Ask: “Fix these? (all / specific / skip)” — only fix after the user chooses (same spirit as `.agents/skills/validate/SKILL.md`, compressed).
 
 ---
 
@@ -130,4 +125,4 @@ See [`.cursor/rules/INDEX.md`](../../../.cursor/rules/INDEX.md) and [`.agents/sk
 | 2 | Implement (extension or next phase) | Implement |
 | 3 | Quick validate (inline tooling) | Quick validate (inline tooling) |
 
-**Next:** Full **`validate`** when needed → user sign-off → **`finish`** when user wants to commit.
+**Next:** Offer full **`.agents/skills/validate/SKILL.md`** before merge/finish when rule fan-out or plan-compliance is needed → user sign-off → offer **`.agents/skills/finish/SKILL.md`** only when the user wants to commit.

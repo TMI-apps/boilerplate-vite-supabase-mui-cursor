@@ -105,6 +105,14 @@ Output is JSON: `records[].fields` keyed by `fld…`.
 
 ---
 
+## Boundaries
+
+| Not `airtable-inspect` | Use instead |
+|------------------------|-------------|
+| First-time env/Airtable onboarding | `start` (task #4) |
+| Runtime Airtable bug in the app | `debug` |
+| Changing Airtable service code | `quick-piv` / `plan` |
+
 ## Related
 
 - `README.md` — env vars and Airtable scripts (`pnpm airtable:meta-dump`, `pnpm airtable:sample`)

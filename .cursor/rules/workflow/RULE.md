@@ -188,9 +188,9 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 **Preconditions:**
 - `main` is a strict ancestor of `develop` (fast-forward possible).
 - `develop` is ahead of `main` (something to promote).
-- Latest commit on `develop` has green combined status (`test` CI).
+- Latest commit on `develop` has a completed `test` GitHub Actions check-run with conclusion `success` (wait for develop push CI after merge before promoting).
 
-**Agent UX:** When the user says "promote to production", run `gh workflow run promote-to-production.yml` and watch the run (`gh run watch`).
+**Agent UX:** When the user says "promote to production", run `gh workflow run promote-to-production.yml` and watch the run (`gh run watch`). Ensure develop push CI has finished first (`gh run list --branch develop --limit 1`).
 
 **Why no PAT or bypass actor is needed:** `main`'s ruleset only enforces `deletion` + `non_fast_forward`. Those rules block force-pushes and deletion but **allow** an ordinary fast-forward push, so the workflow's built-in `GITHUB_TOKEN` (with `contents: write`) can promote. There is **no** PR-required or status-check rule on `main` — daily integration and CI happen on `develop`, and the workflow re-checks `develop`'s tip is green before pushing. This keeps fork onboarding zero-config: no PAT, no secret, no bypass list entry.
 
@@ -205,6 +205,8 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 - `403` / `Changes must be made through a pull request` — `main`'s ruleset has a `pull_request` or `required_status_checks` rule that should not be there; reduce it to `deletion` + `non_fast_forward`.
 - `main is not an ancestor of develop` — someone merged to `main` outside this workflow; do not squash-merge or back-merge; escalate.
 - `develop and main are already at the same commit` — nothing to promote.
+- `test check on develop tip did not succeed (conclusion: missing)` — develop push CI still running or failed; wait for green CI on the develop tip, then retry.
+- Promote gate used legacy `/commits/{sha}/status` (combined status stays `pending` for Actions-only CI) — workflow must gate on `/commits/{sha}/check-runs` for the `test` job; verify with `gh api repos/OWNER/REPO/commits/$(git rev-parse origin/develop)/check-runs --jq '[.check_runs[] | select(.name=="test")] | .[0] | {status, conclusion}'`.
 
 **One-time fork setup:** After forking, create `develop` from `main` (`git push origin main:develop`) and configure `develop` + `main` rulesets per onboarding (`start` skill).
 

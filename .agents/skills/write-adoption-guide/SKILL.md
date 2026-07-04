@@ -160,6 +160,16 @@ Then in the target project’s `SKILL.md`:
 
 ---
 
+## Boundaries
+
+| Not `write-adoption-guide` | Use instead |
+|----------------------------|-------------|
+| Decide where a lesson lives in **this** repo | `learn` |
+| Session handoff / status summary | chat, not a guide |
+| Author the pattern itself | `plan` → `implement` first; guide comes after |
+
+---
+
 ## Related
 
 - Template: [`references/adoption-guide-template.md`](references/adoption-guide-template.md)

@@ -79,4 +79,4 @@ Capture the agent’s chosen aspects — not a fixed form. Minimum:
 - **Findings** (short: align / diverge / risk per aspect)
 - **Verdict** + **Options A/B/C** if non-standard
 
-See [`../plan/references/implementation-plan-template.md`](../../plan/references/implementation-plan-template.md) § Pattern & precedent.
+See [`../../plan/references/implementation-plan-template.md`](../../plan/references/implementation-plan-template.md) § Pattern & precedent.

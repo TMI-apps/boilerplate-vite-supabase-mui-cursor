@@ -40,7 +40,7 @@ Required when Complexity is **M** or **L**; recommended for **S** when the plan 
 | **Precedents** | 1–3 familiar products, apps, or patterns this resembles |
 | **Aspects reviewed** | Bullets: dimensions the agent actually compared (from rubric pool; add others if needed) |
 | **Findings** | Short per aspect: aligns / diverges / risk |
-| **Verdict** | `Aligns with precedent` / `Acceptable product-specific` / `Non-standard — waiver recommended` |
+| **Verdict** | One label from [`pattern-review/references/rubric.md`](../../pattern-review/references/rubric.md) § Verdict labels (SSOT) |
 | **If non-standard: options** | A / B / C one line each |
 
 If pattern review was skipped (XS, no new behavioral contract), one line: **Pattern review:** skipped — <reason>.

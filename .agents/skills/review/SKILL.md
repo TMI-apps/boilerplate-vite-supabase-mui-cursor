@@ -147,7 +147,7 @@ At the end, sum the points and compute a percentage.
 
 **F1. File structure & component size (0–5)**
 - File is not excessively large; complex logic is split into smaller components or hooks
-- Follows project structure conventions (see `.cursor/rules/architecture/RULE.md` and `documentation/PROJECT-STRUCTURE-VALIDATION.md` for SSOT)
+- Follows project structure conventions (see `.cursor/rules/architecture/RULE.md`, `.cursor/rules/file-placement/RULE.md`, and `projectStructure.config.cjs` for SSOT)
 
 **F2. Readability & style (0–5)**
 - Code is easy to read: consistent formatting, clear variable names, minimal nesting
@@ -272,4 +272,16 @@ Before detailed scoring, quick-check these critical items:
 
 If any critical item fails, address before detailed review.
 
-**Next:** Fixes → **`quick-piv`** or **`implement`**; before merge → **`validate`**; ship → **`finish`**.
+---
+
+## Boundaries
+
+| Not `review` | Use instead |
+|--------------|-------------|
+| Repo-rule audit of a plan or diff | `validate` |
+| Multi-lens plan critique | `review-dev-plan` |
+| Structural/perf refactor of a hotspot | `optimize2` |
+| Grade a rule/command file | `rule-quality` |
+| Commit / changelog | `finish` |
+
+**Next:** Fixes → **`quick-piv`** (XS/S) or **`plan`** → **`implement`** (M/L; `implement` requires a `DEVELOPMENT_PLAN.md`); before merge → **`validate`**; ship → **`finish`**.
