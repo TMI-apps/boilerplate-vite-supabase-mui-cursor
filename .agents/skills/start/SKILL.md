@@ -185,9 +185,14 @@ pnpm lint
 pnpm format:check
 pnpm type-check
 pnpm validate:structure
+pnpm test:classify
 pnpm test:run
 pnpm build
 ```
+
+Optional during development: `pnpm test:staged` after `git add` to preview pre-commit test selection.
+
+**How to write tests:** `documentation/DOC_TESTING.md` (runners, colocation, naming, `tests/test-utils`).
 
 If any check fails:
 

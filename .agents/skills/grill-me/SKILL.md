@@ -2,114 +2,137 @@
 name: grill-me
 description: >-
   Interview the user until scope edges and interaction boundaries are aligned and the
-  decision tree is resolved. Focuses on where the feature stops, what it will NOT do or
-  touch, and how it meets other functionality. Chat-only alignment — authors no artifact.
-  Use to stress-test scope/boundaries before feature or plan, or when the user says "grill me".
+  decision tree is resolved. Grounds every edge question in what already exists in the
+  repo — existing loops, pipelines, and hook points — so ride-vs-new and boundary
+  choices are concrete, not abstract. Chat-only alignment — authors no artifact.
+  Use to stress-test scope/boundaries before feature or plan, or when the user says
+  "grill me".
 disable-model-invocation: false
 ---
 
 # Grill me
 
-Interview the user until there is shared understanding of the feature's **scope edges** and **interaction boundaries**, resolving the decision tree branch by branch.
+Interview the user until there is shared understanding of the feature's **scope edges** and **interaction boundaries**, resolving the decision tree branch by branch — with each boundary informed by **what the codebase already does**, when relevant neighbors exist.
 
-The goal is not to design the interior. It is to agree on **where the feature stops**, **what it will NOT do or touch**, and **how it meets the functionality around it**.
+Agree on **where the feature stops**, **what it will NOT do or touch**, and **how it meets the functionality around it**. Stay at the perimeter: interior design comes only where an edge choice already constrains it.
+
+**This is a scope stress-test grounded in the repo** — use codebase facts to sharpen boundary questions; keep product edge questions (perimeter, non-goals) central so loop narration supports alignment rather than replacing it.
 
 ## What this skill owns (SSOT)
 
-`grill-me` owns **reaching alignment in chat** — not recording it. It produces shared understanding, **authors no file**, then hands the resolved tree to **`feature`** (to document as requirements) or **`plan` § Refine** (to turn into `DEVELOPMENT_PLAN.md`). Do not template user stories, journeys, or spec files here — if you are, you've left `grill-me`.
+`grill-me` owns **reaching alignment in chat** — not recording it. It produces shared understanding, **authors no file**, then hands the resolved tree to **`feature`** (to document as requirements) or **`plan` § Refine** (to turn into `DEVELOPMENT_PLAN.md`). Stay in conversation: user stories, journeys, and spec files belong in `feature` / `plan`.
 
-**Skip gate:** trivial/XS change with no real edges → don't grill; route to `quick-piv`.
+**Skip gate:** trivial/XS change with no real edges → route to `quick-piv` instead of grilling.
+
+## Codebase grounding (mandatory, scoped)
+
+Ground edge questions in repo context so ride-vs-new and boundary choices are concrete. Search **only for neighbors implied by the agreed perimeter** (steps 1–3 below) — scope the search to named neighbors once perimeter is agreed.
+
+| Stage | Action |
+|---|---|
+| **Steps 1–3** (problem, perimeter, non-goals) | Ask product questions; read `documentation/DOC_APP_VISION.md` when helpful. Defer codebase search until step 4. |
+| **Step 4** (neighbor map) | For each neighbor from the agreed perimeter, search narrowly (its feature area + direct dependencies, ~3–5 files) and trace its flow end-to-end (UI → hook/service → API/edge → DB/storage) in one plain-language sentence. |
+| **Per edge answer / when stuck** | Re-check the answer still fits the traced loop; step back (problem, route, evidence, alternative) if unclear, then resume. |
+
+**Verify before you state.** Name loops and behaviors only after reading enough to be confident; when unsure, say `Uncertain — only read X so far` or `Not found in repo` and explore more or ask the user to confirm.
+
+For each neighbor, surface a **hook map** in plain language (user-visible names — save file/symbol detail for `plan`) before the boundary question:
+
+1. **Name** — what the user knows it as (auth, notifications, import…).
+2. **Loop** — trigger → path → outcome, or `Not found` / `Uncertain`.
+3. **Hook point** — where this rides, if it rides — mark **provisional** until that neighbor's edge decisions are agreed; use `TBD` when no loop exists.
+4. **Fork cost** — one line on what a new path would duplicate, or `N/A`.
+
+Use exploration to make boundary questions **evidence-based**. Keep mechanism choices with the agent; ask the user about scope, behavior, and edges. File-level paths, migrations, and API contracts belong in `plan` § Investigate — grill still learns what exists so alignment isn't abstract.
+
+Run `prime` once at step 4 if the repo is unfamiliar, then trace each neighbor — a single prime pass supplements, not replaces, per-neighbor grounding.
 
 ## Interrogation priority (edges before interior)
 
-Resolve in roughly this priority; follow dependencies where a branch opens another. Do not descend into interior behavior until the perimeter and edges are agreed.
+Resolve in this order; a branch may open another. Treat integration hooks as **edge work** in step 4 — surface where new work attaches while mapping neighbors, before interior questions.
 
 1. **Problem + success** — one sentence each.
 2. **Perimeter (in scope)** — smallest set of capabilities that counts as this feature.
-3. **Non-goals (out of scope)** — what it will **NOT do** and **NOT touch** (see below).
-4. **Neighbor map** — existing functionality this feature meets, by **user-visible name** (auth, settings, notifications, existing CRUD, admin, billing…), not by file. For each neighbor, resolve **ride vs new** (below).
-5. **Edge decisions** — one question per boundary: handoff, ownership, atomicity, precedence vs existing behavior.
+3. **Non-goals (out of scope)** — will NOT do / NOT touch (see below).
+4. **Neighbor + hook map** — per neighbor: name, traced loop (or not found), provisional hook point, then **ride vs new**.
+5. **Edge decisions** — one question per boundary: handoff, ownership, atomicity, precedence vs observed behavior.
 6. **Interior** — only where an edge choice already constrains it.
 
 ### Ride vs new (default-greenfield check)
 
-Agents tend to propose a new path for everything. Counter it: for each neighbor, ask whether this feature **rides the existing pipeline** (same flow/data path, extended) or runs a **parallel/new** one. **Burden of proof is on greenfield** — a new pipeline needs a stated reason the existing one can't absorb it (divergent product concept, incompatible constraints, unacceptable coupling), not just convenience.
+For each neighbor, trace the existing loop (or confirm absence), then ask whether this feature **rides** it (same flow/data path, extended) or forks a **parallel/new** one.
 
-This is not a "which file/mechanism" question (that stays with the agent). It is a **scope/boundary** question because riding vs forking changes consistency, divergence risk, and future coupling. Resolve it in chat when the answer moves any of those.
+**Burden of proof is on greenfield** — state a repo-grounded reason the existing path can't absorb the work (divergent concept, incompatible constraints, unacceptable coupling) before proposing a fork. When no loop exists, greenfield is justified — confirm the user wants a new path and capture what it must not duplicate later.
 
-When stuck or the route is unclear, step back first: state the problem and chosen route, recap recent attempts, and weigh a wider alternative against the current best option — then resume the questions.
+This is a **scope/boundary** question for the user (riding vs forking changes consistency, divergence risk, coupling). Keep file/mechanism choices with the agent; look at the repo first so the question is concrete.
 
 ## Non-goals are first-class
 
-The most valuable output of edge-alignment is naming what the feature will **NOT** do and **NOT** touch. Push on two lists:
+Name what the feature will **NOT** do and **NOT** touch — often the highest-value grill output. Push on two lists, grounding **will NOT touch** in verified behavior when you have it:
 
-- **Will NOT do** — capabilities a reasonable person might assume are included but are deferred or excluded (e.g. "no digest scheduling", "no partial import").
-- **Will NOT touch** — existing functionality that stays unchanged, boundaries we refuse to cross (e.g. "does not alter the existing success toast", "does not bypass RLS").
+- **Will NOT do** — capabilities a reasonable person might assume are included but are deferred or excluded.
+- **Will NOT touch** — existing functionality/behavior that stays unchanged.
 
-For each, confirm it's intentional and mark **deferred** ("not now") vs **excluded** ("not ever"). Pair boundaries as "In: X. Out: Y." so the edge is unambiguous. If there genuinely are none, state that and move on — don't invent filler.
+Mark each **deferred** ("not now") vs **excluded** ("not ever"). Pair as "In: X. Out: Y." When there genuinely are none, say so and move on.
 
 ## Roles
 
-The user keeps the app aligned with the vision: behavior, product feel, direction, priorities, risk, tradeoffs. The agent translates that into code. Don't ask the user to choose files, functions, layers, or mechanisms unless the choice changes product direction, scope, or a boundary with other functionality. **Note:** whether a feature *rides an existing pipeline or forks a new one* is such a boundary — surface it (see Ride vs new), even though the specific files/mechanism stay with the agent.
+The user owns behavior, product feel, direction, priorities, tradeoffs; the agent translates that into code and ties the conversation to what already exists.
+
+Ask about product direction, scope, and boundaries — ride-vs-new is such a boundary (see above). Reserve file/function/layer/mechanism choices for the agent unless they change product direction or scope.
+
+Share findings plainly ("the app already does X via Y") or uncertainty ("no notifications pipeline found") so boundary questions are informed.
 
 ## Question style
 
-Ask one at a time. Use a question tool call when available so the user can click options; prefer multiple-choice when branches are clear.
+Ask **one boundary question at a time**; a turn may include grounding prose plus the question. Use a question tool call when available; prefer multiple-choice when branches are clear.
 
-**Options must be Pareto-optimal.** Never include an option that is worse than another option on every axis the user cares about — if one choice dominates, don't ask; state it and move on. Each option must be the winner on a distinct, valuable dimension, e.g.:
+**Offer Pareto-optimal options only** — each choice wins on a distinct axis (performance, code consistency, least code, reusability, UX, separation/ease-of-cutting). Label each option by the axis it wins on. When one choice dominates on every axis, state it and move on.
 
-- Best performance (runtime speed)
-- Best code consistency (matches repo patterns)
-- Least code / fastest to implement
-- Most reusable or extensible (future features cheap)
-- Best UX
-- Best separation / easiest to cut later
-
-Label each option with the dimension it wins on, so the user is choosing between real tradeoffs, not spotting the obvious answer.
+**State codebase evidence beside the question** — one line on what the repo shows (or `Uncertain`) before the choices. Keep options symmetric tradeoffs; let evidence inform without labeling a "default" option.
 
 Every multiple-choice question includes two omnipresent options:
 
-- **"Explain the UX impact first"** — research the flow/code, explain what each branch means for users, then re-ask.
-- **"Dig deeper in the codebase"** — explore architecture, adjacent features, and industry-standard patterns to propose the most elegant boundary; summarize, then re-ask.
+- **"Explain the UX impact first"** — research the flow, explain what each branch means for users, re-ask.
+- **"Dig deeper in the codebase"** — widen exploration, update the hook map, re-ask.
 
-Keep questions at the level the user can answer — behavior, scope, edges, not mechanisms:
+Ask at the level the user can answer — behavior, scope, edges:
 
-- Good (perimeter): "Is v1 just browsing cached data, or working fully offline and syncing later?"
-- Good (edge): "If import fails on row 47 of 200, are rows 1–46 already committed, or is the whole batch atomic?"
-- Good (precedence): "When this fires on an action that already shows a success toast, does it replace it, duplicate it, or only fire for async outcomes?"
-- Good (non-goal): "Should admin edits to a user's record be invisible, or appear in their history as 'edited by support'?"
-- Good (ride vs new): "Should this send through the existing notifications pipeline (same delivery, prefs, history), or is it different enough to justify its own path — and if so, why can't the existing one absorb it?"
-- Bad: "Should I use `functionA()` or `functionB()`?" / "Hook or service?"
+- Perimeter: "Is v1 just browsing cached data, or working fully offline and syncing later?"
+- Grounded edge: *Evidence: save flow shows a toast today.* "Should this replace it, add a second toast, or only fire for async outcomes?"
+- Grounded ride-vs-new: *Evidence: shared notifications pipeline exists (prefs + history).* "Ride that path, or fork — and if fork, what can't it handle?"
+- Mechanism questions (`functionA` vs `functionB`, hook vs service) belong to `plan`, not grill.
 
-If a question can be answered by exploring the codebase, explore instead, then convert remaining uncertainty into a scope/behavior/boundary question. For any boundary question touching existing code: (1) ask the raw question in plain text to frame the research, (2) research which answer is most consistent with existing behavior/patterns/domain language, (3) ask the multiple-choice question, (4) mark the option most consistent with the codebase while letting the user pick a different direction.
+When the codebase can answer a question, explore first, then ask the remaining scope/behavior/boundary uncertainty.
 
 ## Recommendation timing
 
-No recommendations during grilling. Exception: for boundary questions touching existing code, you may state which option is most consistent with the codebase before asking — treat as evidence, not the final recommendation.
+During grilling, share hook-map findings and what each branch means for users. Save the consolidated **recommended direction** for the closing summary — mid-grill evidence informs; it doesn't prescribe.
 
 ## Ending the grill
 
-When there is shared understanding, close with a **chat summary** (not a file):
+Close with a **chat summary** (no file):
 
 - **Vision & constraints** — concise.
 - **In scope** — the agreed perimeter.
-- **Non-goals** — explicit "will NOT do" / "will NOT touch", each marked *deferred* or *excluded*.
-- **Neighbor/boundary map** — each existing feature it meets and the resolved edge (ride vs new, ownership, precedence, atomicity); note any greenfield path with its justification.
+- **Non-goals** — "will NOT do" / "will NOT touch", each *deferred* or *excluded*.
+- **Neighbor/boundary map** — per neighbor: verified loop (or greenfield), **agreed** hook point (promoted from provisional), ride vs new, resolved edges.
 - **Open tradeoffs** — product-framed.
-- **Recommended direction** — code left to the agent unless a technical choice materially affects the vision.
+- **Recommended direction** — including which loops to extend; file-level detail for `plan` § Investigate.
 
-**Next:** Re-run `.agents/skills/router/SKILL.md` gates 1–2 → `plan` § Refine or `feature` to record the resolved scope. Not `implement` until a `DEVELOPMENT_PLAN.md` exists.
+**Next:** re-run `.agents/skills/router/SKILL.md` gates 1–2 → `plan` § Refine or `feature`. Proceed to `implement` only after a `DEVELOPMENT_PLAN.md` exists.
 
 ---
 
-## Boundaries
+## Handoffs
 
-| Not `grill-me` | Use instead |
-|----------------|-------------|
-| Write the scope/requirements artifact | `feature` (Phase 2 documents it) |
-| Write the execution plan / in-out section on file | `plan` § Refine → Investigate |
-| Engineering acceptance / APIs / gates | `plan` § Refine |
-| Trivial/XS change with no real edges | `quick-piv` |
-| Execute or commit | `implement` / `finish` |
+| `grill-me` owns | Hand off to |
+|---|---|
+| Chat alignment on scope edges & decision tree | `feature` (Phase 2) to document requirements |
+| Resolved scope ready for execution planning | `plan` § Refine → Investigate for file list, APIs, gates |
+| Gate 2 acceptance / API shape detail | `plan` § Refine (grill informs; plan records) |
+| Migrations, RLS policies, exact API contracts | `plan` § Investigate |
+| Trivial/XS work with no real edges | `quick-piv` |
+| Landed implementation | `implement` / `finish` |
 
-**SSOT note:** `grill-me` aligns on scope edges & the decision tree *in conversation*; `feature`/`plan` *record* the result.
+**SSOT note:** `grill-me` aligns in conversation, grounded in what exists; `feature`/`plan` record the result.

@@ -34,6 +34,7 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 - [ ] Verify current git branch (`git branch --show-current`). If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
 - [ ] Never commit directly to `main` or `develop` during implementation.
+- [ ] **CRITICAL:** If the plan touches protected files (`.husky/**`, `tsconfig*.json`, `.cursor/rules/**`, `.agents/skills/**`, etc.), **stop** and get explicit user approval before editing them. Full manifest: `.cursor/rules/workflow/RULE.md` § Protected Files. Record consent in **Decisions made** when granted.
 
 ### 1. Load plan
 
@@ -61,7 +62,8 @@ For each phase **in order** (one phase at a time unless the plan explicitly allo
 
 - **Frontend:** Run the checks described in the plan (UI present, interactions, loading/error states, responsive if specified). Use the IDE browser MCP when available: navigate → snapshot → interact; follow the lock/unlock workflow in the MCP instructions.
 - **Backend / Supabase:** As specified in the plan (e.g. migration applied, RLS checks, Edge Function invocation).
-- **Repo quality:** When the plan or phase implies it, run `pnpm lint`, `pnpm type-check`, and relevant tests (`pnpm test:run` or scoped files). For structural changes, `pnpm validate:structure` and/or `pnpm arch:check` when adding imports across layers.
+- **Repo quality:** When the plan or phase implies it, run `pnpm lint`, `pnpm type-check`, and relevant tests (`pnpm test:run`, `pnpm test:staged` for preview, or scoped files). For structural changes, `pnpm validate:structure` and/or `pnpm arch:check` when adding imports across layers.
+- **Staged-test infra:** When adding or renaming `scripts/*staged*`, `scripts/*validator*`, `scripts/change-classify.cjs`, or `scripts/test-staged.cjs` → verify `TEST_INFRA_EXACT` / `TEST_INFRA_PREFIXES` in `scripts/change-classify.cjs` in the **same PR**; run `pnpm test:classify`. Record waiver in **Decisions made** if intentionally deferred.
 - If the gate fails: fix, re-run the gate, then continue.
 - If the plan’s gate is impossible (missing env, no browser): document in Notes, **ask** the user, then proceed only after agreement.
 

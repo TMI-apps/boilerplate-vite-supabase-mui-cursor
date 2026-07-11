@@ -13,12 +13,13 @@ This rule defines security best practices, vulnerability prevention, and secure 
 
 ### Critical Requirement
 - **NEVER** assume database structures, tables, or field names without verification
-- **ALWAYS** check database schema using MCP (Model Context Protocol) tools before making assumptions
+- **When an MCP (Model Context Protocol) server for the configured database is available**, check the schema using MCP tools before making assumptions (see `api-integration/RULE.md` for the general MCP-first principle)
+- **When no matching MCP server is configured, or a matched server is unusable** (`needsAuth`, `error`, `loading`, or a tool call fails after one retry — see `api-integration/RULE.md` and `.agents/skills/api-integrate/SKILL.md`), use the migration file last applied to the **target environment** (`supabase/migrations/` in this fork) or a schema export instead of relying on memory — never skip verification entirely, only the MCP-specific mechanism changes
 - Verify table names, column names, and data types before writing queries
 - Don't rely on memory or assumptions about database structure
 
 ### Verification Process
-1. Use MCP tools to list tables and schemas
+1. Check for a matching MCP server. If available and a tool call succeeds, use it to list tables and schemas. If no server matches, or a matched server is unusable (see Critical Requirement above), read the migration file last applied to the target environment or a schema export instead — prefer schema export or live MCP over assuming the newest file in `supabase/migrations/` reflects production when they may differ.
 2. Verify column names and types before querying
 3. Check constraints and relationships
 4. Validate data structure matches expectations
@@ -38,6 +39,8 @@ This rule defines security best practices, vulnerability prevention, and secure 
 - Never trust client-side authorization checks
 
 ### Row Level Security (RLS) Performance
+
+**(Postgres/Supabase-specific — this fork's backend.)** A fork on a different backend should treat this section as conditional, not universal.
 
 **SSOT:** This section defines RLS policy performance best practices for Supabase.
 
@@ -231,6 +234,7 @@ export async function deleteUser(userId: string) {
 - `code-style/RULE.md` - Code style for security-related code
 - `workflow/RULE.md` - Security review processes
 - `cloud-functions/RULE.md` - Security considerations for function organization
+- `api-integration/RULE.md` - General MCP-first principle this rule's Database Verification section implements
 
 **SSOT Status:**
 - This rule is the **SSOT** for security best practices, including RLS policy performance optimization

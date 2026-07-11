@@ -157,18 +157,37 @@ Closes #123
 
 **Note:** Commit message must match changelog entry. Husky pre-commit hook runs automatically (see `.husky/pre-commit` for SSOT). See `.cursor/rules/workflow/RULE.md` for Keep a Changelog format details and version synchronization requirements.
 
-## Faster commit (pre-commit light path)
+## Faster commit (pre-commit light path + staged tests)
 
 After `git add`, expect hook behavior per **`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`** § Local git (classifier SSOT: `scripts/change-classify.cjs`). Do not duplicate the matrix here.
 
+- **Preview hook test selection:** `pnpm test:staged` (dry-run — does not run tests). **Run hook tests without committing:** `pnpm test:staged:live`. Classifier reads staged files only — `git add` before preview.
+- **CI / merge parity:** `pnpm test:classify && pnpm test:run`. Local related or full pre-commit green is **not** merge-safe — wait for CI `test` job on `develop`.
+- **Force full locally:** `PRECOMMIT_TEST_FULL=1 pnpm test:staged` (PowerShell: `$env:PRECOMMIT_TEST_FULL=1; pnpm test:staged`).
 - Do **not** use `--no-verify` to avoid slow hooks on app-code commits; fix tests or split commits (docs/migrations separate from `src/`).
 - `git commit --amend` with an empty index may run the full hook; re-stage or accept.
-- Tests run on **push** (`.husky/pre-push`), not on commit.
 
 ## Production promotion (separate from finish)
 
 - **`finish`** lands version + changelog on the feature branch; squash merge to **`develop`** updates staging.
 - **Do not** use `finish` or a squash PR to ship production. After the user confirms staging on `develop`, run **Promote to production** (`promote-to-production.yml`) per `.cursor/rules/workflow/RULE.md`.
+
+## User test handoff (mandatory before closure)
+
+After commit (and after push/PR when applicable), output a **handoff card** for the user:
+
+```markdown
+## Ready for you to test
+- **What changed:** …
+- **Where to test:** <preview URL or "local dev — agent runs dev server">
+- **Steps:** 1. … 2. …
+- **Edge/deploy note:** (only if edge functions / env-specific)
+- **CI:** <pending | green on PR #N | not pushed yet>
+```
+
+**Forbidden closure phrases** until the user confirms in the app: “implementation complete,” “fixed,” “done,” “should work” — use **“ready for you to test”** instead.
+
+Squash merge / production: point to § Production promotion above; user tests **staging** before promote. For preview URL discovery after hosting work, see `documentation/DOC_CLOUDFLARE_WORKERS.md`.
 
 ## Boundaries
 

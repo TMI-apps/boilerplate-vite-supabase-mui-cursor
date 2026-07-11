@@ -60,6 +60,7 @@ Pick **one** primary by the **most blocking** row that applies (top wins). Then 
 | No plan file; quick plan in chat; implement/validate incomplete | `quick-piv` |
 | All planned phases done; full audit not yet run | `validate` |
 | Validated; user/thread signaled landing | `finish` (only when wrap-up is the clear next step — not the default for bare `/router` on new work) |
+| Pushed feature branch; PR to `develop` open; CI status unknown | `babysit` (`~/.cursor/skills-cursor/babysit/SKILL.md`) after successful `push` |
 
 Align with [dev-cycle matrix](references/dev-cycle-matrix.md). When unfamiliar with repo state mid-job, run **`prime`** once, then continue with the chosen skill — do not replace thread continuation with backlog intake.
 
@@ -83,6 +84,8 @@ For **new or substantive** requests — and after **Active thread work** is rule
 | **Unclear** | Wish or direction only; conflicting interpretations possible; “make it better” with no bar. |
 
 If unclear, ask about the user's intended app usage, product vision, priorities, or real user journey. **First read** `documentation/DOC_APP_VISION.md` when it may already answer “who / why / what the app is for”; if it is still **`DRAFT`**, route the user to complete it (`.agents/skills/start/SKILL.md` § App vision) or treat lack of vision as ambiguity until they defer in writing. Do not route into full planning until the answer removes ambiguity.
+
+**Bug reports** (error, broken behavior, regression — not a feature request): route to **`debug`** (§ Chat intake) before `implement` or `quick-piv`, even when gate 1 sounds “clear” on the symptom alone.
 
 ### Gate 2 — Scope / requirements
 
@@ -172,6 +175,8 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Version, changelog, staging gate, **local** commit | `.agents/skills/finish/SKILL.md` |
 | Bundle **all** uncommitted work from multiple agent threads (same checkout), then push | `.agents/skills/bundle-ship/SKILL.md` |
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
+| Pushed feature branch; PR to `develop` open; CI status unknown | `~/.cursor/skills-cursor/babysit/SKILL.md` (after successful `push`; not every WIP push) |
+| Bug / error / broken / regression (not a new feature) | `.agents/skills/debug/SKILL.md` — § Chat intake before code |
 | Promote `develop` staging to production (`main`) | `gh workflow run promote-to-production.yml` — see `.cursor/rules/workflow/RULE.md` § Promote to production (not `finish`, not a squash PR) |
 | Human onboarding; README quick start + dev task backlog | `.agents/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
 
@@ -196,7 +201,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 
 | Situation | Skill |
 |-----------|--------|
-| Inspect Airtable — schema (`tbl…` / `fld…`, no rows) then sample cell shapes | `.agents/skills/airtable-inspect/SKILL.md` (Phase 1 schema → Phase 2 sample) |
+| Research/integrate an external API or backend (MCP-first, schema→sample discipline) | `.agents/skills/api-integrate/SKILL.md` |
 
 ### User-level Cursor skills (`~/.cursor/skills-cursor/`)
 
@@ -307,25 +312,30 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`prime`:** Agent loads **technical** context for implementation.
 - **`start`:** Human **first-time setup** walkthrough.
 
-### `finish` vs `push` vs `bundle-ship`
+### `finish` vs `push` vs `bundle-ship` vs `babysit`
 
-- **`finish`:** Commit-ready locally (version, changelog, staging rules).
+- **`finish`:** Commit-ready locally (version, changelog, staging rules); emits **Ready for you to test** handoff (§ User test).
 - **`bundle-ship`:** Multi-thread same-checkout landing — one bundled `finish` commit, then `push` in one invocation.
 - **`push`:** Remote sync only **after** commits exist; never commit inside push.
+- **`babysit`** (user-level: `~/.cursor/skills-cursor/babysit/SKILL.md`): After successful **`push`** that created or updated a PR to **`develop`**, read and run **`babysit`** unless the user waived CI wait in **Decisions made**. On in-scope CI failure → fix and re-push; on out-of-scope failure → `ci-investigator` or report to user.
 
 ### `canvas` vs `validate` / reporting
 
 - **`canvas`:** Standalone **visual artifact** (tables, timelines, rich layouts) as deliverable.
 - **`validate`:** Structured **text report**; default no edits.
 
-### Airtable: `airtable-inspect` phases
+### External API research: `api-integrate` vs stack plugin skills
 
-- One skill, two phases: **Phase 1 schema first**, **Phase 2 samples second** (skill body enforces the order).
+- **`.agents/skills/api-integrate/SKILL.md`:** Use for an **unfamiliar/new** vendor or API — MCP-first check, then Phase 1 schema/contract → Phase 2 sample/wire-shape discipline (the same two-phase order the retired `airtable-inspect` skill used, now generalized). Worked examples: Supabase (MCP path), Airtable (no-MCP path).
+- **Stack plugin skill** (`supabase`, `cloudflare`, `wrangler`, etc.): Use for **operating inside a stack you're already on** — see the Supabase/Cloudflare disambiguations below. Don't route routine stack work through `api-integrate`.
+- **A fork's own vendor-specific skill** (if one exists, e.g. a fork-added `stripe-inspect`): prefer it when it's more specific than the generic `api-integrate` path — don't force every integration through one skill.
+- See also `.cursor/rules/api-integration/RULE.md` for the globs-scoped principles this skill implements (`alwaysApply: false`).
 
-### Supabase: `supabase` vs `supabase-postgres-best-practices`
+### Supabase: `supabase` vs `supabase-postgres-best-practices` vs `api-integrate`
 
-- **`supabase`:** Product workflows, Auth, RLS correctness, CLI/MCP, migrations narrative.
+- **`supabase`:** Product workflows, Auth, RLS correctness, CLI/MCP, migrations narrative — operating inside this fork's already-configured backend.
 - **`supabase-postgres-best-practices`:** **Performance** tuning, query plans, indexing, pooling — narrow DB optimization.
+- **`api-integrate`:** Only if researching Supabase itself as an unfamiliar vendor (rare in this repo, since it's already configured) — see § External API research above.
 
 ### Cloudflare: `cloudflare` vs `wrangler` vs `workers-best-practices`
 
@@ -459,7 +469,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/optimize2/SKILL.md`
 - `.agents/skills/react-perf-vite/SKILL.md`
 - `documentation/DOC_REACT_PERF.md` — human overview (links to skill)
-- `.agents/skills/airtable-inspect/SKILL.md`
+- `.agents/skills/api-integrate/SKILL.md`
 - `.agents/skills/grill-me/SKILL.md`
 - `.agents/skills/pattern-review/SKILL.md`
 - `.agents/skills/review-dev-plan/SKILL.md`

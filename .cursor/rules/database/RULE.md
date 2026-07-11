@@ -1,5 +1,5 @@
 ---
-description: "SQL migration best practices for Supabase/PostgreSQL (not client queries or TanStack)"
+description: "SQL migration best practices for the configured relational database (this fork: Supabase/PostgreSQL; not client queries or TanStack)"
 alwaysApply: false
 globs: ["**/supabase/migrations/**/*.sql", "**/supabase/**/*.sql"]
 ---
@@ -513,6 +513,7 @@ Before committing a migration, verify:
 - `workflow/RULE.md` - Development processes and testing workflows
 - `architecture/RULE.md` - Service/hook layers, TanStack Query patterns (not SQL)
 - `documentation/DOC_TANSTACK_QUERY.md` - Query keys, invalidation, client cache (not SQL)
+- `api-integration/RULE.md` - Researching a new/unfamiliar backend or API before writing migrations against it
 
 **Rules that reference this rule:**
 - `security/RULE.md` - References RLS policy patterns (which are often created in migrations)

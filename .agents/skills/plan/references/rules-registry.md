@@ -13,6 +13,7 @@ Canonical paths for `.cursor/rules/` when skills need a rules table. Full descri
 | Testing | `.cursor/rules/testing/RULE.md` |
 | Workflow | `.cursor/rules/workflow/RULE.md` — branch strategy, protected files |
 | Cloud / Edge | `.cursor/rules/cloud-functions/RULE.md` — when applicable |
+| External API integration | `.cursor/rules/api-integration/RULE.md` — MCP-first, doc research, POC before code |
 | Debugging | `.cursor/rules/debugging/RULE.md` — when diagnosing complex issues |
 | Project-specific | `.cursor/rules/project-specific/RULE.md` — when applicable |
 

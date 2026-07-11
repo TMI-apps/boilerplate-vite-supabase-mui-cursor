@@ -32,6 +32,10 @@ In-repo development backlog for coding agents and local UI.
 - **Mutation/async errors:** single MUI `Snackbar` via `TasksFeedback` (tasks pattern is SSOT for non-form mutations).
 - **Initial load failures:** same snackbar path via `reloadForView` try/catch.
 
+## Testing
+
+Colocated `*.test.ts` under `services/`; shared wrappers in `tests/test-utils.tsx`. See `documentation/DOC_TESTING.md`.
+
 ## Dependencies
 
 - `vite-plugin-dev-tasks.ts` (project root)

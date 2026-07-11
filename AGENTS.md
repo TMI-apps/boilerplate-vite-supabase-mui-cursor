@@ -37,6 +37,7 @@ Consult on demand (not auto-imported):
 - `.cursor/rules/debugging/RULE.md`
 - `.cursor/rules/cloud-functions/RULE.md`
 - `.cursor/rules/project-specific/RULE.md`
+- `.cursor/rules/api-integration/RULE.md`
 
 Claude-specific behavioral reminders (thin pointers to the above):
 

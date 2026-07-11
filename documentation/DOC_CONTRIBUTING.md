@@ -20,20 +20,28 @@ This guide points you to the canonical process documents. Follow these links for
 
 ## CI Gate Expectations
 
-Before pushing, ensure these pass locally:
+**Pre-commit hook** runs staged tests (related or full), type-check, and validators on app-surface commits. See `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git.
+
+**Before opening a PR**, ensure CI parity locally:
 
 | Check | Command |
 |-------|---------|
+| Classifier + executor tests | `pnpm test:classify` |
+| Vitest suite | `pnpm test:run` |
+| Preview staged test selection | `pnpm test:staged` (after `git add`) |
 | Type check | `pnpm type-check` |
 | Lint | `pnpm lint` |
 | Format | `pnpm format:check` |
 | Version/changelog sync | `pnpm validate:version-sync` |
 | Structure | `pnpm validate:structure` |
 | Architecture | `pnpm arch:check:ci` |
-| Tests | `pnpm test:run` |
 | Build | `pnpm build` |
 
-CI runs these on every push to `main` or `develop` and every PR targeting `main` or `develop`.
+CI runs these on every push to `main` or `develop` and every PR targeting `main` or `develop`. The **merge gate** is the green CI `test` job on `develop`.
+
+## How to write tests
+
+See **[DOC_TESTING.md](./DOC_TESTING.md)** — runner choice, colocated file placement, naming (`should … when …`), and `tests/test-utils` helpers.
 
 ## Release Direction
 

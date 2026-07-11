@@ -123,7 +123,8 @@ The parent runs these directly, in parallel with the subagent fan-out (determini
 - `pnpm lint`
 - `pnpm type-check`
 - `pnpm arch:check`
-- `pnpm test:run` — when the change touches tested logic or the plan requires tests
+- `pnpm test:run` — merge authority when the change touches tested logic or the plan requires tests; **not** a substitute for CI `test` job on PR
+- `pnpm test:staged` — preview only (dry-run); does not prove tests pass
 - `pnpm format:check` — optional, if style drift is in scope
 
 **gate (lighter list):**
@@ -133,9 +134,12 @@ The parent runs these directly, in parallel with the subagent fan-out (determini
 - `pnpm lint`
 - `pnpm type-check`
 - `pnpm arch:check`
-- `pnpm test:run` — when scoped changes touch tested logic
+- `pnpm test:run` — when scoped changes touch tested logic; CI `test` job remains merge gate
+- `pnpm test:staged` — fast preview during implementation (after `git add`); not merge-safe
 
 Each failing command becomes one finding (`rule: "tooling"`, `rule_section: "<command>"`). Severity: Blocker for structural / type / lint / arch failures; Warning for format drift; tests follow whether the plan required them. Demote to Warning only with clear context.
+
+**Classifier denylist (manual):** When the diff touches `scripts/change-classify.cjs` or adds `scripts/*staged*` / `scripts/*validator*`, flag any new enforcement paths missing from `TEST_INFRA_EXACT` / `TEST_INFRA_PREFIXES` in the report (no new automation script).
 
 ### Plan-compliance subagent (impl-full only)
 

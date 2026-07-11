@@ -49,6 +49,7 @@ The audit measures every skill against these. Each is falsifiable.
 | SSOT | Every reusable concept (rubric, checklist, table, contract) has exactly **one** owning file; all others link, not copy. |
 | No conflicts | No two skills give opposing instructions for the same action; the router maps each situation to one primary skill; each skill appears in the router exactly once. |
 | Symbiotic whole | Skill handoffs form a coherent DAG where a predecessor's **output artifact** equals the successor's **declared input**; no orphans, no dead ends; the router is the single front door. |
+| Trigger clarity | Routing clauses (`description`, `## Triggers`, router rows) use **observable** signals — not deferred-necessity or judgment-handoff phrasing ([`references/vague-conditionals.md`](references/vague-conditionals.md)). |
 
 ## Workflow
 
@@ -79,13 +80,13 @@ Launch these **in parallel**, each with its self-contained brief from [`referenc
 | 2 | **SSOT / duplication** | Concept-ownership map; literal duplication across files; broken/stale cross-links |
 | 3 | **Conflicts** | Contradictory instructions on shared actions (who commits/pushes, read-only defaults); router collisions; handoff contract mismatches |
 | 4 | **Composition / handoffs** | Handoff DAG; orphans (nothing routes in); dead ends (no "next"); router single-front-door + each-skill-listed-once check |
-| 5 | **Quality (optional)** | Per-skill structural score (triggers present, single outcome, negative space). Defer to `rule-quality` for deep scoring. |
+| 5 | **Quality / trigger clarity** | Structural score (triggers present, single outcome, negative space) + **vague conditional inventory** per [`references/vague-conditionals.md`](references/vague-conditionals.md). Rewrites: `rule-quality` Mode B or `create-skill` § descriptions. |
 
-Give each Task a short `description` (e.g. "— overlap", "— SSOT", "— conflicts", "— composition").
+Give each Task a short `description` (e.g. "— overlap", "— SSOT", "— conflicts", "— composition", "— trigger clarity").
 
 ### Phase 3 — Synthesis
 
-Merge lens outputs: deduplicate findings, mark **must-fix vs nice-to-have**, and flag any finding raised by **≥2 lenses**. Group by blast radius: routing collisions and contradictory commit/push instructions first; cosmetic duplication last.
+Merge lens outputs: deduplicate findings, mark **must-fix vs nice-to-have**, and flag any finding raised by **≥2 lenses** (especially **Lens 1 overlap + Lens 5 vague trigger** on the same skills). Group by blast radius: routing collisions, vague routing triggers, and contradictory commit/push instructions first; cosmetic duplication last.
 
 ### Phase 4 — Decision gate
 
@@ -134,6 +135,7 @@ Confirm the router still lists every skill exactly once, all cross-links resolve
 - "Consolidating" two skills that occupy **different** concern-space cells (forces unrelated outcomes together).
 - Letting subagents edit — lens subagents are **read-only**; only the main agent edits after approval.
 - Adding/removing a skill without updating the router and layers-doc coupling.
+- Deferred-necessity or judgment-handoff triggers (`When needing`, `when applicable`, `as needed`) in `description`, `## Triggers`, or router rows without an observable tiebreak.
 
 ## Related
 
@@ -143,3 +145,4 @@ Confirm the router still lists every skill exactly once, all cross-links resolve
 - [`rule-quality`](../rule-quality/SKILL.md) — per-file grade + improve
 - [`learn`](../learn/SKILL.md) — decides where durable knowledge lives
 - [`references/subagent-briefs.md`](references/subagent-briefs.md) — self-contained prompts for every subagent
+- [`references/vague-conditionals.md`](references/vague-conditionals.md) — phrase families, severity, remediation (Lens 5 SSOT)

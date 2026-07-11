@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { BrowserRouter } from "react-router-dom";
+import { createDefaultAuthContextValue, renderWithProviders } from "tests/test-utils";
 import { ProfileMenu } from "@/components/common/ProfileMenu";
 import { useAuthContext } from "@/shared/context/AuthContext";
 import { useUserProfileQuery } from "@/features/auth/hooks/useUserProfileQuery";
@@ -25,19 +25,10 @@ vi.mock("react-router-dom", async () => {
 });
 
 describe("ProfileMenu", () => {
-  const defaultAuthContext = {
-    user: null,
-    loading: false,
-    error: null,
-    login: vi.fn(),
-    signUp: vi.fn(),
+  const defaultAuthContext = createDefaultAuthContextValue({
     logout: mockLogout,
     signInWithGoogle: mockSignInWithGoogle,
-    requestPasswordReset: vi.fn(),
-    updatePassword: vi.fn(),
-    clearAuthError: vi.fn(),
-    setAuthError: vi.fn(),
-  };
+  });
 
   const defaultUserProfileQuery = {
     data: null,
@@ -47,12 +38,7 @@ describe("ProfileMenu", () => {
     refetch: vi.fn(),
   };
 
-  const renderMenu = () =>
-    render(
-      <BrowserRouter>
-        <ProfileMenu />
-      </BrowserRouter>
-    );
+  const renderMenu = () => renderWithProviders(<ProfileMenu />);
 
   beforeEach(() => {
     vi.clearAllMocks();

@@ -209,7 +209,7 @@ Each phase must have a gate.
 
 ### Repo quality
 
-- `pnpm lint`, `pnpm type-check`, and tests relevant to the change (`pnpm test:run` or targeted files) pass at phase boundaries when code exists.
+- `pnpm lint`, `pnpm type-check`, and tests relevant to the change (`pnpm test:run`, `pnpm test:staged` preview, or targeted files) pass at phase boundaries when code exists.
 
 ---
 

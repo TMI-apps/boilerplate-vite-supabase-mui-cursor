@@ -44,6 +44,12 @@ Push previously finished work to remote. This command is push-only.
 6. Ask user for explicit confirmation: "Ready to push these already-committed changes?"
 7. Execute push only after confirmation.
 
+## Merge gate (tests)
+
+- **Pre-push does not run Vitest or type-check** — see `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git.
+- **Authoritative merge gate:** green CI `test` job on `develop` (full `pnpm test:classify`, `pnpm test:run`, `pnpm type-check`).
+- Local pre-commit may run **related** tests only — related green is **not** sufficient to skip waiting for CI.
+
 ## Relationship with `finish`
 
 - `finish` and `push` are intentionally split.

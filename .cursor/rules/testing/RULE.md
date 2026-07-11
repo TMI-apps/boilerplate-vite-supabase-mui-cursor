@@ -9,6 +9,62 @@ alwaysApply: true
 
 This rule defines testing requirements, patterns, and quality standards for ensuring code reliability.
 
+## Test Authority — a failing test is a claim, not ground truth
+
+A failing test proves only that code and test disagree. Decide which one is wrong **before** touching production code.
+
+- **Ground-truth hierarchy** (higher wins): user-verified behavior > shipped sibling implementation > official docs > freshly written test.
+- **Explicit verdict first:** state "code is wrong because X" or "test is wrong because Y" — with a cited ground-truth source — before any fix.
+- **Never** trust a test written in the same session over user-verified behavior.
+- **Red-flag loop detector:** swapping implementation approach twice for the same failing test → suspect the test.
+- **Expected values** in tests must derive from the shipped SSOT implementation or data, never from an independent re-derivation.
+
+Cross-link: `.agents/skills/debug/patterns.md` § "Failing test loop".
+
+## Local test authority (commit vs merge)
+
+| Layer | Command | Authority |
+|-------|---------|-----------|
+| Preview | `pnpm test:staged` | Dry-run only — shows mode + paths; does not run tests |
+| Live (no commit) | `pnpm test:staged:live` | Same runner as pre-commit hook |
+| Commit | pre-commit related/full/node-scripts-only | Fast feedback; **not** merge-safe |
+| Merge | CI `test` job (`test:classify` + `test:run` + `type-check`) | **Authoritative** |
+| Local CI parity | `pnpm test:classify && pnpm test:run` | Before validate / large PRs |
+| Force full locally | `PRECOMMIT_TEST_FULL=1` | Escape hatch |
+
+SSOT: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git; classifier `scripts/change-classify.cjs`; executor `scripts/test-staged.cjs`.
+
+## Testing documentation SSOT
+
+- **Human + fork onboarding:** `documentation/DOC_TESTING.md` — runners, placement, naming, examples, checklist.
+- **This rule:** test authority philosophy, commit vs merge tiers, coverage expectations, Edge Functions policy.
+
+## Runner selection
+
+- **`src/**` and `tests/**` (Vitest):** `*.test.ts` / `*.test.tsx` — `pnpm test:run`.
+- **`scripts/*.test.cjs` (Node `node:test`):** `pnpm test:classify` only; excluded from Vitest.
+- Full tree and examples: `documentation/DOC_TESTING.md` § Runner decision tree.
+
+## When to use TDD
+
+This repo is **not** test-first by default. Default: add meaningful automated tests **alongside** implementation when the plan or § What to Test applies.
+
+**Use TDD (red → green → refactor)** when:
+
+- Pure functions, parsers, classifiers, or algorithms with clear inputs/outputs
+- Tooling under `scripts/` with deterministic behavior
+- Regression-prone logic where expected output is known from specs, fixtures, or shipped sibling code
+
+**Do not default to TDD** when:
+
+- UI flows, MUI components, or layout (manual/browser validation is default — `workflow/RULE.md`)
+- Supabase RLS, auth, or Edge Functions (see § Edge Functions Testing — manual)
+- The spec is still ambiguous — resolve with user verification first (`.agents/skills/feature/SKILL.md`)
+
+Even in TDD, § Test Authority applies: expected values must trace to a cited ground-truth source, not an ad-hoc re-derivation.
+
+Cross-link: `workflow/RULE.md` § During Development.
+
 ## Test Coverage
 
 ### Minimum Requirements
@@ -30,14 +86,20 @@ This rule defines testing requirements, patterns, and quality standards for ensu
 ## Test Organization
 
 ### File Structure
-- Mirror source file structure in test directory
-- Use descriptive test file names: `[component].test.ts` or `[component].spec.ts`
-- Group related tests using `describe` blocks
+- **Colocate** unit tests beside source: `Module.ts` → `Module.test.ts` (or `.test.tsx`) in the same folder.
+- **`tests/` folder** — shared setup only: `setup.ts`, `test-utils.tsx`, future `integration/` and `e2e/`; not a mirrored copy of `src/`.
+- Use descriptive test file names: `[component].test.ts` or `[component].spec.ts`.
+- Group related tests using `describe` blocks.
 
 ### Test Naming
-- Use descriptive test names that explain what is being tested
-- Follow pattern: "should [expected behavior] when [condition]"
-- Avoid generic names like "test1" or "works"
+- Use descriptive test names that explain what is being tested.
+- **Mandatory pattern:** `"should [expected behavior] when [condition]"` for Vitest `it()` names.
+- `scripts/*.test.cjs` may use `test()` but the quoted name follows the same pattern.
+- Avoid generic names like "test1" or "works".
+
+### Shared utilities
+- Import from `tests/test-utils` (Vitest alias): `renderWithProviders`, `renderHookWithProviders`, `createDefaultAuthContextValue`.
+- See `documentation/DOC_TESTING.md` § Shared utilities.
 
 ## Testing Patterns
 
@@ -156,6 +218,7 @@ For Edge Functions architecture and when to use them, see `cloud-functions/RULE.
 
 **SSOT Status:**
 - This rule is the **SSOT** for testing standards, patterns, and quality requirements
+- **Onboarding guide:** `documentation/DOC_TESTING.md`
 - Other rules reference this rule for testing guidelines (e.g., `cloud-functions/RULE.md` references testing strategy)
 
 **Rules that reference this rule:**

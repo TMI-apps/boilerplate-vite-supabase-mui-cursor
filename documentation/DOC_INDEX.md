@@ -13,9 +13,10 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | **Agent: validate plan or implementation** | [`.agents/skills/validate/SKILL.md`](../.agents/skills/validate/SKILL.md) |
 | **Agent: route ambiguous work (router)** | [`.agents/skills/router/SKILL.md`](../.agents/skills/router/SKILL.md) |
 | **Agent: industry precedent (pattern-review)** | [`.agents/skills/pattern-review/SKILL.md`](../.agents/skills/pattern-review/SKILL.md) |
+| **Agent: external API integration (api-integrate)** | [`.agents/skills/api-integrate/SKILL.md`](../.agents/skills/api-integrate/SKILL.md) |
 | **Agent: multi-lens plan critique (review-dev-plan)** | [`.agents/skills/review-dev-plan/SKILL.md`](../.agents/skills/review-dev-plan/SKILL.md) |
 | **Agent: write adoption guides (write-adoption-guide)** | [`.agents/skills/write-adoption-guide/SKILL.md`](../.agents/skills/write-adoption-guide/SKILL.md) |
-| **Agent workflow layers (skills vs rules)** | [DOC_AGENT_WORKFLOW_LAYERS.md](./DOC_AGENT_WORKFLOW_LAYERS.md) |
+| **Agent workflow layers (skills vs rules)** | [DOC_AGENT_WORKFLOW_LAYERS.md](./DOC_AGENT_WORKFLOW_LAYERS.md) — includes **Agent-only mode** (human files features/bugs) |
 | **Handoffs (portable notes)** | [handoffs/README.md](./handoffs/README.md) |
 | **Agent: lightweight PIV (quick-piv)** | [`.agents/skills/quick-piv/SKILL.md`](../.agents/skills/quick-piv/SKILL.md) |
 | **Agent skill: persist lessons (learn)** | [`.agents/skills/learn/SKILL.md`](../.agents/skills/learn/SKILL.md) |
@@ -25,6 +26,7 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | **App vision & goals (fillable)** | [DOC_APP_VISION.md](./DOC_APP_VISION.md) |
 | **Dev task backlog** | [src/features/tasks/README.md](../src/features/tasks/README.md) |
 | **TanStack Query** | [DOC_TANSTACK_QUERY.md](./DOC_TANSTACK_QUERY.md) |
+| **Testing (runners, placement, patterns)** | [DOC_TESTING.md](./DOC_TESTING.md) |
 | **Feature-local README enforcement** | [DOC_FEATURE_LOCAL_README.md](./DOC_FEATURE_LOCAL_README.md) |
 | **Supabase: Sign in with Google (dashboard setup)** | [DOC_SUPABASE_GOOGLE_OAUTH.md](./DOC_SUPABASE_GOOGLE_OAUTH.md) |
 | **Mobile local dev (physical device)** | [DOC_MOBILE_LOCAL_DEV.md](./DOC_MOBILE_LOCAL_DEV.md) |
@@ -46,3 +48,4 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | **Supabase + Google OAuth (dashboard / Google Cloud)** | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |
 | **Mobile local dev on physical device** | `documentation/DOC_MOBILE_LOCAL_DEV.md` |
 | **Cloudflare Workers deployment** | `documentation/DOC_CLOUDFLARE_WORKERS.md` + `wrangler.jsonc` |
+| **Testing (runners, colocation, patterns)** | `documentation/DOC_TESTING.md` |

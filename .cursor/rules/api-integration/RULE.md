@@ -1,0 +1,46 @@
+---
+description: "Principles for researching an external API, vendor, or backend before writing integration code (MCP-first, doc-freshness, POC-before-code)"
+alwaysApply: false
+globs: ["**/services/**", "**/functions/**", "**/lib/**", "supabase/functions/**"]
+---
+
+# API Integration Research
+
+## Purpose
+
+This rule defines the principles agents follow before integrating any external API, vendor, or backend — new or already configured. It does **not** contain the procedure itself; that lives in [`.agents/skills/api-integrate/SKILL.md`](../../../.agents/skills/api-integrate/SKILL.md) (full MCP-first, phased discovery→sample steps, worked examples). This rule exists so the principle applies even when the skill isn't explicitly invoked.
+
+## Principles
+
+1. **Read official docs before writing integration code.** Cite the doc URL(s) or MCP tool(s) actually used — do not integrate from memory or assumption.
+2. **Check for a matching MCP server before falling back to REST/scripts/browser fetch.** Use `GetMcpTools` (pattern search on the vendor name) first; only fall back when no server matches, or a matched server is unusable (see the skill's fallback decision tree for the specific failure states).
+3. **Don't trust cached or stale docs.** Verify current documentation before implementing — vendor APIs change; a memorized shape from a prior session may be wrong.
+4. **Run a minimal POC before full integration code** when the vendor/API is new or unproven. Cross-link [`.agents/skills/plan/SKILL.md`](../../../.agents/skills/plan/SKILL.md) § Optional: Foundation validation — do not duplicate that procedure here.
+5. **Never assume request/response shapes from memory.** Confirm via docs, MCP schema tools, or one real sample call before writing normalizers or mapping code.
+
+## Full procedure (SSOT in skill)
+
+Do not run integration research from this rule alone — the procedure lives entirely in [`.agents/skills/api-integrate/SKILL.md`](../../../.agents/skills/api-integrate/SKILL.md) (MCP-first fallback decision tree, Phase 0 locate → Phase 1 schema/contract → Phase 2 sample/wire shape, vendor worked examples).
+
+## Superseded content
+
+This rule absorbs and supersedes the former `.cursor/rules/workflow/RULE.md` § Documentation Lookup (three lines: visit docs programmatically, don't trust cached docs, verify before implementing) — that content now lives here instead of being duplicated across two rules.
+
+---
+
+## Related Rules
+
+**When modifying this rule, check these rules for consistency:**
+
+- `architecture/RULE.md` — where integration code lives once researched (`features/*/services/`, `shared/services/`)
+- `security/RULE.md` — database schema verification, secrets management
+- `database/RULE.md` — migrations for the configured backend
+- `cloud-functions/RULE.md` — server-only capabilities requiring secrets (third-party API calls)
+- `project-specific/RULE.md` — external API costs and rate limiting
+- `workflow/RULE.md` — superseded § Documentation Lookup (see above)
+
+**Rules that reference this rule:**
+
+- `security/RULE.md` — § Database Verification points here for the general MCP-first principle
+- `database/RULE.md`, `cloud-functions/RULE.md` — point here when researching a new/unfamiliar vendor
+- `workflow/RULE.md` — § Documentation Lookup points here (superseded)
