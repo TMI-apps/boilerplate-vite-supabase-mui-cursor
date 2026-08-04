@@ -125,7 +125,7 @@ Confirm the router still lists every skill exactly once, all cross-links resolve
 | Repo **rule** (`.cursor/rules`) compliance of a plan/impl | `validate` |
 | Architecture/layer correctness of **app code** | `validate` (gate depth), `consolidate` § Semantic placement |
 | Grading or rewriting a **single** rule/command file | `rule-quality` |
-| Authoring/refactoring a **single new** skill's structure | `create-skill` (`~/.cursor/skills-cursor/`) |
+| Authoring/refactoring a **single new** skill's structure | [`create-skill`](../create-skill/SKILL.md) (project SSOT; user Cursor copy is reference-only) |
 | Deciding **where** a lesson belongs (rule vs skill vs doc) | `learn` |
 
 ## Anti-patterns

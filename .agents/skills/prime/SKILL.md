@@ -2,8 +2,9 @@
 name: prime
 description: >-
   Loads project context at session start (structure, governance, active jobs, enforced boundaries).
-  Use for a new chat, ambiguous tasks, or before larger refactors. Not human onboarding (start)
-  or pre-merge gates (validate gate depth).
+  IF new chat OR the user asks what to do next without naming a skill THEN use this skill.
+  Not a substitute for grill-me / plan § Refine (gates 1–2). Not human onboarding (start)
+  or pre-merge gates (validate).
 ---
 
 # prime
@@ -45,7 +46,7 @@ Align with project rules and architecture so work does not violate enforced boun
 ### 4. Active project state
 
 - **Recent activity:** `git log -n 10` (full commit messages: subject and body; do not use `--oneline`)
-- **Working tree:** `git status -sb` (confirm branch: feature work should not be on `main`; see `.cursor/rules/workflow/RULE.md`)
+- **Working tree:** `git status -sb` (branch check per `.cursor/rules/workflow/RULE.md` § Branch Strategy)
 - **Optional plans:** Scan `documentation/jobs/` for active work (e.g. `documentation/jobs/temp_job_*/`) when relevant.
 
 ---

@@ -13,7 +13,9 @@ description: >-
 
 Two phases, same discipline as this repo's retired `airtable-inspect` skill, generalized to any vendor. **Always run Phase 1 (schema/contract) before Phase 2 (sample/wire shape)** — you need to know what exists before you fetch real values.
 
-**Boundary:** this skill covers *researching* an API/vendor, not writing the integration code. Hand off to [`.agents/skills/plan/SKILL.md`](../plan/SKILL.md) § Investigate for file-level integration work.
+**Boundary:** this skill covers *researching* an API/vendor, not writing the integration code.
+
+**Next:** Hand off to [`.agents/skills/plan/SKILL.md`](../plan/SKILL.md) § Investigate / Foundation validation for file-level integration work.
 
 **Use this skill when** researching an **unfamiliar or new** vendor/API. **Use a stack plugin skill instead** (`supabase`, `cloudflare`, `wrangler`, etc.) when **operating inside a stack you're already on** — see [`.agents/skills/router/SKILL.md`](../router/SKILL.md) § External API research vs stack plugin skills. If a fork has its own vendor-specific skill that's more specific than this generic path, prefer that.
 

@@ -34,9 +34,71 @@ No separate `documentation/DOC_*` procedure for this workflow — invocable step
 | Always-on reminder | `.cursor/rules/architecture/RULE.md` § Pattern risk |
 | Plan section template | `.agents/skills/plan/references/implementation-plan-template.md` § Pattern & precedent |
 
-**Callers:** `plan`, `router`, `feature`, `review-dev-plan` (industry lens). Do not duplicate the rubric elsewhere — link these paths.
+**Callers:** `plan`, `router`, `feature`, `review-dev-plan` (industry lens), `standards-align` (Phase 3 rubric only). Do not duplicate the rubric elsewhere — link these paths.
 
-**Not the same as:** `.agents/skills/validate/SKILL.md` (repo rule compliance).
+**Not the same as:** `.agents/skills/validate/SKILL.md` (repo rule compliance); `.agents/skills/standards-align/SKILL.md` (should-we / how-to align an **existing** scope — reuses this rubric).
+
+## Standards align loop (should + how)
+
+Answers **whether** an existing product / feature / component should move closer to industry practice, and **how** (trim / streamline / reframe), then hands off to `challenge`, `consolidate`, `plan`, or `quick-piv`. **On-demand** (user or router) — not the proactive plan gate (`pattern-review`).
+
+No separate `documentation/DOC_*` procedure — invocable steps live in the skill.
+
+| Audience | Start here |
+|----------|------------|
+| **Agents** | `.agents/skills/standards-align/SKILL.md` |
+| **Humans** | Same skill; router § `standards-align` vs `pattern-review` vs `challenge` |
+
+| Content | Path |
+|---------|------|
+| Procedure (bound → map → precedent → gap score → should → how → handoff) | `.agents/skills/standards-align/SKILL.md` |
+| Industry lens (do not duplicate) | `.agents/skills/pattern-review/references/rubric.md` |
+
+**Callers:** `router` when user asks should/how align; after Align decision → execution skills above.
+
+**Not the same as:** `.agents/skills/pattern-review/SKILL.md` (evaluate plan/proposal; proactive); `.agents/skills/challenge/SKILL.md` (simplify one feature without industry should-gate); `.agents/skills/improve/SKILL.md` (facade when technique unknown).
+
+## Improve facade (product entry)
+
+User-facing front door for “make this part better.” Resolves target in plain language, checks vision only when missing, silent multi-lens lite audit, ≤3 findings, then invokes `challenge` / `standards-align` / `consolidate` / `layer-consistency-check` / `validate` / `review`. **On-demand** (`/improve` or vague improve language).
+
+No separate `documentation/DOC_*` procedure — invocable steps live in the skill.
+
+| Audience | Start here |
+|----------|------------|
+| **Agents** | `.agents/skills/improve/SKILL.md` |
+| **Humans** | Same skill; router § `improve` vs specialized skills |
+
+| Content | Path |
+|---------|------|
+| Procedure (target → vision → audit → pick → handoff) | `.agents/skills/improve/SKILL.md` |
+| Child procedures | Linked skills above — do not duplicate |
+
+**Callers:** `router` on `/improve` or ambiguous improve intent.
+
+**Not the same as:** child skills when the user already named the technique; `feature` / `debug` for new work or bugs.
+
+## Layer consistency / workaround guard (single entry point)
+
+Catches requests or in-progress code that conflict with a deeper layer (physics/math, abstraction hierarchy, system architecture) **before** silently shipping a workaround. Core reflex: every request to change existing behavior carries an assumption about how the system works — verify it before acting (user can't see the impl). Agents apply **proactively** per `layer-consistency-check` skill and `architecture/RULE.md` § Layer consistency (workaround guard).
+
+No separate `documentation/DOC_*` procedure for this workflow — invocable steps live in **skills** (link from docs and rules only).
+
+| Audience | Start here |
+|----------|------------|
+| **Agents** | `.agents/skills/layer-consistency-check/SKILL.md` |
+| **Humans** | Same skill + `references/` below; router § `pattern-review` vs `layer-consistency-check` |
+
+| Content | Path |
+|---------|------|
+| Procedure (when / how / severity) | `.agents/skills/layer-consistency-check/SKILL.md` |
+| Request cues + seven workaround shapes | `.agents/skills/layer-consistency-check/references/workaround-shapes.md` |
+| WARNING, WORKAROUND alert block | `.agents/skills/layer-consistency-check/references/alert-template.md` |
+| Always-on reminder | `.cursor/rules/architecture/RULE.md` § Layer consistency (workaround guard) |
+
+**Callers:** always-on during implementation; `router` (tiebreak vs `pattern-review`). Do not duplicate the shapes rubric elsewhere — link these paths.
+
+**Not the same as:** `.agents/skills/pattern-review/SKILL.md` (external industry precedent); `.agents/skills/validate/SKILL.md` (repo rule compliance); `.agents/skills/consolidate/SKILL.md` § Semantic placement (post-hoc wrong-layer repair).
 
 ## External API / backend integration research (single entry point)
 
@@ -140,6 +202,11 @@ When the human only files feature requests or bug reports and tests in the app:
 | New invocable workflow | `router/SKILL.md` (situation table + skill index) |
 | Rules registry for skills | `.agents/skills/plan/references/rules-registry.md`; callers link only |
 | Pattern / industry-standard review | `.agents/skills/pattern-review/` — see § Pattern / industry-standard review above |
+| Standards align (should + how) | `.agents/skills/standards-align/` — see § Standards align loop above |
+| Improve facade (product entry) | `.agents/skills/improve/` — see § Improve facade above |
+| Feature purge / multi-asset removal | `.agents/skills/purge-skill/` — router situation + skill index |
+| Project skill authoring (`/create-skill`) | `.agents/skills/create-skill/` — project SSOT; user Cursor copy reference-only |
+| Layer consistency / workaround guard | `.agents/skills/layer-consistency-check/` — see § Layer consistency / workaround guard above |
 | External API / backend integration research | `.agents/skills/api-integrate/` — see § External API / backend integration research above |
 | New cross-repo adoption guide | `write-adoption-guide` skill; file under `documentation/handoffs/*_ADOPTION_GUIDE.md` |
 
@@ -147,6 +214,11 @@ When the human only files feature requests or bug reports and tests in the app:
 
 - Write adoption guides: `.agents/skills/write-adoption-guide/SKILL.md`
 - Pattern review: `.agents/skills/pattern-review/SKILL.md`
+- Standards align: `.agents/skills/standards-align/SKILL.md`
+- Improve facade: `.agents/skills/improve/SKILL.md`
+- Purge feature: `.agents/skills/purge-skill/SKILL.md`
+- Create skill (project): `.agents/skills/create-skill/SKILL.md`
+- Layer consistency: `.agents/skills/layer-consistency-check/SKILL.md`
 - External API integration: `.agents/skills/api-integrate/SKILL.md`
 - Doc hub: `documentation/DOC_INDEX.md`
 - Changesets: `documentation/DOC_CHANGESETS.md`

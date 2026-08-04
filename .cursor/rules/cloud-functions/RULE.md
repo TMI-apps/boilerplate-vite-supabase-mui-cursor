@@ -33,6 +33,8 @@ For complete project structure guidelines, refer to `architecture/RULE.md`.
 
 ## Critical Context: Deployment Model
 
+**Branch model (general):** `.cursor/rules/workflow/RULE.md` § Branch Strategy. **This section** is Edge Function deploy semantics only.
+
 **This project has develop and main branches that share ONE Supabase project.**
 
 - Frontend code deploys separately per branch (develop vs main)

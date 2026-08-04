@@ -30,9 +30,7 @@ Follow phases sequentially.
 - [ ] Read `documentation/DOC_APP_VISION.md`. If vision status is **`DRAFT`**, **STOP** and direct the user to fill it (see `.agents/skills/start/SKILL.md` § App vision) or obtain explicit written deferral before Phase 1 coding. Feature specs must not invent product scope when this file is empty of real prose.
 
 ### 1.1 Branch & Workflow Check
-- [ ] Verify current git branch. If on `main` or `develop`, **stop immediately** and instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>`
-- [ ] Never commit directly to `main` or `develop`. Branch must be a `feature/*` branch (workflow/RULE.md § Branch Strategy)
-- [ ] If starting new work, sync with latest `origin/develop` before creating `feature/*` to avoid stale-base conflicts
+- [ ] Per `.cursor/rules/workflow/RULE.md` § Branch Strategy — verify branch before app-code work; stop if on protected branches per that section.
 
 ### 1.2 Rule Decision Tree
 Check each rule category systematically:
@@ -350,9 +348,9 @@ When Phases 1–4 are complete and the user approved the implementation plan:
 
 1. Run **`.agents/skills/plan/SKILL.md`** to produce **`documentation/jobs/temp_job_<name>/DEVELOPMENT_PLAN.md`** (engineering SSOT), **or** confirm that file already exists and matches the approved spec.
 2. Satisfy required gates per [dev-cycle matrix](../router/references/dev-cycle-matrix.md): `pattern-review` when M/L; `review-dev-plan` when Complexity M/L; `validate` (plan-review) when warranted.
-3. Run **`.agents/skills/implement/SKILL.md`** for phase-by-phase execution — **do not implement product code in this skill**.
+3. Run **`.agents/skills/implement/SKILL.md`** only after `DEVELOPMENT_PLAN.md` exists — **do not skip `plan`**; **do not implement product code in this skill**.
 
-**Next (execution chain):** `implement` → **`.agents/skills/validate/SKILL.md`** → user acceptance → **`.agents/skills/finish/SKILL.md`** (changelog/commit only in `finish`).
+**Next (execution chain):** `plan` → (gates) → `implement` → **`.agents/skills/validate/SKILL.md`** → user acceptance → **`.agents/skills/finish/SKILL.md`** (changelog/commit only in `finish`).
 
 Phases 5–7 below are **retired** — implementation, QA, and completion live in `implement` → `validate` → `finish`. Do not execute them here.
 

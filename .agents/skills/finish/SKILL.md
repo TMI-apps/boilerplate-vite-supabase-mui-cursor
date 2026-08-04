@@ -169,8 +169,7 @@ After `git add`, expect hook behavior per **`documentation/DOC_AGENT_WORKFLOW_LA
 
 ## Production promotion (separate from finish)
 
-- **`finish`** lands version + changelog on the feature branch; squash merge to **`develop`** updates staging.
-- **Do not** use `finish` or a squash PR to ship production. After the user confirms staging on `develop`, run **Promote to production** (`promote-to-production.yml`) per `.cursor/rules/workflow/RULE.md`.
+Per `.cursor/rules/workflow/RULE.md` § Promote to production — not `finish`, not a squash PR to `main`.
 
 ## User test handoff (mandatory before closure)
 

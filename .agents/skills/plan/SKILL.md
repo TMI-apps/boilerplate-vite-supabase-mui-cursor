@@ -22,15 +22,17 @@ Create a development plan for a feature or job. Research how best to implement i
 
 ## Flow
 
-### 0. Branch gate (when plan will lead to code)
+### 0. Branch gate
 
-- [ ] Verify current git branch. If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
-- [ ] Planning may run on any branch; **do not** start file creation on `main` or `develop`.
+- [ ] **Plan file:** `DEVELOPMENT_PLAN.md` may be created on any branch per `.cursor/rules/workflow/RULE.md` § Exceptions (Safe to Edit on Any Branch).
+- [ ] **Implementation:** App-code work follows `.cursor/rules/workflow/RULE.md` § Branch Strategy — route to `implement` only from a `feature/*` branch.
 
 ### 1. Input
 
 - User describes what they want (e.g. add a capability, migrate X to Y).
 - Optional: job name, reference to spec or ticket.
+- Optional: prior [`standards-align`](../standards-align/SKILL.md) report (gap table + Should/How decisions) when planning an Align-hard / Reframe path.
+- Optional: `feature` Phase 4 approved summary when planning after the feature skill.
 
 ### 2. Refine (if needed)
 
@@ -179,7 +181,7 @@ During planning, work through (using the rules reference above):
 - [ ] Note security impact if applicable (auth, RLS, validation, secrets in `.env` only).
 - [ ] Document conflicts with existing code (pattern mismatches, breaking changes).
 - [ ] Consider testing: new or changed logic should have tests per `.cursor/rules/testing/RULE.md`.
-- [ ] Workflow: branch strategy per `.cursor/rules/workflow/RULE.md` (e.g. not developing on `main`). Changelog is updated in **finish**, not while planning.
+- [ ] Workflow: branch strategy and changelog timing per `.cursor/rules/workflow/RULE.md` and **finish** (changelog in **finish**, not while planning).
 - [ ] If a feature’s behavior changes: plan updates to `src/features/<feature>/README.md` in the same work as code (see file-placement rule).
 
 **Output inside `DEVELOPMENT_PLAN.md`:** A **Conflict & compliance** section with:

@@ -35,6 +35,8 @@ Architectural patterns, module organization, and structural standards for applic
 
 Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AGENT_WORKFLOW_LAYERS.md) § Pattern / industry-standard review.
 
+**Not:** internal abstraction-layer mismatch or workaround shapes — see § Layer consistency (workaround guard) below.
+
 ### Performance cost risk (heavy DB / UI operations)
 
 **Proactively** when planning or implementing operations that could significantly slow the database or UI. Flag the cost, design a leaner alternative, then let the user choose — do not silently ship the expensive path.
@@ -48,6 +50,20 @@ Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC
 4. **Ask** — use the multiple-choice ask tool to let the user pick the approach before implementing. Follow `workflow/RULE.md` § Decision Questioning Protocol (raw question first, research, then choices; label the option most consistent with the codebase; include the omnipresent UX-impact research option).
 
 Cross-refs: measure with **`web-perf`** plugin skill when symptoms are CWV/Lighthouse → structural fix with **`.agents/skills/optimize2/SKILL.md`** → cite **`.agents/skills/react-perf-vite/SKILL.md`** while implementing (router § `web-perf` vs `optimize2` vs `react-perf-vite`). Stack-native fixes also in `react-perf-vite`; query cache UX `architecture/RULE.md` § Plain optimistic + server-canonical response; DB indexes/migrations `database/RULE.md`.
+
+**Not:** structural workaround / abstraction-layer mismatch — see § Layer consistency (workaround guard) below.
+
+### Layer consistency (workaround guard)
+
+**Core reflex:** every request carries the user's assumption about how the system works — they can't see the implementation, so verify it before acting.
+
+**Proactively** on any request to change existing behavior ("add a color to the gradient", "make it splash", "just add a field/button/flag"), and when the request uses minimizer/exception language, names a first-of-a-kind instance without a category, or imports behavior-by-analogy. **Reactively** when the diff takes a workaround shape (special-case flag, parallel path, symptom tuning, disconnected patch, instance-encoded naming, growing scope, "for now" comment) or mid-impl when your own code starts to look like a workaround.
+
+Before writing the workaround: run [`.agents/skills/layer-consistency-check/SKILL.md`](../../../.agents/skills/layer-consistency-check/SKILL.md) (shapes: [`references/workaround-shapes.md`](../../../.agents/skills/layer-consistency-check/references/workaround-shapes.md)). Post the **WARNING, WORKAROUND** block from its alert template; **stop** until the user chooses workaround vs structural alternative. Apply the severity filter — do not flag genuinely one-off exceptions with no recurring cost.
+
+Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AGENT_WORKFLOW_LAYERS.md) § Layer consistency (workaround guard).
+
+**Not:** industry precedent ([`pattern-review`](../../../.agents/skills/pattern-review/SKILL.md)); repo rule audit ([`validate`](../../../.agents/skills/validate/SKILL.md)); post-hoc wrong-layer repair ([`consolidate`](../../../.agents/skills/consolidate/SKILL.md) § Semantic placement). When both pattern-review and layer-consistency apply, run layer-consistency first (router § tiebreak).
 
 ## Project Structure
 

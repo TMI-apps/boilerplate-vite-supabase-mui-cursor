@@ -32,8 +32,7 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 ### 0. Branch gate
 
-- [ ] Verify current git branch (`git branch --show-current`). If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
-- [ ] Never commit directly to `main` or `develop` during implementation.
+- [ ] Per `.cursor/rules/workflow/RULE.md` § Branch Strategy — verify branch before code edits; stop if on protected branches per that section.
 - [ ] **CRITICAL:** If the plan touches protected files (`.husky/**`, `tsconfig*.json`, `.cursor/rules/**`, `.agents/skills/**`, etc.), **stop** and get explicit user approval before editing them. Full manifest: `.cursor/rules/workflow/RULE.md` § Protected Files. Record consent in **Decisions made** when granted.
 
 ### 1. Load plan

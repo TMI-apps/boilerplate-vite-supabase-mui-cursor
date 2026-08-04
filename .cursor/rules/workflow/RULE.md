@@ -116,9 +116,11 @@ Do not make code changes until on a feature branch.
 **Safe to Edit on Any Branch**
 
 These files may be edited on any branch after user confirmation:
-- Documentation files (`documentation/*.md`)
+- Documentation files (`documentation/**/*.md`), including plan files (`documentation/jobs/**/DEVELOPMENT_PLAN.md`)
 - Cursor rules (`.cursor/rules/*.md`)
 - README files
+
+App code (`src/**`, configs, migrations, etc.) still requires a `feature/*` branch per § Branch Strategy above.
 
 **Emergency Main Branch Changes (Rare Exception)**
 

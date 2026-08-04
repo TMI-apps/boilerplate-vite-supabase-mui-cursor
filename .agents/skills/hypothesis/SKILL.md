@@ -1,6 +1,12 @@
 ---
 name: hypothesis-debugging
-description: Debug by pre-registered hypothesis instead of guess-and-patch. Before touching code, the agent states what it believes the root cause is, predicts what a successful fix proves, and — critically — pre-registers what a FAILED fix would teach and how that narrows the space of remaining causes. Use this whenever debugging a bug, error, test failure, or "why isn't this working" issue, OR whenever the user explicitly invokes hypothesis mode (e.g. "use the hypothesis skill", "debug this with hypotheses", "hypothesis debugging"). Especially use it for non-obvious bugs where the cause is unclear, intermittent failures, or bugs that have already survived one or more naive fix attempts. The goal is to corner the cause across iterations, not to fix in one shot.
+description: >-
+  Debug by pre-registered hypothesis instead of guess-and-patch. Before touching
+  code, the agent states the suspected root cause, predicts what a successful fix
+  proves, and pre-registers what a FAILED fix would teach. IF the user invokes
+  hypothesis mode OR naive fixes already failed ≥1 THEN use this skill; ELSE use
+  `debug` (router § debug vs hypothesis). Especially for non-obvious, intermittent,
+  or repeatedly failed bugs.
 ---
 
 # Hypothesis Debugging

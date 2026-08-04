@@ -32,6 +32,7 @@ Quick reference guide to all rules and their relationships.
 - **Architecture documentation** (minimal contract-doc maintenance)
 - **Pattern risk (industry precedent)** — pointer to `.agents/skills/pattern-review/` (plans/proposals; not repo lint)
 - **Performance cost risk (heavy DB/UI ops)** — detect heavy operations, propose leaner alternatives, ask user before implementing
+- **Layer consistency (workaround guard)** — pointer to `.agents/skills/layer-consistency-check/` (verify assumptions about existing behavior; catch internal layer mismatches before shipping workarounds)
 
 **Related to:** code-style, testing, security, workflow
 

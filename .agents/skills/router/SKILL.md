@@ -5,8 +5,10 @@ description: >-
   in the same turn). Mid-thread: continue the logical next step on active work. Idle or new:
   fall back to gates and app-tasks.json backlog. Maps situations to project, user, and plugin
   skills; resolves overlaps. Product context SSOT: documentation/DOC_APP_VISION.md. Use when
-  the user types /router, asks which skill to use, starts ambiguous work, or routes slash
-  commands to SKILL.md files. Bare /router is next-action dispatch (not finish).
+  the user types /router or asks which skill to use, or routes slash commands to SKILL.md files.
+  IF the user message has no clear primary outcome AND gates 1–2 are not satisfied THEN follow
+  Clarification-first routing. IF mid-task signals are present THEN thread continuation (not
+  backlog). Bare /router is next-action dispatch (not finish).
 ---
 
 # Skill router
@@ -62,7 +64,7 @@ Pick **one** primary by the **most blocking** row that applies (top wins). Then 
 | Validated; user/thread signaled landing | `finish` (only when wrap-up is the clear next step — not the default for bare `/router` on new work) |
 | Pushed feature branch; PR to `develop` open; CI status unknown | `babysit` (`~/.cursor/skills-cursor/babysit/SKILL.md`) after successful `push` |
 
-Align with [dev-cycle matrix](references/dev-cycle-matrix.md). When unfamiliar with repo state mid-job, run **`prime`** once, then continue with the chosen skill — do not replace thread continuation with backlog intake.
+Align with [dev-cycle matrix](references/dev-cycle-matrix.md). IF active job AND repo/branch context unknown THEN run **`prime`** once, then continue with the chosen skill — do not replace thread continuation with backlog intake.
 
 **`/finish`** is only for explicit wrap-up — read `.agents/skills/finish/SKILL.md` when the user invokes finish or asks to commit completed work (not the default idle `/router` outcome).
 
@@ -97,6 +99,8 @@ If unclear, ask about the user's intended app usage, product vision, priorities,
 | **Unbounded** | Missing acceptance hints, unknown data/auth/API shape, or “everything flexible.” |
 
 If the emerging direction would diverge from industry standards, framework best practices, or established repo conventions, ask whether the diversion is intentional or whether to align with best practices before routing to implementation.
+
+**Pre-implementation — layer consistency (when cues match):** Before routing to `quick-piv`, `plan`, or direct code, check request-side cues in [`layer-consistency-check/references/workaround-shapes.md`](../layer-consistency-check/references/workaround-shapes.md) § Request-side cues — including **any change to existing behavior** (verify the user's assumption about how the system works first) and the onboarding-UI cue for integrations whose SSOT is `.env` + `src/config/app-tasks.json` + docs. If cues match, read and run [`.agents/skills/layer-consistency-check/SKILL.md`](../layer-consistency-check/SKILL.md) **first** — do not explore for implementation until the one-beat check clears or the user picks workaround vs structural path.
 
 ### Gate 3 — Delivery shape (only after gates 1–2 pass)
 
@@ -165,7 +169,12 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | New chat / ambiguous task; map repo rules and recent git state | `.agents/skills/prime/SKILL.md` |
 | **Goal and scope clear**; non-trivial job needing phased written plan + compliance | `.agents/skills/plan/SKILL.md` |
 | Plan written; qualitative critique before implementation (especially Complexity M/L) | `.agents/skills/review-dev-plan/SKILL.md` |
-| Industry standard / best practice / “is this how products usually do it?” | `.agents/skills/pattern-review/SKILL.md` |
+| Industry standard / best practice / “is this how products usually do it?” on a **plan or proposal** | `.agents/skills/pattern-review/SKILL.md` |
+| Ambiguous “improve / clean up / make better” on an existing area; `/improve` | `.agents/skills/improve/SKILL.md` |
+| Should we align [existing product/feature/component] with industry standards? / how to align? | `.agents/skills/standards-align/SKILL.md` |
+| Delete / remove / `/purge` a named feature/module with multi-asset cleanup | `.agents/skills/purge-skill/SKILL.md` |
+| Author or refine one project skill under `.agents/skills/` (`/create-skill`) | `.agents/skills/create-skill/SKILL.md` |
+| Change existing behavior / unverified system assumption / workaround / “just this one” exception during implementation | `.agents/skills/layer-consistency-check/SKILL.md` (also always-on via `architecture/RULE.md` § Layer consistency) |
 | Write a cross-repo adoption guide from an implemented pattern | `.agents/skills/write-adoption-guide/SKILL.md` |
 | Goal or scope **not** ready — clarify only (no `DEVELOPMENT_PLAN.md` yet); **one** primary by missing dimension (see **Clarification-first routing**) | Product/vision → `grill-me`; acceptance/APIs → `plan` **§ Refine** only |
 | Execute an existing `DEVELOPMENT_PLAN.md` phase by phase | `.agents/skills/implement/SKILL.md` |
@@ -175,7 +184,6 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Version, changelog, staging gate, **local** commit | `.agents/skills/finish/SKILL.md` |
 | Bundle **all** uncommitted work from multiple agent threads (same checkout), then push | `.agents/skills/bundle-ship/SKILL.md` |
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
-| Pushed feature branch; PR to `develop` open; CI status unknown | `~/.cursor/skills-cursor/babysit/SKILL.md` (after successful `push`; not every WIP push) |
 | Bug / error / broken / regression (not a new feature) | `.agents/skills/debug/SKILL.md` — § Chat intake before code |
 | Promote `develop` staging to production (`main`) | `gh workflow run promote-to-production.yml` — see `.cursor/rules/workflow/RULE.md` § Promote to production (not `finish`, not a squash PR) |
 | Human onboarding; README quick start + dev task backlog | `.agents/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
@@ -207,7 +215,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 
 | Situation | Skill |
 |-----------|--------|
-| Author or refactor Agent Skills (`SKILL.md`) | `~/.cursor/skills-cursor/create-skill/SKILL.md` |
+| Author or refine a project skill under `.agents/skills/` | `.agents/skills/create-skill/SKILL.md` (this repo SSOT; `~/.cursor/skills-cursor/create-skill` is reference-only here) |
 | Migrate `.mdc` rules / slash commands → skills | `~/.cursor/skills-cursor/migrate-to-skills/SKILL.md` |
 | Create `.cursor/rules` `.mdc` guidance | `~/.cursor/skills-cursor/create-rule/SKILL.md` |
 | Cursor hooks (`hooks.json`, hook scripts) | `~/.cursor/skills-cursor/create-hook/SKILL.md` |
@@ -371,6 +379,39 @@ When the user asks to **review a plan** or before **implement** on Complexity **
 
 Do **not** run standalone **`pattern-review`** `scan` in the same session if **`review-dev-plan`** already ran the industry-precedent lens (unless the user requests a delta review).
 
+### `pattern-review` vs `layer-consistency-check`
+
+- **`pattern-review`:** Does this design match **external industry / product precedent** for the capability?
+- **`layer-consistency-check`:** Does this request fit the **internal** layer beneath it (abstraction hierarchy, architecture, physics/math) — or are we about to ship a workaround?
+
+**Order when both apply:** **`layer-consistency-check` first** (one-beat check). If the user picks a structural path that changes UX/API contracts, run **`pattern-review`** before implementing.
+
+### `improve` vs specialized improve skills
+
+- **`improve`:** Product-facing **facade** — plain-language target, optional vision, ≤3 findings, then invokes one child skill. Use when the user has not named a technique.
+- **`standards-align` / `challenge` / `consolidate` / `validate` / `review`:** Named technique already clear → skip facade.
+- **`layer-consistency-check` / `pattern-review`:** Proactive guards stay always-on; `improve` may also route a finding into `layer-consistency-check`.
+- **`optimize2` / `react-perf-vite`:** Named hotspot or Vite SPA perf symptom → those skills; vague “make better/faster” without a named hotspot → **`improve`** first (may recommend optimize/perf as a finding).
+- **`grill-me`:** Gate-1 vision/tradeoff ambiguity, or explicit stress-test when gates already pass → **`grill-me`**. Vague quality on an existing area → **`improve`** (vision Qs only if thin).
+
+**Tiebreak:** Vague “make better” / `/improve` → **`improve`**. Specific “align with industry” → **`standards-align`**. Specific “simplify this flow” → **`challenge`**. Named perf hotspot → **`optimize2`** or **`react-perf-vite`**. Gate-1 unclear product intent → **`grill-me`**.
+
+### `create-skill` vs `improve-skill-library` vs `rule-quality`
+
+- **`create-skill`:** One new/refined `.agents/skills/<name>/SKILL.md` (this repo).
+- **`improve-skill-library`:** Whole-corpus coherence audit.
+- **`rule-quality`:** Grade/rewrite one **rule/command** file (not skill authoring).
+
+### `standards-align` vs `pattern-review` vs `challenge`
+
+- **`pattern-review`:** Proactive (and on-demand) **evaluate** a plan/proposal vs industry — verdict + Pattern risk A/B/C. Does **not** own the full “should we realign this existing scope + how to simplify toward standards” loop.
+- **`standards-align`:** On-demand loop for an **existing** product/feature/component: **should we align?** → gap score → how A/B/C → hand off. Reuses the `pattern-review` rubric; does not replace proactive plan gates.
+- **`challenge`:** Simplify **one** named feature/workflow (fewer steps/code) when the question is overbuilt — not primarily “vs market.”
+
+**Tiebreak:** User asks should/how **align with industry** on existing scope → **`standards-align`**. Novel plan/proposal gate → **`pattern-review`**. “This flow is overbuilt” without industry framing → **`challenge`**.
+
+**Always-on:** layer-consistency is enforced during implementation via `architecture/RULE.md` § Layer consistency — not only when the user names the skill.
+
 ### `implement` vs `quick-piv`
 
 - **`implement`:** Active `DEVELOPMENT_PLAN.md` with multi-phase or durable execution — phase-by-phase SSOT.
@@ -472,6 +513,11 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/api-integrate/SKILL.md`
 - `.agents/skills/grill-me/SKILL.md`
 - `.agents/skills/pattern-review/SKILL.md`
+- `.agents/skills/improve/SKILL.md`
+- `.agents/skills/standards-align/SKILL.md`
+- `.agents/skills/purge-skill/SKILL.md`
+- `.agents/skills/create-skill/SKILL.md`
+- `.agents/skills/layer-consistency-check/SKILL.md`
 - `.agents/skills/review-dev-plan/SKILL.md`
 - `.agents/skills/write-adoption-guide/SKILL.md`
 
@@ -481,7 +527,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 
 ### User Cursor bundle (`~/.cursor/skills-cursor/`)
 
-- `create-skill`, `migrate-to-skills`, `create-rule`, `create-hook`, `create-subagent`, `babysit`, `split-to-prs`, `canvas`, `update-cursor-settings`, `update-cli-config`, `statusline`, `shell` — each under its own folder `SKILL.md`.
+- `migrate-to-skills`, `create-rule`, `create-hook`, `create-subagent`, `babysit`, `split-to-prs`, `canvas`, `update-cursor-settings`, `update-cli-config`, `statusline`, `shell` — each under its own folder `SKILL.md`. (Project skill authoring: `.agents/skills/create-skill/` — see project index.)
 
 ### Plugins
 

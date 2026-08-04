@@ -1,6 +1,6 @@
 # Vague conditional phrases — detection SSOT
 
-Used by **Lens 5** (`subagent-briefs.md`) during `improve-skill-library`. For per-file rewrites, defer to [`rule-quality`](../../rule-quality/SKILL.md) Mode B § Conditional Structure and `create-skill` (`~/.cursor/skills-cursor/create-skill/SKILL.md`) § Writing Effective Descriptions (reference-only).
+Used by **Lens 5** (`subagent-briefs.md`) during `improve-skill-library`. For per-file rewrites, defer to [`rule-quality`](../../rule-quality/SKILL.md) Mode B § Conditional Structure and [`create-skill`](../../create-skill/SKILL.md) § Writing Effective Descriptions.
 
 ## Problem
 

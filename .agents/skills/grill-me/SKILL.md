@@ -5,8 +5,9 @@ description: >-
   decision tree is resolved. Grounds every edge question in what already exists in the
   repo — existing loops, pipelines, and hook points — so ride-vs-new and boundary
   choices are concrete, not abstract. Chat-only alignment — authors no artifact.
-  Use to stress-test scope/boundaries before feature or plan, or when the user says
-  "grill me".
+  IF gate 1 fails (vision/tradeoffs) THEN use this skill; IF gate 2 fails
+  (acceptance/APIs) THEN `plan` § Refine only; IF gates already pass AND the user
+  wants a stress-test OR says "grill me" THEN use this skill.
 disable-model-invocation: false
 ---
 
@@ -87,7 +88,20 @@ Share findings plainly ("the app already does X via Y") or uncertainty ("no noti
 
 Ask **one boundary question at a time**; a turn may include grounding prose plus the question. Use a question tool call when available; prefer multiple-choice when branches are clear.
 
-**Offer Pareto-optimal options only** — each choice wins on a distinct axis (performance, code consistency, least code, reusability, UX, separation/ease-of-cutting). Label each option by the axis it wins on. When one choice dominates on every axis, state it and move on.
+**Offer Pareto-optimal options only** — each choice wins on a distinct axis (performance, code consistency, least code, reusability, UX, separation/ease-of-cutting). When one choice dominates on every axis, state it and move on.
+
+### Option format (required)
+
+Every choice uses: **`[Wins: <axis>] <label>`** — then one line: what you gain / what you pay.
+
+Before the options, a **cost sketch** when the repo supports it:
+
+| | Perf | Code | UX |
+|---|---|---|---|
+
+Rows = options; cells = brief `+` / `−` / `=` / `?` (or a word) — enough to show why that option wins its axis, not a full analysis.
+
+**Anti-pattern:** options grouped only by feature area (e.g. "glints / Fresnel / foam") without axis labels — split into separate questions if scope and mechanism are both open.
 
 **State codebase evidence beside the question** — one line on what the repo shows (or `Uncertain`) before the choices. Keep options symmetric tradeoffs; let evidence inform without labeling a "default" option.
 
