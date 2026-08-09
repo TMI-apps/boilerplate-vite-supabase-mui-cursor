@@ -38,6 +38,7 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 ### 1. Load plan
 
 - [ ] Read `DEVELOPMENT_PLAN.md` for the resolved job folder.
+- [ ] If `DECISIONS.md` exists beside the plan: skim it. If any row is **open**, **soft-warn** in chat (list topics) — may proceed; do not hard-block. Prefer resolving with the user or `plan-grill` when the open topic still matters.
 - [ ] If the plan’s **Summary** or acceptance criteria imply user-facing product change, skim `documentation/DOC_APP_VISION.md` for consistency; if **`DRAFT`**, flag to the user before heavy implementation.
 - [ ] Verify mandatory sections exist: Summary, Phase overview, Conflict & compliance, Notes during development, Decisions made.
 - [ ] If Summary **Complexity** is **M** or **L**, or the plan changes user-visible behavior/contracts: verify **Pattern & precedent** is filled (or explicitly skipped with reason).

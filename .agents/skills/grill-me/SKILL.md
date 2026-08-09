@@ -4,10 +4,11 @@ description: >-
   Interview the user until scope edges and interaction boundaries are aligned and the
   decision tree is resolved. Grounds every edge question in what already exists in the
   repo — existing loops, pipelines, and hook points — so ride-vs-new and boundary
-  choices are concrete, not abstract. Chat-only alignment — authors no artifact.
-  IF gate 1 fails (vision/tradeoffs) THEN use this skill; IF gate 2 fails
-  (acceptance/APIs) THEN `plan` § Refine only; IF gates already pass AND the user
-  wants a stress-test OR says "grill me" THEN use this skill.
+  choices are concrete, not abstract. Logs closed decisions to DECISIONS.md (shared
+  with plan-grill). IF gate 1 fails (vision/tradeoffs) THEN use this skill; IF gate 2
+  fails (acceptance/APIs) THEN `plan` § Refine only; IF gates already pass AND the user
+  wants a stress-test OR says "grill me" THEN use this skill. Plan-time product forks
+  → `plan-grill` (same triggers, anti-dup via the ledger).
 disable-model-invocation: false
 ---
 
@@ -21,9 +22,13 @@ Agree on **where the feature stops**, **what it will NOT do or touch**, and **ho
 
 ## What this skill owns (SSOT)
 
-`grill-me` owns **reaching alignment in chat** — not recording it. It produces shared understanding, **authors no file**, then hands the resolved tree to **`feature`** (to document as requirements) or **`plan` § Refine** (to turn into `DEVELOPMENT_PLAN.md`). Stay in conversation: user stories, journeys, and spec files belong in `feature` / `plan`.
+`grill-me` owns **reaching alignment** on scope edges and logging them to the shared decisions ledger. It still hands requirements prose to **`feature`** and execution planning to **`plan`**. User stories, journeys, and `DEVELOPMENT_PLAN.md` are not this skill's artifacts.
+
+**Ledger:** `documentation/jobs/temp_job_<name>/DECISIONS.md` — format SSOT [`../plan-grill/references/decisions-template.md`](../plan-grill/references/decisions-template.md). **First writer** (`grill-me`, `plan-grill`, or `feature`) creates the job folder + file on the first product decision. Log each closed answer (and clear-winner skips) so `plan-grill` never re-asks.
 
 **Skip gate:** trivial/XS change with no real edges → route to `quick-piv` instead of grilling.
+
+**Plan-time forks:** after planning starts, new product forks use **`plan-grill`** (same ask triggers; continuous gate). Prefer closing more questions here so plan-time stops less.
 
 ## Codebase grounding (mandatory, scoped)
 
@@ -88,36 +93,40 @@ Share findings plainly ("the app already does X via Y") or uncertainty ("no noti
 
 Ask **one boundary question at a time**; a turn may include grounding prose plus the question. Use a question tool call when available; prefer multiple-choice when branches are clear.
 
-**Offer Pareto-optimal options only** — each choice wins on a distinct axis (performance, code consistency, least code, reusability, UX, separation/ease-of-cutting). When one choice dominates on every axis, state it and move on.
+**Offer Pareto-optimal options only** — each choice wins on a **distinct** axis. When one choice dominates every axis with acceptable costs on the rest, state it, **log as clear-winner** in `DECISIONS.md`, and move on — do not invent fake tradeoffs.
 
-### Option format (required)
+**Axes (pick one winner per option):** performance, code consistency, least code, reusability, UX, separation/ease-of-cutting.
 
-Every choice uses: **`[Wins: <axis>] <label>`** — then one line: what you gain / what you pay.
+### Boundary-question template (required)
 
-Before the options, a **cost sketch** when the repo supports it:
+Structure every multiple-choice boundary question in this order:
 
-| | Perf | Code | UX |
-|---|---|---|---|
+1. **Evidence** — one line on what the repo shows (or `Uncertain`). Explore first when the codebase can answer part of the question.
+2. **Cost sketch** — when exploration allows, a compact table comparing branches on **Perf | Code | UX** (add **Scope-cut** when relevant). Mark agent estimates; `plan` verifies exact numbers.
+3. **Choices** — 2–4 options, each one line:
+   - **`[Wins: <axis>] <label>`** — gain; **pay** (explicit cost on other axes).
+4. **Omnipresent** — always append both escape hatches below.
 
-Rows = options; cells = brief `+` / `−` / `=` / `?` (or a word) — enough to show why that option wins its axis, not a full analysis.
-
-**Anti-pattern:** options grouped only by feature area (e.g. "glints / Fresnel / foam") without axis labels — split into separate questions if scope and mechanism are both open.
-
-**State codebase evidence beside the question** — one line on what the repo shows (or `Uncertain`) before the choices. Keep options symmetric tradeoffs; let evidence inform without labeling a "default" option.
+**Example option line:** `[Wins: performance] Shader-only fake glow — no extra passes; pays with less convincing scatter.`
 
 Every multiple-choice question includes two omnipresent options:
 
 - **"Explain the UX impact first"** — research the flow, explain what each branch means for users, re-ask.
 - **"Dig deeper in the codebase"** — widen exploration, update the hook map, re-ask.
 
+### Anti-patterns (do not ship questions like these)
+
+- Options grouped **only by feature area** (e.g. "glints / Fresnel / foam") with no `[Wins: …]` axis or pay line.
+- Two options claiming the **same winning axis** without different pay lines.
+- **Bundling** integration approach and content scope in one question when each branch has different Perf/Code/UX — split (usually integration perimeter first, then what is in the bright-pass / handoff).
+
+Mechanism detail (`functionA` vs `functionB`, library vs hand-roll) belongs in `plan` **unless** the integration choice changes product scope, perf budget, or what neighbors are touched — then grill it using the template above (evidence + cost sketch + axis labels).
+
 Ask at the level the user can answer — behavior, scope, edges:
 
 - Perimeter: "Is v1 just browsing cached data, or working fully offline and syncing later?"
-- Grounded edge: *Evidence: save flow shows a toast today.* "Should this replace it, add a second toast, or only fire for async outcomes?"
-- Grounded ride-vs-new: *Evidence: shared notifications pipeline exists (prefs + history).* "Ride that path, or fork — and if fork, what can't it handle?"
-- Mechanism questions (`functionA` vs `functionB`, hook vs service) belong to `plan`, not grill.
-
-When the codebase can answer a question, explore first, then ask the remaining scope/behavior/boundary uncertainty.
+- Grounded edge: *Evidence: save flow shows a toast today.* Cost sketch + `[Wins: UX]` / `[Wins: least code]` / … options with pay lines.
+- Grounded ride-vs-new: *Evidence: shared notifications pipeline exists (prefs + history).* Ride vs fork with axis labels, not file names alone.
 
 ## Recommendation timing
 
@@ -125,7 +134,7 @@ During grilling, share hook-map findings and what each branch means for users. S
 
 ## Ending the grill
 
-Close with a **chat summary** (no file):
+Close with a **chat summary** plus an up-to-date **`DECISIONS.md`** (all closed topics logged):
 
 - **Vision & constraints** — concise.
 - **In scope** — the agreed perimeter.
@@ -133,8 +142,9 @@ Close with a **chat summary** (no file):
 - **Neighbor/boundary map** — per neighbor: verified loop (or greenfield), **agreed** hook point (promoted from provisional), ride vs new, resolved edges.
 - **Open tradeoffs** — product-framed.
 - **Recommended direction** — including which loops to extend; file-level detail for `plan` § Investigate.
+- **Ledger path** — `documentation/jobs/temp_job_<name>/DECISIONS.md` when any decision was logged.
 
-**Next:** re-run `.agents/skills/router/SKILL.md` gates 1–2 → `plan` § Refine or `feature`. Proceed to `implement` only after a `DEVELOPMENT_PLAN.md` exists.
+**Next:** re-run `.agents/skills/router/SKILL.md` gates 1–2 → `plan` § Refine or `feature`. During `plan`, `plan-grill` continues the gate for *new* forks only. Proceed to `implement` only after a `DEVELOPMENT_PLAN.md` exists.
 
 ---
 
@@ -142,11 +152,12 @@ Close with a **chat summary** (no file):
 
 | `grill-me` owns | Hand off to |
 |---|---|
-| Chat alignment on scope edges & decision tree | `feature` (Phase 2) to document requirements |
-| Resolved scope ready for execution planning | `plan` § Refine → Investigate for file list, APIs, gates |
+| Scope-edge alignment + `DECISIONS.md` rows | `feature` (Phase 2) to document requirements |
+| Resolved scope ready for execution planning | `plan` § Refine → Investigate (`plan-grill` for new forks) |
 | Gate 2 acceptance / API shape detail | `plan` § Refine (grill informs; plan records) |
+| Plan-time product forks (anti-dup) | `plan-grill` |
 | Migrations, RLS policies, exact API contracts | `plan` § Investigate |
 | Trivial/XS work with no real edges | `quick-piv` |
 | Landed implementation | `implement` / `finish` |
 
-**SSOT note:** `grill-me` aligns in conversation, grounded in what exists; `feature`/`plan` record the result.
+**SSOT note:** `grill-me`, `plan-grill`, and `feature` share `DECISIONS.md`; `feature`/`plan` record requirements and execution. Chat summary remains; ledger prevents duplicate asks.

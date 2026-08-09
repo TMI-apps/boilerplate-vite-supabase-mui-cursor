@@ -200,6 +200,7 @@ When the human only files feature requests or bug reports and tests in the app:
 | `.husky/pre-push` | `workflow/RULE.md`, `push` skill, this doc if hook scope changes |
 | `finish` / `push` flow | Both skills, `router` matrix |
 | New invocable workflow | `router/SKILL.md` (situation table + skill index) |
+| Product decision ledger (`DECISIONS.md`) / `grill-me` ↔ `plan-grill` | `.agents/skills/plan-grill/` (template SSOT); `grill-me`, `feature`, `plan`, `implement`; router disambiguation § `grill-me` vs `plan-grill` |
 | Rules registry for skills | `.agents/skills/plan/references/rules-registry.md`; callers link only |
 | Pattern / industry-standard review | `.agents/skills/pattern-review/` — see § Pattern / industry-standard review above |
 | Standards align (should + how) | `.agents/skills/standards-align/` — see § Standards align loop above |
@@ -209,6 +210,18 @@ When the human only files feature requests or bug reports and tests in the app:
 | Layer consistency / workaround guard | `.agents/skills/layer-consistency-check/` — see § Layer consistency / workaround guard above |
 | External API / backend integration research | `.agents/skills/api-integrate/` — see § External API / backend integration research above |
 | New cross-repo adoption guide | `write-adoption-guide` skill; file under `documentation/handoffs/*_ADOPTION_GUIDE.md` |
+
+## Product decision ledger (`DECISIONS.md`)
+
+Shared anti-dup ledger for product/scope forks (not impl-time plan **Decisions made**).
+
+| Audience | Start here |
+|----------|------------|
+| **Agents** | `.agents/skills/plan-grill/SKILL.md` + [`references/decisions-template.md`](../.agents/skills/plan-grill/references/decisions-template.md) |
+| **Writers** | `grill-me`, `plan-grill`, `feature` (first writer creates `documentation/jobs/temp_job_<name>/DECISIONS.md`) |
+| **Readers** | `plan` (anti-dup), `implement` (soft-warn on open rows) |
+
+**Not the same as:** `DEVELOPMENT_PLAN.md` § Decisions made (filled during `implement`).
 
 ## Related
 

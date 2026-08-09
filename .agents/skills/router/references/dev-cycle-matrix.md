@@ -27,6 +27,7 @@ Optional: `prime` when codebase or branch context is unfamiliar.
 | Situation | Usually next |
 |-----------|----------------|
 | Goal unclear | `grill-me` and/or `plan` § Refine |
+| Product fork mid-plan | `plan-grill` (via `plan`; anti-dup `DECISIONS.md`) |
 | Novel UX/API/architecture without documented precedent | `pattern-review` then `plan` with **Pattern & precedent** |
 | Complexity M/L + plan review pending | `review-dev-plan` |
 | Implementing without plan but material design questions | `pattern-review` `lite`; then `plan` or waiver in **Decisions made** |

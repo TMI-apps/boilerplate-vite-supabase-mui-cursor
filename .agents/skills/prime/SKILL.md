@@ -93,6 +93,7 @@ Deliver a concise, scannable summary:
 |-------------|-------------|
 | Human first-time setup | `start` |
 | Product vision Q&A | `grill-me` |
+| Product forks during planning | `plan-grill` |
 | Write `DEVELOPMENT_PLAN.md` | `plan` |
 | Commit / push | `finish` / `push` |
 

@@ -37,8 +37,8 @@ Treat the thread as **mid-task** when **any** of these hold:
 
 | Signal | Examples |
 |--------|----------|
-| **Conversation** | Recent turns executing `implement`, `quick-piv`, `feature`, `debug`, `grill-me`, or `plan` § Refine on a specific job; quick plan posted but implement/validate not done |
-| **Open / recent files** | `documentation/jobs/temp_job_*/DEVELOPMENT_PLAN.md` tied to the current job |
+| **Conversation** | Recent turns executing `implement`, `quick-piv`, `feature`, `debug`, `grill-me`, `plan-grill`, or `plan` § Refine on a specific job; quick plan posted but implement/validate not done |
+| **Open / recent files** | `documentation/jobs/temp_job_*/DEVELOPMENT_PLAN.md` or `DECISIONS.md` tied to the current job |
 | **Plan state** | Active plan has pending phases, `Plan review: Required: pending`, or incomplete **Pattern & precedent** when M/L requires it |
 | **Working tree** | `git status` shows changes that match the thread’s stated scope (same job/files discussed) |
 
@@ -197,6 +197,7 @@ Optional: run **`prime`** once when the codebase or branch context is unfamiliar
 | Pre-registered hypothesis loop; naive fixes failed or user invokes hypothesis mode | `.agents/skills/hypothesis/SKILL.md` |
 | Ultra-compressed communication (`/caveman`, "be brief", "less tokens") | `.agents/skills/caveman/SKILL.md` (overlay — not a workflow step) |
 | Stress-test product/design when gates 1–2 already pass (not gate-1 ambiguity) | `.agents/skills/grill-me/SKILL.md` |
+| Product fork mid-plan (Refine/Investigate/Create); `/plan-grill`; normally invoked by `plan` | `.agents/skills/plan-grill/SKILL.md` |
 | Simplify **one** concrete feature (flows + code), reduce steps/complexity | `.agents/skills/challenge/SKILL.md` |
 | Find cross-feature duplication, consolidation candidates, or semantic placement repair (after tooling is green) | `.agents/skills/consolidate/SKILL.md` |
 | Optimize hotspots: design → approach → efficiency → complexity | `.agents/skills/optimize2/SKILL.md` |
@@ -310,10 +311,11 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`rule-quality`:** Grade or improve **rules/commands** (rubric + quality standards).
 - **`review`:** Score **React/MUI components** with component rubric.
 
-### `grill-me` vs `plan` § Refine
+### `grill-me` vs `plan-grill` vs `plan` § Refine
 
-- **`grill-me`:** Product/design **Q&A** until shared understanding (questions first). Fits **gate 1** failures dominated by vision and tradeoffs. Includes an optional **Zoom out first** reflection (problem, recent attempts, wider alternative) — formerly the `stepback` skill.
-- **`plan` § Refine:** Engineering-level clarification — acceptance and scope bounds (**gate 2**); stop before **Investigate**. Full **`plan`** only after gates 1–2 pass — then produce the plan document.
+- **`grill-me`:** Product/design **Q&A** until shared understanding (questions first). Fits **gate 1** failures dominated by vision and tradeoffs. Logs closed decisions to `DECISIONS.md`. Includes an optional **Zoom out first** reflection (problem, recent attempts, wider alternative) — formerly the `stepback` skill.
+- **`plan-grill`:** **During** `plan` (Refine / Investigate / Create) — same ask triggers as `grill-me`, continuous gate on *new* product forks, anti-dup via `DECISIONS.md`, ask only on ties. Not a substitute for gate-1 `grill-me`; not for XS/`quick-piv`; not for industry precedent (`pattern-review`).
+- **`plan` § Refine:** Engineering-level clarification — acceptance and scope bounds (**gate 2**); stop before **Investigate**. Full **`plan`** only after gates 1–2 pass — then produce the plan document, calling **`plan-grill`** whenever a product fork appears.
 
 ### `prime` vs `start`
 
@@ -512,6 +514,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `documentation/DOC_REACT_PERF.md` — human overview (links to skill)
 - `.agents/skills/api-integrate/SKILL.md`
 - `.agents/skills/grill-me/SKILL.md`
+- `.agents/skills/plan-grill/SKILL.md`
 - `.agents/skills/pattern-review/SKILL.md`
 - `.agents/skills/improve/SKILL.md`
 - `.agents/skills/standards-align/SKILL.md`

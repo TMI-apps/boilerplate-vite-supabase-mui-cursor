@@ -129,6 +129,8 @@ Examples:
 
 **Examples:**
 - ✅ **CORRECT**: `documentation/jobs/temp_job_<name>/ANALYSIS.md`
+- ✅ **CORRECT**: `documentation/jobs/temp_job_<name>/DECISIONS.md` (shared ledger — `grill-me` / `plan-grill`)
+- ✅ **CORRECT**: `documentation/jobs/temp_job_<name>/DEVELOPMENT_PLAN.md`
 - ✅ **CORRECT**: `documentation/jobs/<feature-slug>_implementation.md`
 - ✅ **CORRECT**: `documentation/temp/<topic>_notes.md`
 - ❌ **WRONG:** ad-hoc **bug-analysis.md** (or similar) placed directly in `documentation/` root instead of `documentation/jobs/` or `documentation/temp/`

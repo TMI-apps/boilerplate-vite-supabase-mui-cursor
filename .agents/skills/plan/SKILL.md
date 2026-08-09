@@ -2,7 +2,8 @@
 name: plan
 description: >-
   Creates DEVELOPMENT_PLAN.md with repo-rule compliance researched first (file placement,
-  architecture, patterns). Use for new features, M/L work, or /plan. Not XS/S quick changes
+  architecture, patterns). Calls plan-grill on product forks during Refine/Investigate/Create
+  (anti-dup via DECISIONS.md). Use for new features, M/L work, or /plan. Not XS/S quick changes
   (quick-piv), product-only requirements (feature), or changelog updates (finish).
 ---
 
@@ -10,13 +11,13 @@ description: >-
 
 Create a development plan for a feature or job. Research how best to implement it, check repo rules, and produce `DEVELOPMENT_PLAN.md` in `documentation/jobs/temp_job_<name>/`.
 
-**Critical:** Conflict and compliance is researched first; steps in each phase must reflect that (file placements, architecture, patterns). The plan documents *how* to implement according to repo rules.
+**Critical:** Conflict and compliance is researched first; steps in each phase must reflect that (file placements, architecture, patterns). The plan documents *how* to implement according to repo rules. **Do not silently lock product forks** — run `.agents/skills/plan-grill/SKILL.md` at Refine / Investigate / Create when a product fork appears.
 
 **Do NOT update the changelog.** Changelog updates are done in the finish command, not during planning.
 
 **Templates:** [`references/implementation-plan-template.md`](references/implementation-plan-template.md), [`references/complexity-rubric.md`](references/complexity-rubric.md).
 
-**Related:** For session context, use `.agents/skills/prime/SKILL.md`. For architecture/quality gate before merging, use `.agents/skills/validate/SKILL.md` (auto-selects gate depth). For small scoped work without a full plan file, use `.agents/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.agents/skills/implement/SKILL.md`. For repo-rule plan/impl review, use `.agents/skills/validate/SKILL.md`. For multi-lens plan critique (including industry precedent), use `.agents/skills/review-dev-plan/SKILL.md`. For industry precedent on plans/proposals, use `.agents/skills/pattern-review/SKILL.md`. For commits and changelog, use `.agents/skills/finish/SKILL.md`.
+**Related:** For session context, use `.agents/skills/prime/SKILL.md`. For product forks during this skill, `.agents/skills/plan-grill/SKILL.md`. For architecture/quality gate before merging, use `.agents/skills/validate/SKILL.md` (auto-selects gate depth). For small scoped work without a full plan file, use `.agents/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.agents/skills/implement/SKILL.md`. For repo-rule plan/impl review, use `.agents/skills/validate/SKILL.md`. For multi-lens plan critique (including industry precedent), use `.agents/skills/review-dev-plan/SKILL.md`. For industry precedent on plans/proposals, use `.agents/skills/pattern-review/SKILL.md`. For commits and changelog, use `.agents/skills/finish/SKILL.md`.
 
 ---
 
@@ -36,13 +37,16 @@ Create a development plan for a feature or job. Research how best to implement i
 
 ### 2. Refine (if needed)
 
-**If the request is vague or unclear, do NOT write a plan yet.**
+**If the request is vague or unclear, do NOT write a plan yet.** Split who asks what:
 
-- Ask clarifying questions (scope, context, constraints).
-- Remove all ambiguity before planning. If multiple interpretations are possible, read **`documentation/DOC_APP_VISION.md`** first when the answer is about **who** the user is building for or **why** — if that file is still **`DRAFT`**, pause and have the user fill it (or confirm deferral) before locking scope.
-- Ask a question about the user's vision for how the app will be used, so the answer clears the ambiguity and drives the decision.
-- Continue until scope is clear.
-- Only proceed to investigation once scope is clear.
+| Kind of ambiguity | Owner |
+|-------------------|--------|
+| **Product / scope / edge** (perimeter, non-goals, success meaning, ride-vs-new) | [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) only — same triggers as `grill-me`; anti-dup via `DECISIONS.md`. Skip for XS/`quick-piv`. |
+| **Gate 2 — engineering acceptance** (concrete examples, API shapes, schemas, RLS needs, interactive states) | Stay in § Refine (table below). Do **not** use `plan-grill` for these alone. |
+
+- If product ambiguity remains and `DOC_APP_VISION.md` answers **who** / **why**: read it first; if still **`DRAFT`**, pause for fill or deferral before locking scope.
+- Run `plan-grill` until product forks are closed (or clear-winner logged). Then finish gate-2 Refine questions.
+- Only proceed to investigation once product scope is clear **and** gate-2 acceptance is concrete enough to investigate.
 
 #### Optional: Requirements depth (complex or unfamiliar features)
 
@@ -65,6 +69,7 @@ For features involving external APIs, database changes, auth, or novel logic, ga
 - [ ] Align narrative with **`documentation/DOC_APP_VISION.md`** when the plan changes user-facing behavior (problem, persona, app role); if **`DRAFT`**, pause for fill or explicit deferral.
 - [ ] For server-cached data, check `documentation/DOC_TANSTACK_QUERY.md` and existing `api/keys.ts` patterns in features.
 - [ ] Determine scope and boundaries (in-scope vs out-of-scope).
+- [ ] **Product forks:** ride-vs-new, neighbor absorption, greenfield confirmation → [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) before locking (read `DECISIONS.md` first; never re-ask). Industry/precedent forks → `pattern-review`, not `plan-grill`.
 - [ ] **Feature decomposition self-check (mandatory):** Enumerate distinct domain concepts this work introduces. If more than one cohesive bounded context applies, or projected file count exceeds `featureBudgets.config.cjs` defaults, plan multiple features under `src/features/` before writing steps. Do not wait for the user to request architecture. See `.cursor/rules/architecture/RULE.md` § Feature granularity.
 
 #### Optional: Foundation validation (high-risk features)
@@ -80,10 +85,11 @@ Do **not** invest in full planning until the foundation is proven.
 ### 4. Create plan
 
 - [ ] Run conflict and compliance analysis first (see below).
+- [ ] **Product forks:** before writing opinionated product picks into phases/steps, run [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) for any *new* product fork not already in `DECISIONS.md`.
 - [ ] Define phases in logical order (workable chunks).
 - [ ] Write steps per phase aligned with compliance (concrete paths, layers, patterns).
 - [ ] Add a gate for each phase.
-- [ ] Write `DEVELOPMENT_PLAN.md` to `documentation/jobs/temp_job_<name>/` using [`references/implementation-plan-template.md`](references/implementation-plan-template.md).
+- [ ] Write `DEVELOPMENT_PLAN.md` to `documentation/jobs/temp_job_<name>/` using [`references/implementation-plan-template.md`](references/implementation-plan-template.md). If `DECISIONS.md` already exists in that folder (from `grill-me` / `plan-grill`), keep it; do not overwrite.
 - [ ] Set **Complexity** (`XS` | `S` | `M` | `L`) in Summary per [`references/complexity-rubric.md`](references/complexity-rubric.md).
 
 ### 5. Pattern & precedent
@@ -134,7 +140,7 @@ Next: <review-dev-plan | implement | blocked> — <one-line gate>
 | **Conflict & compliance** | Avoid technical debt, meet repo rules | See checklist below |
 | **Pattern & precedent** | Industry / product patterns vs this design | See template; required for M/L; agent-chosen aspects |
 | **Notes during development** | For implementation | Leave empty in the plan; fill during implementation |
-| **Decisions made** | For implementation | Leave empty in the plan; fill during implementation |
+| **Decisions made** | Impl-time choices only | Leave empty in the plan; fill during **`implement`**. Product/scope forks live in sibling **`DECISIONS.md`** (`grill-me` / `plan-grill` / `feature`) — do not duplicate them here. |
 
 ### Per phase (repeat for each phase)
 
@@ -259,7 +265,8 @@ Each phase must have a gate.
 4. **Phases are workable:** Each phase is a logical, testable chunk.
 5. **Gates are mandatory:** Every phase has a gate.
 6. **Compliance first:** Conflict & compliance before detailed steps; steps must be rules-compliant.
-7. **Empty sections:** Notes during development and Decisions made start empty.
+7. **Empty sections:** Notes during development and Decisions made start empty (impl-time). Product decisions → `DECISIONS.md`, not the plan’s Decisions made table.
+8. **Product forks:** `plan-grill` at Refine / Investigate / Create — never silent product locks.
 
 ---
 
@@ -275,3 +282,5 @@ Each phase must have a gate.
 | Repo-rule audit of plan/impl | `validate` |
 | Changelog / commit | `finish` |
 | Product vision Q&A (gate 1) | `grill-me` — use **§ Refine** only for gate 2 |
+| Product forks *during* plan design | `plan-grill` (mandatory call sites in Refine / Investigate / Create) |
+| Industry precedent A/B/C | `pattern-review` (not `plan-grill`) |
