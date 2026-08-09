@@ -18,6 +18,23 @@ Never claim the issue is fixed. Only the user decides when the issue is resolved
 
 ---
 
+## Chat intake (before Preflight)
+
+When the user reports a bug without structured context, **ask in one message** (or fill from chat history) before editing code:
+
+| Slot | Ask |
+|------|-----|
+| **Where tested** | Local dev / staging preview URL / production / other |
+| **Repro steps** | Numbered, minimal |
+| **Expected vs actual** | One line each |
+| **Since when** | Always / after recent change / unknown |
+
+If all four are already in the thread → **do not re-ask**; populate Preflight slots directly. Intake is for alignment only — never claim fixed.
+
+After a fix lands, closure uses **`finish`** § User test handoff — user confirms resolution in the app.
+
+---
+
 ## 0. Mandatory Preflight
 
 Before forming hypotheses or editing code, fill these slots in your working notes and reflect them in the first debug response:

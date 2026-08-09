@@ -29,20 +29,22 @@ Push previously finished work to remote. This command is push-only.
 
 ## Push Safety Flow
 
-1. Verify branch (never push from `main` or `develop` for development flow).
+1. Branch/push targets: `.cursor/rules/workflow/RULE.md` § Commit and Push Workflow.
 2. Verify clean working tree.
 3. Verify commits exist to push.
 4. Verify remote freshness before push:
    - Run `git fetch origin`
    - Check whether local branch is behind its remote counterpart
    - If behind, STOP and sync first (rebase or merge) before pushing
-5. Confirm push target relevance:
-   - **Preferred**: push feature branch (`feature/*`) and open a PR to `develop`
-   - **`develop`**: never push directly — ruleset requires PR
-   - **`main`**: never push directly except **Promote to production** workflow (or documented one-time bootstrap ff); integration goes to `develop` via PR
-   - **App-specific changes**: ensure remote points to app repo, not boilerplate repo
+5. **App-specific changes**: ensure remote points to app repo, not boilerplate repo
 6. Ask user for explicit confirmation: "Ready to push these already-committed changes?"
 7. Execute push only after confirmation.
+
+## Merge gate (tests)
+
+- **Pre-push does not run Vitest or type-check** — see `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git.
+- **Authoritative merge gate:** green CI `test` job on `develop` (full `pnpm test:classify`, `pnpm test:run`, `pnpm type-check`).
+- Local pre-commit may run **related** tests only — related green is **not** sufficient to skip waiting for CI.
 
 ## Relationship with `finish`
 
@@ -58,4 +60,6 @@ You have explicit access to use console commands for this task.
 | Not `push` | Use instead |
 |------------|-------------|
 | Stage, commit, version, changelog | `finish` |
-| First push of a new `feature/*` branch | Normal flow — push with `-u`, then open a PR to `develop` |
+| First push of a new branch | Per `.cursor/rules/workflow/RULE.md` § Commit and Push Workflow |
+
+**Next:** After a successful push that created or updated a PR to **`develop`**, read and run `~/.cursor/skills-cursor/babysit/SKILL.md` unless the user waived CI wait in **Decisions made** (see router § finish vs push vs babysit).

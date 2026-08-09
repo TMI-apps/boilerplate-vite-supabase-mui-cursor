@@ -31,7 +31,7 @@ describe("SignInPanel", () => {
     });
   });
 
-  it("renders key sign-in controls", () => {
+  it("should render key sign-in controls when Supabase is configured", () => {
     render(<SignInPanel />);
 
     expect(screen.getByRole("button", { name: /sign in with google/i })).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe("SignInPanel", () => {
     expect(screen.getByRole("link", { name: /terms/i })).toBeInTheDocument();
   });
 
-  it("shows configuration info and preview controls when Supabase is not configured", () => {
+  it("should show configuration info and disable OAuth when Supabase is not configured", () => {
     vi.mocked(useSupabaseConfig).mockReturnValue({
       isConfigured: false,
     });

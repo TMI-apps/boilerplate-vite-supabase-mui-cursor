@@ -1,3 +1,7 @@
+# Pre-commit hook — staged tests, type-check, and structural validators on full path.
+# SSOT: scripts/change-classify.cjs, scripts/test-staged.cjs
+# Policy: documentation/DOC_AGENT_WORKFLOW_LAYERS.md § Local git
+
 # Copy changelog to public/documentation for build
 # Note: Manual copy recommended - copy CHANGELOG.md to public/documentation/CHANGELOG.md
 # echo "Copying changelog..."
@@ -11,21 +15,26 @@ pnpm lint-staged || exit 1
 echo "Running feature documentation validation for staged files..."
 pnpm validate:feature-docs:staged || exit 1
 
-# Light path: docs, migrations, or tooling-only — skip structure, feature-size, arch
+# Light path: docs, migrations, or tooling-only — skip tests, type-check, structure, feature-size, arch
 # SSOT: scripts/change-classify.cjs
 LIGHT_KIND=$(node scripts/is-staged-precommit-light.js --echo-kind 2>/dev/null) || true
 if [ -n "$LIGHT_KIND" ]; then
   if [ "$LIGHT_KIND" = "docs" ]; then
-    echo "pre-commit: docs-only staged files — skipping structure, feature-size, and arch"
+    echo "pre-commit: docs-only staged files — skipping tests, type-check, structure, feature-size, and arch"
     pnpm validate:docs || exit 1
     exit 0
   fi
-  echo "pre-commit: ${LIGHT_KIND} staged files — skipping structure, feature-size, and arch"
+  echo "pre-commit: ${LIGHT_KIND} staged files — skipping tests, type-check, structure, feature-size, and arch"
   exit 0
 fi
 
-# Full path: app or TS toolchain surface staged (staged structural checks only)
-# Type-check runs on pre-push and CI; full docs validation runs on docs-only path and CI
+# Full path: staged tests (related or full), type-check, then structural validators
+echo "Running staged tests..."
+node scripts/test-staged.cjs || exit 1
+
+echo "Running type check..."
+pnpm type-check || exit 1
+
 echo "Running architecture validation for staged files..."
 pnpm validate:structure:staged || exit 1
 pnpm validate:feature-size:staged || exit 1

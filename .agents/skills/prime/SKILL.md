@@ -2,8 +2,9 @@
 name: prime
 description: >-
   Loads project context at session start (structure, governance, active jobs, enforced boundaries).
-  Use for a new chat, ambiguous tasks, or before larger refactors. Not human onboarding (start)
-  or pre-merge gates (validate gate depth).
+  IF new chat OR the user asks what to do next without naming a skill THEN use this skill.
+  Not a substitute for grill-me / plan § Refine (gates 1–2). Not human onboarding (start)
+  or pre-merge gates (validate).
 ---
 
 # prime
@@ -26,6 +27,7 @@ Align with project rules and architecture so work does not violate enforced boun
 - **Tracked files:** Run `git ls-files` (large repos: in PowerShell use `git ls-files | Select-Object -First 150` instead of `head`).
 - **Architecture overview:** Read `ARCHITECTURE.md` (folder layout, TanStack Query, layers, path aliases).
 - **Doc index:** Read `documentation/DOC_INDEX.md` (SSOT map, quick links).
+- **Testing guide:** Skim `documentation/DOC_TESTING.md` when the task adds or changes tests (runners, colocation, `tests/test-utils`).
 - **App vision (product SSOT):** Read `documentation/DOC_APP_VISION.md`. If the vision status line is still **`DRAFT`**, state in **Actionable insights** that feature/plan ambiguity should be resolved by filling that file (or running `.agents/skills/start/SKILL.md` § App vision) before major product decisions.
 - **Features (discover, do not assume):** List `src/features/` — this boilerplate ships with **`auth`** and **`setup`** only; forks may add more. Do not use a fixed feature list from another repo.
 - **Entry points:** Read `index.html`, `src/main.tsx`, `src/App.tsx` (provider order: `QueryProvider` → `AuthProvider` → `BrowserRouter`).
@@ -44,7 +46,7 @@ Align with project rules and architecture so work does not violate enforced boun
 ### 4. Active project state
 
 - **Recent activity:** `git log -n 10` (full commit messages: subject and body; do not use `--oneline`)
-- **Working tree:** `git status -sb` (confirm branch: feature work should not be on `main`; see `.cursor/rules/workflow/RULE.md`)
+- **Working tree:** `git status -sb` (branch check per `.cursor/rules/workflow/RULE.md` § Branch Strategy)
 - **Optional plans:** Scan `documentation/jobs/` for active work (e.g. `documentation/jobs/temp_job_*/`) when relevant.
 
 ---
@@ -91,6 +93,7 @@ Deliver a concise, scannable summary:
 |-------------|-------------|
 | Human first-time setup | `start` |
 | Product vision Q&A | `grill-me` |
+| Product forks during planning | `plan-grill` |
 | Write `DEVELOPMENT_PLAN.md` | `plan` |
 | Commit / push | `finish` / `push` |
 

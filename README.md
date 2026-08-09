@@ -203,7 +203,7 @@ Legacy note: `VITE_SUPABASE_ANON_KEY` is still accepted for backward compatibili
 
 #### Airtable (optional) 📊
 
-Add `VITE_AIRTABLE_API_KEY`, `VITE_AIRTABLE_BASE_ID`, and `VITE_AIRTABLE_TABLE_ID` to `.env`. See `.agents/skills/airtable-inspect/SKILL.md` for schema inspection.
+Add `VITE_AIRTABLE_API_KEY`, `VITE_AIRTABLE_BASE_ID`, and `VITE_AIRTABLE_TABLE_ID` to `.env`. See `.agents/skills/api-integrate/SKILL.md` (Airtable worked example) for schema inspection.
 
 #### Theme customization (optional) 🎨
 
@@ -379,13 +379,19 @@ src/
 
 ## Testing
 
-Tests are written using Vitest and React Testing Library. Example tests are included for:
+See **[documentation/DOC_TESTING.md](./documentation/DOC_TESTING.md)** for runners, file placement, naming, shared utilities, and examples.
+
+Tests use Vitest and React Testing Library. Example tests are included for:
 - Service functions (unit tests)
 - React components (component tests)
 
 Run tests:
 ```bash
 pnpm test
+pnpm test:classify   # classifier + executor unit tests
+pnpm test:run        # full Vitest suite (CI merge gate)
+pnpm test:staged     # dry-run — preview pre-commit test mode + paths
+pnpm test:staged:live # run the same tests as pre-commit without committing
 ```
 
 ## CI/CD
@@ -404,6 +410,6 @@ See [documentation/DOC_CONTRIBUTING.md](./documentation/DOC_CONTRIBUTING.md) for
 1. **Workflow & versioning** – Use [`.agents/skills/finish/SKILL.md`](./.agents/skills/finish/SKILL.md) before committing
 2. **Architecture** – Follow [`.cursor/rules/architecture/RULE.md`](./.cursor/rules/architecture/RULE.md)
 3. **Documentation index** – [documentation/DOC_INDEX.md](./documentation/DOC_INDEX.md) for all docs
-4. Ensure all checks pass (`pnpm lint`, `pnpm format:check`, `pnpm test:run`, `pnpm validate:version-sync`)
+4. Ensure all checks pass (`pnpm lint`, `pnpm format:check`, `pnpm test:classify`, `pnpm test:run`, `pnpm validate:version-sync`)
 5. Update CHANGELOG.md for significant changes
 

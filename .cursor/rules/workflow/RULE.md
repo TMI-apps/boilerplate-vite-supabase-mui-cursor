@@ -116,9 +116,11 @@ Do not make code changes until on a feature branch.
 **Safe to Edit on Any Branch**
 
 These files may be edited on any branch after user confirmation:
-- Documentation files (`documentation/*.md`)
+- Documentation files (`documentation/**/*.md`), including plan files (`documentation/jobs/**/DEVELOPMENT_PLAN.md`)
 - Cursor rules (`.cursor/rules/*.md`)
 - README files
+
+App code (`src/**`, configs, migrations, etc.) still requires a `feature/*` branch per § Branch Strategy above.
 
 **Emergency Main Branch Changes (Rare Exception)**
 
@@ -224,7 +226,7 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 
 **Humans on `feature/*` branches:** May commit frequently with meaningful messages; still use `finish` workflow when agents wrap up work.
 
-- Write tests alongside code (TDD when appropriate)
+- Write tests alongside code — use TDD only per `testing/RULE.md` § When to use TDD; otherwise add tests when the plan or changed logic warrants them (same rule, § What to Test)
 - Refactor as you go (don't accumulate technical debt)
 - Follow established patterns and conventions
 
@@ -288,7 +290,7 @@ The agent must STOP and ASK the user before modifying any of the following file 
 **Git Hooks:**
 - `.husky/**`
 
-**Pre-commit (local):** Staged-path light path — SSOT [`scripts/change-classify.cjs`](../../../scripts/change-classify.cjs), hook [`.husky/pre-commit`](../../../.husky/pre-commit). Skips `type-check` and staged structure/arch when staged files cannot affect app TypeScript; docs-only commits still run `validate:docs`. Full matrix: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git. Tests on push (`.husky/pre-push`), not on commit.
+**Pre-commit (local):** Staged-path light path and tiered tests — SSOT [`scripts/change-classify.cjs`](../../../scripts/change-classify.cjs), executor [`scripts/test-staged.cjs`](../../../scripts/test-staged.cjs), hook [`.husky/pre-commit`](../../../.husky/pre-commit). Skips tests, `type-check`, and staged structure/arch on light path; docs-only commits still run `validate:docs`. Full matrix: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git. **Merge gate:** CI `test` job — local related green ≠ merge-safe.
 
 **CI/CD:**
 - `.github/workflows/**`
@@ -360,9 +362,7 @@ See Branch Strategy section above for detailed branch protection rules and verif
    - Always require commit body - commit messages must include detailed body explaining changes
 
 ### Documentation Lookup
-- When needing documentation info from a URL, visit it programmatically using the actual browser tool
-- Don't rely on cached or outdated documentation
-- Verify current documentation before implementing features
+Superseded by `.cursor/rules/api-integration/RULE.md` (MCP-first, doc-freshness, POC-before-code).
 
 ### Platform and Commands
 

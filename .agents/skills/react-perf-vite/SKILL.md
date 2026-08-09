@@ -52,7 +52,9 @@ On-demand performance playbook for **this repo's stack**. Rules live in `rules/`
 1. Identify the symptom (waterfall, bundle, re-render, list jank).
 2. Read the matching `rules/<name>.md` only.
 3. Apply with repo conventions (`@/` imports, feature layers, TanStack keys).
-4. If the fix needs structural redesign, hand off to `optimize2`.
+4. IF the fix needs structural redesign THEN hand off to [`optimize2`](../optimize2/SKILL.md); ELSE apply the rule and offer [`validate`](../validate/SKILL.md) when shipping.
+
+**Next:** Structural redesign → `optimize2`; otherwise continue implement/quick-piv path → `validate` when ready to ship.
 
 ## Upstream
 

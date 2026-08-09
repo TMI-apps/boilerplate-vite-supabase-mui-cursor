@@ -2,7 +2,9 @@
 name: review-dev-plan
 description: >-
   Runs six parallel Task subagents to critique a development plan (feedback only).
-  Use when checking whether a plan is sound before implementation; no code or plan edits unless the user asks afterward.
+  IF DEVELOPMENT_PLAN.md exists AND Summary says Plan review: Required: pending (M/L)
+  THEN use this skill. Not for repo-rule compliance (validate plan-review mode).
+  No code or plan edits unless the user asks afterward.
 disable-model-invocation: false
 ---
 
@@ -62,7 +64,7 @@ Update the plan’s **Plan review** row to `Done <date>` when the user accepts t
 | **`review-dev-plan`** | Qualitative multi-lens plan critique (includes industry precedent) |
 | **`validate`** | Parallel **repo rule** subagents (`.cursor/rules/`) — JSON findings |
 
-For Complexity **M/L** or rule-heavy plans, run **both** when appropriate.
+For Complexity **M/L** OR plans that touch security/DB/workflow rules, run **`review-dev-plan` AND `validate` (plan-review)**. IF only qualitative critique is requested THEN `review-dev-plan` alone.
 
 ## Related
 

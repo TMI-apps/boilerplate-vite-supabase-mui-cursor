@@ -19,19 +19,19 @@ describe("redirectUtils", () => {
   });
 
   describe("isSafeRedirectPath", () => {
-    it("rejects protocol-relative and external paths", () => {
+    it("should reject protocol-relative and external paths when validating redirect", () => {
       expect(isSafeRedirectPath("//evil.com")).toBe(false);
       expect(isSafeRedirectPath("https://evil.com")).toBe(false);
       expect(isSafeRedirectPath("http://evil.com/path")).toBe(false);
     });
 
-    it("rejects blocked auth paths", () => {
+    it("should reject blocked auth paths when validating redirect", () => {
       expect(isSafeRedirectPath("/login")).toBe(false);
       expect(isSafeRedirectPath("/reset-password")).toBe(false);
       expect(isSafeRedirectPath("/auth/callback")).toBe(false);
     });
 
-    it("accepts valid internal paths", () => {
+    it("should accept valid internal paths when validating redirect", () => {
       expect(isSafeRedirectPath("/dashboard")).toBe(true);
       expect(isSafeRedirectPath("/")).toBe(true);
     });

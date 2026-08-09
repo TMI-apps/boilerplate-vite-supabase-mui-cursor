@@ -32,12 +32,16 @@ Quick reference guide to all rules and their relationships.
 - **Architecture documentation** (minimal contract-doc maintenance)
 - **Pattern risk (industry precedent)** — pointer to `.agents/skills/pattern-review/` (plans/proposals; not repo lint)
 - **Performance cost risk (heavy DB/UI ops)** — detect heavy operations, propose leaner alternatives, ask user before implementing
+- **Layer consistency (workaround guard)** — pointer to `.agents/skills/layer-consistency-check/` (verify assumptions about existing behavior; catch internal layer mismatches before shipping workarounds)
 
 **Related to:** code-style, testing, security, workflow
 
 ---
 
 ### Testing (`testing/RULE.md`)
+- **Onboarding guide:** `documentation/DOC_TESTING.md` (runners, colocation, naming, examples)
+- Test authority (failing test = claim, not ground truth)
+- Local test authority (commit vs merge tiers)
 - Test coverage requirements
 - Testing patterns
 - Test organization
@@ -99,6 +103,18 @@ Quick reference guide to all rules and their relationships.
 
 ---
 
+### API Integration (`api-integration/RULE.md`)
+- **MCP-first check** before assuming REST/scripts/browser fetch is the only path
+- Doc-freshness (don't trust cached/stale docs)
+- Cite doc URL(s) or MCP tool(s) actually used
+- POC-before-code for new/unfamiliar vendors
+- Pointer to `.agents/skills/api-integrate/SKILL.md` for the full procedure (MCP fallback decision tree, schema→sample discipline, vendor worked examples)
+- Absorbs the former `workflow/RULE.md` § Documentation Lookup
+
+**Related to:** workflow, security, database, cloud-functions, project-specific
+
+---
+
 ### Debugging (`debugging/RULE.md`)
 - Debugging strategies and logging practices
 - Pointers to `debug` and `hypothesis` skills for scientific-method procedure
@@ -138,10 +154,11 @@ When modifying a rule, check these related rules:
 | `code-style` | architecture, testing, workflow |
 | `architecture` | code-style, testing, security, workflow, cloud-functions, database |
 | `testing` | code-style, architecture, workflow, debugging |
-| `security` | architecture, code-style, workflow, cloud-functions, database, project-specific |
-| `workflow` | All rules (references them) |
+| `security` | architecture, code-style, workflow, cloud-functions, database, project-specific, api-integration |
+| `workflow` | All rules (references them), api-integration |
 | `cloud-functions` | architecture, workflow, security, project-specific |
 | `database` | security, workflow, architecture |
+| `api-integration` | workflow, security, database, cloud-functions, project-specific |
 | `debugging` | workflow, testing, architecture |
 | `project-specific` | security, cloud-functions, database |
 | `file-placement` | architecture, workflow |

@@ -461,9 +461,11 @@ module.exports = {
           name: "jobs",
           children: [
             { name: "*.md" },
+            { name: "*.yaml" },
+            { name: "*.yml" },
             {
               name: "*",
-              children: [{ name: "*.md" }],
+              children: [{ name: "*.md" }, { name: "*.yaml" }, { name: "*.yml" }],
             },
           ],
         },
@@ -649,6 +651,16 @@ module.exports = {
                 {
                   name: "rules",
                   children: [{ name: "*.md" }],
+                },
+                {
+                  name: "scripts",
+                  children: [
+                    { name: "*.py" },
+                    { name: "*.cjs" },
+                    { name: "*.js" },
+                    { name: "*.sh" },
+                    { name: "*.mjs" },
+                  ],
                 },
               ],
             },

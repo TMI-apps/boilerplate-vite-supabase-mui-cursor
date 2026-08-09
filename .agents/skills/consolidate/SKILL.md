@@ -13,7 +13,7 @@ description: >-
 
 Discover, classify, and prioritize opportunities to unify repeated code patterns across the codebase. This skill owns the **discovery** phase - systematically finding what is duplicated - and produces an actionable consolidation plan.
 
-**Scope:** Repo-wide pattern analysis. For per-hotspot optimization use `optimize2`. For single-feature simplification use `challenge`. For **semantic placement / wrong-layer repair** (after tooling is green), use this skill's **Semantic placement mode** below.
+**Scope:** Repo-wide pattern analysis. For per-hotspot optimization use `optimize2`. For single-feature simplification use `challenge`. For **semantic placement / wrong-layer repair** (after tooling is green), use this skill's **Semantic placement mode** below. For **proactive workaround detection during implementation**, use [`layer-consistency-check`](../layer-consistency-check/SKILL.md) (always-on via `architecture/RULE.md` § Layer consistency).
 
 ## Modes
 
@@ -24,8 +24,9 @@ Discover, classify, and prioritize opportunities to unify repeated code patterns
 
 - User asks to "find duplication", "consolidate code", "audit for redundancy", "reduce repetition"
 - User asks "what can be shared/unified/abstracted?"
-- Before a major refactor or architectural cleanup
-- After multiple features have been built and the codebase has grown organically
+- User names a refactor/cleanup that is about shared patterns across features
+
+Do not auto-trigger solely because “a major refactor is coming” or “features grew organically” without an explicit duplication/unify ask.
 
 ---
 
@@ -341,8 +342,8 @@ For each approved consolidation:
 
 #### 6.4 Documentation
 
-- Update `CHANGELOG.md` if consolidation changes public API or behavior
-- Update `ARCHITECTURE.md` if new shared patterns are introduced
+- Do **not** edit `CHANGELOG.md` or bump versions here — route to [`finish`](../finish/SKILL.md) after validate when the user wants a commit.
+- Update `ARCHITECTURE.md` if new shared patterns are introduced (product/architecture contract, not changelog).
 
 ---
 
@@ -370,10 +371,11 @@ This skill is independently complete but works best in concert with sibling skil
 | **`optimize2`** | After consolidation identifies a shared abstraction, use optimize2 to ensure it is well-designed (4-level analysis). Optimize2's Rule of Three and Indirection Red Flags are embedded in this skill's Core Principles. |
 | **Semantic placement mode** | After consolidation creates new shared code, the [semantic placement mode](references/semantic-placement.md) verifies it is in the correct location. This skill's Phase 6 pre-flight uses those placement rules inline. |
 | **`challenge`** | Challenge simplifies a single feature's implementation. Consolidate finds patterns *across* features. Run challenge first to simplify each feature, then consolidate to unify what is left. |
+| **`standards-align`** | When the question is industry should/how (not only redundancy), run standards-align first; consolidate after align if cross-feature duplication remains. |
 | **`review`** | Review Section F3 scores "Reuse and duplication" per component. Consolidate provides the repo-wide perspective that review lacks. |
 
 **Recommended workflow for major cleanup:**
-1. `challenge` individual features (simplify each)
+1. `standards-align` when industry alignment is in scope; else `challenge` individual features (simplify each)
 2. `consolidate` across features (unify patterns) <- this skill
 3. Semantic placement mode (verify everything is in the right place — `references/semantic-placement.md`)
 4. `optimize2` on any remaining hotspots (per-function polish)
@@ -393,9 +395,11 @@ This skill is independently complete but works best in concert with sibling skil
 
 ## Boundaries
 
-- This skill **discovers and plans** consolidation. It does not run broad performance optimization (use `optimize2`).
+- After user approval, **Phase 6 executes** approved consolidations in this skill (migrate one consumer at a time). Do not also invent a parallel `implement` pass for the same approved items.
+- This skill does not run broad performance optimization (use `optimize2`).
 - For architectural *location* correctness beyond placement of new shared code, use this skill's **Semantic placement mode** (`references/semantic-placement.md`).
 - This skill does not simplify individual feature workflows (use `challenge`).
 - Never claim success without user testing confirmation.
+- **Commit only via `finish`** when the user requests a commit.
 
-**Next:** Approved refactors → **`implement`** or **`quick-piv`** → **`validate`** → **`finish`**; hotspot follow-up → **`optimize2`**.
+**Next:** After Phase 6 + checks → **`validate`** → **`finish`** when the user wants a commit; hotspot follow-up → **`optimize2`**.

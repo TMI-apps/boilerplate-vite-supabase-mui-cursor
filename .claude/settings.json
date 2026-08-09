@@ -29,6 +29,7 @@
       "Bash(pnpm validate:feature-docs:*)",
       "Bash(pnpm arch:check:staged)",
       "Bash(node scripts/*.js)",
+      "Bash(node scripts/*.cjs)",
       "Bash(git status)",
       "Bash(git status:*)",
       "Bash(git diff)",

@@ -65,6 +65,10 @@ Returns:
 - Env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` (or `VITE_SUPABASE_ANON_KEY`)
 - Update `LEGAL_ORIGIN` in `src/config/legal.ts` when product URLs are available
 
+## Testing
+
+Colocated `*.test.ts(x)` under this feature; shared wrappers in `tests/test-utils.tsx`. See `documentation/DOC_TESTING.md`.
+
 ## Related
 
 - `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` – Google Cloud + Supabase dashboard setup

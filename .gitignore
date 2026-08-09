@@ -41,3 +41,8 @@ build
 
 # ESLint
 .eslintcache
+
+# Python
+__pycache__/
+*.py[cod]
+

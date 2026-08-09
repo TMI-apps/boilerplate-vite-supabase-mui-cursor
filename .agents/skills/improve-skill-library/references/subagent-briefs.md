@@ -54,7 +54,7 @@ Return only the YAML blocks. This is captured **before** any edit; do not edit a
 
 Orient (above). Using the registry, produce:
 
-1. **N×N overlap matrix:** mark every pair of skills that could correctly fire on the **same** user request. For each marked pair, state whether the router already has a tiebreak (cite the router subsection) or **MISSING tiebreak**.
+1. **N×N overlap matrix:** mark every pair of skills that could correctly fire on the **same** user request. For each marked pair, state whether the router already has a tiebreak (cite the router subsection) or **MISSING tiebreak**. Note when overlap is driven by vague triggers (cite Lens 5 if already run, or flag for Lens 5).
 2. **One-outcome violations:** skills whose description/body bundles two primary outcomes.
 3. **Negative-space gaps:** skills lacking a clear "what this is NOT / use sibling X" statement.
 4. **Same-cell collisions:** skills sharing the same (lifecycle × mutation × domain × scope) cell.
@@ -97,6 +97,27 @@ Orient (above). Using `links-to` from the registry:
 4. **Front-door check:** confirm the router is the only situation→skill map and that every skill is reachable and listed once.
 
 Return: the edge list + a findings list `issue | skill(s) | fix`. No edits.
+
+---
+
+## Lens 5 — Quality / trigger clarity (read-only)
+
+Orient (above). Read [`vague-conditionals.md`](vague-conditionals.md) (phrase families, severity, remediation — SSOT for this lens).
+
+For **each editable skill** (`SKILL.md` + `references/`):
+
+1. **Structural score (1–5 each):** triggers present · single primary outcome · negative space ("what this is NOT" / use sibling).
+2. **Vague conditional inventory:** scan frontmatter `description`, `## Triggers`, routing/handoff lines, and instructions. For each hit, cite `file:line` (or heading), phrase family from `vague-conditionals.md`, severity (**must-fix** / **nice-to-have**), and a one-line suggested rewrite (observable `IF … THEN …`, direct imperative, or router tiebreak).
+3. **Cross-lens flags:** skills that also appear in overlap or router-collision findings — note **overlap + vague trigger** when both apply.
+
+Do **not** rewrite files here. For approved single-file rewrites after the gate, hand off to `rule-quality` Mode B or `create-skill` § descriptions.
+
+Return:
+
+- Per-skill score table: `skill | triggers | outcome | negative-space | vague-count(must/nice)`.
+- Findings list: `severity | skill/file | phrase | family | suggested fix`.
+
+No edits.
 
 ---
 

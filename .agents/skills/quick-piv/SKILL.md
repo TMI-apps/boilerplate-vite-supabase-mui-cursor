@@ -26,7 +26,7 @@ Lightweight Plan → Implement → Validate in one workflow. **Primary outcome:*
 
 ## Branch gate
 
-- [ ] Before any code edit, verify current git branch. If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
+- [ ] Before any code edit: per `.cursor/rules/workflow/RULE.md` § Branch Strategy — verify branch; stop if on protected branches per that section.
 
 ## Hard stops (M/L and gates)
 

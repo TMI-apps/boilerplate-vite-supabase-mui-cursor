@@ -377,6 +377,8 @@ The boilerplate supports connecting to external APIs:
 - **Supabase**: For authentication (configure via `.env` — see README and dev task backlog)
 - **Airtable**: For data storage (optional — configure via `.env`)
 
+**Researching a new external API before wiring it up?** See `.cursor/rules/api-integration/RULE.md` (principles) and `.agents/skills/api-integrate/SKILL.md` (MCP-first, schema→sample procedure) — these two bullets describe *what's configured*, not *how to research* a new vendor/API.
+
 Both services are optional. The services are initialized in `shared/services/` and can be used directly in feature services.
 
 ## Dev task backlog
@@ -406,7 +408,7 @@ Fresh clones ship onboarding tasks (Supabase, Hosting, App vision, Airtable opti
 3. Start with types, then services, then hooks, then components
 4. Create page in `src/pages/[FeatureName]Page.tsx`
 5. Register the route in `src/App.tsx` (this boilerplate defines `<Routes>` there)
-6. Write tests alongside your code
+6. Write tests alongside your code — see `documentation/DOC_TESTING.md`
 
 ## Example: Adding a "Notes" Feature
 

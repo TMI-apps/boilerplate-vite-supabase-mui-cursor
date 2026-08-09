@@ -15,7 +15,10 @@ Compact guidance for **next-step mode**. Compress, skip, or reorder when scope, 
 5. **Plan compliance** — `validate` (plan-review mode) for repo-rule compliance on the plan when M/L or user requests.
 6. **Implement** — `implement` executes phases and gates.
 7. **Validate** — repo rules and/or architecture gate when warranted (auto-selects impl-full / gate depth).
-8. **Finish** → **Push**.
+8. **Finish** — local commit, version, changelog.
+9. **Push** — remote sync after commits exist.
+10. **Babysit** — when a PR to `develop` exists after push: read and run `~/.cursor/skills-cursor/babysit/SKILL.md` (CI green + mergeable is agent responsibility; user does not watch checks). Skip only when waived in **Decisions made**.
+11. **User app test** — agent emits **Ready for you to test** handoff (`finish` § User test); user pass/fail closes the loop.
 
 Optional: `prime` when codebase or branch context is unfamiliar.
 
@@ -24,10 +27,13 @@ Optional: `prime` when codebase or branch context is unfamiliar.
 | Situation | Usually next |
 |-----------|----------------|
 | Goal unclear | `grill-me` and/or `plan` § Refine |
+| Product fork mid-plan | `plan-grill` (via `plan`; anti-dup `DECISIONS.md`) |
 | Novel UX/API/architecture without documented precedent | `pattern-review` then `plan` with **Pattern & precedent** |
 | Complexity M/L + plan review pending | `review-dev-plan` |
 | Implementing without plan but material design questions | `pattern-review` `lite`; then `plan` or waiver in **Decisions made** |
-| Ready to land | `finish` / `push` |
+| Ready to land | `finish` → `push` → `babysit` (PR to `develop`) → user test handoff |
+| Bug / error / regression (not feature request) | `debug` (§ Chat intake) before `implement` |
+| Pushed; PR to `develop` open; CI unknown | `babysit` |
 
 ## Plan depth and gates
 

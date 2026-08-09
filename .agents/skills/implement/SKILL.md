@@ -32,12 +32,13 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 ### 0. Branch gate
 
-- [ ] Verify current git branch (`git branch --show-current`). If on `main` or `develop`, **stop** — instruct: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>` per `.cursor/rules/workflow/RULE.md` § Branch Strategy.
-- [ ] Never commit directly to `main` or `develop` during implementation.
+- [ ] Per `.cursor/rules/workflow/RULE.md` § Branch Strategy — verify branch before code edits; stop if on protected branches per that section.
+- [ ] **CRITICAL:** If the plan touches protected files (`.husky/**`, `tsconfig*.json`, `.cursor/rules/**`, `.agents/skills/**`, etc.), **stop** and get explicit user approval before editing them. Full manifest: `.cursor/rules/workflow/RULE.md` § Protected Files. Record consent in **Decisions made** when granted.
 
 ### 1. Load plan
 
 - [ ] Read `DEVELOPMENT_PLAN.md` for the resolved job folder.
+- [ ] If `DECISIONS.md` exists beside the plan: skim it. If any row is **open**, **soft-warn** in chat (list topics) — may proceed; do not hard-block. Prefer resolving with the user or `plan-grill` when the open topic still matters.
 - [ ] If the plan’s **Summary** or acceptance criteria imply user-facing product change, skim `documentation/DOC_APP_VISION.md` for consistency; if **`DRAFT`**, flag to the user before heavy implementation.
 - [ ] Verify mandatory sections exist: Summary, Phase overview, Conflict & compliance, Notes during development, Decisions made.
 - [ ] If Summary **Complexity** is **M** or **L**, or the plan changes user-visible behavior/contracts: verify **Pattern & precedent** is filled (or explicitly skipped with reason).
@@ -61,7 +62,8 @@ For each phase **in order** (one phase at a time unless the plan explicitly allo
 
 - **Frontend:** Run the checks described in the plan (UI present, interactions, loading/error states, responsive if specified). Use the IDE browser MCP when available: navigate → snapshot → interact; follow the lock/unlock workflow in the MCP instructions.
 - **Backend / Supabase:** As specified in the plan (e.g. migration applied, RLS checks, Edge Function invocation).
-- **Repo quality:** When the plan or phase implies it, run `pnpm lint`, `pnpm type-check`, and relevant tests (`pnpm test:run` or scoped files). For structural changes, `pnpm validate:structure` and/or `pnpm arch:check` when adding imports across layers.
+- **Repo quality:** When the plan or phase implies it, run `pnpm lint`, `pnpm type-check`, and relevant tests (`pnpm test:run`, `pnpm test:staged` for preview, or scoped files). For structural changes, `pnpm validate:structure` and/or `pnpm arch:check` when adding imports across layers.
+- **Staged-test infra:** When adding or renaming `scripts/*staged*`, `scripts/*validator*`, `scripts/change-classify.cjs`, or `scripts/test-staged.cjs` → verify `TEST_INFRA_EXACT` / `TEST_INFRA_PREFIXES` in `scripts/change-classify.cjs` in the **same PR**; run `pnpm test:classify`. Record waiver in **Decisions made** if intentionally deferred.
 - If the gate fails: fix, re-run the gate, then continue.
 - If the plan’s gate is impossible (missing env, no browser): document in Notes, **ask** the user, then proceed only after agreement.
 

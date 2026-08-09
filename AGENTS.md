@@ -37,6 +37,7 @@ Consult on demand (not auto-imported):
 - `.cursor/rules/debugging/RULE.md`
 - `.cursor/rules/cloud-functions/RULE.md`
 - `.cursor/rules/project-specific/RULE.md`
+- `.cursor/rules/api-integration/RULE.md`
 
 Claude-specific behavioral reminders (thin pointers to the above):
 
@@ -46,5 +47,6 @@ Claude-specific behavioral reminders (thin pointers to the above):
 ## Defaults
 
 - **Always read before edit.** Run `pnpm validate:structure` if creating new files in unfamiliar locations.
+- **Layer consistency before code.** Every request to change existing behavior carries an assumption about how the system works — verify it before acting (user can't see the impl). Cues: `.agents/skills/layer-consistency-check/references/workaround-shapes.md` § Request-side cues → run `.agents/skills/layer-consistency-check/SKILL.md` and stop for user choice before writing code.
 - **Plan before non-trivial work.** Anything beyond a one-line fix should start with the `plan` skill (`.agents/skills/plan/SKILL.md`).
 - **Lean output.** Don't restate skill content — point to the file and follow it.

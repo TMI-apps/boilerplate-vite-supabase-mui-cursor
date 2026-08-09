@@ -24,6 +24,17 @@ Apply **without being asked** when you are about to propose or write a plan, RFC
 
 **Do not:** treat “we already do it in the codebase” as sufficient without naming **external** precedent and tradeoffs.
 
+## What this is NOT
+
+| Concern | Use instead |
+|---------|-------------|
+| Internal abstraction / architecture layer fit; workaround shapes | [`layer-consistency-check`](../layer-consistency-check/SKILL.md) |
+| Should we / how to align an **existing** product/feature/component | [`standards-align`](../standards-align/SKILL.md) |
+| Heavy DB/UI operation cost | `architecture/RULE.md` § Performance cost risk |
+| Repo rule compliance on plan or diff | [`validate`](../validate/SKILL.md) |
+
+**When both this skill and `layer-consistency-check` apply:** run **layer-consistency-check first** (router § tiebreak).
+
 ## Where everything lives
 
 Per [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AGENT_WORKFLOW_LAYERS.md).
@@ -41,7 +52,8 @@ Per [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AG
 
 | Situation | Mode |
 |-----------|------|
-| User asks best practice / industry standard | `scan` |
+| User asks best practice / industry standard on a **plan or proposal** | `scan` |
+| User asks should-we / how-to align an **existing** scope | Prefer [`standards-align`](../standards-align/SKILL.md) (reuses this rubric) |
 | Intake or plan touches new user-visible behavior or contracts | `scan` or `plan-section` |
 | Writing `DEVELOPMENT_PLAN.md` | `plan-section` (required for Complexity **M/L**) |
 | `review-dev-plan` industry lens | Uses same rubric; no separate invoke required |
@@ -105,6 +117,8 @@ Next: owner pick A/B/C or waive → then plan / implementation
 
 ## Related
 
+- [`standards-align`](../standards-align/SKILL.md) — should + how on existing scope (reuses this rubric)
+- [`layer-consistency-check`](../layer-consistency-check/SKILL.md) — internal layer / workaround guard (complementary lens)
 - [`review-dev-plan`](../review-dev-plan/SKILL.md)
 - [`plan`](../plan/SKILL.md)
 - [`validate`](../validate/SKILL.md)

@@ -19,7 +19,7 @@ This rule defines:
 
 **Function Location Guidelines:**
 
-- **Supabase Edge Functions**: MUST be housed in `supabase/functions/`
+- **This fork's serverless functions (Supabase Edge Functions)**: MUST be housed in `supabase/functions/`
   - Each function is a subdirectory: `supabase/functions/<function-name>/index.ts`
   - Shared utilities: `supabase/functions/_shared/`
   - Deploy via: `supabase functions deploy <function-name>`
@@ -32,6 +32,8 @@ This rule defines:
 For complete project structure guidelines, refer to `architecture/RULE.md`.
 
 ## Critical Context: Deployment Model
+
+**Branch model (general):** `.cursor/rules/workflow/RULE.md` § Branch Strategy. **This section** is Edge Function deploy semantics only.
 
 **This project has develop and main branches that share ONE Supabase project.**
 
@@ -58,6 +60,7 @@ Use Edge Functions ONLY when absolutely necessary:
    - Operations requiring server-side secrets/keys
    - Example: Third-party API calls (Gamma API, payment gateways)
    - Pattern: Credentials must stay server-side
+   - Before wiring up a new third-party API here, research it first — see `api-integration/RULE.md`
 
 3. **System Events**
    - Supabase Auth lifecycle (handled via database triggers, not Edge Functions)
@@ -357,6 +360,7 @@ await updateDoc(userRef, {
 - `workflow/RULE.md` - Deployment processes for cloud functions, branch protection
 - `security/RULE.md` - Security considerations for function organization
 - `project-specific/RULE.md` - Rate limiting patterns for Edge Functions
+- `api-integration/RULE.md` - Researching a new third-party API before wiring it into a Server-Only-Capabilities function
 
 **Rules that reference this rule:**
 - `workflow/RULE.md` - References deployment of cloud functions
