@@ -29,7 +29,7 @@ Turn the skills corpus into one coherent system. This skill **discovers** struct
 | Set | Paths | Treatment |
 |-----|-------|-----------|
 | **Editable corpus** | `.agents/skills/*/SKILL.md` (+ their `references/`) | Audited and edited |
-| **Routing spine** | `.agents/skills/router/SKILL.md`, `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` | Audited; updated when skills are added/removed/renamed (per the layers doc "When you change something" coupling) |
+| **Routing spine** | `.agents/skills/router/SKILL.md`, `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`, `.agents/skills/router/references/skill-relationship-flow.md` (relationship diagram sidecar) | Audited; updated when skills are added/removed/renamed (per the layers doc "When you change something" coupling) |
 | **Reference-only** | User skills (`~/.cursor/skills-cursor/`), plugin skills (`~/.cursor/plugins/`) | Read for overlap/conflict detection; **never edited** here |
 
 ## Triggers
@@ -65,6 +65,8 @@ Run two subagents (briefs in references):
 2. **Content ledger** — per skill, enumerate the **atomic units** it carries (each distinct trigger, instruction, rule, table, link). This ledger is the ground truth for the no-loss pass; it is captured **before** any edit.
 
 Persist both under `documentation/jobs/skill-library/` (registry table + ledger) so the no-loss pass can diff against them. State the path you used.
+
+**Skill-relationship diagram (need-check):** Read [`.agents/skills/router/references/skill-relationship-flow.md`](../router/references/skill-relationship-flow.md). Using the fresh registry + known handoff changes this run, decide **needs update** vs **current** per that file’s stale-check criteria. Record the verdict in the Phase 0 notes (do not edit the diagram until Phase 5/7 after the gate, unless the only approved work is a diagram sync).
 
 ### Phase 1 — Concern-space axes
 
@@ -114,7 +116,11 @@ Any **MISSING** unit fails the pass: restore it (or, with explicit user approval
 
 ### Phase 7 — Reconcile
 
-Confirm the router still lists every skill exactly once, all cross-links resolve, and the registry table is updated. Summarize what changed. **Do not claim success — the user confirms via their own review/test.**
+Confirm the router still lists every skill exactly once, all cross-links resolve, and the registry table is updated.
+
+**Skill-relationship diagram:** IF Phase 0 marked [skill-relationship-flow.md](../router/references/skill-relationship-flow.md) **needs update**, OR Phase 5 changed clarify/plan handoffs / skill inventory, THEN update that sidecar mermaid + stale notes so it matches the live handoff DAG. IF still **current**, say so in the summary. Do not leave a stale diagram after a run that changed routing relationships.
+
+Summarize what changed. **Do not claim success — the user confirms via their own review/test.**
 
 ## Boundaries
 
@@ -134,12 +140,13 @@ Confirm the router still lists every skill exactly once, all cross-links resolve
 - Deleting a checklist/table without a named link target (SSOT move with no destination).
 - "Consolidating" two skills that occupy **different** concern-space cells (forces unrelated outcomes together).
 - Letting subagents edit — lens subagents are **read-only**; only the main agent edits after approval.
-- Adding/removing a skill without updating the router and layers-doc coupling.
+- Adding/removing a skill without updating the router, layers-doc coupling, and (when relationships change) [`router/references/skill-relationship-flow.md`](../router/references/skill-relationship-flow.md).
 - Deferred-necessity or judgment-handoff triggers (`When needing`, `when applicable`, `as needed`) in `description`, `## Triggers`, or router rows without an observable tiebreak.
 
 ## Related
 
 - [`router`](../router/SKILL.md) — routing SSOT this skill validates and updates
+- [`router/references/skill-relationship-flow.md`](../router/references/skill-relationship-flow.md) — grill/plan corridor relationship diagram (check + update each run)
 - [`DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AGENT_WORKFLOW_LAYERS.md) — layer model + "When you change something" coupling
 - [`consolidate`](../consolidate/SKILL.md) — analogous audit for application code
 - [`rule-quality`](../rule-quality/SKILL.md) — per-file grade + improve

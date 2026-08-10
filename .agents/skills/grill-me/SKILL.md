@@ -1,14 +1,13 @@
 ---
 name: grill-me
 description: >-
-  Interview the user until scope edges and interaction boundaries are aligned and the
-  decision tree is resolved. Grounds every edge question in what already exists in the
-  repo — existing loops, pipelines, and hook points — so ride-vs-new and boundary
-  choices are concrete, not abstract. Logs closed decisions to DECISIONS.md (shared
-  with plan-grill). IF gate 1 fails (vision/tradeoffs) THEN use this skill; IF gate 2
-  fails (acceptance/APIs) THEN `plan` § Refine only; IF gates already pass AND the user
-  wants a stress-test OR says "grill me" THEN use this skill. Plan-time product forks
-  → `plan-grill` (same triggers, anti-dup via the ledger).
+  Optional warm-start interview until scope edges and interaction boundaries are
+  aligned. Grounds every edge question in what already exists in the repo. Logs
+  closed decisions to DECISIONS.md (shared with plan-grill). IF gate 1 fails
+  (vision/tradeoffs) OR the user wants a stress-test OR says "grill me" THEN use
+  this skill before or beside planning. IF gate 2 fails (acceptance/APIs) THEN
+  `plan` § Refine only. IF already inside the plan corridor THEN product/scope
+  forks use `plan-grill` (rail + fork checklist), not a second full grill-me.
 disable-model-invocation: false
 ---
 
@@ -22,13 +21,13 @@ Agree on **where the feature stops**, **what it will NOT do or touch**, and **ho
 
 ## What this skill owns (SSOT)
 
-`grill-me` owns **reaching alignment** on scope edges and logging them to the shared decisions ledger. It still hands requirements prose to **`feature`** and execution planning to **`plan`**. User stories, journeys, and `DEVELOPMENT_PLAN.md` are not this skill's artifacts.
+`grill-me` owns the **optional warm start** before the plan corridor: reaching alignment on scope edges and logging them to the shared decisions ledger. It hands requirements prose to **`feature`** and execution planning to **`plan`**. User stories, journeys, and `DEVELOPMENT_PLAN.md` are not this skill's artifacts.
 
-**Ledger:** `documentation/jobs/temp_job_<name>/DECISIONS.md` — format SSOT [`../plan-grill/references/decisions-template.md`](../plan-grill/references/decisions-template.md). **First writer** (`grill-me`, `plan-grill`, or `feature`) creates the job folder + file on the first product decision. Log each closed answer (and clear-winner skips) so `plan-grill` never re-asks.
+**Ledger:** `documentation/jobs/temp_job_<name>/DECISIONS.md` — format SSOT [`../plan-grill/references/decisions-template.md`](../plan-grill/references/decisions-template.md). **First writer** (`grill-me`, `plan-grill`, or `feature`) creates the job folder + file on the first product decision. Log each closed answer (and clear-winner rows **after enumerating alternatives**) so `plan-grill` never re-asks.
 
 **Skip gate:** trivial/XS change with no real edges → route to `quick-piv` instead of grilling.
 
-**Plan-time forks:** after planning starts, new product forks use **`plan-grill`** (same ask triggers; continuous gate). Prefer closing more questions here so plan-time stops less.
+**Plan corridor:** once `plan` has started, new product/scope/architecture-boundary forks use the **`plan-grill` rail** (mandatory fork checklist beside Refine / Investigate / Create) — not another full `grill-me` session. Prefer closing more questions here so the corridor asks less. Router SSOT: `.agents/skills/router/SKILL.md` § Plan corridor flow.
 
 ## Codebase grounding (mandatory, scoped)
 
@@ -93,7 +92,7 @@ Share findings plainly ("the app already does X via Y") or uncertainty ("no noti
 
 Ask **one boundary question at a time**; a turn may include grounding prose plus the question. Use a question tool call when available; prefer multiple-choice when branches are clear.
 
-**Offer Pareto-optimal options only** — each choice wins on a **distinct** axis. When one choice dominates every axis with acceptable costs on the rest, state it, **log as clear-winner** in `DECISIONS.md`, and move on — do not invent fake tradeoffs.
+**Offer Pareto-optimal options only** — each choice wins on a **distinct** axis. When one choice dominates every axis with acceptable costs on the rest, state it, **enumerate the alternatives you rejected**, **log as clear-winner** in `DECISIONS.md`, and move on — do not invent fake tradeoffs and do not skip enumeration.
 
 **Axes (pick one winner per option):** performance, code consistency, least code, reusability, UX, separation/ease-of-cutting.
 
@@ -155,7 +154,7 @@ Close with a **chat summary** plus an up-to-date **`DECISIONS.md`** (all closed 
 | Scope-edge alignment + `DECISIONS.md` rows | `feature` (Phase 2) to document requirements |
 | Resolved scope ready for execution planning | `plan` § Refine → Investigate (`plan-grill` for new forks) |
 | Gate 2 acceptance / API shape detail | `plan` § Refine (grill informs; plan records) |
-| Plan-time product forks (anti-dup) | `plan-grill` |
+| Plan-time product/scope forks (rail + checklist) | `plan-grill` (via `plan` corridor) |
 | Migrations, RLS policies, exact API contracts | `plan` § Investigate |
 | Trivial/XS work with no real edges | `quick-piv` |
 | Landed implementation | `implement` / `finish` |
