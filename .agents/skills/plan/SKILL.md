@@ -2,16 +2,17 @@
 name: plan
 description: >-
   Creates DEVELOPMENT_PLAN.md with repo-rule compliance researched first (file placement,
-  architecture, patterns). Calls plan-grill on product forks during Refine/Investigate/Create
-  (anti-dup via DECISIONS.md). Use for new features, M/L work, or /plan. Not XS/S quick changes
-  (quick-piv), product-only requirements (feature), or changelog updates (finish).
+  architecture, patterns). Runs plan-grill as a rail beside Refine/Investigate/Create
+  (mandatory fork checklist; anti-dup via DECISIONS.md). Use for new features, M/L work,
+  or /plan. Not XS/S quick changes (quick-piv), product-only requirements (feature), or
+  changelog updates (finish).
 ---
 
 # plan
 
 Create a development plan for a feature or job. Research how best to implement it, check repo rules, and produce `DEVELOPMENT_PLAN.md` in `documentation/jobs/temp_job_<name>/`.
 
-**Critical:** Conflict and compliance is researched first; steps in each phase must reflect that (file placements, architecture, patterns). The plan documents *how* to implement according to repo rules. **Do not silently lock product forks** — run `.agents/skills/plan-grill/SKILL.md` at Refine / Investigate / Create when a product fork appears.
+**Critical:** Conflict and compliance is researched first; steps in each phase must reflect that (file placements, architecture, patterns). The plan documents *how* to implement according to repo rules. **`plan-grill` is a rail beside every corridor phase** (Refine / Investigate / Create) — run its **mandatory fork checklist** before locking product/scope/architecture-boundary choices. Do not invent one approach and call it done.
 
 **Do NOT update the changelog.** Changelog updates are done in the finish command, not during planning.
 
@@ -41,11 +42,11 @@ Create a development plan for a feature or job. Research how best to implement i
 
 | Kind of ambiguity | Owner |
 |-------------------|--------|
-| **Product / scope / edge** (perimeter, non-goals, success meaning, ride-vs-new) | [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) only — same triggers as `grill-me`; anti-dup via `DECISIONS.md`. Skip for XS/`quick-piv`. |
+| **Product / scope / edge / architecture-boundary** | [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) **rail** — mandatory fork checklist; anti-dup via `DECISIONS.md`. Skip for XS/`quick-piv`. |
 | **Gate 2 — engineering acceptance** (concrete examples, API shapes, schemas, RLS needs, interactive states) | Stay in § Refine (table below). Do **not** use `plan-grill` for these alone. |
 
 - If product ambiguity remains and `DOC_APP_VISION.md` answers **who** / **why**: read it first; if still **`DRAFT`**, pause for fill or deferral before locking scope.
-- Run `plan-grill` until product forks are closed (or clear-winner logged). Then finish gate-2 Refine questions.
+- **Before leaving Refine:** run plan-grill fork checklist on every open scope/non-goal/success topic; loop is ask → write `DECISIONS.md` → **continue Refine** until clear. Then finish gate-2 questions.
 - Only proceed to investigation once product scope is clear **and** gate-2 acceptance is concrete enough to investigate.
 
 #### Optional: Requirements depth (complex or unfamiliar features)
@@ -69,7 +70,7 @@ For features involving external APIs, database changes, auth, or novel logic, ga
 - [ ] Align narrative with **`documentation/DOC_APP_VISION.md`** when the plan changes user-facing behavior (problem, persona, app role); if **`DRAFT`**, pause for fill or explicit deferral.
 - [ ] For server-cached data, check `documentation/DOC_TANSTACK_QUERY.md` and existing `api/keys.ts` patterns in features.
 - [ ] Determine scope and boundaries (in-scope vs out-of-scope).
-- [ ] **Product forks:** ride-vs-new, neighbor absorption, greenfield confirmation → [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) before locking (read `DECISIONS.md` first; never re-ask). Industry/precedent forks → `pattern-review`, not `plan-grill`.
+- [ ] **plan-grill rail:** Before locking ride-vs-new, neighbor absorption, greenfield, or architecture-boundary choices — run [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) **mandatory fork checklist** (enumerate ≥2 options or justify sole option; ask on ties; log clear-winners; anti-dup). Loop: ask → `DECISIONS.md` → **continue Investigate**. Industry/precedent → `pattern-review`.
 - [ ] **Feature decomposition self-check (mandatory):** Enumerate distinct domain concepts this work introduces. If more than one cohesive bounded context applies, or projected file count exceeds `featureBudgets.config.cjs` defaults, plan multiple features under `src/features/` before writing steps. Do not wait for the user to request architecture. See `.cursor/rules/architecture/RULE.md` § Feature granularity.
 
 #### Optional: Foundation validation (high-risk features)
@@ -85,7 +86,8 @@ Do **not** invest in full planning until the foundation is proven.
 ### 4. Create plan
 
 - [ ] Run conflict and compliance analysis first (see below).
-- [ ] **Product forks:** before writing opinionated product picks into phases/steps, run [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) for any *new* product fork not already in `DECISIONS.md`.
+- [ ] **plan-grill rail:** Before writing opinionated product/scope picks into phases/steps — run fork checklist for any topic not in `DECISIONS.md`. Loop: ask → ledger → **continue Create**.
+- [ ] **M/L ledger gate:** If Complexity will be **M** or **L**, ensure `DECISIONS.md` lists every product/scope lock (or a single `no product forks — <reason>` row) before Present.
 - [ ] Define phases in logical order (workable chunks).
 - [ ] Write steps per phase aligned with compliance (concrete paths, layers, patterns).
 - [ ] Add a gate for each phase.
@@ -282,5 +284,5 @@ Each phase must have a gate.
 | Repo-rule audit of plan/impl | `validate` |
 | Changelog / commit | `finish` |
 | Product vision Q&A (gate 1) | `grill-me` — use **§ Refine** only for gate 2 |
-| Product forks *during* plan design | `plan-grill` (mandatory call sites in Refine / Investigate / Create) |
+| Product forks *during* plan design | `plan-grill` **rail** (mandatory checklist each of Refine / Investigate / Create) |
 | Industry precedent A/B/C | `pattern-review` (not `plan-grill`) |

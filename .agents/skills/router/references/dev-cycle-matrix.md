@@ -8,8 +8,8 @@ Compact guidance for **next-step mode**. Compress, skip, or reorder when scope, 
 
 ## Optimistic happy path
 
-1. Spar / pin goal — router gates 1–2 pass.
-2. **Plan** — `plan` writes `DEVELOPMENT_PLAN.md` with Complexity and compliance.
+1. Spar / pin goal — router gates 1–2; optional `grill-me` warm start → `DECISIONS.md`.
+2. **Plan corridor** — `plan` Refine → Investigate → Create with **`plan-grill` rail** (fork checklist each phase; anti-dup via `DECISIONS.md`); writes `DEVELOPMENT_PLAN.md` with Complexity and compliance.
 3. **Pattern & precedent** — `pattern-review` `plan-section` when M/L or material behavioral design (part of `plan` step 5).
 4. **Plan review** — `review-dev-plan` required for Complexity **M** or **L**; optional for **XS/S** unless risk or user request.
 5. **Plan compliance** — `validate` (plan-review mode) for repo-rule compliance on the plan when M/L or user requests.
@@ -26,8 +26,8 @@ Optional: `prime` when codebase or branch context is unfamiliar.
 
 | Situation | Usually next |
 |-----------|----------------|
-| Goal unclear | `grill-me` and/or `plan` § Refine |
-| Product fork mid-plan | `plan-grill` (via `plan`; anti-dup `DECISIONS.md`) |
+| Goal unclear | `grill-me` (warm start) and/or `plan` § Refine (gate 2); if already in plan → `plan-grill` rail |
+| Product/scope fork in plan corridor | `plan-grill` rail via `plan` (checklist; anti-dup `DECISIONS.md`) |
 | Novel UX/API/architecture without documented precedent | `pattern-review` then `plan` with **Pattern & precedent** |
 | Complexity M/L + plan review pending | `review-dev-plan` |
 | Implementing without plan but material design questions | `pattern-review` `lite`; then `plan` or waiver in **Decisions made** |

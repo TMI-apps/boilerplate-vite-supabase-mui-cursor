@@ -199,8 +199,8 @@ When the human only files feature requests or bug reports and tests in the app:
 | `.husky/pre-commit` | `workflow/RULE.md`, `finish` skill, this doc if hook scope changes |
 | `.husky/pre-push` | `workflow/RULE.md`, `push` skill, this doc if hook scope changes |
 | `finish` / `push` flow | Both skills, `router` matrix |
-| New invocable workflow | `router/SKILL.md` (situation table + skill index) |
-| Product decision ledger (`DECISIONS.md`) / `grill-me` ↔ `plan-grill` | `.agents/skills/plan-grill/` (template SSOT); `grill-me`, `feature`, `plan`, `implement`; router disambiguation § `grill-me` vs `plan-grill` |
+| New invocable workflow | `router/SKILL.md` (situation table + skill index); [`router/references/skill-relationship-flow.md`](../.agents/skills/router/references/skill-relationship-flow.md) when clarify/plan relationships change |
+| Product decision ledger (`DECISIONS.md`) / `grill-me` ↔ `plan-grill` | `.agents/skills/plan-grill/` (template SSOT); `grill-me`, `feature`, `plan`, `implement`; router § Plan corridor flow + [`skill-relationship-flow.md`](../.agents/skills/router/references/skill-relationship-flow.md) |
 | Rules registry for skills | `.agents/skills/plan/references/rules-registry.md`; callers link only |
 | Pattern / industry-standard review | `.agents/skills/pattern-review/` — see § Pattern / industry-standard review above |
 | Standards align (should + how) | `.agents/skills/standards-align/` — see § Standards align loop above |
@@ -215,11 +215,22 @@ When the human only files feature requests or bug reports and tests in the app:
 
 Shared anti-dup ledger for product/scope forks (not impl-time plan **Decisions made**).
 
+### Flow (corridor + rail)
+
+1. **Optional:** `grill-me` warm start → Closed rows in `DECISIONS.md`.
+2. **`plan` corridor:** Refine → Investigate → Create.
+3. **`plan-grill` rail:** beside every corridor phase — fork checklist before locking; loop ask → ledger → **same phase**.
+4. **`DEVELOPMENT_PLAN.md`:** how to build (after locks are logged).
+
+Router SSOT: `.agents/skills/router/SKILL.md` § Plan corridor flow.  
+Diagram SSOT: [`.agents/skills/router/references/skill-relationship-flow.md`](../.agents/skills/router/references/skill-relationship-flow.md).  
+Checklist/cues SSOT: `.agents/skills/plan-grill/SKILL.md`.
+
 | Audience | Start here |
 |----------|------------|
 | **Agents** | `.agents/skills/plan-grill/SKILL.md` + [`references/decisions-template.md`](../.agents/skills/plan-grill/references/decisions-template.md) |
 | **Writers** | `grill-me`, `plan-grill`, `feature` (first writer creates `documentation/jobs/temp_job_<name>/DECISIONS.md`) |
-| **Readers** | `plan` (anti-dup), `implement` (soft-warn on open rows) |
+| **Readers** | `plan` (anti-dup + M/L ledger gate), `implement` (soft-warn on open rows) |
 
 **Not the same as:** `DEVELOPMENT_PLAN.md` § Decisions made (filled during `implement`).
 
