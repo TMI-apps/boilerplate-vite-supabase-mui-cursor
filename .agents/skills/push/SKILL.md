@@ -62,4 +62,4 @@ You have explicit access to use console commands for this task.
 | Stage, commit, version, changelog | `finish` |
 | First push of a new branch | Per `.cursor/rules/workflow/RULE.md` § Commit and Push Workflow |
 
-**Next:** After a successful push that created or updated a PR to **`develop`**, read and run `~/.cursor/skills-cursor/babysit/SKILL.md` unless the user waived CI wait in **Decisions made** (see router § finish vs push vs babysit).
+**Next:** After a successful push that created or updated a PR to **`develop`**, read and run `~/.cursor/skills-cursor/babysit/SKILL.md` unless the user waived CI wait in **Decisions made** (see router § finish vs push vs babysit). Creating/offering a PR: `.cursor/rules/workflow/RULE.md` § Pull Requests — `gh pr create --base develop`, Summary + Test plan body, verify `baseRefName` (never bare `pull/new/<branch>`).

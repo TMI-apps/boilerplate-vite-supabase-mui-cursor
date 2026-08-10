@@ -158,6 +158,25 @@ Before editing code files:
 - Link related issues or tickets
 - Request reviews from appropriate team members
 - Use PRs from `feature/*` -> `develop` for all work.
+- **After push, when offering or creating a PR:** Always target **`develop`**. Prefer `gh pr create --base develop --head <feature-branch>`. **Never** paste GitHub’s bare `…/pull/new/<branch>` URL without an explicit `base=develop` — that UI defaults to the repo default branch (`main` here) and risks a production-bound PR.
+- **Create with `gh` (required pattern):**
+  1. Confirm branch is pushed: `git push -u origin HEAD` if needed.
+  2. Create: `gh pr create --base develop --head <feature-branch> --title "<type>: <short title>" --body "<markdown>"`.
+  3. Verify base before sharing the URL: `gh pr view --json baseRefName,url` — **`baseRefName` must be `develop`**.
+  4. On PowerShell, do **not** use bash `<<'EOF'` heredocs (they fail). Pass `--body` via a PowerShell here-string (`$body = @"…"@`) or a temp file.
+- **PR body template** (keep this shape):
+
+```markdown
+## Summary
+- <1–3 bullets: why / what landed>
+
+## Test plan
+- [ ] Confirm PR base is `develop` (not `main`)
+- [ ] CI `test` green
+- [ ] <scoped checks for this change>
+```
+
+- Title: conventional `type: Subject` (match the primary commit / changelog subject when versioned).
 - Wait for the required `test` check to pass before merging.
 - Ensure the PR branch is up to date with `develop` before merge.
 - Use squash merge for `feature/*` -> `develop`.
