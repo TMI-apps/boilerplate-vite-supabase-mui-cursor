@@ -77,7 +77,10 @@ Pick **one primary** location. Cross-link elsewhere in one line if needed — ne
 | Auth, secrets, validation | `.cursor/rules/security/RULE.md` |
 | Folder placement, imports, layers, path aliases | `.cursor/rules/architecture/RULE.md` or `.cursor/rules/file-placement/RULE.md` |
 | Vitest, coverage, test layout | `.cursor/rules/testing/RULE.md` |
-| Changelog, version, finish / branch strategy | `.cursor/rules/git-workflow/RULE.md` or `.agents/skills/finish/SKILL.md` |
+| Branch strategy, PRs, production promotion | `.cursor/rules/git-workflow/RULE.md` |
+| Protected files, agent decision protocol, user-test gate | `.cursor/rules/agent-behavior/RULE.md` |
+| Code review, dev process, workflow hub routing | `.cursor/rules/workflow/RULE.md` |
+| Changelog, version, finish / commit flow | `.agents/skills/finish/SKILL.md` |
 | Known symptom → fix pattern (repeatable) | `.agents/skills/debug/patterns.md` |
 | Edge Functions vs frontend | `.cursor/rules/cloud-functions/RULE.md` |
 | TanStack Query, server state | `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`, or feature `api/` keys patterns (one primary) |

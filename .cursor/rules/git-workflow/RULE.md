@@ -170,7 +170,7 @@ This repo enforces merge requirements via GitHub **Rulesets**, not classic branc
 - `develop` is ahead of `main` (something to promote).
 - Latest commit on `develop` has green combined status (`test` CI).
 
-**Agent UX:** When the user says "promote to production", run `gh workflow run promote-to-production.yml` and watch the run (`gh run watch`).
+**Agent UX:** When the user says "promote to production", or colloquial equivalents such as **"PR develop to main"**, **"merge develop to main"**, or **"release to production"**, **do not** open a `develop` → `main` PR (forbidden in Model A). Run `gh workflow run promote-to-production.yml` and watch the run (`gh run watch`).
 
 **Why no PAT or bypass actor is needed:** `main`'s ruleset only enforces `deletion` + `non_fast_forward`. Those rules block force-pushes and deletion but **allow** an ordinary fast-forward push, so the workflow's built-in `GITHUB_TOKEN` (with `contents: write`) can promote. There is **no** PR-required or status-check rule on `main` — daily integration and CI happen on `develop`, and the workflow re-checks `develop`'s tip is green before pushing. This keeps fork onboarding zero-config: no PAT, no secret, no bypass list entry.
 

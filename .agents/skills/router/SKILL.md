@@ -210,6 +210,7 @@ While inside **plan corridor** (`I`), product/scope forks use **`plan-grill` rai
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
 | Bug / error / broken / regression (not a new feature) | `.agents/skills/debug/SKILL.md` — § Chat intake before code |
 | Promote `develop` staging to production (`main`) | `gh workflow run promote-to-production.yml` — see `.cursor/rules/git-workflow/RULE.md` § Promote to production (not `finish`, not a squash PR) |
+| User asks to PR / merge `develop` → `main`, or "release to production" (colloquial) | **Same as promote** — run `gh workflow run promote-to-production.yml`; **never** `gh pr create --base main --head develop` |
 | Human onboarding; README quick start + dev task backlog | `.agents/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
 
 ### This repo — product & codebase shape

@@ -7,6 +7,8 @@ alwaysApply: true
 
 Thin hub for development workflow, code review, and process requirements. Domain detail lives in child rules — do not duplicate here.
 
+**Maintenance:** Never re-grow this file with domain bodies (git, agent behavior, platform, etc.). Extract new concerns to a sibling `.cursor/rules/<category>/RULE.md` and add one row to § Rule routing.
+
 ## Rule routing
 
 | Concern | SSOT |
