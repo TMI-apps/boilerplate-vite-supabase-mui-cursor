@@ -46,7 +46,7 @@ Align with project rules and architecture so work does not violate enforced boun
 ### 4. Active project state
 
 - **Recent activity:** `git log -n 10` (full commit messages: subject and body; do not use `--oneline`)
-- **Working tree:** `git status -sb` (branch check per `.cursor/rules/workflow/RULE.md` § Branch Strategy)
+- **Working tree:** `git status -sb` (branch check per `.cursor/rules/git-workflow/RULE.md` § Branch Strategy)
 - **Optional plans:** Scan `documentation/jobs/` for active work (e.g. `documentation/jobs/temp_job_*/`) when relevant.
 
 ---

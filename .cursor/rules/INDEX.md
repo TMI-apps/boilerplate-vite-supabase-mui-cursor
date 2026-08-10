@@ -61,23 +61,42 @@ Quick reference guide to all rules and their relationships.
 
 ---
 
-### Workflow (`workflow/RULE.md`)
-- Code review process
-- **Git workflow with changelog synchronization** (mandatory)
-- **Semantic versioning** (SSOT: `.agents/skills/finish/SKILL.md`)
-- **Commit message format** (SSOT: `.agents/skills/finish/SKILL.md`)
-- **Branch and release strategy** (SSOT: Model A, `feature/*` -> `develop`, promote workflow -> `main`)
-- Development process
-- PR standards
-- Agent-specific behaviors
-- **Minimal documentation promises** (objective docs only; avoid optional deep docs by default)
-- **App vision & goals** (SSOT: `documentation/DOC_APP_VISION.md` — problem, persona, app’s role; onboard via `.agents/skills/start/SKILL.md`)
-- **Supabase Sign in with Google (dashboard / Google Cloud)** (SSOT: `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md`; README Quick Start and `start` skill link there — do not duplicate steps)
-- **Cloudflare Workers deployment (SPA)** (SSOT: `documentation/DOC_CLOUDFLARE_WORKERS.md` + `wrangler.jsonc`)
-- **🚨 CRITICAL: PowerShell/Select-Object piping rules** (prevents IDE crashes)
-- Deployment processes
+### Workflow hub (`workflow/RULE.md`)
+- Code review process and development process
+- Deployment pointers (links to `DOC_CLOUDFLARE_WORKERS`, `cloud-functions/RULE`)
+- **Rule routing** to child domain rules (do not duplicate their bodies here)
+- **Minimal branch gate stub** — full Model A in `git-workflow/RULE.md`
 
 **Related to:** All other rules (references them in review process)
+
+---
+
+### Git workflow (`git-workflow/RULE.md`)
+- **Branch and release strategy** (SSOT: Model A, `feature/*` -> `develop`, promote workflow -> `main`)
+- Branch protection, PR standards, merge diagnostics
+- **Promote to production** workflow
+- Commit/push flow pointers (`finish` / `push` skills for semver/changelog SSOT)
+
+**Related to:** workflow hub, agent-behavior, platform
+
+---
+
+### Agent behavior (`agent-behavior/RULE.md`)
+- Protected files manifest (single SSOT)
+- Decision questioning protocol
+- Success validation (user-test gate)
+- Agent role and control
+
+**Related to:** workflow hub, git-workflow, debugging
+
+---
+
+### Platform (`platform/RULE.md`)
+- **PowerShell/Select-Object piping rules** (prevents IDE crashes)
+- Windows command rules, `$LASTEXITCODE` handling
+- Environment variable catalog (`VITE_*`, Supabase, Edge secrets)
+
+**Related to:** workflow hub, git-workflow, security
 
 ---
 
@@ -155,7 +174,10 @@ When modifying a rule, check these related rules:
 | `architecture` | code-style, testing, security, workflow, cloud-functions, database |
 | `testing` | code-style, architecture, workflow, debugging |
 | `security` | architecture, code-style, workflow, cloud-functions, database, project-specific, api-integration |
-| `workflow` | All rules (references them), api-integration |
+| `workflow` | All rules (hub), git-workflow, agent-behavior, platform, api-integration |
+| `git-workflow` | workflow, agent-behavior, platform, cloud-functions, testing |
+| `agent-behavior` | workflow, git-workflow, debugging, finish skill |
+| `platform` | workflow, git-workflow, security |
 | `cloud-functions` | architecture, workflow, security, project-specific |
 | `database` | security, workflow, architecture |
 | `api-integration` | workflow, security, database, cloud-functions, project-specific |

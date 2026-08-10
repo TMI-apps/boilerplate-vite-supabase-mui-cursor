@@ -174,7 +174,7 @@ describe("test", () => {
 
 ### Special Considerations
 
-**Edge Functions have unique testing constraints** (branch model SSOT: `.cursor/rules/workflow/RULE.md` § Branch Strategy):
+**Edge Functions have unique testing constraints** (branch model SSOT: `.cursor/rules/git-workflow/RULE.md` § Branch Strategy):
 
 - **No staging environment**: Edge Functions deploy once and affect both develop and main branches
 - **Manual testing only**: No automated testing or rollback for functions

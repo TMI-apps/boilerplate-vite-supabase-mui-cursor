@@ -12,7 +12,10 @@ This README describes folder layout and maintenance — it does **not** override
 - **`testing/RULE.md`**: SSOT for testing standards, patterns, and quality requirements
 - **`code-style/RULE.md`**: SSOT for naming conventions, formatting, and documentation standards
 - **`security/RULE.md`**: SSOT for security best practices and vulnerability prevention
-- **`workflow/RULE.md`**: SSOT for development processes, git workflow, and code review standards
+- **`workflow/RULE.md`**: Hub for code review, development process, deployment pointers, and rule routing
+- **`git-workflow/RULE.md`**: SSOT for branch strategy (Model A), PRs, and production promotion
+- **`agent-behavior/RULE.md`**: SSOT for protected files, decision protocol, and user-test gate
+- **`platform/RULE.md`**: SSOT for PowerShell command rules and local environment configuration
 - **`cloud-functions/RULE.md`**: SSOT for when to use Edge Functions vs frontend, and function organization
 - **`database/RULE.md`**: SSOT for database migration best practices and patterns
 - **`debugging/RULE.md`**: SSOT for debugging strategies, logging, and issue analysis
@@ -37,7 +40,10 @@ Each rule is a folder containing a `RULE.md` file with:
 - **architecture**: Design patterns, module organization, structure (SSOT for project structure, path aliases, and layer boundaries)
 - **testing**: Test coverage, testing patterns, quality gates (SSOT for testing standards)
 - **security**: Security best practices, vulnerability prevention
-- **workflow**: Development processes, code review standards
+- **workflow**: Development process hub, code review standards
+- **git-workflow**: Branch strategy, PRs, production promotion
+- **agent-behavior**: Protected files, agent decision protocol
+- **platform**: PowerShell and environment configuration
 - **cloud-functions**: Edge Functions architecture and organization
 - **database**: Database migration best practices and patterns
 - **debugging**: Debugging strategies, logging, and issue analysis

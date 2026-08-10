@@ -209,7 +209,7 @@ While inside **plan corridor** (`I`), product/scope forks use **`plan-grill` rai
 | Bundle **all** uncommitted work from multiple agent threads (same checkout), then push | `.agents/skills/bundle-ship/SKILL.md` |
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
 | Bug / error / broken / regression (not a new feature) | `.agents/skills/debug/SKILL.md` — § Chat intake before code |
-| Promote `develop` staging to production (`main`) | `gh workflow run promote-to-production.yml` — see `.cursor/rules/workflow/RULE.md` § Promote to production (not `finish`, not a squash PR) |
+| Promote `develop` staging to production (`main`) | `gh workflow run promote-to-production.yml` — see `.cursor/rules/git-workflow/RULE.md` § Promote to production (not `finish`, not a squash PR) |
 | Human onboarding; README quick start + dev task backlog | `.agents/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
 
 ### This repo — product & codebase shape

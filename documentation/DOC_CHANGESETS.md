@@ -21,4 +21,4 @@ How version bumps on `develop` relate to feature work, production promotion, and
 
 - Layer model: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Release and versioning
 - Commit/changelog SSOT: `.agents/skills/finish/SKILL.md`
-- Branch strategy SSOT: `.cursor/rules/workflow/RULE.md` § Promote to production
+- Branch strategy SSOT: `.cursor/rules/git-workflow/RULE.md` § Promote to production

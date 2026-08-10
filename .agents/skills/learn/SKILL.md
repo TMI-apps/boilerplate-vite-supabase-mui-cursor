@@ -73,11 +73,11 @@ Pick **one primary** location. Cross-link elsewhere in one line if needed — ne
 | Lesson type | Primary location (this repo) |
 |-------------|-------------------------------|
 | Postgres migrations, Supabase schema, RLS, idempotent migrations | `.cursor/rules/database/RULE.md` |
-| Local dev URLs, `pnpm dev`, env wiring, Supabase setup | `.cursor/rules/workflow/RULE.md` and/or `README.md` Quick Start |
+| Local dev URLs, `pnpm dev`, env wiring, Supabase setup | `.cursor/rules/platform/RULE.md` and/or `README.md` Quick Start |
 | Auth, secrets, validation | `.cursor/rules/security/RULE.md` |
 | Folder placement, imports, layers, path aliases | `.cursor/rules/architecture/RULE.md` or `.cursor/rules/file-placement/RULE.md` |
 | Vitest, coverage, test layout | `.cursor/rules/testing/RULE.md` |
-| Changelog, version, finish / branch strategy | `.cursor/rules/workflow/RULE.md` or `.agents/skills/finish/SKILL.md` |
+| Changelog, version, finish / branch strategy | `.cursor/rules/git-workflow/RULE.md` or `.agents/skills/finish/SKILL.md` |
 | Known symptom → fix pattern (repeatable) | `.agents/skills/debug/patterns.md` |
 | Edge Functions vs frontend | `.cursor/rules/cloud-functions/RULE.md` |
 | TanStack Query, server state | `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`, or feature `api/` keys patterns (one primary) |

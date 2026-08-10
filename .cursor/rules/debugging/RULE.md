@@ -41,7 +41,12 @@ This rule defines debugging strategies, logging practices, and issue analysis pa
 
 ### Reductive Strategy (Bugs and New Features)
 
-**SSOT:** `.cursor/rules/workflow/RULE.md` § Reductive Strategy — apply that guidance here. Prefer removing or simplifying before adding code.
+**Always simplify first**: When fixing bugs, implementing new features, or refactoring, always first simplify and reduce code.
+
+- Default approach: Try to achieve the result by removing or simplifying existing code
+- Only add code when: Simplification failed OR user explicitly gave permission to add code
+- Prefer removing code over adding code
+- Applies to: Bug fixes, feature requests, refactoring, and performance improvements
 
 ### Scope Reduction
 
@@ -81,11 +86,12 @@ Do not duplicate the full scientific-method checklist in this rule. This file ow
 
 **When modifying this rule, check these rules for consistency:**
 
-- `workflow/RULE.md` - Reductive strategy for bug fixes and new features
+- `agent-behavior/RULE.md` - Protected files and user-test gate
 - `testing/RULE.md` - Testing patterns and debugging test failures
 - `architecture/RULE.md` - Component nesting and structural analysis
 
 **Rules that reference this rule:**
-- `workflow/RULE.md` - References debugging strategy
+- `workflow/RULE.md` - Hub; links here for reductive strategy
+- `architecture/RULE.md` - Performance cost risk references reductive strategy
 - `.agents/skills/debug/SKILL.md` - Complete Scientific Method Debugging process (SSOT for debugging commands)
 

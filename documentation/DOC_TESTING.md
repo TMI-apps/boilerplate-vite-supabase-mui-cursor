@@ -113,7 +113,7 @@ Options: `{ withRouter: false }`, `{ withQueryClient: false }`, `{ initialEntrie
 |------|----------|
 | Full E2E / browser flows | Manual or add Playwright later — not in boilerplate |
 | Supabase Edge Functions | Manual deploy + test — see `cloud-functions/RULE.md` |
-| MUI layout polish | DevTools / device — see `workflow/RULE.md` |
+| MUI layout polish | DevTools / device — see `workflow/RULE.md` hub |
 
 ---
 

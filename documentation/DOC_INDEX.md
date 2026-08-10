@@ -38,7 +38,10 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | Topic | SSOT Location |
 |-------|----------------|
 | Workflow, versioning, changelog | `.agents/skills/finish/SKILL.md` |
-| Branch strategy, release promotion flow, protected files | `.cursor/rules/workflow/RULE.md` |
+| Branch strategy, release promotion flow | `.cursor/rules/git-workflow/RULE.md` |
+| Protected files, agent behaviors | `.cursor/rules/agent-behavior/RULE.md` |
+| PowerShell / local environment | `.cursor/rules/platform/RULE.md` |
+| Code review, development process (hub) | `.cursor/rules/workflow/RULE.md` |
 | Architecture patterns | `.cursor/rules/architecture/RULE.md` |
 | Project structure | `projectStructure.config.cjs` |
 | Dependency rules | `.dependency-cruiser.cjs` |

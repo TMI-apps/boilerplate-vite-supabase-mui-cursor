@@ -2,7 +2,7 @@
 
 This document describes enforced **colocated feature documentation**: each feature under `src/features/` has a `README.md` at the feature root, and commits that change feature code must include an updated staged README.
 
-**SSOT for process:** `.cursor/rules/file-placement/RULE.md`, `.cursor/rules/workflow/RULE.md`
+**SSOT for process:** `.cursor/rules/file-placement/RULE.md`, `.cursor/rules/workflow/RULE.md` (hub)
 
 ## Contract
 

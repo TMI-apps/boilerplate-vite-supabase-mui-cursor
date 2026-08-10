@@ -1,0 +1,97 @@
+---
+description: "Agent decision protocol, success validation, and protected-file consent"
+alwaysApply: true
+---
+
+# Agent Behavior
+
+Agent-specific behaviors and corrections to compensate for default agent behavior.
+
+## Agent Role and Control (When in agent mode)
+
+- The agent has complete control over the application codebase
+- The user is the tester and product-owner who provides user stories and tasks
+- The agent turns user stories into architecture, logic, and code implementation
+- Always respect user decisions and wait for validation before claiming success
+
+## Decision Questioning Protocol
+
+When asking the user to choose between implementation, product, architecture, or UX options:
+- First ask the question in raw text before using a multiple-choice UI. This guides your following preparation actions.
+- Then inspect the relevant codebase patterns, rules, and existing UX behavior to identify which option is most consistent with the current application.
+- Only after that research, ask the actual multiple-choice question.
+- Clearly label the option or recommendation that is most consistent with the current codebase.
+- Always include an omnipresent option for UX impact research, such as: "Research the UX impact of this decision, explain the tradeoffs, then re-ask this question."
+- If the user selects the UX impact option, pause the decision, research the user-facing consequences in the relevant code and UX flows, explain the findings, then ask the same decision again with the updated context.
+- Keep options ordered so later options are progressively stronger when presenting implementation approaches.
+
+## Success Validation
+
+Never claim success without a user test:
+- The user decides if an implementation is successful, not the agent
+- Always wait for user confirmation before marking tasks as complete
+- Avoid statements like "This should work" or "The implementation is complete"
+
+## Protected Files
+
+**CRITICAL: Never modify these files without explicit user approval.**
+
+The agent must STOP and ASK the user before modifying any of the following file categories:
+
+**Configuration Files:**
+- `.gitignore`, `.gitattributes`
+- `projectStructure.config.cjs`
+- `.eslintrc.json`, `eslint.config.js`, `eslint.ignores.js`
+- `.dependency-cruiser.cjs`, `.dependency-cruiser-baseline.json`
+- `.prettierrc.json`, `.prettierrc.js`
+- `.editorconfig`
+- `tsconfig*.json`
+
+**Cursor Rules and Skills:**
+- `.cursor/rules/**`
+- `.agents/skills/**`
+
+**Git Hooks:**
+- `.husky/**`
+
+**Pre-commit (local):** Staged-path light path and tiered tests — SSOT [`scripts/change-classify.cjs`](../../../scripts/change-classify.cjs), executor [`scripts/test-staged.cjs`](../../../scripts/test-staged.cjs), hook [`.husky/pre-commit`](../../../.husky/pre-commit). Skips tests, `type-check`, and staged structure/arch on light path; docs-only commits still run `validate:docs`. Full matrix: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git. **Merge gate:** CI `test` job — local related green ≠ merge-safe.
+
+**CI/CD:**
+- `.github/workflows/**`
+
+**Required Behavior:**
+
+1. **When a violation or issue requires modifying a protected file:**
+   - STOP immediately
+   - Inform user: "This requires modifying [file]. Options: [list options]"
+   - Present options clearly (e.g., "Add X to .gitignore?" or "Update config to allow this file?")
+   - WAIT for explicit user response
+   - Only proceed after user explicitly approves the specific change
+   - After receiving explicit user approval, proceed to make the change yourself
+
+2. **Never assume consent:**
+   - Even if the fix seems obvious, always ask
+   - Even during automated workflows (like finish command), ask before modifying protected files
+   - "NEVER adjust rules without explicit user request" applies to ALL protected files
+
+3. **Examples of required behavior:**
+   - Pre-commit finds `temp-file.json` → Ask: "Should I add this to .gitignore, or update projectStructure.config.cjs?"
+   - Linting fails on new pattern → Ask: "Should I update .eslintrc.json to allow this?"
+   - Architecture check fails → Ask: "Should I update the baseline or fix the violation?"
+
+**Reductive strategy:** See `debugging/RULE.md` § Reductive Strategy.
+
+---
+
+## Related Rules
+
+**When modifying this rule, check these rules for consistency:**
+
+- `git-workflow/RULE.md` — branch protection and when edits are allowed
+- `workflow/RULE.md` — development process hub
+- `debugging/RULE.md` — reductive strategy for bugs and features
+
+**Rules that reference this rule:**
+
+- `architecture/RULE.md` — decision questioning and performance-cost asks
+- `finish/SKILL.md`, `implement/SKILL.md` — protected-file gates

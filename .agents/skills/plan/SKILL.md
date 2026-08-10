@@ -26,8 +26,8 @@ Create a development plan for a feature or job. Research how best to implement i
 
 ### 0. Branch gate
 
-- [ ] **Plan file:** `DEVELOPMENT_PLAN.md` may be created on any branch per `.cursor/rules/workflow/RULE.md` § Exceptions (Safe to Edit on Any Branch).
-- [ ] **Implementation:** App-code work follows `.cursor/rules/workflow/RULE.md` § Branch Strategy — route to `implement` only from a `feature/*` branch.
+- [ ] **Plan file:** `DEVELOPMENT_PLAN.md` may be created on any branch per `.cursor/rules/git-workflow/RULE.md` § Exceptions (Safe to Edit on Any Branch).
+- [ ] **Implementation:** App-code work follows `.cursor/rules/git-workflow/RULE.md` § Branch Strategy — route to `implement` only from a `feature/*` branch.
 
 ### 1. Input
 
@@ -189,7 +189,7 @@ During planning, work through (using the rules reference above):
 - [ ] Note security impact if applicable (auth, RLS, validation, secrets in `.env` only).
 - [ ] Document conflicts with existing code (pattern mismatches, breaking changes).
 - [ ] Consider testing: new or changed logic should have tests per `.cursor/rules/testing/RULE.md`.
-- [ ] Workflow: branch strategy and changelog timing per `.cursor/rules/workflow/RULE.md` and **finish** (changelog in **finish**, not while planning).
+- [ ] Workflow: branch strategy and changelog timing per `.cursor/rules/git-workflow/RULE.md` and **finish** (changelog in **finish**, not while planning).
 - [ ] If a feature’s behavior changes: plan updates to `src/features/<feature>/README.md` in the same work as code (see file-placement rule).
 
 **Output inside `DEVELOPMENT_PLAN.md`:** A **Conflict & compliance** section with:
