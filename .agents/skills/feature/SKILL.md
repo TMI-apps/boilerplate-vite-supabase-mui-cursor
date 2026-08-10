@@ -30,7 +30,7 @@ Follow phases sequentially.
 - [ ] Read `documentation/DOC_APP_VISION.md`. If vision status is **`DRAFT`**, **STOP** and direct the user to fill it (see `.agents/skills/start/SKILL.md` § App vision) or obtain explicit written deferral before Phase 1 coding. Feature specs must not invent product scope when this file is empty of real prose.
 
 ### 1.1 Branch & Workflow Check
-- [ ] Per `.cursor/rules/workflow/RULE.md` § Branch Strategy — verify branch before app-code work; stop if on protected branches per that section.
+- [ ] Per `.cursor/rules/git-workflow/RULE.md` § Branch Strategy — verify branch before app-code work; stop if on protected branches per that section.
 
 ### 1.2 Rule Decision Tree
 Check each rule category systematically:

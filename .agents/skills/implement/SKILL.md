@@ -32,8 +32,8 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 ### 0. Branch gate
 
-- [ ] Per `.cursor/rules/workflow/RULE.md` § Branch Strategy — verify branch before code edits; stop if on protected branches per that section.
-- [ ] **CRITICAL:** If the plan touches protected files (`.husky/**`, `tsconfig*.json`, `.cursor/rules/**`, `.agents/skills/**`, etc.), **stop** and get explicit user approval before editing them. Full manifest: `.cursor/rules/workflow/RULE.md` § Protected Files. Record consent in **Decisions made** when granted.
+- [ ] Per `.cursor/rules/git-workflow/RULE.md` § Branch Strategy — verify branch before code edits; stop if on protected branches per that section.
+- [ ] **CRITICAL:** If the plan touches protected files (`.husky/**`, `tsconfig*.json`, `.cursor/rules/**`, `.agents/skills/**`, etc.), **stop** and get explicit user approval before editing them. Full manifest: `.cursor/rules/agent-behavior/RULE.md` § Protected Files. Record consent in **Decisions made** when granted.
 
 ### 1. Load plan
 

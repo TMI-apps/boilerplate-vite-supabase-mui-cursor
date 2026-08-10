@@ -33,7 +33,7 @@ For complete project structure guidelines, refer to `architecture/RULE.md`.
 
 ## Critical Context: Deployment Model
 
-**Branch model (general):** `.cursor/rules/workflow/RULE.md` § Branch Strategy. **This section** is Edge Function deploy semantics only.
+**Branch model (general):** `.cursor/rules/git-workflow/RULE.md` § Branch Strategy. **This section** is Edge Function deploy semantics only.
 
 **This project has develop and main branches that share ONE Supabase project.**
 
@@ -357,7 +357,7 @@ await updateDoc(userRef, {
 
 - `architecture/RULE.md` - **SSOT** for project structure and function location (referenced in Function Location section)
 - `testing/RULE.md` - **SSOT** for testing standards (referenced in Testing Strategy section)
-- `workflow/RULE.md` - Deployment processes for cloud functions, branch protection
+- `git-workflow/RULE.md` - Branch protection for deploys
 - `security/RULE.md` - Security considerations for function organization
 - `project-specific/RULE.md` - Rate limiting patterns for Edge Functions
 - `api-integration/RULE.md` - Researching a new third-party API before wiring it into a Server-Only-Capabilities function

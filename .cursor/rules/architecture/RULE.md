@@ -45,9 +45,9 @@ Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC
 
 **Required behavior:**
 1. **Detect** — when a step matches a trigger, estimate the cost (rough order of magnitude: rows touched, round-trips, render work).
-2. **Revisit design** — first try a cheaper architecture: narrower query + index, pagination/cursor, server-side aggregation, denormalized/derived column, caching (TanStack Query keys), batching, virtualization, memoization, deferring/`startTransition`. Prefer the **reductive** option (see `workflow/RULE.md` § Reductive Strategy).
+2. **Revisit design** — first try a cheaper architecture: narrower query + index, pagination/cursor, server-side aggregation, denormalized/derived column, caching (TanStack Query keys), batching, virtualization, memoization, deferring/`startTransition`. Prefer the **reductive** option (see `debugging/RULE.md` § Reductive Strategy).
 3. **Inform & propose** — tell the user about the heavy operation and present alternatives ordered from current/expensive to leaner/faster (later options progressively stronger).
-4. **Ask** — use the multiple-choice ask tool to let the user pick the approach before implementing. Follow `workflow/RULE.md` § Decision Questioning Protocol (raw question first, research, then choices; label the option most consistent with the codebase; include the omnipresent UX-impact research option).
+4. **Ask** — use the multiple-choice ask tool to let the user pick the approach before implementing. Follow `agent-behavior/RULE.md` § Decision Questioning Protocol (raw question first, research, then choices; label the option most consistent with the codebase; include the omnipresent UX-impact research option).
 
 Cross-refs: measure with **`web-perf`** plugin skill when symptoms are CWV/Lighthouse → structural fix with **`.agents/skills/optimize2/SKILL.md`** → cite **`.agents/skills/react-perf-vite/SKILL.md`** while implementing (router § `web-perf` vs `optimize2` vs `react-perf-vite`). Stack-native fixes also in `react-perf-vite`; query cache UX `architecture/RULE.md` § Plain optimistic + server-canonical response; DB indexes/migrations `database/RULE.md`.
 

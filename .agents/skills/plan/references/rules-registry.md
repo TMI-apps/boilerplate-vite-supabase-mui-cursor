@@ -11,7 +11,10 @@ Canonical paths for `.cursor/rules/` when skills need a rules table. Full descri
 | Database | `.cursor/rules/database/RULE.md` — migrations, idempotent patterns |
 | Security | `.cursor/rules/security/RULE.md` — auth, RLS, validation, secrets |
 | Testing | `.cursor/rules/testing/RULE.md` |
-| Workflow | `.cursor/rules/workflow/RULE.md` — branch strategy, protected files |
+| Workflow hub | `.cursor/rules/workflow/RULE.md` — code review, dev process, routing |
+| Git workflow | `.cursor/rules/git-workflow/RULE.md` — branch strategy, PRs, promote |
+| Agent behavior | `.cursor/rules/agent-behavior/RULE.md` — protected files, decision protocol |
+| Platform | `.cursor/rules/platform/RULE.md` — PowerShell, env vars |
 | Cloud / Edge | `.cursor/rules/cloud-functions/RULE.md` — when applicable |
 | External API integration | `.cursor/rules/api-integration/RULE.md` — MCP-first, doc research, POC before code |
 | Debugging | `.cursor/rules/debugging/RULE.md` — when diagnosing complex issues |

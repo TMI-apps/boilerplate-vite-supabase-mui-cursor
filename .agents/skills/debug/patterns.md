@@ -44,7 +44,7 @@ Add new patterns at the bottom as they prove reusable across incidents.
 - Root cause: This repo runs on **Windows PowerShell**; bash-style `&&` is invalid
 - Fix: Chain with `;` and check `$LASTEXITCODE` after each step, or run separate Shell tool calls
 - Example: `pnpm build; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; pnpm validate:structure`
-- SSOT: `.cursor/rules/workflow/RULE.md` § Platform and Commands
+- SSOT: `.cursor/rules/platform/RULE.md` § Platform and Commands
 - Tokens: PowerShell, `&&`, parser, Windows
 
 ---
@@ -54,7 +54,7 @@ Add new patterns at the bottom as they prove reusable across incidents.
 - Symptom: Commands like `pnpm type-check`, `pnpm lint`, or `pnpm test` appear to hang indefinitely in PowerShell/Cursor, especially in hooks or scripts
 - Root cause: PowerShell doesn't always propagate exit codes correctly. Commands may fail but PowerShell returns 0, causing Cursor to wait indefinitely for a clear termination signal
 - Key question: "Is the command actually hanging, or is Cursor waiting for an exit code that never comes?"
-- Debug approach: Check `.cursor/rules/workflow/RULE.md` for exit code handling patterns. Add explicit exit code handling: `command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }` for PowerShell, or `command || exit 1` for bash scripts
+- Debug approach: Check `.cursor/rules/platform/RULE.md` for exit code handling patterns. Add explicit exit code handling: `command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }` for PowerShell, or `command || exit 1` for bash scripts
 - Tokens: PowerShell, `$LASTEXITCODE`, hook, stale
 
 ---

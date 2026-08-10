@@ -170,7 +170,7 @@ Copy `write-adoption-guide/` to other projects and adjust the skill **Configurat
 
 PR CI runs full `pnpm test:classify`, `pnpm test:run`, and cold `pnpm type-check` in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
-See `.cursor/rules/workflow/RULE.md` for branch strategy and protected files.
+See `.cursor/rules/git-workflow/RULE.md` for branch strategy and `.cursor/rules/agent-behavior/RULE.md` for protected files.
 
 ## Agent-only mode (human files features/bugs)
 
@@ -183,7 +183,7 @@ When the human only files feature requests or bug reports and tests in the app:
 
 **Default agent chain:** `router` → plan/feature/debug as needed → `implement` or `quick-piv` → `validate` → `finish` → `push` → **`babysit`** when a PR to `develop` exists → **Ready for you to test** handoff (`finish` § User test).
 
-**Standing protected-file consent:** Optional Cursor **user rule** listing categories agents may edit without per-task ask (e.g. `.agents/skills/**` for workflow glue). Repo `.cursor/rules/workflow/RULE.md` § Protected Files stays strict — the user rule is external standing consent, not a repo policy change.
+**Standing protected-file consent:** Optional Cursor **user rule** listing categories agents may edit without per-task ask (e.g. `.agents/skills/**` for workflow glue). Repo `.cursor/rules/agent-behavior/RULE.md` § Protected Files stays strict — the user rule is external standing consent, not a repo policy change.
 
 **Test tiers:** See [`DOC_TESTING.md`](./DOC_TESTING.md) and pre-commit tables above; merge safety is CI `test` on `develop`, not pre-commit related mode alone.
 
@@ -196,8 +196,8 @@ When the human only files feature requests or bug reports and tests in the app:
 
 | You change… | Also update… |
 |-------------|----------------|
-| `.husky/pre-commit` | `workflow/RULE.md`, `finish` skill, this doc if hook scope changes |
-| `.husky/pre-push` | `workflow/RULE.md`, `push` skill, this doc if hook scope changes |
+| `.husky/pre-commit` | `git-workflow/RULE.md`, `agent-behavior/RULE.md`, `finish` skill, this doc if hook scope changes |
+| `.husky/pre-push` | `git-workflow/RULE.md`, `push` skill, this doc if hook scope changes |
 | `finish` / `push` flow | Both skills, `router` matrix |
 | New invocable workflow | `router/SKILL.md` (situation table + skill index); [`router/references/skill-relationship-flow.md`](../.agents/skills/router/references/skill-relationship-flow.md) when clarify/plan relationships change |
 | Product decision ledger (`DECISIONS.md`) / `grill-me` ↔ `plan-grill` | `.agents/skills/plan-grill/` (template SSOT); `grill-me`, `feature`, `plan`, `implement`; router § Plan corridor flow + [`skill-relationship-flow.md`](../.agents/skills/router/references/skill-relationship-flow.md) |

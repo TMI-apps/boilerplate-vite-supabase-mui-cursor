@@ -8,14 +8,17 @@ This guide points you to the canonical process documents. Follow these links for
    - Commit format, versioning, changelog sync  
    - Run this command before committing
 
-2. **Branch strategy & protected files** – [`.cursor/rules/workflow/RULE.md`](../.cursor/rules/workflow/RULE.md)  
-   - Branch naming, protected files, release flow (`feature/*` -> `develop` -> promote -> `main`, Model A), agent behaviors
+2. **Branch strategy** – [`.cursor/rules/git-workflow/RULE.md`](../.cursor/rules/git-workflow/RULE.md)  
+   - Branch naming, Model A flow (`feature/*` -> `develop` -> promote -> `main`), PRs, production promotion
 
-3. **Architecture SSOT** – [`.cursor/rules/architecture/RULE.md`](../.cursor/rules/architecture/RULE.md)  
+3. **Protected files** – [`.cursor/rules/agent-behavior/RULE.md`](../.cursor/rules/agent-behavior/RULE.md)  
+   - Files requiring explicit user approval before agent edits
+
+4. **Architecture SSOT** – [`.cursor/rules/architecture/RULE.md`](../.cursor/rules/architecture/RULE.md)  
    - Layer rules, code placement, import patterns  
    - See also: [ARCHITECTURE.md](../ARCHITECTURE.md), [projectStructure.config.cjs](../projectStructure.config.cjs), [.dependency-cruiser.cjs](../.dependency-cruiser.cjs)
 
-4. **Release & changelog SSOT** – [`.agents/skills/finish/SKILL.md`](../.agents/skills/finish/SKILL.md)  
+5. **Release & changelog SSOT** – [`.agents/skills/finish/SKILL.md`](../.agents/skills/finish/SKILL.md)  
    - Version bump rules, changelog format, version sync
 
 ## CI Gate Expectations

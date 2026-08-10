@@ -102,15 +102,15 @@ When skipping version/changelog: commit message uses `type: Subject` **without**
   - Never stage all changes automatically when unrelated unstaged work exists without explicit user confirmation.
 - commit with proper message format (see commit message standards below)
 - fix any issues found by pre-commit hook
-- **CRITICAL:** If fixing requires modifying protected files, STOP and ASK the user first. Full manifest: `.cursor/rules/workflow/RULE.md` § Protected Files. NEVER modify protected files without explicit user approval.
+- **CRITICAL:** If fixing requires modifying protected files, STOP and ASK the user first. Full manifest: `.cursor/rules/agent-behavior/RULE.md` § Protected Files. NEVER modify protected files without explicit user approval.
 - check if architecture.md needs update
 - do not create new deep docs during finish unless user explicitly requests it
 - **Do NOT push in this command.** `finish` is local-only and ends at a successful commit.
-- **After a successful commit:** Tell the user the commit succeeded and offer **`.agents/skills/push/SKILL.md`** — do **not** invoke `push` in the same turn unless the user explicitly asks to push. Push requires its own confirmation (see `push` skill and `.cursor/rules/workflow/RULE.md`).
+- **After a successful commit:** Tell the user the commit succeeded and offer **`.agents/skills/push/SKILL.md`** — do **not** invoke `push` in the same turn unless the user explicitly asks to push. Push requires its own confirmation (see `push` skill and `.cursor/rules/git-workflow/RULE.md`).
 
 ## Ready to commit? (required)
 
-Before `git add` / `git commit`, match `.cursor/rules/workflow/RULE.md`: summarize what will be committed and ask whether the user is **ready to commit**. Do not proceed to version/changelog/commit until they confirm (unless they already explicitly invoked `finish` to commit this work).
+Before `git add` / `git commit`, summarize what will be committed and ask whether the user is **ready to commit**. Do not proceed to version/changelog/commit until they confirm (unless they already explicitly invoked `finish` to commit this work).
 
 ## Semantic Versioning (SSOT)
 
@@ -155,7 +155,7 @@ All projects must follow semantic versioning (MAJOR.MINOR.PATCH):
 Closes #123
 ```
 
-**Note:** Commit message must match changelog entry. Husky pre-commit hook runs automatically (see `.husky/pre-commit` for SSOT). See `.cursor/rules/workflow/RULE.md` for Keep a Changelog format details and version synchronization requirements.
+**Note:** Commit message must match changelog entry. Husky pre-commit hook runs automatically (see `.husky/pre-commit` for SSOT). See `.agents/skills/finish/SKILL.md` for Keep a Changelog format and version synchronization.
 
 ## Faster commit (pre-commit light path + staged tests)
 
@@ -169,7 +169,7 @@ After `git add`, expect hook behavior per **`documentation/DOC_AGENT_WORKFLOW_LA
 
 ## Production promotion (separate from finish)
 
-Per `.cursor/rules/workflow/RULE.md` § Promote to production — not `finish`, not a squash PR to `main`.
+Per `.cursor/rules/git-workflow/RULE.md` § Promote to production — not `finish`, not a squash PR to `main`.
 
 ## User test handoff (mandatory before closure)
 

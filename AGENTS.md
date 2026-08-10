@@ -28,8 +28,12 @@ The canonical rules live in `.cursor/rules/`. The imported rules below cover arc
 @.cursor/rules/file-placement/RULE.md
 @.cursor/rules/code-style/RULE.md
 @.cursor/rules/workflow/RULE.md
+@.cursor/rules/agent-behavior/RULE.md
 
 Consult on demand (not auto-imported):
+
+- `.cursor/rules/git-workflow/RULE.md`
+- `.cursor/rules/platform/RULE.md`
 
 - `.cursor/rules/testing/RULE.md`
 - `.cursor/rules/security/RULE.md`

@@ -1,33 +1,49 @@
 ---
-description: "Development workflow, code review, and process standards"
+description: "Development workflow hub — code review, dev process, deployment pointers"
 alwaysApply: true
 ---
 
 # Workflow Standards
 
-Development workflows, code review standards, and process requirements. Includes agent-specific behaviors and corrections to compensate for default agent behavior.
+Thin hub for development workflow, code review, and process requirements. Domain detail lives in child rules — do not duplicate here.
 
-## SSOT Map (Single Source of Truth)
+## Rule routing
+
+| Concern | SSOT |
+|---------|------|
+| Branch model, PRs, promote, commit/push flow | `git-workflow/RULE.md` |
+| Protected files, decision protocol, user-test gate | `agent-behavior/RULE.md` |
+| PowerShell, env vars, shell crash prevention | `platform/RULE.md` |
+| Semver, changelog, commit format | `.agents/skills/finish/SKILL.md` |
+| Reductive strategy / debugging | `debugging/RULE.md` |
+| API doc research | `api-integration/RULE.md` |
+
+## Branch gate (minimal)
+
+Before editing app code (`src/**`, configs, migrations, etc.): verify current branch is `feature/*` or `fix/*` — **not** `main` or `develop`. Stop and switch branches if on a protected branch. Full Model A rules: `git-workflow/RULE.md` § Branch Strategy.
+
+## SSOT Map
 
 | Topic | SSOT Location |
 |-------|----------------|
 | Semantic versioning, commit format, conventional commit types | `.agents/skills/finish/SKILL.md` |
-| Changelog format, version sync workflow | `.agents/skills/finish/SKILL.md` (this rule references it) |
-| Branch strategy, protected files, agent behaviors | `.cursor/rules/workflow/RULE.md` (this file) |
-| Architecture patterns, layer rules, code placement | `.cursor/rules/architecture/RULE.md` |
+| Branch strategy, PRs, production promotion | `git-workflow/RULE.md` |
+| Protected files, agent behaviors | `agent-behavior/RULE.md` |
+| PowerShell / local environment | `platform/RULE.md` |
+| Architecture patterns, layer rules, code placement | `architecture/RULE.md` |
 | Project structure, file whitelist | `projectStructure.config.cjs` |
 | Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
 | Dev task backlog / onboarding | `src/config/app-tasks.json` + `src/features/tasks/README.md` |
-| **App vision & goals** (problem, persona, app’s role; fillable template) | `documentation/DOC_APP_VISION.md` |
-| **Agent workflow layers** (skills vs rules; pattern review entry) | `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` |
-| **Supabase + Google OAuth** (dashboard / Google Cloud Console setup checklist) | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |
-| Feature-local README enforcement (Option 1), scripts, CI placement | `documentation/DOC_FEATURE_LOCAL_README.md` |
+| App vision & goals | `documentation/DOC_APP_VISION.md` |
+| Agent workflow layers | `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` |
+| Supabase + Google OAuth setup | `documentation/DOC_SUPABASE_GOOGLE_OAUTH.md` |
+| Feature-local README enforcement | `documentation/DOC_FEATURE_LOCAL_README.md` |
 
 ## Code Review Process
 
 ### Review Checklist
-- [ ] Changelog updated (if user-facing changes) and matches commit message
-- [ ] Commit message includes version number first and matches changelog
+- [ ] Changelog updated (if user-facing changes) and matches commit message — `finish/SKILL.md`
+- [ ] Commit message includes version number first and matches changelog when bumped
 - [ ] Code follows style guidelines (`code-style/RULE.md`)
 - [ ] Architecture patterns are followed (`architecture/RULE.md`)
 - [ ] Architecture documentation updated (if structural changes)
@@ -39,476 +55,60 @@ Development workflows, code review standards, and process requirements. Includes
 - [ ] Linting passes (GTS or project-specified tool)
 
 ### Review Focus Areas
-- Functionality: Does it work as intended?
-- Code Quality: Is it maintainable and readable?
-- Performance: Are there obvious performance issues?
-- Security: Are there security vulnerabilities?
-- Testing: Is it adequately tested?
-
-## Git Workflow
-
-### Version Control Standards
-
-**SSOT:** `.agents/skills/finish/SKILL.md` — semantic versioning, changelog gate (including no-bump types), commit format, and `package.json` / `CHANGELOG.md` sync when a bump is required.
-
-**Review checklist (this rule only):** changelog updated when user-facing; commit subject matches changelog when bumped; one logical change per commit.
-
-**Note:** Configuration lives in `.env` only. Onboarding checklist: `src/config/app-tasks.json` (see `src/features/tasks/README.md`).
-
-### Branch Strategy
-
-#### Project Branch Pattern (Model A — develop staging + ff-only promotion)
-
-Project uses **two long-lived branches** with a strict one-way promotion rule:
-- **`develop` branch:** Integration branch and stable staging deploy (Cloudflare preview). All daily work merges here via squash PR.
-- **`main` branch:** Production only (protected). Updated **only** by the **Promote to production** workflow (`promote-to-production.yml`), which fast-forwards `main` to `develop`. Every push to `main` deploys production via Cloudflare Workers Builds.
-- **Feature branches:** Short-lived `feature/*` (and `fix/*`) branches created **from `develop`** for all work, merged back via Pull Request to `develop`.
-
-**Invariant:** `main` is always an ancestor of `develop`. Promotion only moves `main` forward; it never creates a commit on `main` that `develop` lacks.
-
-**Workflow:**
-- **Never commit directly to `main` or `develop`.** All changes land via a `feature/*` Pull Request to `develop`; rulesets enforce this.
-- Start work from the latest `develop` (`git switch develop` + `git pull origin develop`), then `git switch -c feature/<name>`.
-- Daily flow: `feature/*` → `develop` via squash Pull Request after the `test` check is green.
-- **Release / production:** when staging on `develop` looks good, run **Promote to production** (`gh workflow run promote-to-production.yml` or Actions UI). This fast-forwards `main` to `develop` — no squash PR, no back-merge.
-- **Forbidden:** squash PRs `develop` → `main`; any `main` → `develop` back-merge; direct pushes to `main` or `develop` (except the promote workflow on `main`).
-- **Hotfixes:** `feature/*` or `fix/*` off `develop` → merge to `develop` → promote. Emergency direct-to-`main` remains the rare exception below.
-- Per-branch Cloudflare preview URLs still work for `feature/*` PRs; `develop` is the **stable** staging URL.
-
-#### Branch Protection
-
-**Critical Rule: Never Commit Directly to Main**
-
-The AI must verify the current git branch before editing any code file. **Direct commits to `main` and `develop` are prohibited.** All work happens on `feature/*` branches and lands via Pull Request to `develop`.
-
-**Protected Branch Merge Model (Current Repo Decision):**
-- Require a Pull Request for every `develop` update (no direct-push flow).
-- Merge method for `develop`: **Squash merge** (primary for `feature/*` PRs).
-- `main` updates only via **Promote to production** workflow (fast-forward push using the built-in `GITHUB_TOKEN`; no PAT or bypass actor needed — see § Promote to production).
-- Enable "Automatically delete head branches" so merged `feature/*` branches are cleaned up.
-
-##### Verification Process
-
-1. Check the current branch at the start of code-related conversations
-2. If unsure, ask: "Which branch are you currently on?"
-3. Proceed only after confirming the branch is NOT `main` or `develop` (for code changes)
-
-##### Branch-Specific Rules
-
-- Feature branches (`feature/*`, `fix/*`): All code changes allowed (created from `develop`).
-- `develop`: **Direct code changes blocked.** Work on a feature branch and open a PR to `develop`.
-- `main`: **Direct code changes blocked.** Production updates only via promote workflow. Emergency override only (see below).
-- Other branches: Ask user before proceeding.
-
-##### When User is on Main or Develop Branch
-
-If code changes are requested while on `main` or `develop`:
-
-**Stop immediately.** Do not make any code changes. Display warning:
-- You are on a protected long-lived branch (`main` or `develop`). **Never commit directly.**
-- Create a feature branch first: `git switch develop` + `git pull origin develop`, then `git switch -c feature/<name>`
-- Once switched, proceed with requested changes
-
-Do not make code changes until on a feature branch.
-
-##### Exceptions
-
-**Safe to Edit on Any Branch**
-
-These files may be edited on any branch after user confirmation:
-- Documentation files (`documentation/**/*.md`), including plan files (`documentation/jobs/**/DEVELOPMENT_PLAN.md`)
-- Cursor rules (`.cursor/rules/*.md`)
-- README files
-
-App code (`src/**`, configs, migrations, etc.) still requires a `feature/*` branch per § Branch Strategy above.
-
-**Emergency Main Branch Changes (Rare Exception)**
-
-Only proceed with main branch code changes when ALL of the following are true:
-1. User explicitly states "emergency fix on main"
-2. User confirms with "yes, proceed on main"
-3. User acknowledges the risk
-
-Default: **Never commit directly to `main`.** When in doubt, create a `feature/*` branch.
-
-##### Implementation Checklist
-
-Before editing code files:
-- [ ] Verify current branch (ask user if unsure)
-- [ ] Confirm branch is a `feature/*` branch, OR user gave explicit override
-- [ ] If on `main` or `develop`, show warning and wait for a feature-branch switch
-- [ ] Proceed with changes only after confirmation
-
-##### Integration with Workflow
-
-**During Development:**
-- Start of session: "Which branch are you working on?"
-- Before first code edit: Verify branch is a `feature/*` branch, not `main` or `develop`
-- Before merge: Remind that merging to `develop` updates staging; production requires promote workflow
-
-**During Git Operations:**
-- Before providing commit instructions: Confirm on a `feature/*` branch
-- When user requests merge: Verify `feature/*` -> `develop` (squash)
-- When user requests production release: Run or guide **Promote to production** workflow (not a squash PR)
-- During changelog updates: Note which changes are user-facing
-
-### Pull Requests
-- Keep PRs focused and reasonably sized
-- Include clear description of changes
-- Link related issues or tickets
-- Request reviews from appropriate team members
-- Use PRs from `feature/*` -> `develop` for all work.
-- Wait for the required `test` check to pass before merging.
-- Ensure the PR branch is up to date with `develop` before merge.
-- Use squash merge for `feature/*` -> `develop`.
-- "Automatically delete head branches" cleans up merged feature branches; `main` and `develop` are never deleted (deletion-protected).
-
-#### Diagnosing "merge blocked" / "rule violation"
-
-When a user reports a merge was blocked, do not assume the ruleset is broken. First inspect PR state:
-
-- `gh pr view <N> --json mergeable,mergeStateStatus,statusCheckRollup`
-- `mergeable: MERGEABLE` + `mergeStateStatus: BLOCKED` almost always means a **required status check is still `IN_PROGRESS` or missing** — wait with `gh pr checks <N> --watch`, then re-check.
-- Only investigate deeper (stale branch, missing approval, signed-commits, etc.) once `statusCheckRollup` is fully green but state is still `BLOCKED`.
-
-#### Model A divergence prevention
-
-The old broken model used squash `develop` → `main` plus mandatory `main` → `develop` back-merge, which caused perpetual PR conflicts. **Model A forbids both.** Production promotion is **fast-forward only** via `promote-to-production.yml`; `main` must stay an ancestor of `develop`.
-
-If a `feature/*` PR shows `CONFLICTING`, the branch is behind `develop`: merge the latest `develop` into the feature branch (`git switch feature/<name>` → `git merge origin/develop`), resolve, push, then re-check.
-
-If **Promote to production** fails with "main is not an ancestor of develop", someone merged to `main` outside the promote workflow — stop and reconcile with a maintainer before forcing history.
-
-This repo enforces merge requirements via GitHub **Rulesets**, not classic branch protection:
-- Classic endpoint `gh api repos/OWNER/REPO/branches/main/protection` returns `404 Branch not protected` — that is **not** evidence that `main` is unprotected.
-- Use `gh api repos/OWNER/REPO/rules/branches/main` to list the active rules (required checks, PR requirements, deletion/non-fast-forward guards).
-
-#### Promote to production
-
-**Workflow:** `.github/workflows/promote-to-production.yml` (`workflow_dispatch` only — **Promote to production** in Actions UI).
-
-**Preconditions:**
-- `main` is a strict ancestor of `develop` (fast-forward possible).
-- `develop` is ahead of `main` (something to promote).
-- Latest commit on `develop` has green combined status (`test` CI).
-
-**Agent UX:** When the user says "promote to production", run `gh workflow run promote-to-production.yml` and watch the run (`gh run watch`).
-
-**Why no PAT or bypass actor is needed:** `main`'s ruleset only enforces `deletion` + `non_fast_forward`. Those rules block force-pushes and deletion but **allow** an ordinary fast-forward push, so the workflow's built-in `GITHUB_TOKEN` (with `contents: write`) can promote. There is **no** PR-required or status-check rule on `main` — daily integration and CI happen on `develop`, and the workflow re-checks `develop`'s tip is green before pushing. This keeps fork onboarding zero-config: no PAT, no secret, no bypass list entry.
-
-**Setup (one-time per repo):** none beyond the `main` ruleset (`deletion` + `non_fast_forward`) and the `develop` ruleset. Workflow → Settings → Actions → Workflow permissions must allow **Read and write** (GitHub default for most repos).
-
-**Ruleset design (do not regress):**
-- **Never** instruct users to add **GitHub Actions** to a ruleset bypass list — `github-actions[bot]` is not a selectable bypass actor; the REST API rejects it.
-- **Never** require a fine-grained PAT (`PROMOTE_GH_TOKEN`) for fork onboarding — that adds setup friction boilerplate users should not need.
-- **Preferred pattern:** `develop` carries PR + `test` + non-ff + deletion; `main` carries **only** `deletion` + `non_fast_forward` so the promote workflow's built-in `GITHUB_TOKEN` can fast-forward push. Alternative (heavier): custom GitHub App on bypass + `actions/create-github-app-token` — only when `main` must also require PRs.
-
-**Failure modes:**
-- `403` / `Changes must be made through a pull request` — `main`'s ruleset has a `pull_request` or `required_status_checks` rule that should not be there; reduce it to `deletion` + `non_fast_forward`.
-- `main is not an ancestor of develop` — someone merged to `main` outside this workflow; do not squash-merge or back-merge; escalate.
-- `develop and main are already at the same commit` — nothing to promote.
-
-**One-time fork setup:** After forking, create `develop` from `main` (`git push origin main:develop`) and configure `develop` + `main` rulesets per onboarding (`start` skill).
-
-**First promotion bootstrap:** GitHub only registers `workflow_dispatch` once the workflow file exists on the default branch (`main`). On a fresh fork, after the first Model A PR merges to `develop`, fast-forward `main` once locally (`git fetch origin && git checkout main && git merge --ff-only origin/develop && git push origin main`) to seed the workflow onto `main`. Subsequent releases use **Promote to production**.
+- Functionality, code quality, performance, security, testing
 
 ## Development Process
 
 ### Before Starting Work
-- Understand requirements clearly
-- Check for existing solutions or patterns
-- Consider edge cases and error handling
-- Plan the approach before coding
+- Understand requirements clearly; check existing patterns; plan before coding
 
 ### During Development
 
 **Agents:** Do not commit during `plan` or `implement` — commits happen in **`finish`** only (`.agents/skills/finish/SKILL.md`).
 
-**Humans on `feature/*` branches:** May commit frequently with meaningful messages; still use `finish` workflow when agents wrap up work.
+**Humans on `feature/*` branches:** May commit frequently; still use `finish` when agents wrap up work.
 
-- Write tests alongside code — use TDD only per `testing/RULE.md` § When to use TDD; otherwise add tests when the plan or changed logic warrants them (same rule, § What to Test)
-- Refactor as you go (don't accumulate technical debt)
-- Follow established patterns and conventions
+- Write tests per `testing/RULE.md` § When to use TDD / What to Test
+- Refactor as you go; follow established patterns
 
 ### Before Submitting
 
-- Changelog and version sync: **`.agents/skills/finish/SKILL.md`** (not during plan/implement)
-- Run linters and fix all issues
-- Run tests and ensure they pass
-- Review your own code
-- Update only required docs:
-  - `CHANGELOG.md` for user-facing changes
-  - `ARCHITECTURE.md` for structural changes
-  - `src/features/*/README.md` when feature code changes
-- Do not create new docs by default; only add deep docs with explicit user approval
-- If feature code changed, stage `src/features/*/README.md` updates and run `pnpm validate:feature-docs:staged`
-- Verify changelog and commit message match
-
-## Agent-Specific Behaviors
-
-### Agent Role and Control (When in agent mode)
-- The agent has complete control over the application codebase
-- The user is the tester and product-owner who provides user stories and tasks
-- The agent turns user stories into architecture, logic, and code implementation
-- Always respect user decisions and wait for validation before claiming success
-
-### Decision Questioning Protocol
-When asking the user to choose between implementation, product, architecture, or UX options:
-- First ask the question in raw text before using a multiple-choice UI. This guides your following preparation actions.
-- Then inspect the relevant codebase patterns, rules, and existing UX behavior to identify which option is most consistent with the current application.
-- Only after that research, ask the actual multiple-choice question.
-- Clearly label the option or recommendation that is most consistent with the current codebase.
-- Always include an omnipresent option for UX impact research, such as: "Research the UX impact of this decision, explain the tradeoffs, then re-ask this question."
-- If the user selects the UX impact option, pause the decision, research the user-facing consequences in the relevant code and UX flows, explain the findings, then ask the same decision again with the updated context.
-- Keep options ordered so later options are progressively stronger when presenting implementation approaches.
-
-### Success Validation
-Never claim success without a user test:
-- The user decides if an implementation is successful, not the agent
-- Always wait for user confirmation before marking tasks as complete
-- Avoid statements like "This should work" or "The implementation is complete"
-
-### Protected Files - Require Explicit User Consent
-
-**CRITICAL: Never modify these files without explicit user approval.**
-
-The agent must STOP and ASK the user before modifying any of the following file categories:
-
-**Configuration Files:**
-- `.gitignore`, `.gitattributes`
-- `projectStructure.config.cjs`
-- `.eslintrc.json`, `eslint.config.js`, `eslint.ignores.js`
-- `.dependency-cruiser.cjs`, `.dependency-cruiser-baseline.json`
-- `.prettierrc.json`, `.prettierrc.js`
-- `.editorconfig`
-- `tsconfig*.json`
-
-**Cursor Rules and Skills:**
-- `.cursor/rules/**`
-- `.agents/skills/**`
-
-**Git Hooks:**
-- `.husky/**`
-
-**Pre-commit (local):** Staged-path light path and tiered tests — SSOT [`scripts/change-classify.cjs`](../../../scripts/change-classify.cjs), executor [`scripts/test-staged.cjs`](../../../scripts/test-staged.cjs), hook [`.husky/pre-commit`](../../../.husky/pre-commit). Skips tests, `type-check`, and staged structure/arch on light path; docs-only commits still run `validate:docs`. Full matrix: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git. **Merge gate:** CI `test` job — local related green ≠ merge-safe.
-
-**CI/CD:**
-- `.github/workflows/**`
-
-**Required Behavior:**
-
-1. **When a violation or issue requires modifying a protected file:**
-   - STOP immediately
-   - Inform user: "This requires modifying [file]. Options: [list options]"
-   - Present options clearly (e.g., "Add X to .gitignore?" or "Update config to allow this file?")
-   - WAIT for explicit user response
-   - Only proceed after user explicitly approves the specific change
-   - After receiving explicit user approval, proceed to make the change yourself
-
-2. **Never assume consent:**
-   - Even if the fix seems obvious, always ask
-   - Even during automated workflows (like finish command), ask before modifying protected files
-   - "NEVER adjust rules without explicit user request" applies to ALL protected files
-
-3. **Examples of required behavior:**
-   - Pre-commit finds `temp-file.json` → Ask: "Should I add this to .gitignore, or update projectStructure.config.cjs?"
-   - Linting fails on new pattern → Ask: "Should I update .eslintrc.json to allow this?"
-   - Architecture check fails → Ask: "Should I update the baseline or fix the violation?"
-
-### Reductive Strategy (Bugs and New Features)
-
-**Always simplify first**: When fixing bugs, implementing new features, or refactoring, always first simplify and reduce code.
-
-- Default approach: Try to achieve the result by removing or simplifying existing code
-- Only add code when: Simplification failed OR user explicitly gave permission to add code
-- Prefer removing code over adding code
-- Applies to: Bug fixes, feature requests, refactoring, and performance improvements
-
-For complete debugging strategy, see `debugging/RULE.md`.
-
-### Branch Protection
-
-See Branch Strategy section above for detailed branch protection rules and verification process.
-
-### Commit and Push Workflow
-
-**Automated Workflow:** Use `.agents/skills/finish/SKILL.md` and `.agents/skills/push/SKILL.md` as a split workflow.
-
-#### Agent-Executed Flow
-
-1. **After completing changes**, the agent:
-   - Summarizes what was changed
-   - Shows the changelog entry that was added
-   - Asks the user: "Are you ready to commit these changes?"
-
-2. **User responds** with explicit confirmation or denial
-
-3. **Finish phase (`finish` command):**
-   - Runs local cleanup/check tasks
-   - Updates changelog/version as required
-   - Runs `git add` and `git commit` only after explicit user confirmation
-   - Never pushes during `finish`
-
-4. **Push phase (`push` command):**
-   - Must verify clean working tree and existing local commits
-   - Must never run `git add` or `git commit`
-   - Pushes only already committed work after explicit user confirmation
-   - Default push target is the current `feature/*` branch; never push `develop` or `main` directly unless user explicitly requests emergency override on `main`
-   - Before pushing shared-branch updates, verify branch freshness against remote and sync first when behind
-   - Uses `required_permissions: ["all"]` when running git commands to avoid Win32 pipe errors (see `.agents/skills/debug/patterns.md` — **Git on Windows: env.exe signal pipe Win32 error 5**)
-
-5. **General commit safety:**
-   - Never assume the user wants to commit just because changes are complete
-   - Always require commit body - commit messages must include detailed body explaining changes
-
-### Documentation Lookup
-Superseded by `.cursor/rules/api-integration/RULE.md` (MCP-first, doc-freshness, POC-before-code).
-
-### Platform and Commands
-
-**Environment:** Windows with PowerShell.
-
-**Command Rules:**
-- No Unix-style `&&` chaining
-- No Unix-only flags like `rm -rf`
-- Run commands as separate sequential calls (the agent executes them, not the user)
-
-### Shell/PowerShell Handling
-
-**Critical - Select-Object Piping Issue:**
-
-Never pipe directly to `Select-Object` without `Out-String` first. This triggers VS Code/Cursor network errors that crash the IDE environment.
-
-**Wrong (Do Not Use - Triggers Network Error):**
-- Piping directly to `Select-Object` without `Out-String` first
-
-**Correct (Always Use One of These):**
-- Option 1: Use `Out-String` before `Select-Object` (recommended)
-- Option 2: Capture to variable first (also safe)
-- Option 3: No output filtering (safest, but shows all output)
-
-**Critical - Exit Code Handling to Prevent Cursor Crashes:**
-
-Always check `$LASTEXITCODE` after external commands to prevent Cursor crashes. PowerShell doesn't always propagate exit codes correctly, and Cursor crashes when it receives error output but thinks the command succeeded (exit code 0).
-
-**Why This Pattern Prevents Crashes:**
-
-1. **Explicit Exit Code Propagation**: PowerShell doesn't always propagate exit codes from child processes. When a command fails, the exit code may not be set correctly, leaving Cursor waiting indefinitely. The explicit check ensures Cursor gets a clear failure signal.
-
-2. **Prevents Ambiguous States**: Without explicit handling, a command might fail but PowerShell returns 0, causing Cursor to treat it as success. This mismatch can cause crashes or hangs. The pattern forces an explicit `exit 1` on any non-zero exit code.
-
-3. **Large Output Serialization**: When commands produce large output, Cursor may struggle to serialize the response (e.g., "serialize binary: invalid int 32" errors). Explicit exit handling provides a clear termination point, preventing serialization issues.
-
-4. **PowerShell-Specific Behavior**: PowerShell's error handling differs from bash - exit codes aren't always propagated automatically. Explicit checks are more reliable for ensuring Cursor receives unambiguous termination signals.
-
-**Required Pattern:**
-
-```powershell
-command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }
-```
-
-- `command 2>&1` - Runs command, redirects stderr to stdout
-- `;` - Command separator (PowerShell equivalent of `&&`)
-- `$LASTEXITCODE` - PowerShell variable containing last command's exit code
-- `if ($LASTEXITCODE -ne 0)` - Check if command failed
-- `exit 1` - Force explicit failure exit code
-
-**When to Use This Pattern:**
-- Long-running commands (like `pnpm arch:check`, `pnpm lint`)
-- Commands that might fail silently
-- Commands producing large output
-- Any command where Cursor might hang or crash
-- npm/node commands (lint, test, build)
-- Commands with output filtering
-
-**Notes:**
-- Check `$LASTEXITCODE` (not `$?`) after commands
-- Use `exit $LASTEXITCODE` to preserve original exit code (or `exit 1` for explicit failure)
-- This pattern gives Cursor a clear, unambiguous termination signal, reducing crashes and hangs
-
-### Environment Variables and Configuration
-
-**Environment Variables:**
-- Use `VITE_*` names for all client-side environment variables
-- Access via `import.meta.env.VITE_*`
-- Never commit real `.env` files containing secrets
-  - Use `.env.example` for structure only if needed
-  - Real values live in local environment and CI
-
-**Supabase Environment Variables (Current):**
-- `VITE_SUPABASE_URL` - Your Supabase project URL
-- `VITE_SUPABASE_PUBLISHABLE_KEY` - Your Supabase anonymous/public key (legacy name: `VITE_SUPABASE_ANON_KEY`)
-- Access in code: `import { getSupabase, isSupabaseConfigured } from "@/shared/services/supabaseService"`
-
-**For Edge Functions (set in Supabase Dashboard):**
-- `GAMMA_API_KEY` - Gamma API key for presentation generation
-- Other secrets configured via Supabase Dashboard → Project Settings → Edge Functions → Secrets
-
-**Other Environment Variables:**
-- `VITE_OPENROUTER_API_KEY` - OpenRouter API key for chat completion
-- `VITE_ELEVENLABS_API_KEY` - ElevenLabs API key for TTS/STT
-
-**Legacy Firebase Variables (may still be needed for hosting/deployment):**
-- `VITE_FIREBASE_API_KEY` - Firebase API key (for hosting deployment)
-- `VITE_FIREBASE_PROJECT_ID` - Firebase project ID (for hosting)
-- `VITE_FIREBASE_APP_ID` - Firebase app ID (for hosting deployment)
-- Note: Firebase variables are primarily used for Firebase Hosting deployment configuration. The app now uses Supabase for database, auth, and storage.
-
-**Hidden Files:**
-- Some files are not visible to the AI (for example `.env`)
-- When an issue involves hidden files, the AI should:
-  - Ask the user to confirm relevant values (without exposing full secrets), or
-  - Ask the user to paste safe snippets (keys, not secrets)
-
-**Server Restarts:**
-- Explicitly mention when a restart is required, especially after:
-  - Environment variable changes
-  - Dependency or tooling changes
-  - Vite config, tsconfig, or path alias changes
-  - Backend or server configuration changes
+- Changelog and version sync: **`finish/SKILL.md`** (not during plan/implement)
+- Run linters and tests; review your own code
+- Update only required docs: `CHANGELOG.md`, `ARCHITECTURE.md`, `src/features/*/README.md`
+- Do not create new docs by default; deep docs need explicit user approval
+- If feature code changed: stage README updates and run `pnpm validate:feature-docs:staged`
 
 ## Deployment Process
 
 ### Cloudflare Workers (frontend SPA)
-
-- **SSOT:** `documentation/DOC_CLOUDFLARE_WORKERS.md` + root `wrangler.jsonc`
-- **Deploy model:** Workers Builds (push-to-deploy). GitHub is the CI gate only — no deploy workflow, no `CLOUDFLARE_API_TOKEN` secret. `develop` → preview, `main` → production
-- **Fork-safe:** never commit `account_id` or a custom-domain `routes` entry to this template — use `CLOUDFLARE_ACCOUNT_ID` (Workers Builds env / local) and per-fork domain config
-- `pnpm deploy` (`pnpm build && wrangler deploy`) is an emergency local path only
-- Set `VITE_*` (and `NODE_VERSION=20`, `CLOUDFLARE_ACCOUNT_ID`) in **Workers Builds build variables** (build-time embed), Root directory EMPTY
-- React Router requires `assets.not_found_handling: "single-page-application"` in `wrangler.jsonc` (already set)
-- Migration from Cloudflare Pages: see the doc's Pages → Workers mapping table
+- **SSOT:** `documentation/DOC_CLOUDFLARE_WORKERS.md` + `wrangler.jsonc`
+- Push-to-deploy via Workers Builds; `develop` → preview, `main` → production
 
 ### Cloud Functions Deployment
-- When cloud functions have to be deployed (again) for changes to have effect, deploy them yourself
-- Don't ask user to deploy unless there's a specific reason they need to do it
-- Verify deployment was successful
-- **SSOT:** `.cursor/rules/cloud-functions/RULE.md` for deploy commands, lint, and Supabase Edge workflow — do not duplicate legacy `npm --prefix functions` paths here
+- Deploy yourself when changes require it; verify success
+- **SSOT:** `cloud-functions/RULE.md` — deploy commands, lint, Supabase Edge workflow
 
-### Pre-Deployment Linting (Edge Functions)
-- Always run and pass predeploy lint per **`cloud-functions/RULE.md`** before deployment
+## Superseded sections (moved to child rules)
 
-## Examples
+- **Git workflow, branch strategy, PRs, promote** → `git-workflow/RULE.md`
+- **Agent behaviors, protected files** → `agent-behavior/RULE.md`
+- **Platform, PowerShell, env vars** → `platform/RULE.md`
+- **Reductive strategy** → `debugging/RULE.md`
+- **Documentation lookup** → `api-integration/RULE.md`
 
 Commit/changelog examples: **`.agents/skills/finish/SKILL.md`** § Commit Message Standards.
 
-### Bad Commit Message
-- Generic messages like "fix stuff" without version, type, or details
-
-### Good PR Description
-- Clear changes section listing what was added/modified
-- Testing section describing test coverage
-- Related issues section with ticket references
+---
 
 ## Related Rules
 
 **When modifying this rule, check these rules for consistency:**
-- `code-style/RULE.md` - Code review standards reference code style
-- `architecture/RULE.md` - Review process may reference architecture
-- `testing/RULE.md` - Review checklist includes testing requirements
-- `security/RULE.md` - Review process includes security checks
-- `cloud-functions/RULE.md` - Deployment processes reference cloud functions
+
+- `git-workflow/RULE.md`, `agent-behavior/RULE.md`, `platform/RULE.md` — child domain rules
+- `code-style/RULE.md`, `architecture/RULE.md`, `testing/RULE.md`, `security/RULE.md`
+- `cloud-functions/RULE.md` — deployment processes
 
 **Rules that reference this rule:**
+
 - All other rules may be referenced in code review processes
-- `cloud-functions/RULE.md` - References deployment processes
