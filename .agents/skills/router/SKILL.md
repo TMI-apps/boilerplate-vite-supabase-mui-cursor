@@ -62,7 +62,7 @@ Pick **one** primary by the **most blocking** row that applies (top wins). Then 
 | No plan file; quick plan in chat; implement/validate incomplete | `quick-piv` |
 | All planned phases done; full audit not yet run | `validate` |
 | Validated; user/thread signaled landing | `finish` (only when wrap-up is the clear next step — not the default for bare `/router` on new work) |
-| Pushed feature branch; PR to `develop` open; CI status unknown | `babysit` (`~/.cursor/skills-cursor/babysit/SKILL.md`) after successful `push` |
+| Pushed; CI status unknown | Read `src/config/git-workflow.json`. **Model A:** PR to `develop` open → `babysit`. **Model B:** push to `develop` → watch branch `test` run (`gh run watch`) |
 
 Align with [dev-cycle matrix](references/dev-cycle-matrix.md). IF active job AND repo/branch context unknown THEN run **`prime`** once, then continue with the chosen skill — do not replace thread continuation with backlog intake.
 
@@ -354,7 +354,7 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`finish`:** Commit-ready locally (version, changelog, staging rules); emits **Ready for you to test** handoff (§ User test).
 - **`bundle-ship`:** Multi-thread same-checkout landing — one bundled `finish` commit, then `push` in one invocation.
 - **`push`:** Remote sync only **after** commits exist; never commit inside push.
-- **`babysit`** (user-level: `~/.cursor/skills-cursor/babysit/SKILL.md`): After successful **`push`** that created or updated a PR to **`develop`**, read and run **`babysit`** unless the user waived CI wait in **Decisions made**. On in-scope CI failure → fix and re-push; on out-of-scope failure → `ci-investigator` or report to user.
+- **`babysit` / post-push CI:** Read `src/config/git-workflow.json`. **Model A:** after successful **`push`** that created or updated a PR to **`develop`**, read and run **`babysit`** (`~/.cursor/skills-cursor/babysit/SKILL.md`) unless waived in **Decisions made**. **Model B:** after successful push to **`develop`**, watch the branch `test` workflow run (`gh run watch`); do **not** require a PR or treat PR babysit as the sole path. On in-scope CI failure → fix and re-push; on out-of-scope failure → `ci-investigator` or report to user.
 
 ### `canvas` vs `validate` / reporting
 

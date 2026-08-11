@@ -77,7 +77,7 @@ Pick **one primary** location. Cross-link elsewhere in one line if needed — ne
 | Auth, secrets, validation | `.cursor/rules/security/RULE.md` |
 | Folder placement, imports, layers, path aliases | `.cursor/rules/architecture/RULE.md` or `.cursor/rules/file-placement/RULE.md` |
 | Vitest, coverage, test layout | `.cursor/rules/testing/RULE.md` |
-| Branch strategy, PRs, production promotion | `.cursor/rules/git-workflow/RULE.md` |
+| Branch strategy, PRs, production promotion | `.cursor/rules/git-workflow/RULE.md` (mode: `src/config/git-workflow.json`) |
 | Protected files, agent decision protocol, user-test gate | `.cursor/rules/agent-behavior/RULE.md` |
 | Code review, dev process, workflow hub routing | `.cursor/rules/workflow/RULE.md` |
 | Changelog, version, finish / commit flow | `.agents/skills/finish/SKILL.md` |

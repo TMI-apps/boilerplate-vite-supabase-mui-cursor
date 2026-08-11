@@ -65,7 +65,7 @@ Err toward inclusion in all modes — `applicable: false` is cheap.
 
 ### Branch verification (impl-full / gate)
 
-Per `.cursor/rules/git-workflow/RULE.md` § Branch Strategy — verify branch before impl-full / gate; stop if on protected branches per that section.
+Read `src/config/git-workflow.json`. Apply `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate before impl-full / gate.
 
 ---
 

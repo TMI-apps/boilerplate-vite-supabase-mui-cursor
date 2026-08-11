@@ -22,14 +22,14 @@ Thin hub for development workflow, code review, and process requirements. Domain
 
 ## Branch gate (minimal)
 
-Before editing app code (`src/**`, configs, migrations, etc.): verify current branch is `feature/*` or `fix/*` — **not** `main` or `develop`. Stop and switch branches if on a protected branch. Full Model A rules: `git-workflow/RULE.md` § Branch Strategy.
+Read `src/config/git-workflow.json`, then apply `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate. Do not infer mode from the current branch.
 
 ## SSOT Map
 
 | Topic | SSOT Location |
 |-------|----------------|
 | Semantic versioning, commit format, conventional commit types | `.agents/skills/finish/SKILL.md` |
-| Branch strategy, PRs, production promotion | `git-workflow/RULE.md` |
+| Branch strategy, PRs, production promotion | `git-workflow/RULE.md` (§ Mode-aware branch gate; mode: `src/config/git-workflow.json`) |
 | Protected files, agent behaviors | `agent-behavior/RULE.md` |
 | PowerShell / local environment | `platform/RULE.md` |
 | Architecture patterns, layer rules, code placement | `architecture/RULE.md` |
@@ -68,7 +68,7 @@ Before editing app code (`src/**`, configs, migrations, etc.): verify current br
 
 **Agents:** Do not commit during `plan` or `implement` — commits happen in **`finish`** only (`.agents/skills/finish/SKILL.md`).
 
-**Humans on `feature/*` branches:** May commit frequently; still use `finish` when agents wrap up work.
+**Humans:** May commit frequently on the branch allowed by the current git-workflow mode (`src/config/git-workflow.json`); still use `finish` when agents wrap up work.
 
 - Write tests per `testing/RULE.md` § When to use TDD / What to Test
 - Refactor as you go; follow established patterns

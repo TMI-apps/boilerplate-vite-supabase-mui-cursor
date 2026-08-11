@@ -271,6 +271,8 @@ module.exports = {
             { name: "*.ts" },
             { name: "app-tasks.json" },
             { name: "app-tasks-archive.json" },
+            { name: "git-workflow.json" },
+            { name: "git-workflow.README.md" },
           ],
         },
         // Shared

@@ -27,7 +27,7 @@ Create a development plan for a feature or job. Research how best to implement i
 ### 0. Branch gate
 
 - [ ] **Plan file:** `DEVELOPMENT_PLAN.md` may be created on any branch per `.cursor/rules/git-workflow/RULE.md` § Exceptions (Safe to Edit on Any Branch).
-- [ ] **Implementation:** App-code work follows `.cursor/rules/git-workflow/RULE.md` § Branch Strategy — route to `implement` only from a `feature/*` branch.
+- [ ] **Implementation:** App-code work follows `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate (read `src/config/git-workflow.json` first). Route to `implement` from a branch the gate allows (`feature/*` / `fix/*` in Model A; `develop` in Model B).
 
 ### 1. Input
 
