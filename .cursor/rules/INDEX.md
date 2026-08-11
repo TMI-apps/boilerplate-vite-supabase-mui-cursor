@@ -65,16 +65,16 @@ Quick reference guide to all rules and their relationships.
 - Code review process and development process
 - Deployment pointers (links to `DOC_CLOUDFLARE_WORKERS`, `cloud-functions/RULE`)
 - **Rule routing** to child domain rules (do not duplicate their bodies here)
-- **Minimal branch gate stub** — full Model A in `git-workflow/RULE.md`
+- **Minimal branch gate stub** — read `src/config/git-workflow.json`; full Model A / Model B in `git-workflow/RULE.md` § Mode-aware branch gate
 
 **Related to:** All other rules (references them in review process)
 
 ---
 
 ### Git workflow (`git-workflow/RULE.md`)
-- **Branch and release strategy** (SSOT: Model A, `feature/*` -> `develop`, promote workflow -> `main`)
-- Branch protection, PR standards, merge diagnostics
-- **Promote to production** workflow
+- **Branch and release strategy** (SSOT: Model A default or Model B opt-in — config: `src/config/git-workflow.json`; behavior: `git-workflow/RULE.md`)
+- Branch protection, PR standards (Model A), merge diagnostics
+- **Promote to production** workflow (both modes)
 - Commit/push flow pointers (`finish` / `push` skills for semver/changelog SSOT)
 
 **Related to:** workflow hub, agent-behavior, platform

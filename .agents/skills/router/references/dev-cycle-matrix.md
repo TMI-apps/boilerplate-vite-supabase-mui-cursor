@@ -17,7 +17,7 @@ Compact guidance for **next-step mode**. Compress, skip, or reorder when scope, 
 7. **Validate** — repo rules and/or architecture gate when warranted (auto-selects impl-full / gate depth).
 8. **Finish** — local commit, version, changelog.
 9. **Push** — remote sync after commits exist.
-10. **Babysit** — when a PR to `develop` exists after push: read and run `~/.cursor/skills-cursor/babysit/SKILL.md` (CI green + mergeable is agent responsibility; user does not watch checks). Skip only when waived in **Decisions made**.
+10. **Babysit / post-push CI** — read `src/config/git-workflow.json`. **Model A:** when a PR to `develop` exists after push, run `~/.cursor/skills-cursor/babysit/SKILL.md`. **Model B:** after push to `develop`, watch the branch `test` workflow run (`gh run watch`). Skip only when waived in **Decisions made**.
 11. **User app test** — agent emits **Ready for you to test** handoff (`finish` § User test); user pass/fail closes the loop.
 
 Optional: `prime` when codebase or branch context is unfamiliar.
@@ -31,9 +31,9 @@ Optional: `prime` when codebase or branch context is unfamiliar.
 | Novel UX/API/architecture without documented precedent | `pattern-review` then `plan` with **Pattern & precedent** |
 | Complexity M/L + plan review pending | `review-dev-plan` |
 | Implementing without plan but material design questions | `pattern-review` `lite`; then `plan` or waiver in **Decisions made** |
-| Ready to land | `finish` → `push` → `babysit` (PR to `develop`) → user test handoff |
+| Ready to land | `finish` → `push` → post-push CI (Model A: PR babysit; Model B: branch `gh run watch`) → user test handoff |
 | Bug / error / regression (not feature request) | `debug` (§ Chat intake) before `implement` |
-| Pushed; PR to `develop` open; CI unknown | `babysit` |
+| Pushed; CI unknown | Read mode config — Model A: babysit PR; Model B: watch `develop` `test` run |
 
 ## Plan depth and gates
 

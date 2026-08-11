@@ -26,7 +26,7 @@ Guide a new user through first-time setup of this boilerplate by following the R
 - **Skip Supabase (task #1)** and **Cloudflare hosting (task #2)**. No project, no Workers Builds link, no `.env` required for most template work. The app runs locally without auth configured.
 - **Skip Airtable (task #4)** unless you are testing that integration.
 - **App vision (task #3):** may stay **`DRAFT`** while exploring or contributing to the template; do not block template PRs on it unless the change is product-facing.
-- **Still do:** prerequisites, branch workflow (SSOT: `.cursor/rules/git-workflow/RULE.md` § Branch Strategy), `pnpm dev`, and the verification checklist (§ Mandatory verification checklist).
+- **Still do:** prerequisites, branch workflow (SSOT: `src/config/git-workflow.json` + `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate), `pnpm dev`, and the verification checklist (§ Mandatory verification checklist).
 
 **Working on a fork** (someone cloned this to build their own app): full backlog applies — Supabase, hosting, vision **`ACTIVE`**, etc.
 
@@ -112,14 +112,36 @@ If assistant cannot perform the fork UI step, instruct user exactly what to clic
 
 ### 5) Branch workflow gate
 
-On a **fork**, create `develop` from `main` once (`git push origin main:develop`). First feature branch:
+**Template repo (boilerplate maintenance):** stay **`model-a`**. Do **not** offer Model B. Create `feature/<name>` from `develop` as usual for template PRs.
+
+**Fork:** create `develop` from `main` once (`git push origin main:develop`). Then ask:
+
+> Feature branches (Model A, default) or direct `develop` (Model B)?
+
+Write `src/config/git-workflow.json` accordingly (`"mode": "model-a"` | `"model-b"`). Behavior SSOT: `.cursor/rules/git-workflow/RULE.md`.
+
+**Model A:**
 
 ```bash
 git switch develop && git pull origin develop
 git switch -c feature/<name>
 ```
 
-Configure GitHub rulesets per `.cursor/rules/git-workflow/RULE.md` § Branch Protection and § Promote to production. If steps are web-UI only, provide exact click-path and wait for user confirmation.
+Configure GitHub rulesets: `develop` = PR + `test` + non-ff + deletion; `main` = deletion + non-ff only. See § Branch Protection and § Promote to production.
+
+**Model B:**
+
+```bash
+git switch develop && git pull origin develop
+```
+
+Do **not** create `feature/*` for daily work. Configure GitHub rulesets: `develop` = `test` + non-ff + deletion (**no** `pull_request`); `main` = deletion + non-ff only.
+
+**Ruleset confirmation gate (Model B — required):** Before leaving this gate, confirm the live `develop` ruleset matches Model B (user confirmation or `gh api repos/OWNER/REPO/rules/branches/develop` / rulesets API): `pull_request` **absent**; `required_status_checks` (`test`) present; `non_fast_forward` + `deletion` present. Do not proceed on click-path instructions alone.
+
+**First-promotion bootstrap (Model B):** After the promote workflow file exists on `develop`, seed it onto `main` once with a local ff push (`git fetch origin && git checkout main && git merge --ff-only origin/develop && git push origin main`), then use **Promote to production** thereafter. See `.cursor/rules/git-workflow/RULE.md` § Promote to production.
+
+If steps are web-UI only, provide exact click-path and wait for user confirmation.
 
 ### 6) Dev server gate
 

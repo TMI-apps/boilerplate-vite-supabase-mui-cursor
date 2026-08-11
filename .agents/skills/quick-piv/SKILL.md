@@ -26,7 +26,7 @@ Lightweight Plan → Implement → Validate in one workflow. **Primary outcome:*
 
 ## Branch gate
 
-- [ ] Before any code edit: per `.cursor/rules/git-workflow/RULE.md` § Branch Strategy — verify branch; stop if on protected branches per that section.
+- [ ] Before any code edit: read `src/config/git-workflow.json`. Apply `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate.
 
 ## Hard stops (M/L and gates)
 

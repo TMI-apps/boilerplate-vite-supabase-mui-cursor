@@ -99,7 +99,7 @@ After a **successful** commit:
 | Stash other threads’ work and restore after push | *excluded* — use plain `finish` Option 3 if needed |
 | Auto-poll or wait for other threads | *excluded* — user pauses them |
 | Replace `finish` or `push` rules | *excluded* — delegates SSOT |
-| Open PRs or promote to production | *deferred* — after push, open PR per `.cursor/rules/git-workflow/RULE.md` § Pull Requests (`gh pr create --base develop`; Summary + Test plan body; verify `baseRefName`; never bare `pull/new/<branch>`) |
+| Open PRs or promote to production | *deferred* — after push, read `src/config/git-workflow.json`. **Model A:** open PR per `.cursor/rules/git-workflow/RULE.md` § Pull Requests (`gh pr create --base develop`; verify `baseRefName`). **Model B:** no daily PR — babysit branch `test` run; promote via promote workflow when asked |
 
 ## Boundaries
 
