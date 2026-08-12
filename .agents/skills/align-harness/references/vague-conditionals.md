@@ -1,6 +1,6 @@
 # Vague conditional phrases — detection SSOT
 
-Used by **Lens 5** (`subagent-briefs.md`) during `improve-skill-library`. For per-file rewrites, defer to [`rule-quality`](../../rule-quality/SKILL.md) Mode B § Conditional Structure and [`create-skill`](../../create-skill/SKILL.md) § Writing Effective Descriptions.
+Used by **Lens 5** (`subagent-briefs.md`) during `align-harness`. For per-file rewrites, defer to [`rule-quality`](../../rule-quality/SKILL.md) Mode B § Conditional Structure and [`create-skill`](../../create-skill/SKILL.md) § Writing Effective Descriptions.
 
 ## Problem
 
@@ -42,7 +42,7 @@ Match case-insensitively in frontmatter `description`, `## Triggers`, routing ta
 | Weak | Stronger |
 |------|----------|
 | When needing documentation from a URL, use the browser tool | IF the user provides a documentation URL AND current behavior depends on that page's content THEN fetch it with the browser MCP (not cached training data) |
-| Follow security rules when relevant | Before editing auth, RLS, or secrets: read `.cursor/rules/security/RULE.md` |
+| Follow security rules when relevant | Before editing auth, RLS, or secrets: read `.cursor/rules/security/RULE.mdc` |
 | Use when working with PDFs | Use when the user mentions PDFs, forms, or document extraction (cite concrete terms) |
 
 ## Lens cross-links

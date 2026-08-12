@@ -35,8 +35,8 @@ Align with project rules and architecture so work does not violate enforced boun
 ### 2. Governance and rules
 
 - **Rule index:** Read `.cursor/rules/INDEX.md`.
-- **Architecture SSOT:** Read `.cursor/rules/architecture/RULE.md` (layers, path aliases `@/*`, import direction, structure whitelist).
-- **File placement:** Read `.cursor/rules/file-placement/RULE.md` — validation uses **`projectStructure.config.cjs`** (not `.js`).
+- **Architecture SSOT:** Read `.cursor/rules/architecture/RULE.mdc` (layers, path aliases `@/*`, import direction, structure whitelist).
+- **File placement:** Read `.cursor/rules/file-placement/RULE.mdc` — validation uses **`projectStructure.config.cjs`** (not `.js`).
 
 ### 3. Dependencies and boundaries
 
@@ -46,7 +46,7 @@ Align with project rules and architecture so work does not violate enforced boun
 ### 4. Active project state
 
 - **Recent activity:** `git log -n 10` (full commit messages: subject and body; do not use `--oneline`)
-- **Working tree:** `git status -sb` (branch check per `.cursor/rules/git-workflow/RULE.md` § Branch Strategy)
+- **Working tree:** `git status -sb` (branch check per `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy)
 - **Optional plans:** Scan `documentation/jobs/` for active work (e.g. `documentation/jobs/temp_job_*/`) when relevant.
 
 ---

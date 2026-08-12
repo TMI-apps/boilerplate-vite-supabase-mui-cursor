@@ -129,7 +129,7 @@ After gates 1–2 pass, **re-run** the flowchart from the top (especially if the
 
 ### Plan corridor flow (`grill-me` → ledger → `plan` + `plan-grill` rail)
 
-**Diagram SSOT:** [`references/skill-relationship-flow.md`](references/skill-relationship-flow.md) (sidecar — maintain with `improve-skill-library`).
+**Diagram SSOT:** [`references/skill-relationship-flow.md`](references/skill-relationship-flow.md) (sidecar — maintain with `align-harness`).
 
 Canonical shape (do not draw `plan-grill` as a Create-only side quest):
 
@@ -198,7 +198,7 @@ While inside **plan corridor** (`I`), product/scope forks use **`plan-grill` rai
 | Should we align [existing product/feature/component] with industry standards? / how to align? | `.agents/skills/standards-align/SKILL.md` |
 | Delete / remove / `/purge` a named feature/module with multi-asset cleanup | `.agents/skills/purge-skill/SKILL.md` |
 | Author or refine one project skill under `.agents/skills/` (`/create-skill`) | `.agents/skills/create-skill/SKILL.md` |
-| Change existing behavior / unverified system assumption / workaround / “just this one” exception during implementation | `.agents/skills/layer-consistency-check/SKILL.md` (also always-on via `architecture/RULE.md` § Layer consistency) |
+| Change existing behavior / unverified system assumption / workaround / “just this one” exception during implementation | `.agents/skills/layer-consistency-check/SKILL.md` (also always-on via `architecture/RULE.mdc` § Layer consistency) |
 | Write a cross-repo adoption guide from an implemented pattern | `.agents/skills/write-adoption-guide/SKILL.md` |
 | Goal or scope **not** ready — clarify only (no `DEVELOPMENT_PLAN.md` yet); **one** primary by missing dimension (see **Clarification-first routing**) | Product/vision → `grill-me`; acceptance/APIs → `plan` **§ Refine** only |
 | Execute an existing `DEVELOPMENT_PLAN.md` phase by phase | `.agents/skills/implement/SKILL.md` |
@@ -209,7 +209,7 @@ While inside **plan corridor** (`I`), product/scope forks use **`plan-grill` rai
 | Bundle **all** uncommitted work from multiple agent threads (same checkout), then push | `.agents/skills/bundle-ship/SKILL.md` |
 | Push already committed work (after `finish`) | `.agents/skills/push/SKILL.md` |
 | Bug / error / broken / regression (not a new feature) | `.agents/skills/debug/SKILL.md` — § Chat intake before code |
-| Promote `develop` staging to production (`main`) | `gh workflow run promote-to-production.yml` — see `.cursor/rules/git-workflow/RULE.md` § Promote to production (not `finish`, not a squash PR) |
+| Promote `develop` staging to production (`main`) | `gh workflow run promote-to-production.yml` — see `.cursor/rules/git-workflow/RULE.mdc` § Promote to production (not `finish`, not a squash PR) |
 | User asks to PR / merge `develop` → `main`, or "release to production" (colloquial) | **Same as promote** — run `gh workflow run promote-to-production.yml`; **never** `gh pr create --base main --head develop` |
 | Human onboarding; README quick start + dev task backlog | `.agents/skills/start/SKILL.md` (includes **App vision** gate → `documentation/DOC_APP_VISION.md`) |
 
@@ -228,7 +228,8 @@ While inside **plan corridor** (`I`), product/scope forks use **`plan-grill` rai
 | Optimize hotspots: design → approach → efficiency → complexity | `.agents/skills/optimize2/SKILL.md` |
 | React perf patterns (bundle, waterfalls, re-renders) for Vite SPA | `.agents/skills/react-perf-vite/SKILL.md` |
 | Retro from failures/diffs; persist lessons into rules or skills | `.agents/skills/learn/SKILL.md` |
-| Audit/improve the **skill library** as a whole (overlap, SSOT, conflicts, handoffs); subagent lenses + no-loss pass | `.agents/skills/improve-skill-library/SKILL.md` |
+| Audit/improve the **agent harness** (AGENTS, rules, skills, INDEX, layers); subagent lenses + no-loss pass | `.agents/skills/align-harness/SKILL.md` |
+| Intake **external** harness content from `.agents/harness-inbox/` | `.agents/skills/update-harness/SKILL.md` |
 | Grade **or** improve an attached rule/command file (rubric score and/or quality rewrite) | `.agents/skills/rule-quality/SKILL.md` |
 
 ### This repo — integrations
@@ -326,9 +327,15 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`rule-quality`:** Score (Mode A) or rewrite (Mode B) **provided rule/command text**.
 - **`learn`:** Decide **where** lessons live (rules vs skills vs debug appendix) from incident context.
 
-### `improve-skill-library` vs `rule-quality` / `consolidate`
+### `align-harness` vs `update-harness` vs `learn`
 
-- **`improve-skill-library`:** **System-level** audit of the whole `.agents/skills/` corpus — separation of concerns, SSOT, conflicts, handoffs — via parallel lens subagents and a no-information-loss gate. Edits skills + router/layers spine.
+- **`align-harness`:** In-repo harness coherence (skills + rules + AGENTS + INDEX + layers).
+- **`update-harness`:** External drops in `.agents/harness-inbox/` — disposition report + confirmed apply.
+- **`learn`:** Session lesson from a mistake; removal-first; structural conflicts → `align-harness`.
+
+### `align-harness` vs `rule-quality` / `consolidate`
+
+- **`align-harness`:** **Harness-wide** audit — separation of concerns, SSOT, conflicts, handoffs — via parallel lens subagents and a no-information-loss gate. Edits harness corpus + router/layers spine.
 - **`rule-quality`:** One **rule/command file's** grade or prose. **`consolidate`:** duplication in **`src/` application code**, not skills.
 
 ### `rule-quality` vs `review`
@@ -366,7 +373,7 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 - **`.agents/skills/api-integrate/SKILL.md`:** Use for an **unfamiliar/new** vendor or API — MCP-first check, then Phase 1 schema/contract → Phase 2 sample/wire-shape discipline (the same two-phase order the retired `airtable-inspect` skill used, now generalized). Worked examples: Supabase (MCP path), Airtable (no-MCP path).
 - **Stack plugin skill** (`supabase`, `cloudflare`, `wrangler`, etc.): Use for **operating inside a stack you're already on** — see the Supabase/Cloudflare disambiguations below. Don't route routine stack work through `api-integrate`.
 - **A fork's own vendor-specific skill** (if one exists, e.g. a fork-added `stripe-inspect`): prefer it when it's more specific than the generic `api-integrate` path — don't force every integration through one skill.
-- See also `.cursor/rules/api-integration/RULE.md` for the globs-scoped principles this skill implements (`alwaysApply: false`).
+- See also `.cursor/rules/api-integration/RULE.mdc` for the globs-scoped principles this skill implements (`alwaysApply: false`).
 
 ### Supabase: `supabase` vs `supabase-postgres-best-practices` vs `api-integrate`
 
@@ -425,10 +432,10 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 
 **Tiebreak:** Vague “make better” / `/improve` → **`improve`**. Specific “align with industry” → **`standards-align`**. Specific “simplify this flow” → **`challenge`**. Named perf hotspot → **`optimize2`** or **`react-perf-vite`**. Gate-1 unclear product intent → **`grill-me`**.
 
-### `create-skill` vs `improve-skill-library` vs `rule-quality`
+### `create-skill` vs `align-harness` vs `rule-quality`
 
 - **`create-skill`:** One new/refined `.agents/skills/<name>/SKILL.md` (this repo).
-- **`improve-skill-library`:** Whole-corpus coherence audit.
+- **`align-harness`:** Whole-corpus coherence audit.
 - **`rule-quality`:** Grade/rewrite one **rule/command** file (not skill authoring).
 
 ### `standards-align` vs `pattern-review` vs `challenge`
@@ -439,7 +446,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 
 **Tiebreak:** User asks should/how **align with industry** on existing scope → **`standards-align`**. Novel plan/proposal gate → **`pattern-review`**. “This flow is overbuilt” without industry framing → **`challenge`**.
 
-**Always-on:** layer-consistency is enforced during implementation via `architecture/RULE.md` § Layer consistency — not only when the user names the skill.
+**Always-on:** layer-consistency is enforced during implementation via `architecture/RULE.mdc` § Layer consistency — not only when the user names the skill.
 
 ### `implement` vs `quick-piv`
 
@@ -535,7 +542,8 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/hypothesis/SKILL.md`
 - `.agents/skills/caveman/SKILL.md` (communication overlay — not workflow)
 - `.agents/skills/rule-quality/SKILL.md`
-- `.agents/skills/improve-skill-library/SKILL.md`
+- `.agents/skills/align-harness/SKILL.md`
+- `.agents/skills/update-harness/SKILL.md`
 - `.agents/skills/optimize2/SKILL.md`
 - `.agents/skills/react-perf-vite/SKILL.md`
 - `documentation/DOC_REACT_PERF.md` — human overview (links to skill)
@@ -554,7 +562,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 ### Router references (not skills)
 
 - `.agents/skills/router/references/dev-cycle-matrix.md` — dev-cycle happy path and M/L gates (SSOT)
-- `.agents/skills/router/references/skill-relationship-flow.md` — grill / plan corridor / plan-grill rail diagram (SSOT; `improve-skill-library` maintains)
+- `.agents/skills/router/references/skill-relationship-flow.md` — grill / plan corridor / plan-grill rail diagram (SSOT; `align-harness` maintains)
 
 ### User Cursor bundle (`~/.cursor/skills-cursor/`)
 

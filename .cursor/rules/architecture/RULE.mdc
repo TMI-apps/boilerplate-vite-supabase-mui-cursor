@@ -45,11 +45,11 @@ Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC
 
 **Required behavior:**
 1. **Detect** — when a step matches a trigger, estimate the cost (rough order of magnitude: rows touched, round-trips, render work).
-2. **Revisit design** — first try a cheaper architecture: narrower query + index, pagination/cursor, server-side aggregation, denormalized/derived column, caching (TanStack Query keys), batching, virtualization, memoization, deferring/`startTransition`. Prefer the **reductive** option (see `debugging/RULE.md` § Reductive Strategy).
+2. **Revisit design** — first try a cheaper architecture: narrower query + index, pagination/cursor, server-side aggregation, denormalized/derived column, caching (TanStack Query keys), batching, virtualization, memoization, deferring/`startTransition`. Prefer the **reductive** option (see `debugging/RULE.mdc` § Reductive Strategy).
 3. **Inform & propose** — tell the user about the heavy operation and present alternatives ordered from current/expensive to leaner/faster (later options progressively stronger).
-4. **Ask** — use the multiple-choice ask tool to let the user pick the approach before implementing. Follow `agent-behavior/RULE.md` § Decision Questioning Protocol (raw question first, research, then choices; label the option most consistent with the codebase; include the omnipresent UX-impact research option).
+4. **Ask** — use the multiple-choice ask tool to let the user pick the approach before implementing. Follow `agent-behavior/RULE.mdc` § Decision Questioning Protocol (raw question first, research, then choices; label the option most consistent with the codebase; include the omnipresent UX-impact research option).
 
-Cross-refs: measure with **`web-perf`** plugin skill when symptoms are CWV/Lighthouse → structural fix with **`.agents/skills/optimize2/SKILL.md`** → cite **`.agents/skills/react-perf-vite/SKILL.md`** while implementing (router § `web-perf` vs `optimize2` vs `react-perf-vite`). Stack-native fixes also in `react-perf-vite`; query cache UX `architecture/RULE.md` § Plain optimistic + server-canonical response; DB indexes/migrations `database/RULE.md`.
+Cross-refs: measure with **`web-perf`** plugin skill when symptoms are CWV/Lighthouse → structural fix with **`.agents/skills/optimize2/SKILL.md`** → cite **`.agents/skills/react-perf-vite/SKILL.md`** while implementing (router § `web-perf` vs `optimize2` vs `react-perf-vite`). Stack-native fixes also in `react-perf-vite`; query cache UX `architecture/RULE.mdc` § Plain optimistic + server-canonical response; DB indexes/migrations `database/RULE.mdc`.
 
 **Not:** structural workaround / abstraction-layer mismatch — see § Layer consistency (workaround guard) below.
 
@@ -291,7 +291,7 @@ Use `pnpm validate:structure` to validate:
 - `package.json` - Scripts that call the validator
 - `documentation/PROJECT-STRUCTURE-VALIDATION.md` - User documentation
 - `architecture.md` - Architecture documentation
-- `.cursor/rules/file-placement/RULE.md` - File placement rules
+- `.cursor/rules/file-placement/RULE.mdc` - File placement rules
 
 ### Path Aliases (Required)
 
@@ -589,11 +589,11 @@ When reducing code complexity through refactoring, all changes must comply with 
 ## Related Rules
 
 **When modifying this rule, check these rules for consistency:**
-- `code-style/RULE.md` - Naming conventions for architectural elements
-- `testing/RULE.md` - Testing patterns that depend on architecture
-- `security/RULE.md` - Security boundaries and architectural patterns
-- `workflow/RULE.md` - Code review standards for architecture
-- `cloud-functions/RULE.md` - Function organization patterns
+- `code-style/RULE.mdc` - Naming conventions for architectural elements
+- `testing/RULE.mdc` - Testing patterns that depend on architecture
+- `security/RULE.mdc` - Security boundaries and architectural patterns
+- `workflow/RULE.mdc` - Code review standards for architecture
+- `cloud-functions/RULE.mdc` - Function organization patterns
 - `.agents/skills/optimize2/SKILL.md` - Complexity reduction / optimization workflow (must comply with architecture rules)
 
 **SSOT Status:**
@@ -605,10 +605,10 @@ When reducing code complexity through refactoring, all changes must comply with 
   - Feature granularity budgets and cross-feature import boundaries (`featureBudgets.config.cjs`, dependency-cruiser)
   - Plain optimistic + server-canonical response patterns for TanStack Query (mutation UX, cache merge vs. invalidation on success)
 - Other rules reference this rule for structure guidelines
-- `code-style/RULE.md` references this rule for path aliases instead of duplicating them
+- `code-style/RULE.mdc` references this rule for path aliases instead of duplicating them
 - Complexity reduction rules reference this rule for architecture compliance
 
 **Rules that reference this rule:**
 - All other rules may reference architectural patterns
-- `cloud-functions/RULE.md` - References this rule as SSOT for function location
+- `cloud-functions/RULE.mdc` - References this rule as SSOT for function location
 - `.agents/skills/optimize2/SKILL.md` - References this rule for architecture compliance during refactoring

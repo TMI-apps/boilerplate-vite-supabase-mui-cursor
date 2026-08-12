@@ -6,7 +6,7 @@ Use when writing §2 and §7 of an adoption guide. **Do not** assume every repo 
 |---------------|---------|---------------------|-------------------------------------|
 | **Procedure (SSOT)** | Full *how* — invocable by agents | `.agents/skills/<slug>/SKILL.md` | `.cursor/skills/<slug>/SKILL.md`, `docs/agents/<slug>.md`, `.github/agents/`, RFC appendix |
 | **Bundled references** | Rubric, templates, long checklists | `.agents/skills/<slug>/references/*.md` | `docs/architecture/`, ADR folder |
-| **Always-on reminder** | Short principle + link to SSOT | `.cursor/rules/<category>/RULE.md` | `CONTRIBUTING.md`, ESLint doc, team handbook |
+| **Always-on reminder** | Short principle + link to SSOT | `.cursor/rules/<category>/RULE.mdc` | `CONTRIBUTING.md`, ESLint doc, team handbook |
 | **Workflow integration** | Router, plan, feature, finish hooks | Other `.agents/skills/*` link to procedure | PR template, design-review checklist |
 | **Plan / RFC gate** | Required section before implementation | `DEVELOPMENT_PLAN.md` § from plan template | `IMPLEMENTATION_PLAN.md`, Notion RFC, `docs/rfcs/` template |
 | **Human index** | One line discoverability | `AGENTS.md`, `documentation/DOC_INDEX.md`, `DOC_AGENT_WORKFLOW_LAYERS.md` | `README`, wiki index |

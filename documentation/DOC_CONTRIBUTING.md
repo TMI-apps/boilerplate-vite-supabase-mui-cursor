@@ -8,13 +8,13 @@ This guide points you to the canonical process documents. Follow these links for
    - Commit format, versioning, changelog sync  
    - Run this command before committing
 
-2. **Branch strategy** – [`.cursor/rules/git-workflow/RULE.md`](../.cursor/rules/git-workflow/RULE.md)  
+2. **Branch strategy** – [`.cursor/rules/git-workflow/RULE.mdc`](../.cursor/rules/git-workflow/RULE.mdc)  
    - Branch naming, Model A flow (`feature/*` -> `develop` -> promote -> `main`), PRs, production promotion
 
-3. **Protected files** – [`.cursor/rules/agent-behavior/RULE.md`](../.cursor/rules/agent-behavior/RULE.md)  
+3. **Protected files** – [`.cursor/rules/agent-behavior/RULE.mdc`](../.cursor/rules/agent-behavior/RULE.mdc)  
    - Files requiring explicit user approval before agent edits
 
-4. **Architecture SSOT** – [`.cursor/rules/architecture/RULE.md`](../.cursor/rules/architecture/RULE.md)  
+4. **Architecture SSOT** – [`.cursor/rules/architecture/RULE.mdc`](../.cursor/rules/architecture/RULE.mdc)  
    - Layer rules, code placement, import patterns  
    - See also: [ARCHITECTURE.md](../ARCHITECTURE.md), [projectStructure.config.cjs](../projectStructure.config.cjs), [.dependency-cruiser.cjs](../.dependency-cruiser.cjs)
 

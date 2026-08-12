@@ -57,13 +57,13 @@ This repo is **not** test-first by default. Default: add meaningful automated te
 
 **Do not default to TDD** when:
 
-- UI flows, MUI components, or layout (manual/browser validation is default — `workflow/RULE.md`)
+- UI flows, MUI components, or layout (manual/browser validation is default — `workflow/RULE.mdc`)
 - Supabase RLS, auth, or Edge Functions (see § Edge Functions Testing — manual)
 - The spec is still ambiguous — resolve with user verification first (`.agents/skills/feature/SKILL.md`)
 
 Even in TDD, § Test Authority applies: expected values must trace to a cited ground-truth source, not an ad-hoc re-derivation.
 
-Cross-link: `workflow/RULE.md` § During Development.
+Cross-link: `workflow/RULE.mdc` § During Development.
 
 ## Test Coverage
 
@@ -174,7 +174,7 @@ describe("test", () => {
 
 ### Special Considerations
 
-**Edge Functions have unique testing constraints** (branch model SSOT: `.cursor/rules/git-workflow/RULE.md` § Branch Strategy):
+**Edge Functions have unique testing constraints** (branch model SSOT: `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy):
 
 - **No staging environment**: Edge Functions deploy once and affect both develop and main branches
 - **Manual testing only**: No automated testing or rollback for functions
@@ -203,7 +203,7 @@ Before **Promote to production**, verify:
 - Manual happy-path and key error-path tests are completed
 - Any Edge Function-related behavior in scope has been re-tested against the currently deployed function version
 
-For Edge Functions architecture and when to use them, see `cloud-functions/RULE.md`.
+For Edge Functions architecture and when to use them, see `cloud-functions/RULE.mdc`.
 
 ---
 
@@ -211,17 +211,17 @@ For Edge Functions architecture and when to use them, see `cloud-functions/RULE.
 
 **When modifying this rule, check these rules for consistency:**
 
-- `code-style/RULE.md` - Code style standards for test files
-- `architecture/RULE.md` - Testing patterns that depend on architecture
-- `workflow/RULE.md` - Code review standards for tests
-- `cloud-functions/RULE.md` - Edge Functions testing considerations
+- `code-style/RULE.mdc` - Code style standards for test files
+- `architecture/RULE.mdc` - Testing patterns that depend on architecture
+- `workflow/RULE.mdc` - Code review standards for tests
+- `cloud-functions/RULE.mdc` - Edge Functions testing considerations
 
 **SSOT Status:**
 - This rule is the **SSOT** for testing standards, patterns, and quality requirements
 - **Onboarding guide:** `documentation/DOC_TESTING.md`
-- Other rules reference this rule for testing guidelines (e.g., `cloud-functions/RULE.md` references testing strategy)
+- Other rules reference this rule for testing guidelines (e.g., `cloud-functions/RULE.mdc` references testing strategy)
 
 **Rules that reference this rule:**
-- `architecture/RULE.md` - May reference testability requirements
-- `cloud-functions/RULE.md` - References this rule as SSOT for testing standards
+- `architecture/RULE.mdc` - May reference testability requirements
+- `cloud-functions/RULE.mdc` - References this rule as SSOT for testing standards
 

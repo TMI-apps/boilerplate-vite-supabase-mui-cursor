@@ -16,7 +16,7 @@ Push → Cloudflare builds & deploys. GitHub blocks bad merges. There is no GitH
 
 ## Agent one-shot brief (fork setup)
 
-For coding agents completing the **"Put your app online (Cloudflare hosting)"** task from `src/config/app-tasks.json`. Run it after the user's Supabase env vars exist. Use `.agents/skills/quick-piv/SKILL.md` for the change, or `plan` + `implement` if rulesets/dashboard need research. Branch model: `.cursor/rules/git-workflow/RULE.md` § Branch Strategy. The **user** confirms success — do not claim done without their test.
+For coding agents completing the **"Put your app online (Cloudflare hosting)"** task from `src/config/app-tasks.json`. Run it after the user's Supabase env vars exist. Use `.agents/skills/quick-piv/SKILL.md` for the change, or `plan` + `implement` if rulesets/dashboard need research. Branch model: `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy. The **user** confirms success — do not claim done without their test.
 
 **Target:** GitHub = CI gate only (`ci.yml` on every PR + push to `main` and `develop`; rulesets require PR + green `test`; **no** deploy workflow; **no** `CLOUDFLARE_API_TOKEN` secret). Cloudflare Workers Builds = sole deploy path (`develop` → stable staging preview, `main` → production; optional per-branch previews). Same Supabase project for preview and production.
 
@@ -146,7 +146,7 @@ After validating production on Workers, delete the old Pages project (dashboard 
 | Routes 404 in production | Confirm `not_found_handling: "single-page-application"` |
 | Empty app / missing config in production | `VITE_*` not set as Workers Builds **build** variables |
 
-**Agents:** after changing Wrangler/Cloudflare setup, keep `.wrangler/` in `.gitignore` and the structure validator ignore list (see `.cursor/rules/file-placement/RULE.md` § Tooling artifacts), and whitelist new root files in `projectStructure.config.cjs`.
+**Agents:** after changing Wrangler/Cloudflare setup, keep `.wrangler/` in `.gitignore` and the structure validator ignore list (see `.cursor/rules/file-placement/RULE.mdc` § Tooling artifacts), and whitelist new root files in `projectStructure.config.cjs`.
 
 ## Related docs
 

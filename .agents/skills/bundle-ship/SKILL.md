@@ -78,7 +78,7 @@ Read `.agents/skills/finish/SKILL.md` and execute it with these overrides:
 | Ends with offer to push | Continue to Step 4 in **this same turn** after a successful commit |
 | Stash lane / wait-and-recheck | **Out of scope** — user must pause other threads first |
 
-Follow all other `finish` requirements: archive task when applicable, version/changelog gate, staging decision gate, ready-to-commit confirmation, commit message standards, protected files, feature-doc validation.
+Follow all other `finish` requirements: archive task when applicable, version/changelog gate, staging decision gate, **Lesson check** (§ Lesson check — offers `/learn` when plan Notes have mistake signals), ready-to-commit confirmation, commit message standards, protected files, feature-doc validation.
 
 **One commit** for the full snapshot. Changelog and version bump (when required) must reflect **all** bundled changes.
 
@@ -99,7 +99,7 @@ After a **successful** commit:
 | Stash other threads’ work and restore after push | *excluded* — use plain `finish` Option 3 if needed |
 | Auto-poll or wait for other threads | *excluded* — user pauses them |
 | Replace `finish` or `push` rules | *excluded* — delegates SSOT |
-| Open PRs or promote to production | *deferred* — after push, open PR per `.cursor/rules/git-workflow/RULE.md` § Pull Requests (`gh pr create --base develop`; Summary + Test plan body; verify `baseRefName`; never bare `pull/new/<branch>`) |
+| Open PRs or promote to production | *deferred* — after push, open PR per `.cursor/rules/git-workflow/RULE.mdc` § Pull Requests (`gh pr create --base develop`; Summary + Test plan body; verify `baseRefName`; never bare `pull/new/<branch>`) |
 
 ## Boundaries
 

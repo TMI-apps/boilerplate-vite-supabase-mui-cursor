@@ -5,7 +5,7 @@ description: >-
   optional evals, description triggering). Use when the user runs /create-skill
   or asks to create, edit, or optimize one skill in this repo. Primary outcome:
   a durable SKILL.md. Evals/benchmarks are optional phases when the user wants
-  them — not a separate primary. Not whole-library audit (improve-skill-library);
+  them — not a separate primary. Not whole-library audit (align-harness);
   not grading one rule file (rule-quality). User-level Cursor skill at
   ~/.cursor/skills-cursor/create-skill is reference-only in this workspace.
 ---
@@ -497,8 +497,8 @@ Good luck!
 
 | Concern | Use instead |
 |---------|-------------|
-| Whole `.agents/skills/` corpus audit (overlap, SSOT, conflicts) | [`improve-skill-library`](../improve-skill-library/SKILL.md) |
+| Whole `.agents/skills/` corpus audit (overlap, SSOT, conflicts) | [`align-harness`](../align-harness/SKILL.md) |
 | Grade/rewrite one **rule** file | [`rule-quality`](../rule-quality/SKILL.md) |
 | User-global Cursor skill authoring outside this repo | `~/.cursor/skills-cursor/create-skill/` (reference-only here) |
 
-**Next:** After the skill lands in `.agents/skills/` → update [`router`](../router/SKILL.md) situation + index (and layers doc if needed) → optionally [`improve-skill-library`](../improve-skill-library/SKILL.md) for library coherence. Requires explicit user approval to edit protected skill/rule paths unless standing consent applies.
+**Next:** After the skill lands in `.agents/skills/` → update [`router`](../router/SKILL.md) situation + index (and layers doc if needed) → optionally [`align-harness`](../align-harness/SKILL.md) for library coherence. Requires explicit user approval to edit protected skill/rule paths unless standing consent applies.

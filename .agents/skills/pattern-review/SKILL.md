@@ -30,7 +30,7 @@ Apply **without being asked** when you are about to propose or write a plan, RFC
 |---------|-------------|
 | Internal abstraction / architecture layer fit; workaround shapes | [`layer-consistency-check`](../layer-consistency-check/SKILL.md) |
 | Should we / how to align an **existing** product/feature/component | [`standards-align`](../standards-align/SKILL.md) |
-| Heavy DB/UI operation cost | `architecture/RULE.md` § Performance cost risk |
+| Heavy DB/UI operation cost | `architecture/RULE.mdc` § Performance cost risk |
 | Repo rule compliance on plan or diff | [`validate`](../validate/SKILL.md) |
 
 **When both this skill and `layer-consistency-check` apply:** run **layer-consistency-check first** (router § tiebreak).

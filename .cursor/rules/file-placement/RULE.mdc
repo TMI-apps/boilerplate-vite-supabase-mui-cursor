@@ -12,7 +12,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
 **BEFORE creating any file/folder**, you MUST:
 
 1. Check `projectStructure.config.cjs` for allowed locations
-2. Validate against `.cursor/rules/architecture/RULE.md`
+2. Validate against `.cursor/rules/architecture/RULE.mdc`
 3. Confirm placement matches whitelist patterns
 4. Suggest corrections if invalid
 
@@ -23,7 +23,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
    - **Page Component** (`.tsx`) → `src/pages/<PageName>/<PageName>Page.tsx` (prefer named files, NOT `index.tsx`)
    - Component (`.tsx`) → `src/components/common/` or `src/features/*/components/`
    - Hook/Service/Util (`.ts`) → `src/shared/{hooks|services|utils}/` or `src/features/*/{hooks|services}/`
-   - Types (`.ts`) → `src/features/*/types/` for feature-specific types; `src/shared/types/` for cross-feature types (see `architecture/RULE.md`)
+   - Types (`.ts`) → `src/features/*/types/` for feature-specific types; `src/shared/types/` for cross-feature types (see `architecture/RULE.mdc`)
    - Edge Function → `supabase/functions/<name>/index.ts`
    - Cloud Function → `cloud-functions/<name>/`
    - Feature docs (`.md`) → `src/features/*/README.md` or `src/features/*/docs/*.md`
@@ -57,7 +57,7 @@ Ensures files/folders are created in correct locations per `projectStructure.con
 
 ## Integration
 
-Run `pnpm validate:structure` before creating files. Run `pnpm validate:feature-size` when adding many files to an existing feature. Update `projectStructure.config.cjs` only for legitimate new structures (with approval). Per-feature size waivers go in `featureBudgets.config.cjs` with a required `reason` (see `.cursor/rules/architecture/RULE.md` § Feature granularity).
+Run `pnpm validate:structure` before creating files. Run `pnpm validate:feature-size` when adding many files to an existing feature. Update `projectStructure.config.cjs` only for legitimate new structures (with approval). Per-feature size waivers go in `featureBudgets.config.cjs` with a required `reason` (see `.cursor/rules/architecture/RULE.mdc` § Feature granularity).
 
 ## Error Prevention
 
@@ -281,16 +281,16 @@ When updating this rule, also check:
 - `package.json` - Scripts that call the validator (validate:structure)
 - `documentation/PROJECT-STRUCTURE-VALIDATION.md` - User documentation
 - `architecture.md` - Architecture documentation
-- `.cursor/rules/architecture/RULE.md` - Architecture standards and structure
+- `.cursor/rules/architecture/RULE.mdc` - Architecture standards and structure
 
 ## Related Rules
 
-- `.cursor/rules/architecture/RULE.md` - Architecture standards and structure
+- `.cursor/rules/architecture/RULE.mdc` - Architecture standards and structure
 - `projectStructure.config.cjs` - Whitelist of allowed files/folders
 - `scripts/project-structure-validator.js` - Validation tool
 
 ## SSOT Status
 
 - This rule: SSOT for file creation workflow
-- `architecture/RULE.md`: SSOT for project structure
+- `architecture/RULE.mdc`: SSOT for project structure
 - References `projectStructure.config.cjs` for whitelist implementation

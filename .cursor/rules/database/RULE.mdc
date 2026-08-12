@@ -19,9 +19,9 @@ Database migrations must be safe for both fresh database resets and incremental 
 | Layer | Location | SSOT |
 | ----- | -------- | ---- |
 | Schema, RLS, functions, triggers | `supabase/migrations/*.sql` | **This rule** |
-| RLS policy performance (`(select auth.uid())`, etc.) | Migrations + | `security/RULE.md` |
-| Supabase client calls | `features/*/services/`, `shared/services/supabaseService.ts` | `architecture/RULE.md` |
-| Cached server state (reads, invalidation) | `features/*/hooks/` + query keys | `architecture/RULE.md`, `documentation/DOC_TANSTACK_QUERY.md` |
+| RLS policy performance (`(select auth.uid())`, etc.) | Migrations + | `security/RULE.mdc` |
+| Supabase client calls | `features/*/services/`, `shared/services/supabaseService.ts` | `architecture/RULE.mdc` |
+| Cached server state (reads, invalidation) | `features/*/hooks/` + query keys | `architecture/RULE.mdc`, `documentation/DOC_TANSTACK_QUERY.md` |
 | Auth session | `features/auth/hooks/` | Supabase `onAuthStateChange` — not TanStack |
 
 **Do not** put TanStack Query patterns in migrations, or SQL migration patterns in feature hooks. After a schema change: ship the migration first, then update services/types and TanStack hooks if the app consumes the new shape.
@@ -34,7 +34,7 @@ When adding a table the frontend will query:
 
 - [ ] `CREATE TABLE` with explicit types, `NOT NULL` / defaults where appropriate, and foreign keys
 - [ ] `ALTER TABLE … ENABLE ROW LEVEL SECURITY` in the same migration (or immediately after create)
-- [ ] RLS policies for each operation the app needs (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) — see `security/RULE.md` for `(select auth.uid())` syntax
+- [ ] RLS policies for each operation the app needs (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) — see `security/RULE.mdc` for `(select auth.uid())` syntax
 - [ ] Indexes on columns used in filters, joins, and sort (e.g. `user_id`, FK columns, `created_at` for `.order()`)
 - [ ] Regenerate TypeScript types after applying locally: `supabase gen types typescript --local > src/shared/types/database.types.ts` (then type `createClient<Database>()` when wired)
 - [ ] Verify policies with a non-service-role client (anon + authenticated), not only in the SQL editor as `postgres`
@@ -216,7 +216,7 @@ WHERE archived_at IS NULL;
 
 ### Policy Management
 
-Enable RLS when creating user-facing tables. Policy **performance** patterns (subquery `auth.uid()`) are SSOT in `security/RULE.md`.
+Enable RLS when creating user-facing tables. Policy **performance** patterns (subquery `auth.uid()`) are SSOT in `security/RULE.mdc`.
 
 ```sql
 -- ✅ Enable RLS on new tables
@@ -225,7 +225,7 @@ ALTER TABLE example_table ENABLE ROW LEVEL SECURITY;
 -- ✅ Drop policies safely before recreate
 DROP POLICY IF EXISTS "Users can read own rows" ON example_table;
 
--- ✅ Create policies — use (select auth.uid()) per security/RULE.md
+-- ✅ Create policies — use (select auth.uid()) per security/RULE.mdc
 CREATE POLICY "Users can read own rows" ON example_table
   FOR SELECT
   USING ((select auth.uid()) = user_id);
@@ -509,13 +509,13 @@ Before committing a migration, verify:
 
 **When modifying this rule, check these rules for consistency:**
 
-- `security/RULE.md` - RLS policy performance and verification (policies are created in migrations)
-- `workflow/RULE.md` - Development processes and testing workflows
-- `architecture/RULE.md` - Service/hook layers, TanStack Query patterns (not SQL)
+- `security/RULE.mdc` - RLS policy performance and verification (policies are created in migrations)
+- `workflow/RULE.mdc` - Development processes and testing workflows
+- `architecture/RULE.mdc` - Service/hook layers, TanStack Query patterns (not SQL)
 - `documentation/DOC_TANSTACK_QUERY.md` - Query keys, invalidation, client cache (not SQL)
-- `api-integration/RULE.md` - Researching a new/unfamiliar backend or API before writing migrations against it
+- `api-integration/RULE.mdc` - Researching a new/unfamiliar backend or API before writing migrations against it
 
 **Rules that reference this rule:**
-- `security/RULE.md` - References RLS policy patterns (which are often created in migrations)
-- `workflow/RULE.md` - May reference migration testing as part of development workflow
+- `security/RULE.mdc` - References RLS policy patterns (which are often created in migrations)
+- `workflow/RULE.mdc` - May reference migration testing as part of development workflow
 

@@ -65,7 +65,7 @@ Err toward inclusion in all modes — `applicable: false` is cheap.
 
 ### Branch verification (impl-full / gate)
 
-Per `.cursor/rules/git-workflow/RULE.md` § Branch Strategy — verify branch before impl-full / gate; stop if on protected branches per that section.
+Per `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy — verify branch before impl-full / gate; stop if on protected branches per that section.
 
 ---
 
@@ -75,7 +75,7 @@ Every rule subagent is invoked the same way. The parent calls `Task` with `subag
 
 - **Mode** — `plan-review`, `impl-full`, or `gate`.
 - **Scope** — plan path for plan review; changed paths or unified diff otherwise.
-- **Rule file** — exactly one (e.g. `.cursor/rules/architecture/RULE.md`).
+- **Rule file** — exactly one (e.g. `.cursor/rules/architecture/RULE.mdc`).
 - **Output schema** — every subagent returns the structure below.
 
 **Allowed reads:** the rule file, the scope, and configs the rule itself references (e.g. `projectStructure.config.cjs`, `.dependency-cruiser.cjs`, `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`, `documentation/DOC_FEATURE_LOCAL_README.md`, `documentation/DOC_APP_VISION.md`). Do **not** read other rule files; cross-rule overlap is handled by the parent.
@@ -84,7 +84,7 @@ Every rule subagent is invoked the same way. The parent calls `Task` with `subag
 
 ```json
 {
-  "rule": ".cursor/rules/<name>/RULE.md",
+  "rule": ".cursor/rules/<name>/RULE.mdc",
   "applicable": true,
   "findings": [
     {
@@ -189,7 +189,7 @@ Group findings by category (Architecture, File placement, Code style, … — pl
 
 - **Finding** — what is wrong, missing, or risky
 - **Suggestion** — concrete improvement
-- **Rule** — `.cursor/rules/<name>/RULE.md` § section
+- **Rule** — `.cursor/rules/<name>/RULE.mdc` § section
 - **Severity** — Blocker | Warning | Suggestion
 - **Source** — `file:line` for impl/gate, plan section for plan review
 - **Ambiguity answer** — when the finding had a `user-question-needed` flag, include the user's batched answer

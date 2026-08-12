@@ -26,8 +26,8 @@ Create a development plan for a feature or job. Research how best to implement i
 
 ### 0. Branch gate
 
-- [ ] **Plan file:** `DEVELOPMENT_PLAN.md` may be created on any branch per `.cursor/rules/git-workflow/RULE.md` § Exceptions (Safe to Edit on Any Branch).
-- [ ] **Implementation:** App-code work follows `.cursor/rules/git-workflow/RULE.md` § Branch Strategy — route to `implement` only from a `feature/*` branch.
+- [ ] **Plan file:** `DEVELOPMENT_PLAN.md` may be created on any branch per `.cursor/rules/git-workflow/RULE.mdc` § Exceptions (Safe to Edit on Any Branch).
+- [ ] **Implementation:** App-code work follows `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy — route to `implement` only from a `feature/*` branch.
 
 ### 1. Input
 
@@ -71,7 +71,7 @@ For features involving external APIs, database changes, auth, or novel logic, ga
 - [ ] For server-cached data, check `documentation/DOC_TANSTACK_QUERY.md` and existing `api/keys.ts` patterns in features.
 - [ ] Determine scope and boundaries (in-scope vs out-of-scope).
 - [ ] **plan-grill rail:** Before locking ride-vs-new, neighbor absorption, greenfield, or architecture-boundary choices — run [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) **mandatory fork checklist** (enumerate ≥2 options or justify sole option; ask on ties; log clear-winners; anti-dup). Loop: ask → `DECISIONS.md` → **continue Investigate**. Industry/precedent → `pattern-review`.
-- [ ] **Feature decomposition self-check (mandatory):** Enumerate distinct domain concepts this work introduces. If more than one cohesive bounded context applies, or projected file count exceeds `featureBudgets.config.cjs` defaults, plan multiple features under `src/features/` before writing steps. Do not wait for the user to request architecture. See `.cursor/rules/architecture/RULE.md` § Feature granularity.
+- [ ] **Feature decomposition self-check (mandatory):** Enumerate distinct domain concepts this work introduces. If more than one cohesive bounded context applies, or projected file count exceeds `featureBudgets.config.cjs` defaults, plan multiple features under `src/features/` before writing steps. Do not wait for the user to request architecture. See `.cursor/rules/architecture/RULE.mdc` § Feature granularity.
 
 #### Optional: Foundation validation (high-risk features)
 
@@ -125,7 +125,7 @@ Next: <review-dev-plan | implement | blocked> — <one-line gate>
 
 **Path:** `documentation/jobs/temp_job_<name>/DEVELOPMENT_PLAN.md`
 
-**Naming:** Follow `.cursor/rules/file-placement/RULE.md`: folder `temp_job_<descriptive-name>/` (kebab-case, descriptive). Allowed by `projectStructure.config.cjs` under `documentation/jobs/` (nested `*.md` files).
+**Naming:** Follow `.cursor/rules/file-placement/RULE.mdc`: folder `temp_job_<descriptive-name>/` (kebab-case, descriptive). Allowed by `projectStructure.config.cjs` under `documentation/jobs/` (nested `*.md` files).
 
 **Note:** Older jobs in this repo may use other filenames (e.g. `IMPLEMENTATION_PLAN.md`); new plans from this command should standardize on **`DEVELOPMENT_PLAN.md`**.
 
@@ -184,12 +184,12 @@ During planning, work through (using the rules reference above):
 - [ ] Check architecture compliance: feature vs `src/shared/` vs `src/components/common/`, layer boundaries, import direction (pages → hooks → services).
 - [ ] **Feature decomposition self-check:** List planned feature folder(s). If a single feature spans multiple domain concepts or exceeds `featureBudgets.config.cjs` budgets, split into separate features in the plan with narrow public APIs before listing file paths.
 - [ ] Identify any planned diversion from industry standards, framework best practices, or established repo conventions. If found, ask the user whether the diversion is intentional or whether the plan should align with best practices.
-- [ ] Estimate complexity (cyclomatic ≤10, cognitive ≤15, functions ≤100 lines per `.cursor/rules/code-style/RULE.md`); plan extractions if needed (see `.agents/skills/optimize2/SKILL.md` for refactoring workflow).
+- [ ] Estimate complexity (cyclomatic ≤10, cognitive ≤15, functions ≤100 lines per `.cursor/rules/code-style/RULE.mdc`); plan extractions if needed (see `.agents/skills/optimize2/SKILL.md` for refactoring workflow).
 - [ ] Note database impact if applicable (migrations under `supabase/migrations/`, idempotent, safe for fresh and existing DB).
 - [ ] Note security impact if applicable (auth, RLS, validation, secrets in `.env` only).
 - [ ] Document conflicts with existing code (pattern mismatches, breaking changes).
-- [ ] Consider testing: new or changed logic should have tests per `.cursor/rules/testing/RULE.md`.
-- [ ] Workflow: branch strategy and changelog timing per `.cursor/rules/git-workflow/RULE.md` and **finish** (changelog in **finish**, not while planning).
+- [ ] Consider testing: new or changed logic should have tests per `.cursor/rules/testing/RULE.mdc`.
+- [ ] Workflow: branch strategy and changelog timing per `.cursor/rules/git-workflow/RULE.mdc` and **finish** (changelog in **finish**, not while planning).
 - [ ] If a feature’s behavior changes: plan updates to `src/features/<feature>/README.md` in the same work as code (see file-placement rule).
 
 **Output inside `DEVELOPMENT_PLAN.md`:** A **Conflict & compliance** section with:
@@ -214,7 +214,7 @@ Each phase must have a gate.
 
 | Type | Gate |
 |------|------|
-| **Edge Functions** | Invoke locally or deployed; verify response (see `cloud-functions/RULE.md`). |
+| **Edge Functions** | Invoke locally or deployed; verify response (see `cloud-functions/RULE.mdc`). |
 | **Database** | Apply migration to a test DB; verify schema; test RLS with representative roles if applicable. |
 
 ### Repo quality

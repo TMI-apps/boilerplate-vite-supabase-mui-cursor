@@ -24,7 +24,7 @@ Do not run integration research from this rule alone — the procedure lives ent
 
 ## Superseded content
 
-This rule absorbs and supersedes the former `.cursor/rules/workflow/RULE.md` § Documentation Lookup (three lines: visit docs programmatically, don't trust cached docs, verify before implementing) — that content now lives here instead of being duplicated across two rules.
+This rule absorbs and supersedes the former `.cursor/rules/workflow/RULE.mdc` § Documentation Lookup (three lines: visit docs programmatically, don't trust cached docs, verify before implementing) — that content now lives here instead of being duplicated across two rules.
 
 ---
 
@@ -32,15 +32,15 @@ This rule absorbs and supersedes the former `.cursor/rules/workflow/RULE.md` § 
 
 **When modifying this rule, check these rules for consistency:**
 
-- `architecture/RULE.md` — where integration code lives once researched (`features/*/services/`, `shared/services/`)
-- `security/RULE.md` — database schema verification, secrets management
-- `database/RULE.md` — migrations for the configured backend
-- `cloud-functions/RULE.md` — server-only capabilities requiring secrets (third-party API calls)
-- `project-specific/RULE.md` — external API costs and rate limiting
-- `workflow/RULE.md` — superseded § Documentation Lookup (see above)
+- `architecture/RULE.mdc` — where integration code lives once researched (`features/*/services/`, `shared/services/`)
+- `security/RULE.mdc` — database schema verification, secrets management
+- `database/RULE.mdc` — migrations for the configured backend
+- `cloud-functions/RULE.mdc` — server-only capabilities requiring secrets (third-party API calls)
+- `project-specific/RULE.mdc` — external API costs and rate limiting
+- `workflow/RULE.mdc` — superseded § Documentation Lookup (see above)
 
 **Rules that reference this rule:**
 
-- `security/RULE.md` — § Database Verification points here for the general MCP-first principle
-- `database/RULE.md`, `cloud-functions/RULE.md` — point here when researching a new/unfamiliar vendor
-- `workflow/RULE.md` — § Documentation Lookup points here (superseded)
+- `security/RULE.mdc` — § Database Verification points here for the general MCP-first principle
+- `database/RULE.mdc`, `cloud-functions/RULE.mdc` — point here when researching a new/unfamiliar vendor
+- `workflow/RULE.mdc` — § Documentation Lookup points here (superseded)

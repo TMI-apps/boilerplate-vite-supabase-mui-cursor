@@ -1,10 +1,10 @@
-# Subagent briefs — improve-skill-library
+# Subagent briefs — align-harness
 
 Self-contained prompts. Each subagent **does not see the chat**, so paste the full brief. All lens subagents are **read-only** (findings only). Only the no-loss verifier runs after edits. Use `SUBAGENT_MODEL` from `SKILL.md` § Config.
 
 Every brief starts with the same **orient** step:
 
-> Orient: read `.agents/skills/router/SKILL.md`, `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`, and every `.agents/skills/*/SKILL.md` (and their `references/`). Treat user skills (`~/.cursor/skills-cursor/`) and plugin skills (`~/.cursor/plugins/`) as **reference-only**: read for overlap/conflict detection, never propose edits to them.
+> Orient: read `documentation/jobs/harness/entry-points.yaml`, run `node .agents/skills/align-harness/scripts/harness_scan.cjs` (facts only), then read `AGENTS.md`, `.cursor/rules/INDEX.md`, `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`, `ARCHITECTURE.md`, every `.cursor/rules/**/RULE.mdc`, every `.agents/skills/*/SKILL.md` (and `references/`), and `.claude/rules/*`. Domain context: `align-harness/references/domain-*.md`. Treat user/plugin skills outside the repo as **reference-only**.
 
 ---
 
@@ -119,6 +119,42 @@ Return:
 - Findings list: `severity | skill/file | phrase | family | suggested fix`.
 
 No edits.
+
+---
+
+## Lens 6 — Catalog drift (`AGENTS.md` ↔ rules YAML) (read-only)
+
+Orient (above). Read [`domain-agents-md.md`](domain-agents-md.md) and [`domain-rules.md`](domain-rules.md).
+
+1. For each `RULE.mdc`, compare YAML `description` (+ `alwaysApply` / `globs`) to the matching `AGENTS.md` catalog row.
+2. Flag path drift (`RULE.md` vs `RULE.mdc`), missing rows, extra rows, or description mismatch without "update YAML first" workflow.
+3. Flag `@` imports in `AGENTS.md` that duplicate `alwaysApply: true` bodies (double-load risk).
+
+Return: `severity | file/row | drift type | fact | suggested fix`. Facts only for YAML text — no verdict on whether drift is intentional. No edits.
+
+---
+
+## Lens 7 — Foreign / orphan content (read-only)
+
+Orient (above). Read [`foreign-content.md`](foreign-content.md). Use `harness_scan` `orphanCandidates` + link-walk.
+
+1. List orphan candidates with provenance check (router, layers doc, inbound links).
+2. Apply foreign-content definition; cite which condition matched.
+3. Recommend `update-harness` vs delete vs link-fix.
+
+Return: `severity | path | foreign? | reason | handoff`. No edits.
+
+---
+
+## Lens 8 — Loadability / context budget (read-only)
+
+Orient (above). Use `harness_scan` `alwaysOn` facts.
+
+1. Report always-on line/byte count vs manifest budget (**advisory**).
+2. Flag `AGENTS.md` `@` imports that expand large rule bodies already loaded via `.mdc`.
+3. Note effective load per tool (Cursor auto-load vs catalog-only agents) — no hard block.
+
+Return: advisory findings list only. No edits.
 
 ---
 

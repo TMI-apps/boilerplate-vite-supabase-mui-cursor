@@ -49,7 +49,7 @@ Stack-native performance guidance for agents and humans. **Procedure SSOT:** `.a
 ### Data fetching
 
 - Use TanStack Query for shared server state — dedup is built-in.
-- Follow optimistic + server-canonical merge in `architecture/RULE.md` — do not add SWR.
+- Follow optimistic + server-canonical merge in `architecture/RULE.mdc` — do not add SWR.
 
 ### Re-renders
 

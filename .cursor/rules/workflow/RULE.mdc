@@ -7,32 +7,32 @@ alwaysApply: true
 
 Thin hub for development workflow, code review, and process requirements. Domain detail lives in child rules — do not duplicate here.
 
-**Maintenance:** Never re-grow this file with domain bodies (git, agent behavior, platform, etc.). Extract new concerns to a sibling `.cursor/rules/<category>/RULE.md` and add one row to § Rule routing.
+**Maintenance:** Never re-grow this file with domain bodies (git, agent behavior, platform, etc.). Extract new concerns to a sibling `.cursor/rules/<category>/RULE.mdc` and add one row to § Rule routing.
 
 ## Rule routing
 
 | Concern | SSOT |
 |---------|------|
-| Branch model, PRs, promote, commit/push flow | `git-workflow/RULE.md` |
-| Protected files, decision protocol, user-test gate | `agent-behavior/RULE.md` |
-| PowerShell, env vars, shell crash prevention | `platform/RULE.md` |
+| Branch model, PRs, promote, commit/push flow | `git-workflow/RULE.mdc` |
+| Protected files, decision protocol, user-test gate | `agent-behavior/RULE.mdc` |
+| PowerShell, env vars, shell crash prevention | `platform/RULE.mdc` |
 | Semver, changelog, commit format | `.agents/skills/finish/SKILL.md` |
-| Reductive strategy / debugging | `debugging/RULE.md` |
-| API doc research | `api-integration/RULE.md` |
+| Reductive strategy / debugging | `debugging/RULE.mdc` |
+| API doc research | `api-integration/RULE.mdc` |
 
 ## Branch gate (minimal)
 
-Before editing app code (`src/**`, configs, migrations, etc.): verify current branch is `feature/*` or `fix/*` — **not** `main` or `develop`. Stop and switch branches if on a protected branch. Full Model A rules: `git-workflow/RULE.md` § Branch Strategy.
+Before editing app code (`src/**`, configs, migrations, etc.): verify current branch is `feature/*` or `fix/*` — **not** `main` or `develop`. Stop and switch branches if on a protected branch. Full Model A rules: `git-workflow/RULE.mdc` § Branch Strategy.
 
 ## SSOT Map
 
 | Topic | SSOT Location |
 |-------|----------------|
 | Semantic versioning, commit format, conventional commit types | `.agents/skills/finish/SKILL.md` |
-| Branch strategy, PRs, production promotion | `git-workflow/RULE.md` |
-| Protected files, agent behaviors | `agent-behavior/RULE.md` |
-| PowerShell / local environment | `platform/RULE.md` |
-| Architecture patterns, layer rules, code placement | `architecture/RULE.md` |
+| Branch strategy, PRs, production promotion | `git-workflow/RULE.mdc` |
+| Protected files, agent behaviors | `agent-behavior/RULE.mdc` |
+| PowerShell / local environment | `platform/RULE.mdc` |
+| Architecture patterns, layer rules, code placement | `architecture/RULE.mdc` |
 | Project structure, file whitelist | `projectStructure.config.cjs` |
 | Dependency/architecture enforcement | `.dependency-cruiser.cjs` |
 | Dev task backlog / onboarding | `src/config/app-tasks.json` + `src/features/tasks/README.md` |
@@ -46,11 +46,11 @@ Before editing app code (`src/**`, configs, migrations, etc.): verify current br
 ### Review Checklist
 - [ ] Changelog updated (if user-facing changes) and matches commit message — `finish/SKILL.md`
 - [ ] Commit message includes version number first and matches changelog when bumped
-- [ ] Code follows style guidelines (`code-style/RULE.md`)
-- [ ] Architecture patterns are followed (`architecture/RULE.md`)
+- [ ] Code follows style guidelines (`code-style/RULE.mdc`)
+- [ ] Architecture patterns are followed (`architecture/RULE.mdc`)
 - [ ] Architecture documentation updated (if structural changes)
-- [ ] Tests are included and passing (`testing/RULE.md`)
-- [ ] Security considerations addressed (`security/RULE.md`)
+- [ ] Tests are included and passing (`testing/RULE.mdc`)
+- [ ] Security considerations addressed (`security/RULE.mdc`)
 - [ ] Documentation changes are limited to required contract docs only
 - [ ] Feature-local README updated when `src/features/*` code changed
 - [ ] No console.log or debug code left behind
@@ -70,7 +70,7 @@ Before editing app code (`src/**`, configs, migrations, etc.): verify current br
 
 **Humans on `feature/*` branches:** May commit frequently; still use `finish` when agents wrap up work.
 
-- Write tests per `testing/RULE.md` § When to use TDD / What to Test
+- Write tests per `testing/RULE.mdc` § When to use TDD / What to Test
 - Refactor as you go; follow established patterns
 
 ### Before Submitting
@@ -89,15 +89,15 @@ Before editing app code (`src/**`, configs, migrations, etc.): verify current br
 
 ### Cloud Functions Deployment
 - Deploy yourself when changes require it; verify success
-- **SSOT:** `cloud-functions/RULE.md` — deploy commands, lint, Supabase Edge workflow
+- **SSOT:** `cloud-functions/RULE.mdc` — deploy commands, lint, Supabase Edge workflow
 
 ## Superseded sections (moved to child rules)
 
-- **Git workflow, branch strategy, PRs, promote** → `git-workflow/RULE.md`
-- **Agent behaviors, protected files** → `agent-behavior/RULE.md`
-- **Platform, PowerShell, env vars** → `platform/RULE.md`
-- **Reductive strategy** → `debugging/RULE.md`
-- **Documentation lookup** → `api-integration/RULE.md`
+- **Git workflow, branch strategy, PRs, promote** → `git-workflow/RULE.mdc`
+- **Agent behaviors, protected files** → `agent-behavior/RULE.mdc`
+- **Platform, PowerShell, env vars** → `platform/RULE.mdc`
+- **Reductive strategy** → `debugging/RULE.mdc`
+- **Documentation lookup** → `api-integration/RULE.mdc`
 
 Commit/changelog examples: **`.agents/skills/finish/SKILL.md`** § Commit Message Standards.
 
@@ -107,9 +107,9 @@ Commit/changelog examples: **`.agents/skills/finish/SKILL.md`** § Commit Messag
 
 **When modifying this rule, check these rules for consistency:**
 
-- `git-workflow/RULE.md`, `agent-behavior/RULE.md`, `platform/RULE.md` — child domain rules
-- `code-style/RULE.md`, `architecture/RULE.md`, `testing/RULE.md`, `security/RULE.md`
-- `cloud-functions/RULE.md` — deployment processes
+- `git-workflow/RULE.mdc`, `agent-behavior/RULE.mdc`, `platform/RULE.mdc` — child domain rules
+- `code-style/RULE.mdc`, `architecture/RULE.mdc`, `testing/RULE.mdc`, `security/RULE.mdc`
+- `cloud-functions/RULE.mdc` — deployment processes
 
 **Rules that reference this rule:**
 

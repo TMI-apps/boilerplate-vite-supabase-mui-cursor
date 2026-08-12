@@ -7,7 +7,7 @@ How **skills**, **rules**, **documentation**, and **scripts/hooks** fit together
 | Layer | Location | Purpose |
 |-------|----------|---------|
 | **Skill** | `.agents/skills/<slug>/SKILL.md` | Full procedure the agent runs (SSOT for *how*) |
-| **Rule** | `.cursor/rules/<category>/RULE.md` | Always-on principles; **link** to skills/docs, avoid copying long checklists |
+| **Rule** | `.cursor/rules/<category>/RULE.mdc` | Always-on principles; **link** to skills/docs, avoid copying long checklists |
 | **Human doc** | `documentation/DOC_*.md` | Product/process narrative for people and agents |
 | **Enforcement** | `.husky/*`, `scripts/*`, `.github/workflows/*` | Machine checks; shared helpers in `scripts/*.cjs` |
 
@@ -17,7 +17,7 @@ How **skills**, **rules**, **documentation**, and **scripts/hooks** fit together
 
 ## Pattern / industry-standard review (single entry point)
 
-Compares **implementation proposals and plans** to **industry standards and common best practice** before coding. The agent **chooses relevant review aspects** per change (see rubric). Agents apply **proactively** per `pattern-review` skill and `architecture/RULE.md` § Pattern risk.
+Compares **implementation proposals and plans** to **industry standards and common best practice** before coding. The agent **chooses relevant review aspects** per change (see rubric). Agents apply **proactively** per `pattern-review` skill and `architecture/RULE.mdc` § Pattern risk.
 
 No separate `documentation/DOC_*` procedure for this workflow — invocable steps live in **skills** (link from docs and rules only).
 
@@ -31,7 +31,7 @@ No separate `documentation/DOC_*` procedure for this workflow — invocable step
 | Procedure (when / how / modes) | `.agents/skills/pattern-review/SKILL.md` |
 | Review lens, dimension pool, verdicts | `.agents/skills/pattern-review/references/rubric.md` |
 | Pattern risk alert block | `.agents/skills/pattern-review/references/alert-template.md` |
-| Always-on reminder | `.cursor/rules/architecture/RULE.md` § Pattern risk |
+| Always-on reminder | `.cursor/rules/architecture/RULE.mdc` § Pattern risk |
 | Plan section template | `.agents/skills/plan/references/implementation-plan-template.md` § Pattern & precedent |
 
 **Callers:** `plan`, `router`, `feature`, `review-dev-plan` (industry lens), `standards-align` (Phase 3 rubric only). Do not duplicate the rubric elsewhere — link these paths.
@@ -80,7 +80,7 @@ No separate `documentation/DOC_*` procedure — invocable steps live in the skil
 
 ## Layer consistency / workaround guard (single entry point)
 
-Catches requests or in-progress code that conflict with a deeper layer (physics/math, abstraction hierarchy, system architecture) **before** silently shipping a workaround. Core reflex: every request to change existing behavior carries an assumption about how the system works — verify it before acting (user can't see the impl). Agents apply **proactively** per `layer-consistency-check` skill and `architecture/RULE.md` § Layer consistency (workaround guard).
+Catches requests or in-progress code that conflict with a deeper layer (physics/math, abstraction hierarchy, system architecture) **before** silently shipping a workaround. Core reflex: every request to change existing behavior carries an assumption about how the system works — verify it before acting (user can't see the impl). Agents apply **proactively** per `layer-consistency-check` skill and `architecture/RULE.mdc` § Layer consistency (workaround guard).
 
 No separate `documentation/DOC_*` procedure for this workflow — invocable steps live in **skills** (link from docs and rules only).
 
@@ -94,7 +94,7 @@ No separate `documentation/DOC_*` procedure for this workflow — invocable step
 | Procedure (when / how / severity) | `.agents/skills/layer-consistency-check/SKILL.md` |
 | Request cues + seven workaround shapes | `.agents/skills/layer-consistency-check/references/workaround-shapes.md` |
 | WARNING, WORKAROUND alert block | `.agents/skills/layer-consistency-check/references/alert-template.md` |
-| Always-on reminder | `.cursor/rules/architecture/RULE.md` § Layer consistency (workaround guard) |
+| Always-on reminder | `.cursor/rules/architecture/RULE.mdc` § Layer consistency (workaround guard) |
 
 **Callers:** always-on during implementation; `router` (tiebreak vs `pattern-review`). Do not duplicate the shapes rubric elsewhere — link these paths.
 
@@ -116,7 +116,7 @@ No separate `documentation/DOC_*` procedure for this workflow — invocable step
 | Procedure (MCP fallback tree, phases) | `.agents/skills/api-integrate/SKILL.md` |
 | Worked example — Supabase (MCP path) | `.agents/skills/api-integrate/references/vendor-supabase.md` |
 | Worked example — Airtable (no-MCP path) | `.agents/skills/api-integrate/references/vendor-airtable.md` |
-| Globs-scoped principles | `.cursor/rules/api-integration/RULE.md` (`alwaysApply: false`) |
+| Globs-scoped principles | `.cursor/rules/api-integration/RULE.mdc` (`alwaysApply: false`) |
 
 **Callers:** `plan` § Optional: Foundation validation, `router`, `api-integrate`. Do not duplicate the MCP fallback tree or worked examples elsewhere — link these paths. (`security`, `database`, and `cloud-functions` rules cross-link here via Related Rules.)
 
@@ -170,7 +170,7 @@ Copy `write-adoption-guide/` to other projects and adjust the skill **Configurat
 
 PR CI runs full `pnpm test:classify`, `pnpm test:run`, and cold `pnpm type-check` in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
-See `.cursor/rules/git-workflow/RULE.md` for branch strategy and `.cursor/rules/agent-behavior/RULE.md` for protected files.
+See `.cursor/rules/git-workflow/RULE.mdc` for branch strategy and `.cursor/rules/agent-behavior/RULE.mdc` for protected files.
 
 ## Agent-only mode (human files features/bugs)
 
@@ -183,7 +183,7 @@ When the human only files feature requests or bug reports and tests in the app:
 
 **Default agent chain:** `router` → plan/feature/debug as needed → `implement` or `quick-piv` → `validate` → `finish` → `push` → **`babysit`** when a PR to `develop` exists → **Ready for you to test** handoff (`finish` § User test).
 
-**Standing protected-file consent:** Optional Cursor **user rule** listing categories agents may edit without per-task ask (e.g. `.agents/skills/**` for workflow glue). Repo `.cursor/rules/agent-behavior/RULE.md` § Protected Files stays strict — the user rule is external standing consent, not a repo policy change.
+**Standing protected-file consent:** Optional Cursor **user rule** listing categories agents may edit without per-task ask (e.g. `.agents/skills/**` for workflow glue). Repo `.cursor/rules/agent-behavior/RULE.mdc` § Protected Files stays strict — the user rule is external standing consent, not a repo policy change.
 
 **Test tiers:** See [`DOC_TESTING.md`](./DOC_TESTING.md) and pre-commit tables above; merge safety is CI `test` on `develop`, not pre-commit related mode alone.
 
@@ -196,8 +196,8 @@ When the human only files feature requests or bug reports and tests in the app:
 
 | You change… | Also update… |
 |-------------|----------------|
-| `.husky/pre-commit` | `git-workflow/RULE.md`, `agent-behavior/RULE.md`, `finish` skill, this doc if hook scope changes |
-| `.husky/pre-push` | `git-workflow/RULE.md`, `push` skill, this doc if hook scope changes |
+| `.husky/pre-commit` | `git-workflow/RULE.mdc`, `agent-behavior/RULE.mdc`, `finish` skill, this doc if hook scope changes |
+| `.husky/pre-push` | `git-workflow/RULE.mdc`, `push` skill, this doc if hook scope changes |
 | `finish` / `push` flow | Both skills, `router` matrix |
 | New invocable workflow | `router/SKILL.md` (situation table + skill index); [`router/references/skill-relationship-flow.md`](../.agents/skills/router/references/skill-relationship-flow.md) when clarify/plan relationships change |
 | Product decision ledger (`DECISIONS.md`) / `grill-me` ↔ `plan-grill` | `.agents/skills/plan-grill/` (template SSOT); `grill-me`, `feature`, `plan`, `implement`; router § Plan corridor flow + [`skill-relationship-flow.md`](../.agents/skills/router/references/skill-relationship-flow.md) |
@@ -210,6 +210,23 @@ When the human only files feature requests or bug reports and tests in the app:
 | Layer consistency / workaround guard | `.agents/skills/layer-consistency-check/` — see § Layer consistency / workaround guard above |
 | External API / backend integration research | `.agents/skills/api-integrate/` — see § External API / backend integration research above |
 | New cross-repo adoption guide | `write-adoption-guide` skill; file under `documentation/handoffs/*_ADOPTION_GUIDE.md` |
+| Harness coherence audit | `.agents/skills/align-harness/`; manifest `documentation/jobs/harness/entry-points.yaml` |
+| External harness intake | `.agents/harness-inbox/` + `.agents/skills/update-harness/`; reports under `documentation/jobs/harness/` |
+| Rule file extension (`.mdc`) | `AGENTS.md` catalog rows; validators; `INDEX.md` links |
+| Session lesson / mistake capture | `.agents/skills/learn/`; `finish` § Lesson check |
+
+## Harness maintenance
+
+Keeps **AGENTS.md**, rules, skills, INDEX, layers doc, and subagent briefs aligned (SSOT, no context bloat).
+
+| Skill | When |
+|-------|------|
+| [`align-harness`](../.agents/skills/align-harness/SKILL.md) | In-repo drift, periodic health check, after ingest |
+| [`update-harness`](../.agents/skills/update-harness/SKILL.md) | External drops in `.agents/harness-inbox/` |
+| [`learn`](../.agents/skills/learn/SKILL.md) | Session mistakes; removal-first; finish-pipeline hook |
+
+**Artifacts:** `documentation/jobs/harness/` (registry, ledger, update reports, `entry-points.yaml`).  
+**Facts scanner:** `node .agents/skills/align-harness/scripts/harness_scan.cjs` (advisory budget only).
 
 ## Product decision ledger (`DECISIONS.md`)
 

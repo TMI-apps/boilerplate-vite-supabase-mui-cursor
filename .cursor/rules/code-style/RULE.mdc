@@ -11,7 +11,7 @@ alwaysApply: true
 
 - **Double quotes**: ALWAYS use `"` not `'` for strings
 - **Path aliases**: Always use `@/` prefix (e.g., `@/hooks/*`, `@/components/*`) - never relative imports
-  - **SSOT:** See `architecture/RULE.md` for complete path alias mappings
+  - **SSOT:** See `architecture/RULE.mdc` for complete path alias mappings
 - **TypeScript strict mode**: REQUIRED (`strict: true`)
 - **Arrow functions**: Always use parentheses: `(x) => x`
 - **Equality**: Use `===` (never `==`)
@@ -103,11 +103,11 @@ When adding external package imports:
 - Remove unused imports
 - **Type imports**: Use `import type {...}` and place after regular imports in each group
 
-**Architecture Concerns (SSOT: `architecture/RULE.md`):**
+**Architecture Concerns (SSOT: `architecture/RULE.mdc`):**
 - **Path aliases**: Always use `@/` prefix, never relative imports — violations are **errors**
-  - **SSOT:** See `architecture/RULE.md` for complete path alias mappings and folder structure
-- **Import direction**: See `architecture/RULE.md` for layer boundaries and import direction rules (downward only: pages → components → hooks → services → utils → types)
-- **Layer boundaries**: See `architecture/RULE.md` for what each layer can/cannot import from
+  - **SSOT:** See `architecture/RULE.mdc` for complete path alias mappings and folder structure
+- **Import direction**: See `architecture/RULE.mdc` for layer boundaries and import direction rules (downward only: pages → components → hooks → services → utils → types)
+- **Layer boundaries**: See `architecture/RULE.mdc` for what each layer can/cannot import from
 
 ```typescript
 // ✅ CORRECT
@@ -123,7 +123,7 @@ import * as todoService from "../services/todoService"; // Use path alias; prefe
 import { useAuth } from "@features/auth/hooks/useAuth"; // Use @/features/... not @features/...
 ```
 
-**For complete import rules:** See `architecture/RULE.md` for import direction, layer boundaries, and architectural best practices.
+**For complete import rules:** See `architecture/RULE.mdc` for import direction, layer boundaries, and architectural best practices.
 
 ### Exports
 - Use named exports over default exports when possible
@@ -242,7 +242,7 @@ ESLint enforces the following rules (in addition to complexity):
 
 - **Architecture Boundaries**:
   - Enforced by `boundaries/element-types` rule (error level)
-  - Prevents importing from forbidden layers (see `architecture/RULE.md`)
+  - Prevents importing from forbidden layers (see `architecture/RULE.mdc`)
   - Use `eslint-disable` comments with justification for legitimate exceptions
 
 - **React Hooks**:
@@ -338,9 +338,9 @@ When working with TypeScript and React:
 
 **When modifying this rule, check these rules for consistency:**
 
-- `architecture/RULE.md` - May reference naming conventions for architectural patterns
-- `testing/RULE.md` - May reference code style for test files
-- `workflow/RULE.md` - May reference formatting standards in review process
+- `architecture/RULE.mdc` - May reference naming conventions for architectural patterns
+- `testing/RULE.mdc` - May reference code style for test files
+- `workflow/RULE.mdc` - May reference formatting standards in review process
 - `.agents/skills/optimize2/SKILL.md` - Detailed complexity reduction / optimization workflow
 
 **Rules that reference this rule:**

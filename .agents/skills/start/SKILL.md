@@ -26,7 +26,7 @@ Guide a new user through first-time setup of this boilerplate by following the R
 - **Skip Supabase (task #1)** and **Cloudflare hosting (task #2)**. No project, no Workers Builds link, no `.env` required for most template work. The app runs locally without auth configured.
 - **Skip Airtable (task #4)** unless you are testing that integration.
 - **App vision (task #3):** may stay **`DRAFT`** while exploring or contributing to the template; do not block template PRs on it unless the change is product-facing.
-- **Still do:** prerequisites, branch workflow (SSOT: `.cursor/rules/git-workflow/RULE.md` § Branch Strategy), `pnpm dev`, and the verification checklist (§ Mandatory verification checklist).
+- **Still do:** prerequisites, branch workflow (SSOT: `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy), `pnpm dev`, and the verification checklist (§ Mandatory verification checklist).
 
 **Working on a fork** (someone cloned this to build their own app): full backlog applies — Supabase, hosting, vision **`ACTIVE`**, etc.
 
@@ -119,7 +119,7 @@ git switch develop && git pull origin develop
 git switch -c feature/<name>
 ```
 
-Configure GitHub rulesets per `.cursor/rules/git-workflow/RULE.md` § Branch Protection and § Promote to production. If steps are web-UI only, provide exact click-path and wait for user confirmation.
+Configure GitHub rulesets per `.cursor/rules/git-workflow/RULE.mdc` § Branch Protection and § Promote to production. If steps are web-UI only, provide exact click-path and wait for user confirmation.
 
 ### 6) Dev server gate
 

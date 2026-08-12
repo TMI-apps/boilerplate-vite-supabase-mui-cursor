@@ -30,31 +30,31 @@ Follow phases sequentially.
 - [ ] Read `documentation/DOC_APP_VISION.md`. If vision status is **`DRAFT`**, **STOP** and direct the user to fill it (see `.agents/skills/start/SKILL.md` § App vision) or obtain explicit written deferral before Phase 1 coding. Feature specs must not invent product scope when this file is empty of real prose.
 
 ### 1.1 Branch & Workflow Check
-- [ ] Per `.cursor/rules/git-workflow/RULE.md` § Branch Strategy — verify branch before app-code work; stop if on protected branches per that section.
+- [ ] Per `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy — verify branch before app-code work; stop if on protected branches per that section.
 
 ### 1.2 Rule Decision Tree
 Check each rule category systematically:
 
 **Backend/Secrets?**
-- YES → Check `cloud-functions/RULE.md` (decision framework: security, secrets, testability)
+- YES → Check `cloud-functions/RULE.mdc` (decision framework: security, secrets, testability)
 - NO → Skip
 
 **Database changes?**
-- YES → Check `database/RULE.md` (migration patterns: idempotent, IF EXISTS, safe for fresh/existing DBs)
+- YES → Check `database/RULE.mdc` (migration patterns: idempotent, IF EXISTS, safe for fresh/existing DBs)
 - NO → Skip
 
 **File placement?**
-- Check `file-placement/RULE.md` → `architecture/RULE.md`
+- Check `file-placement/RULE.mdc` → `architecture/RULE.mdc`
 - Determine location BEFORE creating files
 
 **Code structure?**
-- Check `architecture/RULE.md` (feature vs shared, layers, import direction, path aliases)
+- Check `architecture/RULE.mdc` (feature vs shared, layers, import direction, path aliases)
 
 **Security?**
-- Check `security/RULE.md` (auth, RLS, validation, secrets management)
+- Check `security/RULE.mdc` (auth, RLS, validation, secrets management)
 
 **Implementation details?**
-- Check `code-style/RULE.md` (naming, formatting, complexity: ≤10 cyclomatic, ≤15 cognitive, ≤100 lines)
+- Check `code-style/RULE.mdc` (naming, formatting, complexity: ≤10 cyclomatic, ≤15 cognitive, ≤100 lines)
 
 ### 1.3 Risk & Impact Assessment
 - [ ] Identify breaking changes
@@ -203,12 +203,12 @@ Identify **subjective** choices requiring user input.
 ## Phase 3: Architecture & Structure Planning
 
 ### 3.1 Architecture Planning
-- [ ] **Feature decomposition self-check (mandatory, no user stop):** Enumerate domain concepts. If >1 cohesive concept, or projected size exceeds `featureBudgets.config.cjs`, split into multiple features before file creation. See `.cursor/rules/architecture/RULE.md` § Feature granularity.
-- [ ] Determine feature structure (feature-based vs shared) - `architecture/RULE.md`
-- [ ] Choose layer placement (components/hooks/services/utils) - `architecture/RULE.md`
-- [ ] Understand import direction (downward only) - `architecture/RULE.md`
-- [ ] Select path aliases (@/hooks/*, @/components/*, etc.) - `architecture/RULE.md`
-- [ ] Decide: feature-specific vs shared code - `architecture/RULE.md`
+- [ ] **Feature decomposition self-check (mandatory, no user stop):** Enumerate domain concepts. If >1 cohesive concept, or projected size exceeds `featureBudgets.config.cjs`, split into multiple features before file creation. See `.cursor/rules/architecture/RULE.mdc` § Feature granularity.
+- [ ] Determine feature structure (feature-based vs shared) - `architecture/RULE.mdc`
+- [ ] Choose layer placement (components/hooks/services/utils) - `architecture/RULE.mdc`
+- [ ] Understand import direction (downward only) - `architecture/RULE.mdc`
+- [ ] Select path aliases (@/hooks/*, @/components/*, etc.) - `architecture/RULE.mdc`
+- [ ] Decide: feature-specific vs shared code - `architecture/RULE.mdc`
 
 ### 3.1b Pattern & industry precedent (proactive — when applicable)
 
@@ -217,25 +217,25 @@ Identify **subjective** choices requiring user input.
 - [ ] **STOP** at 🔴 DECISION POINT until the owner picks an approach (A/B/C) or waives non-standard design—same as other subjective architecture choices.
 
 ### 3.2 Cloud Functions Planning (if backend needed)
-- [ ] Use decision framework (`cloud-functions/RULE.md`): security, secrets, testability
+- [ ] Use decision framework (`cloud-functions/RULE.mdc`): security, secrets, testability
 - [ ] Decide: Edge Function vs frontend logic
 - [ ] Organize by business capability if creating functions
 
 ### 3.3 Database Planning (if database changes needed)
-- [ ] Plan migration patterns (`database/RULE.md`): idempotent, safe for fresh/existing DBs
+- [ ] Plan migration patterns (`database/RULE.mdc`): idempotent, safe for fresh/existing DBs
 - [ ] Use safe patterns (IF EXISTS, OR REPLACE, etc.)
 - [ ] Handle empty tables in data migrations
 
 ### 3.4 Security Planning
-- [ ] Authentication/authorization requirements (`security/RULE.md`)
-- [ ] Input validation patterns (`security/RULE.md`)
-- [ ] RLS policies if database changes (`security/RULE.md`)
-- [ ] Secrets management if Edge Functions (`security/RULE.md`)
-- [ ] Rate limiting if Edge Functions (`project-specific/RULE.md`)
+- [ ] Authentication/authorization requirements (`security/RULE.mdc`)
+- [ ] Input validation patterns (`security/RULE.mdc`)
+- [ ] RLS policies if database changes (`security/RULE.mdc`)
+- [ ] Secrets management if Edge Functions (`security/RULE.mdc`)
+- [ ] Rate limiting if Edge Functions (`project-specific/RULE.mdc`)
 
 ### 3.5 File Placement Validation
 - [ ] Validate against `projectStructure.config.cjs` (run `pnpm validate:structure`)
-- [ ] Confirm correct location per `file-placement/RULE.md`
+- [ ] Confirm correct location per `file-placement/RULE.mdc`
 - [ ] Check whitelist compliance
 - [ ] Determine file locations BEFORE creating
 
@@ -302,7 +302,7 @@ Identify **subjective** choices requiring user input.
 
 ### 4.5 Technical Considerations
 - [ ] Pseudo-code sketches
-- [ ] New components: purpose, location (`file-placement/RULE.md`), reusability
+- [ ] New components: purpose, location (`file-placement/RULE.mdc`), reusability
 - [ ] Performance (rendering, bundle size, lazy loading)
 - [ ] Error scenarios and edge cases
 - [ ] Dependencies (new needed? existing sufficient?)
@@ -317,7 +317,7 @@ Identify **subjective** choices requiring user input.
 ### 4.7 Architecture Compliance Check (Plan Validation)
 Verify the PLAN complies before implementation:
 - [ ] Planned file placements comply with `projectStructure.config.cjs`
-- [ ] Planned layer boundaries respect `architecture/RULE.md`
+- [ ] Planned layer boundaries respect `architecture/RULE.mdc`
 - [ ] No planned circular dependencies
 - [ ] Planned complexity within thresholds (SSOT: `.eslintrc.json` lines 65-70)
 - [ ] No unresolved ambiguity remains

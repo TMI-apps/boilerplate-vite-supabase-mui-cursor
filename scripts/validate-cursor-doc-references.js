@@ -51,7 +51,11 @@ function collectMarkdownFiles(dirPath, output) {
       collectMarkdownFiles(fullPath, output);
       continue;
     }
-    if (entry.isFile() && entry.name.endsWith(".md")) {
+    if (
+      entry.isFile() &&
+      (entry.name.endsWith(".md") ||
+        (entry.name.endsWith(".mdc") && toPosix(fullPath).includes("/.cursor/rules/")))
+    ) {
       output.push(fullPath);
     }
   }
@@ -102,13 +106,13 @@ function looksLikeRepoPath(value) {
     "public/",
     "tests/",
   ];
-  const allowedRefExt = /\.(md|cjs|js|json|yml|yaml|toml)$/i;
+  const allowedRefExt = /\.(md|mdc|cjs|js|json|yml|yaml|toml)$/i;
   if (rootPrefixes.some((prefix) => value.startsWith(prefix))) {
     return allowedRefExt.test(value);
   }
 
-  // Allow shorthand intra-rules references like architecture/RULE.md
-  if (/^[a-z0-9-]+\/RULE\.md$/i.test(value)) {
+  // Allow shorthand intra-rules references like architecture/RULE.mdc
+  if (/^[a-z0-9-]+\/RULE\.mdc?$/i.test(value)) {
     return true;
   }
 
@@ -116,8 +120,8 @@ function looksLikeRepoPath(value) {
 }
 
 function resolveCandidatePath(refPath, sourceFilePath) {
-  // Shorthand rule ref like architecture/RULE.md or cloud-functions/RULE.md
-  if (/^[a-z0-9-]+\/RULE\.md$/i.test(refPath)) {
+  // Shorthand rule ref like architecture/RULE.mdc or cloud-functions/RULE.mdc
+  if (/^[a-z0-9-]+\/RULE\.mdc?$/i.test(refPath)) {
     const posix = toPosix(sourceFilePath);
     const inRules = posix.includes("/.cursor/rules/");
     const inSkills = posix.includes("/.agents/skills/");

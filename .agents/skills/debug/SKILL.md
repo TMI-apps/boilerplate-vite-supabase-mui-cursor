@@ -60,7 +60,7 @@ Use these guardrails during every evidence loop:
 - **Stop editing after layer refutation:** If runtime evidence moves the likely cause outside the layer being edited, stop accumulating mitigations there. Keep only changes that improve observability or user-facing clarity and are independently justified by evidence.
 - **Recent changes are suspects:** A bug that appears after a refactor, migration, deploy, dashboard edit, dependency bump, or environment split must include at least one hypothesis tied to that change.
 - **Do not outsource an app-owned failure:** External service instability can be a hypothesis, but it must compete against app-specific request shape, auth path, RLS, schema, config, and recent-change hypotheses.
-- **Supabase stack:** For auth, RLS, Storage, and Edge Function errors, include hypotheses about JWT/session, policies, bucket policies, and request shape against `.cursor/rules/security/RULE.md` and `.cursor/rules/database/RULE.md` where relevant.
+- **Supabase stack:** For auth, RLS, Storage, and Edge Function errors, include hypotheses about JWT/session, policies, bucket policies, and request shape against `.cursor/rules/security/RULE.mdc` and `.cursor/rules/database/RULE.mdc` where relevant.
 
 ---
 

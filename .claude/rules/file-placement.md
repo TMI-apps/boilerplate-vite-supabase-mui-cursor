@@ -1,6 +1,6 @@
 # Claude rule: file placement
 
-SSOT: `.cursor/rules/file-placement/RULE.md` + `projectStructure.config.cjs`.
+SSOT: `.cursor/rules/file-placement/RULE.mdc` + `projectStructure.config.cjs`.
 
 **Before writing any new file:**
 
