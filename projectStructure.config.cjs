@@ -10,7 +10,7 @@
  * - scripts/project-structure-validator.js - Validator that reads this config
  * - package.json - Scripts that run validation (validate:structure)
  * - documentation/PROJECT-STRUCTURE-VALIDATION.md - User documentation
- * - architecture.md - Architecture documentation
+ * - ARCHITECTURE.md - Architecture documentation
  * - .cursor/rules/file-placement/RULE.mdc - File placement rules
  * - .cursor/rules/architecture/RULE.mdc - Architecture rules
  */
@@ -614,7 +614,7 @@ module.exports = {
           children: [
             {
               name: "*",
-              children: [{ name: "RULE.md" }, { name: "RULE.mdc" }],
+              children: [{ name: "RULE.mdc" }],
             },
             { name: "README.md" },
             { name: "INDEX.md" },
@@ -764,8 +764,7 @@ module.exports = {
     // Markdown documentation files - ONLY README, architecture, and CHANGELOG allowed in root
     { name: "README.md" },
     { name: "AGENTS.md" },
-    { name: "architecture.md" },
-    { name: "ARCHITECTURE.md" }, // Allow uppercase variant
+    { name: "ARCHITECTURE.md" },
     { name: "CHANGELOG.md" },
     // XML files removed - should be in documentation/ if needed for reference
     // SQL files removed - should be in migrations/ or documentation/, not root

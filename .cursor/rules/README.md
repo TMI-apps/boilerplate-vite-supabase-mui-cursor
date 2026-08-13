@@ -1,12 +1,12 @@
-# Cursor Rules Structure
+﻿# Cursor Rules Structure
 
 This directory contains global User Rules that apply across all your projects.
 
 ## SSOT catalog
 
-**`.cursor/rules/INDEX.md`** is the rule catalog and cross-reference matrix. Individual `RULE.md` files are SSOT for their domain.
+**`.cursor/rules/INDEX.md`** is the rule catalog and cross-reference matrix. Individual `RULE.mdc` files are SSOT for their domain.
 
-This README describes folder layout and maintenance — it does **not** override INDEX or per-rule SSOT declarations.
+This README describes folder layout and maintenance â€” it does **not** override INDEX or per-rule SSOT declarations.
 
 - **`architecture/RULE.mdc`**: SSOT for project structure, directory organization, code placement, path aliases (`@/hooks/*`, `@/components/*`, etc.), and layer boundaries
 - **`testing/RULE.mdc`**: SSOT for testing standards, patterns, and quality requirements
@@ -28,7 +28,7 @@ Example: If `cloud-functions/RULE.mdc` mentions function locations, it should re
 
 ## Rule Organization
 
-Each rule is a folder containing a `RULE.md` file with:
+Each rule is a folder containing a `RULE.mdc` file with:
 - Frontmatter metadata (description, alwaysApply, globs)
 - Rule content
 - Cross-reference section for consistency checks
@@ -53,7 +53,7 @@ Each rule is a folder containing a `RULE.md` file with:
 ## Adding a New Rule
 
 1. Create a new folder: `rules/[category]/`
-2. Create `RULE.md` with the standard template
+2. Create `RULE.mdc` with the standard template
 3. Update this README with the new rule and its SSOT scope
 4. Add cross-references to related rules
 5. Reference SSOT rules when content overlaps
@@ -61,7 +61,7 @@ Each rule is a folder containing a `RULE.md` file with:
 ## Consistency Checks
 
 When modifying a rule:
-- Check the "Related Rules" section at the bottom of each `RULE.md` file
+- Check the "Related Rules" section at the bottom of each `RULE.mdc` file
 - Ensure SSOT references are correct and up to date
 - Update this README if SSOT scope changes
 

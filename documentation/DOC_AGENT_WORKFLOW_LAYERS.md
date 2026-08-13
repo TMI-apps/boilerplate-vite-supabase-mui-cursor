@@ -7,7 +7,7 @@ How **skills**, **rules**, **documentation**, and **scripts/hooks** fit together
 | Layer | Location | Purpose |
 |-------|----------|---------|
 | **Skill** | `.agents/skills/<slug>/SKILL.md` | Full procedure the agent runs (SSOT for *how*) |
-| **Rule** | `.cursor/rules/<category>/RULE.md` | Always-on principles; **link** to skills/docs, avoid copying long checklists |
+| **Rule** | `.cursor/rules/<category>/RULE.mdc` | Always-on principles; **link** to skills/docs, avoid copying long checklists |
 | **Human doc** | `documentation/DOC_*.md` | Product/process narrative for people and agents |
 | **Enforcement** | `.husky/*`, `scripts/*`, `.github/workflows/*` | Machine checks; shared helpers in `scripts/*.cjs` |
 
