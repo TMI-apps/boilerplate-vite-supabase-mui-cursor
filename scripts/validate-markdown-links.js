@@ -72,7 +72,10 @@ function collectMarkdownFiles(dirPath, output) {
     if (!entry.isFile()) {
       continue;
     }
-    if (entry.name.endsWith(MARKDOWN_EXT)) {
+    if (
+      entry.name.endsWith(MARKDOWN_EXT) ||
+      (entry.name.endsWith(".mdc") && toPosix(fullPath).includes("/.cursor/rules/"))
+    ) {
       output.push(fullPath);
     }
   }

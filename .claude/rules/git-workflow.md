@@ -1,6 +1,6 @@
 # Claude rule: git workflow
 
-SSOT: `.cursor/rules/git-workflow/RULE.md` for branch strategy, PRs, and production promotion. Mode: `src/config/git-workflow.json` — apply § Mode-aware branch gate. Do not infer mode from the current branch. `.cursor/rules/agent-behavior/RULE.md` for protected files and agent behaviors. `.agents/skills/finish/SKILL.md` for commit format, versioning, and changelog.
+SSOT: `.cursor/rules/git-workflow/RULE.mdc` for branch strategy, PRs, and production promotion. Mode: `src/config/git-workflow.json` — apply § Mode-aware branch gate. Do not infer mode from the current branch. `.cursor/rules/agent-behavior/RULE.mdc` for protected files and agent behaviors. `.agents/skills/finish/SKILL.md` for commit format, versioning, and changelog.
 
 **Key behavioral reminders:**
 
@@ -8,4 +8,4 @@ SSOT: `.cursor/rules/git-workflow/RULE.md` for branch strategy, PRs, and product
 - **Commits happen in `/finish` only** — never during `/plan` or `/implement`.
 - **Staging gate:** Before committing, show staged + unstaged lists. If unstaged work exists, **stop and ask**.
 - **Pre-commit hooks:** Never use `--no-verify`. Fix the underlying issue instead. Staged test tiers: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git.
-- **Protected files** (need explicit user approval): full manifest in `.cursor/rules/agent-behavior/RULE.md` § Protected Files — do not duplicate the list here.
+- **Protected files** (need explicit user approval): full manifest in `.cursor/rules/agent-behavior/RULE.mdc` § Protected Files — do not duplicate the list here.

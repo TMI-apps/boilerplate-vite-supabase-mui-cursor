@@ -8,14 +8,14 @@ This guide points you to the canonical process documents. Follow these links for
    - Commit format, versioning, changelog sync  
    - Run this command before committing
 
-2. **Branch strategy** – [`.cursor/rules/git-workflow/RULE.md`](../.cursor/rules/git-workflow/RULE.md)  
+2. **Branch strategy** – [`.cursor/rules/git-workflow/RULE.mdc`](../.cursor/rules/git-workflow/RULE.mdc)  
    - Mode: [`src/config/git-workflow.json`](../src/config/git-workflow.json) (Model A default / Model B opt-in)  
    - § Mode-aware branch gate; PRs (Model A); production promotion (both)
 
-3. **Protected files** – [`.cursor/rules/agent-behavior/RULE.md`](../.cursor/rules/agent-behavior/RULE.md)  
+3. **Protected files** – [`.cursor/rules/agent-behavior/RULE.mdc`](../.cursor/rules/agent-behavior/RULE.mdc)  
    - Files requiring explicit user approval before agent edits
 
-4. **Architecture SSOT** – [`.cursor/rules/architecture/RULE.md`](../.cursor/rules/architecture/RULE.md)  
+4. **Architecture SSOT** – [`.cursor/rules/architecture/RULE.mdc`](../.cursor/rules/architecture/RULE.mdc)  
    - Layer rules, code placement, import patterns  
    - See also: [ARCHITECTURE.md](../ARCHITECTURE.md), [projectStructure.config.cjs](../projectStructure.config.cjs), [.dependency-cruiser.cjs](../.dependency-cruiser.cjs)
 
@@ -65,7 +65,7 @@ Read mode from `src/config/git-workflow.json`:
 No automated migrator. Manual steps:
 
 1. Finish or close open `feature/*` PRs (merge to `develop` or abandon).
-2. Update GitHub `develop` ruleset to match the target mode (see `.cursor/rules/git-workflow/RULE.md` § Branch Protection).
+2. Update GitHub `develop` ruleset to match the target mode (see `.cursor/rules/git-workflow/RULE.mdc` § Branch Protection).
 3. Set `"mode"` in `src/config/git-workflow.json` to `model-a` or `model-b`.
 4. `git switch develop && git pull origin develop` (or create a fresh `feature/*` if switching to Model A).
 5. Confirm agents read the new mode (`pnpm validate:git-workflow`).

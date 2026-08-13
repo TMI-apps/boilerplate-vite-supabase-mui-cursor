@@ -1,6 +1,6 @@
 # Git workflow mode
 
-Machine-readable mode lives in `git-workflow.json`. Behavior SSOT: `.cursor/rules/git-workflow/RULE.md`.
+Machine-readable mode lives in `git-workflow.json`. Behavior SSOT: `.cursor/rules/git-workflow/RULE.mdc`.
 
 | Mode | Daily work | Integration |
 |------|------------|-------------|

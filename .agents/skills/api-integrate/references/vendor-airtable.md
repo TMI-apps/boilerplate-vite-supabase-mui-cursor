@@ -8,7 +8,7 @@ Requires `VITE_AIRTABLE_API_KEY` and `VITE_AIRTABLE_BASE_ID` in `.env` or `.env.
 
 1. **Airtable-agnostic:** Meta API `GET /v0/meta/bases/{baseId}/tables`; Data API field ids vs display names.
 2. **This boilerplate:** Env `VITE_AIRTABLE_*`; runtime Meta usage and types in `src/shared/services/airtableService.ts`; onboarding task in dev backlog (`src/config/app-tasks.json`).
-3. **Fork / product:** If you need a single SSOT for many `tbl`*/`fld`* constants, add a small module under `src/shared/` following `.cursor/rules/file-placement/RULE.md` and `.cursor/rules/architecture/RULE.md` (this repo does not ship one).
+3. **Fork / product:** If you need a single SSOT for many `tbl`*/`fld`* constants, add a small module under `src/shared/` following `.cursor/rules/file-placement/RULE.mdc` and `.cursor/rules/architecture/RULE.mdc` (this repo does not ship one).
 
 ## Phase 1 — Schema commands
 

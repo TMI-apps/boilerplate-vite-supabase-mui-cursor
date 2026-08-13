@@ -97,5 +97,5 @@ Add a new vendor by adding a new `references/vendor-<slug>.md` file — do not g
 
 - [`.agents/skills/plan/SKILL.md`](../plan/SKILL.md) § Optional: Foundation validation — POC gate after this skill's research is done
 - [`.agents/skills/router/SKILL.md`](../router/SKILL.md) § External API research vs stack plugin skills
-- [`.cursor/rules/api-integration/RULE.md`](../../../.cursor/rules/api-integration/RULE.md) — globs-scoped principles this skill implements (`alwaysApply: false`)
+- [`.cursor/rules/api-integration/RULE.mdc`](../../../.cursor/rules/api-integration/RULE.mdc) — globs-scoped principles this skill implements (`alwaysApply: false`)
 - `README.md` — env vars for currently configured vendors (Supabase, Airtable)

@@ -12,7 +12,7 @@ description: >-
 
 On-demand performance playbook for **this repo's stack**. Rules live in `rules/` — read only the files relevant to the task.
 
-**SSOT for server state:** TanStack Query — see `documentation/DOC_TANSTACK_QUERY.md` and `architecture/RULE.md` § Plain optimistic + server-canonical response.
+**SSOT for server state:** TanStack Query — see `documentation/DOC_TANSTACK_QUERY.md` and `architecture/RULE.mdc` § Plain optimistic + server-canonical response.
 
 **Human overview:** `documentation/DOC_REACT_PERF.md`.
 

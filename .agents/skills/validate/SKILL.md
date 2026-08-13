@@ -65,7 +65,7 @@ Err toward inclusion in all modes — `applicable: false` is cheap.
 
 ### Branch verification (impl-full / gate)
 
-Read `src/config/git-workflow.json`. Apply `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate before impl-full / gate.
+Read `src/config/git-workflow.json`. Apply `.cursor/rules/git-workflow/RULE.mdc` § Mode-aware branch gate before impl-full / gate.
 
 ---
 
@@ -75,7 +75,7 @@ Every rule subagent is invoked the same way. The parent calls `Task` with `subag
 
 - **Mode** — `plan-review`, `impl-full`, or `gate`.
 - **Scope** — plan path for plan review; changed paths or unified diff otherwise.
-- **Rule file** — exactly one (e.g. `.cursor/rules/architecture/RULE.md`).
+- **Rule file** — exactly one (e.g. `.cursor/rules/architecture/RULE.mdc`).
 - **Output schema** — every subagent returns the structure below.
 
 **Allowed reads:** the rule file, the scope, and configs the rule itself references (e.g. `projectStructure.config.cjs`, `.dependency-cruiser.cjs`, `ARCHITECTURE.md`, `documentation/DOC_TANSTACK_QUERY.md`, `documentation/DOC_FEATURE_LOCAL_README.md`, `documentation/DOC_APP_VISION.md`). Do **not** read other rule files; cross-rule overlap is handled by the parent.

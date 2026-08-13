@@ -86,12 +86,12 @@ Do not duplicate the full scientific-method checklist in this rule. This file ow
 
 **When modifying this rule, check these rules for consistency:**
 
-- `agent-behavior/RULE.md` - Protected files and user-test gate
-- `testing/RULE.md` - Testing patterns and debugging test failures
-- `architecture/RULE.md` - Component nesting and structural analysis
+- `agent-behavior/RULE.mdc` - Protected files and user-test gate
+- `testing/RULE.mdc` - Testing patterns and debugging test failures
+- `architecture/RULE.mdc` - Component nesting and structural analysis
 
 **Rules that reference this rule:**
-- `workflow/RULE.md` - Hub; links here for reductive strategy
-- `architecture/RULE.md` - Performance cost risk references reductive strategy
+- `workflow/RULE.mdc` - Hub; links here for reductive strategy
+- `architecture/RULE.mdc` - Performance cost risk references reductive strategy
 - `.agents/skills/debug/SKILL.md` - Complete Scientific Method Debugging process (SSOT for debugging commands)
 

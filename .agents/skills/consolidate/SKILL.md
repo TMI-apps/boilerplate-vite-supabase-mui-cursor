@@ -13,7 +13,7 @@ description: >-
 
 Discover, classify, and prioritize opportunities to unify repeated code patterns across the codebase. This skill owns the **discovery** phase - systematically finding what is duplicated - and produces an actionable consolidation plan.
 
-**Scope:** Repo-wide pattern analysis. For per-hotspot optimization use `optimize2`. For single-feature simplification use `challenge`. For **semantic placement / wrong-layer repair** (after tooling is green), use this skill's **Semantic placement mode** below. For **proactive workaround detection during implementation**, use [`layer-consistency-check`](../layer-consistency-check/SKILL.md) (always-on via `architecture/RULE.md` § Layer consistency).
+**Scope:** Repo-wide pattern analysis. For per-hotspot optimization use `optimize2`. For single-feature simplification use `challenge`. For **semantic placement / wrong-layer repair** (after tooling is green), use this skill's **Semantic placement mode** below. For **proactive workaround detection during implementation**, use [`layer-consistency-check`](../layer-consistency-check/SKILL.md) (always-on via `architecture/RULE.mdc` § Layer consistency).
 
 ## Modes
 
@@ -279,7 +279,7 @@ STRONG CANDIDATES (Score 6+)
     - Standards alignment: [Aligned / confirmed intentional diversion / should realign]
 
     Architecture compliance:
-    - Layer: [utils/services/hooks/components per architecture/RULE.md]
+    - Layer: [utils/services/hooks/components per architecture/RULE.mdc]
     - Path alias: [the @/ import path]
 
 ---------------------------------------------------------------
@@ -316,7 +316,7 @@ For each approved consolidation:
 
 #### 6.1 Pre-flight
 
-- [ ] Verify target location against `architecture/RULE.md` layer rules
+- [ ] Verify target location against `architecture/RULE.mdc` layer rules
 - [ ] Check `projectStructure.config.cjs` whitelist for target folder
 - [ ] Verify no circular dependencies would be created
 - [ ] All imports will use path aliases (`@/` prefix)

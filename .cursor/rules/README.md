@@ -8,23 +8,23 @@ This directory contains global User Rules that apply across all your projects.
 
 This README describes folder layout and maintenance — it does **not** override INDEX or per-rule SSOT declarations.
 
-- **`architecture/RULE.md`**: SSOT for project structure, directory organization, code placement, path aliases (`@/hooks/*`, `@/components/*`, etc.), and layer boundaries
-- **`testing/RULE.md`**: SSOT for testing standards, patterns, and quality requirements
-- **`code-style/RULE.md`**: SSOT for naming conventions, formatting, and documentation standards
-- **`security/RULE.md`**: SSOT for security best practices and vulnerability prevention
-- **`workflow/RULE.md`**: Hub for code review, development process, deployment pointers, and rule routing
-- **`git-workflow/RULE.md`**: SSOT for branch strategy (Model A default / Model B opt-in via `src/config/git-workflow.json`), PRs, and production promotion
-- **`agent-behavior/RULE.md`**: SSOT for protected files, decision protocol, and user-test gate
-- **`platform/RULE.md`**: SSOT for PowerShell command rules and local environment configuration
-- **`cloud-functions/RULE.md`**: SSOT for when to use Edge Functions vs frontend, and function organization
-- **`database/RULE.md`**: SSOT for database migration best practices and patterns
-- **`debugging/RULE.md`**: SSOT for debugging strategies, logging, and issue analysis
-- **`file-placement/RULE.md`**: SSOT for file and folder placement validation before creation
-- **`project-specific/RULE.md`**: SSOT for project-specific patterns (rate limiting, etc.)
+- **`architecture/RULE.mdc`**: SSOT for project structure, directory organization, code placement, path aliases (`@/hooks/*`, `@/components/*`, etc.), and layer boundaries
+- **`testing/RULE.mdc`**: SSOT for testing standards, patterns, and quality requirements
+- **`code-style/RULE.mdc`**: SSOT for naming conventions, formatting, and documentation standards
+- **`security/RULE.mdc`**: SSOT for security best practices and vulnerability prevention
+- **`workflow/RULE.mdc`**: Hub for code review, development process, deployment pointers, and rule routing
+- **`git-workflow/RULE.mdc`**: SSOT for branch strategy (Model A default / Model B opt-in via `src/config/git-workflow.json`), PRs, and production promotion
+- **`agent-behavior/RULE.mdc`**: SSOT for protected files, decision protocol, and user-test gate
+- **`platform/RULE.mdc`**: SSOT for PowerShell command rules and local environment configuration
+- **`cloud-functions/RULE.mdc`**: SSOT for when to use Edge Functions vs frontend, and function organization
+- **`database/RULE.mdc`**: SSOT for database migration best practices and patterns
+- **`debugging/RULE.mdc`**: SSOT for debugging strategies, logging, and issue analysis
+- **`file-placement/RULE.mdc`**: SSOT for file and folder placement validation before creation
+- **`project-specific/RULE.mdc`**: SSOT for project-specific patterns (rate limiting, etc.)
 
 **When rules reference content from other domains, they must explicitly reference the SSOT rule.**
 
-Example: If `cloud-functions/RULE.md` mentions function locations, it should reference `architecture/RULE.md` as the SSOT for project structure.
+Example: If `cloud-functions/RULE.mdc` mentions function locations, it should reference `architecture/RULE.mdc` as the SSOT for project structure.
 
 ## Rule Organization
 

@@ -11,8 +11,8 @@
  * - package.json - Scripts that run validation (validate:structure)
  * - documentation/PROJECT-STRUCTURE-VALIDATION.md - User documentation
  * - architecture.md - Architecture documentation
- * - .cursor/rules/file-placement/RULE.md - File placement rules
- * - .cursor/rules/architecture/RULE.md - Architecture rules
+ * - .cursor/rules/file-placement/RULE.mdc - File placement rules
+ * - .cursor/rules/architecture/RULE.mdc - Architecture rules
  */
 /** @type {import('./scripts/project-structure-validator').ProjectStructureConfig} */
 module.exports = {
@@ -485,6 +485,7 @@ module.exports = {
         // Root-level files - ONLY DOC_ prefixed markdown files allowed
         // This enforces explicit approval for permanent documentation
         { name: "DOC_*.md" },
+        { name: "PROJECT-STRUCTURE-VALIDATION.md" },
         { name: "*.dbml" },
         { name: "*.svg" },
         { name: "*.sql" }, // SQL documentation/queries
@@ -613,7 +614,7 @@ module.exports = {
           children: [
             {
               name: "*",
-              children: [{ name: "RULE.md" }],
+              children: [{ name: "RULE.md" }, { name: "RULE.mdc" }],
             },
             { name: "README.md" },
             { name: "INDEX.md" },
@@ -635,6 +636,17 @@ module.exports = {
     {
       name: ".agents",
       children: [
+        {
+          name: "harness-inbox",
+          children: [
+            { name: "README.md" },
+            { name: "*" },
+            {
+              name: "*",
+              children: [{ name: "*" }],
+            },
+          ],
+        },
         {
           name: "skills",
           children: [

@@ -26,7 +26,7 @@ Lightweight Plan → Implement → Validate in one workflow. **Primary outcome:*
 
 ## Branch gate
 
-- [ ] Before any code edit: read `src/config/git-workflow.json`. Apply `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate.
+- [ ] Before any code edit: read `src/config/git-workflow.json`. Apply `.cursor/rules/git-workflow/RULE.mdc` § Mode-aware branch gate.
 
 ## Hard stops (M/L and gates)
 
@@ -72,7 +72,7 @@ If unclear, **ask** which branch applies.
 
 1. If the request is vague, or ambiguity appears during quick investigation, stop and ask 1–2 clarifying questions about the user's vision for how the app will be used. Do not choose between plausible interpretations silently.
 2. Quick investigation: search codebase; skim `.cursor/rules/INDEX.md` for applicable rules; use `documentation/DOC_TANSTACK_QUERY.md` if server state / queries are involved.
-3. Sanity-check file placement against `.cursor/rules/file-placement/RULE.md` and `projectStructure.config.cjs`.
+3. Sanity-check file placement against `.cursor/rules/file-placement/RULE.mdc` and `projectStructure.config.cjs`.
 4. Check whether the quick plan would diverge from industry standards, framework best practices, or established repo conventions. If yes, ask whether the diversion is intentional or whether to align with best practices before implementing.
 5. **Branch B:** Output the quick plan in chat (vital). **Branch A:** Optionally extend the plan document.
 6. Proceed to implementation (no separate approval wait unless the user stops you).
@@ -83,7 +83,7 @@ If unclear, **ask** which branch applies.
 
 1. **Branch A:** Run the extension (new phase/steps) or the next pending phase from the loaded plan.
 2. **Branch B:** Execute the quick plan already shown in chat.
-3. Follow `.cursor/rules/architecture/RULE.md`, `.cursor/rules/file-placement/RULE.md`, `.cursor/rules/code-style/RULE.md`, and `.cursor/rules/security/RULE.md` when relevant.
+3. Follow `.cursor/rules/architecture/RULE.mdc`, `.cursor/rules/file-placement/RULE.mdc`, `.cursor/rules/code-style/RULE.mdc`, and `.cursor/rules/security/RULE.mdc` when relevant.
 4. Run the **gate** from the quick plan (browser MCP when UI is involved; tests or manual checks as appropriate).
 5. **Branch A:** Update the plan (phase status, Notes, Decisions) as you go.
 

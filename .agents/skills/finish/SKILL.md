@@ -102,11 +102,11 @@ When skipping version/changelog: commit message uses `type: Subject` **without**
   - Never stage all changes automatically when unrelated unstaged work exists without explicit user confirmation.
 - commit with proper message format (see commit message standards below)
 - fix any issues found by pre-commit hook
-- **CRITICAL:** If fixing requires modifying protected files, STOP and ASK the user first. Full manifest: `.cursor/rules/agent-behavior/RULE.md` § Protected Files. NEVER modify protected files without explicit user approval.
-- check if architecture.md needs update
+- **CRITICAL:** If fixing requires modifying protected files, STOP and ASK the user first. Full manifest: `.cursor/rules/agent-behavior/RULE.mdc` § Protected Files. NEVER modify protected files without explicit user approval.
+- check if `ARCHITECTURE.md` needs update
 - do not create new deep docs during finish unless user explicitly requests it
 - **Do NOT push in this command.** `finish` is local-only and ends at a successful commit.
-- **After a successful commit:** Tell the user the commit succeeded and offer **`.agents/skills/push/SKILL.md`** — do **not** invoke `push` in the same turn unless the user explicitly asks to push. Push requires its own confirmation (see `push` skill and `.cursor/rules/git-workflow/RULE.md`).
+- **After a successful commit:** Tell the user the commit succeeded and offer **`.agents/skills/push/SKILL.md`** — do **not** invoke `push` in the same turn unless the user explicitly asks to push. Push requires its own confirmation (see `push` skill and `.cursor/rules/git-workflow/RULE.mdc`).
 
 ## Ready to commit? (required)
 
@@ -170,9 +170,15 @@ After `git add`, expect hook behavior per **`documentation/DOC_AGENT_WORKFLOW_LA
 
 ## Production promotion (separate from finish)
 
-Per `.cursor/rules/git-workflow/RULE.md` § Promote to production — not `finish`, not a squash PR to `main`.
+Per `.cursor/rules/git-workflow/RULE.mdc` § Promote to production — not `finish`, not a squash PR to `main`.
 
 ## User test handoff (mandatory before closure)
+
+### Lesson check (before handoff card)
+
+Read the active job's `DEVELOPMENT_PLAN.md` § **Notes during development** (or session notes from `implement` / `debug`). If any entry records a **mistake signal** (correction, revert, repeat failure, wrong assumption fixed), **offer** `.agents/skills/learn/SKILL.md` — user may accept or decline. **No-op** on clean sessions (no ritual `/learn`).
+
+`bundle-ship` and `push` point here — do not duplicate lesson logic.
 
 After commit (and after push/PR when applicable), output a **handoff card** for the user:
 

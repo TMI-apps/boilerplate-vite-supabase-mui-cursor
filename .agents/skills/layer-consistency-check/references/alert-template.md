@@ -22,4 +22,4 @@ support this cleanly, and roughly what that costs now>
 
 Then **stop and wait** for the user to pick workaround vs structural alternative. Only implement once they've chosen.
 
-If presenting multiple options after the block, follow `.cursor/rules/agent-behavior/RULE.md` § Decision Questioning Protocol.
+If presenting multiple options after the block, follow `.cursor/rules/agent-behavior/RULE.mdc` § Decision Questioning Protocol.

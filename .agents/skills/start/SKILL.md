@@ -26,7 +26,7 @@ Guide a new user through first-time setup of this boilerplate by following the R
 - **Skip Supabase (task #1)** and **Cloudflare hosting (task #2)**. No project, no Workers Builds link, no `.env` required for most template work. The app runs locally without auth configured.
 - **Skip Airtable (task #4)** unless you are testing that integration.
 - **App vision (task #3):** may stay **`DRAFT`** while exploring or contributing to the template; do not block template PRs on it unless the change is product-facing.
-- **Still do:** prerequisites, branch workflow (SSOT: `src/config/git-workflow.json` + `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate), `pnpm dev`, and the verification checklist (§ Mandatory verification checklist).
+- **Still do:** prerequisites, branch workflow (SSOT: `src/config/git-workflow.json` + `.cursor/rules/git-workflow/RULE.mdc` § Mode-aware branch gate), `pnpm dev`, and the verification checklist (§ Mandatory verification checklist).
 
 **Working on a fork** (someone cloned this to build their own app): full backlog applies — Supabase, hosting, vision **`ACTIVE`**, etc.
 
@@ -118,7 +118,7 @@ If assistant cannot perform the fork UI step, instruct user exactly what to clic
 
 > Feature branches (Model A, default) or direct `develop` (Model B)?
 
-Write `src/config/git-workflow.json` accordingly (`"mode": "model-a"` | `"model-b"`). Behavior SSOT: `.cursor/rules/git-workflow/RULE.md`.
+Write `src/config/git-workflow.json` accordingly (`"mode": "model-a"` | `"model-b"`). Behavior SSOT: `.cursor/rules/git-workflow/RULE.mdc`.
 
 **Model A:**
 
@@ -139,7 +139,7 @@ Do **not** create `feature/*` for daily work. Configure GitHub rulesets: `develo
 
 **Ruleset confirmation gate (Model B — required):** Before leaving this gate, confirm the live `develop` ruleset matches Model B (user confirmation or `gh api repos/OWNER/REPO/rules/branches/develop` / rulesets API): `pull_request` **absent**; `required_status_checks` (`test`) present; `non_fast_forward` + `deletion` present. Do not proceed on click-path instructions alone.
 
-**First-promotion bootstrap (Model B):** After the promote workflow file exists on `develop`, seed it onto `main` once with a local ff push (`git fetch origin && git checkout main && git merge --ff-only origin/develop && git push origin main`), then use **Promote to production** thereafter. See `.cursor/rules/git-workflow/RULE.md` § Promote to production.
+**First-promotion bootstrap (Model B):** After the promote workflow file exists on `develop`, seed it onto `main` once with a local ff push (`git fetch origin && git checkout main && git merge --ff-only origin/develop && git push origin main`), then use **Promote to production** thereafter. See `.cursor/rules/git-workflow/RULE.mdc` § Promote to production.
 
 If steps are web-UI only, provide exact click-path and wait for user confirmation.
 

@@ -105,9 +105,9 @@ command 2>&1; if ($LASTEXITCODE -ne 0) { exit 1 }
 
 **When modifying this rule, check these rules for consistency:**
 
-- `git-workflow/RULE.md` — PowerShell patterns for `gh` and git commands
-- `workflow/RULE.md` — deployment pointers
-- `security/RULE.md` — secrets handling
+- `git-workflow/RULE.mdc` — PowerShell patterns for `gh` and git commands
+- `workflow/RULE.mdc` — deployment pointers
+- `security/RULE.mdc` — secrets handling
 
 **Rules that reference this rule:**
 

@@ -32,8 +32,8 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 
 ### 0. Branch gate
 
-- [ ] Read `src/config/git-workflow.json`. Apply `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate before code edits.
-- [ ] **CRITICAL:** If the plan touches protected files (`.husky/**`, `tsconfig*.json`, `.cursor/rules/**`, `.agents/skills/**`, etc.), **stop** and get explicit user approval before editing them. Full manifest: `.cursor/rules/agent-behavior/RULE.md` § Protected Files. Record consent in **Decisions made** when granted.
+- [ ] Per `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy — verify branch before code edits; stop if on protected branches per that section.
+- [ ] **CRITICAL:** If the plan touches protected files (`.husky/**`, `tsconfig*.json`, `.cursor/rules/**`, `.agents/skills/**`, etc.), **stop** and get explicit user approval before editing them. Full manifest: `.cursor/rules/agent-behavior/RULE.mdc` § Protected Files. Record consent in **Decisions made** when granted.
 
 ### 1. Load plan
 
@@ -51,7 +51,7 @@ Execute a development plan phase by phase. Use `DEVELOPMENT_PLAN.md` as the guid
 For each phase **in order** (one phase at a time unless the plan explicitly allows parallel work):
 
 1. **Read** the phase: Goal, Steps, Gate.
-2. **Execute** the steps; match file layers, aliases, and patterns in `.cursor/rules/architecture/RULE.md` and `ARCHITECTURE.md`.
+2. **Execute** the steps; match file layers, aliases, and patterns in `.cursor/rules/architecture/RULE.mdc` and `ARCHITECTURE.md`.
 3. **Run** the gate (see below). It must pass before continuing.
 4. **Update** `DEVELOPMENT_PLAN.md`:
    - **Phase overview:** set this phase’s status to `Done` or `✅` (use the wording/style already used in the table).
@@ -89,6 +89,7 @@ See [`.cursor/rules/INDEX.md`](../../../.cursor/rules/INDEX.md) and [`.agents/sk
 - Unexpected obstacles
 - Gaps not covered in the plan
 - Suggestions for later (refactor, cleanup)
+- **Mistake signals** — user correction, revert, or repeat failure (`request → wrong action → fix`); enables `finish` § Lesson check → optional `/learn`
 
 **Format:** Chronological or by category.
 
@@ -142,7 +143,7 @@ If something is not covered by the plan:
 
 ## Documentation
 
-If the plan requires doc updates (e.g. `src/features/<feature>/README.md`, `ARCHITECTURE.md`), do them in the phase that introduces the behavior. Follow the plan and `.cursor/rules/file-placement/RULE.md`.
+If the plan requires doc updates (e.g. `src/features/<feature>/README.md`, `ARCHITECTURE.md`), do them in the phase that introduces the behavior. Follow the plan and `.cursor/rules/file-placement/RULE.mdc`.
 
 ---
 

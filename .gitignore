@@ -42,6 +42,10 @@ build
 # ESLint
 .eslintcache
 
+# Harness inbox (gitignored drops; README tracked)
+.agents/harness-inbox/*
+!.agents/harness-inbox/README.md
+
 # Python
 __pycache__/
 *.py[cod]

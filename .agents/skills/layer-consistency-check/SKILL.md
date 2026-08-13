@@ -10,7 +10,7 @@ description: >-
   your own code starts to look like a workaround. Posts WARNING, WORKAROUND and stops
   until the user chooses. Not industry precedent (pattern-review), repo lint
   (validate), or post-hoc wrong-layer repair (consolidate). Always-on via
-  architecture/RULE.md § Layer consistency.
+  architecture/RULE.mdc § Layer consistency.
 disable-model-invocation: false
 ---
 
@@ -22,7 +22,7 @@ disable-model-invocation: false
 
 ## Proactive obligation (agents)
 
-Apply **without being asked** during any implementation task when request-side cues or implementation-side shapes appear (see [`references/workaround-shapes.md`](references/workaround-shapes.md)). Obligation is also stated in `.cursor/rules/architecture/RULE.md` § Layer consistency (workaround guard).
+Apply **without being asked** during any implementation task when request-side cues or implementation-side shapes appear (see [`references/workaround-shapes.md`](references/workaround-shapes.md)). Obligation is also stated in `.cursor/rules/architecture/RULE.mdc` § Layer consistency (workaround guard).
 
 **Do:** one-beat layer check → severity filter → if bar cleared, post alert from [`references/alert-template.md`](references/alert-template.md) → **stop** until owner picks workaround vs structural path.
 
@@ -49,7 +49,7 @@ Per [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AG
 | **Procedure** (this file) | `.agents/skills/layer-consistency-check/SKILL.md` |
 | **Detection rubric** (cues + seven shapes + severity) | `.agents/skills/layer-consistency-check/references/workaround-shapes.md` |
 | **Alert template** | `.agents/skills/layer-consistency-check/references/alert-template.md` |
-| **Always-on reminder** | `.cursor/rules/architecture/RULE.md` § Layer consistency (workaround guard) |
+| **Always-on reminder** | `.cursor/rules/architecture/RULE.mdc` § Layer consistency (workaround guard) |
 
 ---
 
@@ -82,7 +82,7 @@ Full domain variety is in the shapes rubric. Illustrative cases:
 | Concern | Use instead |
 |---------|-------------|
 | External industry / product precedent | [`pattern-review`](../pattern-review/SKILL.md) |
-| Heavy DB/UI operation cost | `architecture/RULE.md` § Performance cost risk |
+| Heavy DB/UI operation cost | `architecture/RULE.mdc` § Performance cost risk |
 | Repo rule compliance on plan or diff | [`validate`](../validate/SKILL.md) |
 | Post-hoc wrong-layer repair in existing code | [`consolidate`](../consolidate/SKILL.md) § Semantic placement |
 | Front door when technique unknown (`/improve`) | [`improve`](../improve/SKILL.md) |

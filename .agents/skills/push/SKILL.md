@@ -29,7 +29,7 @@ Push previously finished work to remote. This command is push-only.
 
 ## Push Safety Flow
 
-1. Branch/push targets: read `src/config/git-workflow.json`; apply `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate and § Commit and Push Workflow.
+1. Branch/push targets: `.cursor/rules/git-workflow/RULE.mdc` § Commit and Push Workflow.
 2. Verify clean working tree.
 3. Verify commits exist to push.
 4. Verify remote freshness before push:
@@ -49,7 +49,7 @@ Push previously finished work to remote. This command is push-only.
 ## Relationship with `finish`
 
 - `finish` and `push` are intentionally split.
-- `finish` = cleanup + version/changelog sync + commit (local only).
+- `finish` = cleanup + version/changelog sync + commit (local only), including § Lesson check before handoff.
 - `push` = remote validation + push (no commit operations).
 - If `push` detects anything that still needs committing, it must stop and redirect to `finish`.
 
@@ -60,8 +60,6 @@ You have explicit access to use console commands for this task.
 | Not `push` | Use instead |
 |------------|-------------|
 | Stage, commit, version, changelog | `finish` |
-| First push of a new branch | Per `.cursor/rules/git-workflow/RULE.md` § Commit and Push Workflow |
+| First push of a new branch | Per `.cursor/rules/git-workflow/RULE.mdc` § Commit and Push Workflow |
 
-**Next:** Read `src/config/git-workflow.json`.
-- **Model A:** After a successful push that created or updated a PR to **`develop`**, read and run `~/.cursor/skills-cursor/babysit/SKILL.md` unless the user waived CI wait in **Decisions made**. Creating/offering a PR: `.cursor/rules/git-workflow/RULE.md` § Pull Requests — `gh pr create --base develop`, Summary + Test plan body, verify `baseRefName` (never bare `pull/new/<branch>`).
-- **Model B:** After a successful push to **`develop`**, babysit the branch `test` workflow run (`gh run watch` / `gh run list --branch develop`). **Do not** create a PR. Do not invoke PR babysit as the sole path.
+**Next:** After a successful push that created or updated a PR to **`develop`**, read and run `~/.cursor/skills-cursor/babysit/SKILL.md` unless the user waived CI wait in **Decisions made** (see router § finish vs push vs babysit). Creating/offering a PR: `.cursor/rules/git-workflow/RULE.mdc` § Pull Requests — `gh pr create --base develop`, Summary + Test plan body, verify `baseRefName` (never bare `pull/new/<branch>`).

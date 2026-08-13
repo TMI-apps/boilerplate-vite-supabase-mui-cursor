@@ -7,7 +7,7 @@ This fork's backend is Supabase. Supabase ships an MCP server (e.g. registered a
 ## Phase 0 — Locate
 
 - Call `GetMcpTools` with `pattern: "supabase"` (or inspect the catalog) to find the registered Supabase MCP server(s) in the current workspace.
-- If none exist, fall back to the Supabase CLI and docs (`supabase db ...`, `supabase functions ...` — see `.cursor/rules/database/RULE.md` and `.cursor/rules/cloud-functions/RULE.md` for the exact commands this fork uses) plus [supabase.com/docs](https://supabase.com/docs).
+- If none exist, fall back to the Supabase CLI and docs (`supabase db ...`, `supabase functions ...` — see `.cursor/rules/database/RULE.mdc` and `.cursor/rules/cloud-functions/RULE.mdc` for the exact commands this fork uses) plus [supabase.com/docs](https://supabase.com/docs).
 
 ## Phase 1 — Schema/contract commands (MCP)
 
@@ -27,12 +27,12 @@ Typical Supabase MCP tools relevant to schema/contract research (exact names dep
 
 If no Supabase MCP server is reachable in a given environment, fall back to:
 
-- The latest applied migration file under `supabase/migrations/` for schema (never assume table/column names from memory — see `.cursor/rules/security/RULE.md` § Database Verification).
+- The latest applied migration file under `supabase/migrations/` for schema (never assume table/column names from memory — see `.cursor/rules/security/RULE.mdc` § Database Verification).
 - `supabase gen types typescript --local` for a current TypeScript contract.
-- `.cursor/rules/database/RULE.md` for the exact CLI commands this fork uses.
+- `.cursor/rules/database/RULE.mdc` for the exact CLI commands this fork uses.
 
 ## Related
 
-- `.cursor/rules/database/RULE.md` — migration/CLI commands for this fork's Postgres/Supabase backend
-- `.cursor/rules/security/RULE.md` § Database Verification — MCP-first, migration-file fallback
-- `.cursor/rules/cloud-functions/RULE.md` — Supabase Edge Functions deploy model
+- `.cursor/rules/database/RULE.mdc` — migration/CLI commands for this fork's Postgres/Supabase backend
+- `.cursor/rules/security/RULE.mdc` § Database Verification — MCP-first, migration-file fallback
+- `.cursor/rules/cloud-functions/RULE.mdc` — Supabase Edge Functions deploy model

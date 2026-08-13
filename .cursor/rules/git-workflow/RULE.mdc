@@ -218,11 +218,11 @@ Rulesets (not classic branch protection):
 
 **When modifying this rule, check these rules for consistency:**
 
-- `workflow/RULE.md` — hub; code review and development process
-- `agent-behavior/RULE.md` — protected files, user-test gate
-- `platform/RULE.md` — PowerShell command rules for git/gh invocations
+- `workflow/RULE.mdc` — hub; code review and development process
+- `agent-behavior/RULE.mdc` — protected files, user-test gate
+- `platform/RULE.mdc` — PowerShell command rules for git/gh invocations
 
 **Rules that reference this rule:**
 
-- `cloud-functions/RULE.md` — branch model for Edge deploys
-- `testing/RULE.md` — branch model for function testing
+- `cloud-functions/RULE.mdc` — branch model for Edge deploys
+- `testing/RULE.mdc` — branch model for function testing

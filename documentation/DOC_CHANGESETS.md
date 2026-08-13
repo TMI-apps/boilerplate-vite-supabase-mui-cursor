@@ -2,7 +2,7 @@
 
 How version bumps on `develop` relate to feature work, production promotion, and **`finish`**.
 
-Mode: `src/config/git-workflow.json`. Behavior: `.cursor/rules/git-workflow/RULE.md`.
+Mode: `src/config/git-workflow.json`. Behavior: `.cursor/rules/git-workflow/RULE.mdc`.
 
 ## Model A — feature branches
 
@@ -29,4 +29,4 @@ Mode: `src/config/git-workflow.json`. Behavior: `.cursor/rules/git-workflow/RULE
 
 - Layer model: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Release and versioning
 - Commit/changelog SSOT: `.agents/skills/finish/SKILL.md`
-- Branch strategy SSOT: `.cursor/rules/git-workflow/RULE.md`
+- Branch strategy SSOT: `.cursor/rules/git-workflow/RULE.mdc`

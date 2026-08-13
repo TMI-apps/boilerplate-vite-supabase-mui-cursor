@@ -1,11 +1,11 @@
 # Skill relationship flow (router sidecar)
 
 **SSOT** for the grill → plan corridor → ship relationship diagram.  
-`router` and `improve-skill-library` **link here** — do not duplicate a second mermaid elsewhere.
+`router` and `align-harness` **link here** — do not duplicate a second mermaid elsewhere.
 
 **Owner:** `.agents/skills/router/references/skill-relationship-flow.md`  
 **Maintainers:** update when skills are added/removed/renamed, or when handoffs between `grill-me` / `plan-grill` / `plan` / `feature` / `pattern-review` / `quick-piv` change.  
-**Checked on every** `/improve-skill-library` run (Phase 0 need-check → Phase 7 update if stale).
+**Checked on every** `/align-harness` run (Phase 0 need-check → Phase 7 update if stale).
 
 Optional IDE canvas (not repo SSOT): Cursor `canvases/plan-grill-flow.canvas.tsx` may mirror this; prefer editing **this file** first.
 
@@ -75,7 +75,7 @@ Prose routing: [router § Plan corridor flow](../SKILL.md).
 
 ---
 
-## Stale-check criteria (`improve-skill-library`)
+## Stale-check criteria (`align-harness`)
 
 Mark this file **needs update** when any of:
 

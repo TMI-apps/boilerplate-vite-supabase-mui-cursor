@@ -79,7 +79,7 @@ The agent must STOP and ASK the user before modifying any of the following file 
    - Linting fails on new pattern → Ask: "Should I update .eslintrc.json to allow this?"
    - Architecture check fails → Ask: "Should I update the baseline or fix the violation?"
 
-**Reductive strategy:** See `debugging/RULE.md` § Reductive Strategy.
+**Reductive strategy:** See `debugging/RULE.mdc` § Reductive Strategy.
 
 ---
 
@@ -87,11 +87,11 @@ The agent must STOP and ASK the user before modifying any of the following file 
 
 **When modifying this rule, check these rules for consistency:**
 
-- `git-workflow/RULE.md` — branch protection and when edits are allowed
-- `workflow/RULE.md` — development process hub
-- `debugging/RULE.md` — reductive strategy for bugs and features
+- `git-workflow/RULE.mdc` — branch protection and when edits are allowed
+- `workflow/RULE.mdc` — development process hub
+- `debugging/RULE.mdc` — reductive strategy for bugs and features
 
 **Rules that reference this rule:**
 
-- `architecture/RULE.md` — decision questioning and performance-cost asks
+- `architecture/RULE.mdc` — decision questioning and performance-cost asks
 - `finish/SKILL.md`, `implement/SKILL.md` — protected-file gates

@@ -13,8 +13,8 @@ This rule defines security best practices, vulnerability prevention, and secure 
 
 ### Critical Requirement
 - **NEVER** assume database structures, tables, or field names without verification
-- **When an MCP (Model Context Protocol) server for the configured database is available**, check the schema using MCP tools before making assumptions (see `api-integration/RULE.md` for the general MCP-first principle)
-- **When no matching MCP server is configured, or a matched server is unusable** (`needsAuth`, `error`, `loading`, or a tool call fails after one retry — see `api-integration/RULE.md` and `.agents/skills/api-integrate/SKILL.md`), use the migration file last applied to the **target environment** (`supabase/migrations/` in this fork) or a schema export instead of relying on memory — never skip verification entirely, only the MCP-specific mechanism changes
+- **When an MCP (Model Context Protocol) server for the configured database is available**, check the schema using MCP tools before making assumptions (see `api-integration/RULE.mdc` for the general MCP-first principle)
+- **When no matching MCP server is configured, or a matched server is unusable** (`needsAuth`, `error`, `loading`, or a tool call fails after one retry — see `api-integration/RULE.mdc` and `.agents/skills/api-integrate/SKILL.md`), use the migration file last applied to the **target environment** (`supabase/migrations/` in this fork) or a schema export instead of relying on memory — never skip verification entirely, only the MCP-specific mechanism changes
 - Verify table names, column names, and data types before writing queries
 - Don't rely on memory or assumptions about database structure
 
@@ -230,18 +230,18 @@ export async function deleteUser(userId: string) {
 
 **When modifying this rule, check these rules for consistency:**
 
-- `architecture/RULE.md` - Security boundaries and architectural patterns
-- `code-style/RULE.md` - Code style for security-related code
-- `workflow/RULE.md` - Security review processes
-- `cloud-functions/RULE.md` - Security considerations for function organization
-- `api-integration/RULE.md` - General MCP-first principle this rule's Database Verification section implements
+- `architecture/RULE.mdc` - Security boundaries and architectural patterns
+- `code-style/RULE.mdc` - Code style for security-related code
+- `workflow/RULE.mdc` - Security review processes
+- `cloud-functions/RULE.mdc` - Security considerations for function organization
+- `api-integration/RULE.mdc` - General MCP-first principle this rule's Database Verification section implements
 
 **SSOT Status:**
 - This rule is the **SSOT** for security best practices, including RLS policy performance optimization
 
 **Rules that reference this rule:**
-- `architecture/RULE.md` - May reference security patterns
-- `testing/RULE.md` - May reference security testing requirements
-- `cloud-functions/RULE.md` - References security considerations
-- `project-specific/RULE.md` - References RLS patterns for rate limiting tables
+- `architecture/RULE.mdc` - May reference security patterns
+- `testing/RULE.mdc` - May reference security testing requirements
+- `cloud-functions/RULE.mdc` - References security considerations
+- `project-specific/RULE.mdc` - References RLS patterns for rate limiting tables
 

@@ -1,0 +1,18 @@
+# Harness scan entry points (SSOT for discovery)
+
+# Files the scanner walks first; link-walk expands from here.
+roots:
+  - AGENTS.md
+  - .cursor/rules/INDEX.md
+  - .agents/skills/router/SKILL.md
+  - documentation/DOC_AGENT_WORKFLOW_LAYERS.md
+  - ARCHITECTURE.md
+
+# Optional glob roots (relative to repo root) for orphan mark-and-sweep.
+domain_globs:
+  - .agents/skills/**/SKILL.md
+  - .cursor/rules/**/RULE.mdc
+  - .claude/rules/*.md
+
+# Advisory budget (bytes) for always-on rule payload reporting.
+always_on_budget_bytes: 32768

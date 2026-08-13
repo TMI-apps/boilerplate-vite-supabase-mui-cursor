@@ -2,7 +2,7 @@
 
 **Impact:** MEDIUM-HIGH
 
-**SSOT:** `documentation/DOC_TANSTACK_QUERY.md`, `architecture/RULE.md`.
+**SSOT:** `documentation/DOC_TANSTACK_QUERY.md`, `architecture/RULE.mdc`.
 
 Multiple components mounting the same query key share one request automatically. Do **not** introduce SWR.
 

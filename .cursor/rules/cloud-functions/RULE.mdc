@@ -15,7 +15,7 @@ This rule defines:
 
 ## Function Location
 
-**SSOT:** See `architecture/RULE.md` for project structure and directory organization standards.
+**SSOT:** See `architecture/RULE.mdc` for project structure and directory organization standards.
 
 **Function Location Guidelines:**
 
@@ -29,11 +29,11 @@ This rule defines:
   - Example: `cloud-functions/greenpt-proxy/` for Cloud Run/Railway deployments
   - These are separate from Supabase Edge Functions and use different runtimes (Node.js, etc.)
 
-For complete project structure guidelines, refer to `architecture/RULE.md`.
+For complete project structure guidelines, refer to `architecture/RULE.mdc`.
 
 ## Critical Context: Deployment Model
 
-**Branch model (general):** `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate (`src/config/git-workflow.json`). **This section** is Edge Function deploy semantics only.
+**Branch model (general):** `.cursor/rules/git-workflow/RULE.mdc` § Mode-aware branch gate (`src/config/git-workflow.json`). **This section** is Edge Function deploy semantics only.
 
 **This project has develop and main branches that share ONE Supabase project.**
 
@@ -60,7 +60,7 @@ Use Edge Functions ONLY when absolutely necessary:
    - Operations requiring server-side secrets/keys
    - Example: Third-party API calls (Gamma API, payment gateways)
    - Pattern: Credentials must stay server-side
-   - Before wiring up a new third-party API here, research it first — see `api-integration/RULE.md`
+   - Before wiring up a new third-party API here, research it first — see `api-integration/RULE.mdc`
 
 3. **System Events**
    - Supabase Auth lifecycle (handled via database triggers, not Edge Functions)
@@ -168,7 +168,7 @@ When considering adding an Edge Function, ask:
 
 ## Testing Strategy
 
-**SSOT:** See `testing/RULE.md` for testing standards, patterns, and quality requirements.
+**SSOT:** See `testing/RULE.mdc` for testing standards, patterns, and quality requirements.
 
 **Edge Functions Testing Considerations:**
 
@@ -187,7 +187,7 @@ When considering adding an Edge Function, ask:
 **Release Gate Reminder:**
 - Before running **Promote to production**, re-validate critical flows that depend on currently deployed Edge Functions
 
-For complete testing guidelines and patterns, refer to `testing/RULE.md`.
+For complete testing guidelines and patterns, refer to `testing/RULE.mdc`.
 
 ## Migration Path
 
@@ -355,16 +355,16 @@ await updateDoc(userRef, {
 
 **When modifying this rule, check these rules for consistency:**
 
-- `architecture/RULE.md` - **SSOT** for project structure and function location (referenced in Function Location section)
-- `testing/RULE.md` - **SSOT** for testing standards (referenced in Testing Strategy section)
-- `git-workflow/RULE.md` - Branch protection for deploys
-- `security/RULE.md` - Security considerations for function organization
-- `project-specific/RULE.md` - Rate limiting patterns for Edge Functions
-- `api-integration/RULE.md` - Researching a new third-party API before wiring it into a Server-Only-Capabilities function
+- `architecture/RULE.mdc` - **SSOT** for project structure and function location (referenced in Function Location section)
+- `testing/RULE.mdc` - **SSOT** for testing standards (referenced in Testing Strategy section)
+- `git-workflow/RULE.mdc` - Branch protection for deploys
+- `security/RULE.mdc` - Security considerations for function organization
+- `project-specific/RULE.mdc` - Rate limiting patterns for Edge Functions
+- `api-integration/RULE.mdc` - Researching a new third-party API before wiring it into a Server-Only-Capabilities function
 
 **Rules that reference this rule:**
-- `workflow/RULE.md` - References deployment of cloud functions
-- `architecture/RULE.md` - References function organization patterns
-- `security/RULE.md` - References security considerations for functions
-- `testing/RULE.md` - References Edge Functions testing considerations
+- `workflow/RULE.mdc` - References deployment of cloud functions
+- `architecture/RULE.mdc` - References function organization patterns
+- `security/RULE.mdc` - References security considerations for functions
+- `testing/RULE.mdc` - References Edge Functions testing considerations
 

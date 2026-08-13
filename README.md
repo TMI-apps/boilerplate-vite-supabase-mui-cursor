@@ -147,7 +147,7 @@ pnpm install
 
 ### Step 3: Set up branch workflow for this repo
 
-Keep `main` as production and `develop` as long-lived staging/integration. Mode lives in `src/config/git-workflow.json` (SSOT behavior: `.cursor/rules/git-workflow/RULE.md`).
+Keep `main` as production and `develop` as long-lived staging/integration. Mode lives in `src/config/git-workflow.json` (SSOT behavior: `.cursor/rules/git-workflow/RULE.mdc`).
 
 ```bash
 git switch -c develop
@@ -418,7 +418,7 @@ GitHub Actions workflow runs on every push/PR:
 See [documentation/DOC_CONTRIBUTING.md](./documentation/DOC_CONTRIBUTING.md) for how to contribute safely. Key points:
 
 1. **Workflow & versioning** – Use [`.agents/skills/finish/SKILL.md`](./.agents/skills/finish/SKILL.md) before committing
-2. **Architecture** – Follow [`.cursor/rules/architecture/RULE.md`](./.cursor/rules/architecture/RULE.md)
+2. **Architecture** – Follow [`.cursor/rules/architecture/RULE.mdc`](./.cursor/rules/architecture/RULE.mdc)
 3. **Documentation index** – [documentation/DOC_INDEX.md](./documentation/DOC_INDEX.md) for all docs
 4. Ensure all checks pass (`pnpm lint`, `pnpm format:check`, `pnpm test:classify`, `pnpm test:run`, `pnpm validate:version-sync`)
 5. Update CHANGELOG.md for significant changes
