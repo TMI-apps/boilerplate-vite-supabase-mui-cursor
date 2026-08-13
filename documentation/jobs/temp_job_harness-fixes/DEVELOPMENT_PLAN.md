@@ -18,7 +18,7 @@
 | 0 | Pre-implement: branch, consent, `validate` plan-review | Consent recorded; `validate` plan-review green | Done |
 | 1 | Merge `develop` + resolve all conflicts atomically | Model B SSOT chain truthful; no `RULE.md` on disk; merge commit pushable | Done |
 | 2 | Structure doc + `ALLOWED_MISSING` cleanup | Doc exists; both allowlist entries resolved; `validate:docs` green | Done |
-| 3 | CI parity audit, backlog, PR handoff | `validate` impl-full green; `harness_scan` targets clean; user confirms | In progress — CI + scan + stale RULE.md sweep done; follow-up PR after #52 |
+| 3 | CI parity audit, backlog, PR handoff | `validate` impl-full green; `harness_scan` targets clean; user confirms | Done — residual follow-up PR #53 (CI green); user confirm still pending |
 
 ---
 
