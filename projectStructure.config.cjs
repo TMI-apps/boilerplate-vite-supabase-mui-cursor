@@ -13,8 +13,7 @@
  * - ARCHITECTURE.md - Architecture documentation
  * - .cursor/rules/file-placement/RULE.mdc - File placement rules
  * - .cursor/rules/architecture/RULE.mdc - Architecture rules
- */
-/** @type {import('./scripts/project-structure-validator').ProjectStructureConfig} */
+ *//** @type {import('./scripts/project-structure-validator').ProjectStructureConfig} */
 module.exports = {
   structure: [
     // Root level: src folder
