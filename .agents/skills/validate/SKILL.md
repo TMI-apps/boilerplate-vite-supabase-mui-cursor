@@ -84,7 +84,7 @@ Every rule subagent is invoked the same way. The parent calls `Task` with `subag
 
 ```json
 {
-  "rule": ".cursor/rules/<name>/RULE.md",
+  "rule": ".cursor/rules/<name>/RULE.mdc",
   "applicable": true,
   "findings": [
     {
@@ -189,7 +189,7 @@ Group findings by category (Architecture, File placement, Code style, … — pl
 
 - **Finding** — what is wrong, missing, or risky
 - **Suggestion** — concrete improvement
-- **Rule** — `.cursor/rules/<name>/RULE.md` § section
+- **Rule** — `.cursor/rules/<name>/RULE.mdc` § section
 - **Severity** — Blocker | Warning | Suggestion
 - **Source** — `file:line` for impl/gate, plan section for plan review
 - **Ambiguity answer** — when the finding had a `user-question-needed` flag, include the user's batched answer

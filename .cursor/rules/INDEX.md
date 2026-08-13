@@ -63,7 +63,7 @@ Quick reference guide to all rules and their relationships.
 
 ### Workflow hub (`workflow/RULE.mdc`)
 - Code review process and development process
-- Deployment pointers (links to `DOC_CLOUDFLARE_WORKERS`, `cloud-functions/RULE`)
+- Deployment pointers (links to `DOC_CLOUDFLARE_WORKERS`, `cloud-functions/RULE.mdc`)
 - **Rule routing** to child domain rules (do not duplicate their bodies here)
 - **Minimal branch gate stub** — read `src/config/git-workflow.json`; full Model A / Model B in `git-workflow/RULE.mdc` § Mode-aware branch gate
 
@@ -188,7 +188,7 @@ When modifying a rule, check these related rules:
 ## Adding a New Rule
 
 1. Create folder: `rules/[category]/` (e.g. `rules/my-category/`)
-2. Create `RULE.md` following the template in an existing rule
+2. Create `RULE.mdc` following the template in an existing rule
 3. Add "Related Rules" section at the bottom
 4. Update this INDEX.md
 5. Update related rules to reference the new rule

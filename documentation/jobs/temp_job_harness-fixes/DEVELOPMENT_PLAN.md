@@ -18,7 +18,7 @@
 | 0 | Pre-implement: branch, consent, `validate` plan-review | Consent recorded; `validate` plan-review green | Done |
 | 1 | Merge `develop` + resolve all conflicts atomically | Model B SSOT chain truthful; no `RULE.md` on disk; merge commit pushable | Done |
 | 2 | Structure doc + `ALLOWED_MISSING` cleanup | Doc exists; both allowlist entries resolved; `validate:docs` green | Done |
-| 3 | CI parity audit, backlog, PR handoff | `validate` impl-full green; `harness_scan` targets clean; user confirms | In progress |
+| 3 | CI parity audit, backlog, PR handoff | `validate` impl-full green; `harness_scan` targets clean; user confirms | In progress — CI + scan + stale RULE.md sweep done; PR pending user confirm |
 
 ---
 
@@ -206,7 +206,10 @@ Merge-safe validation; harness scan confirms fixes; backlog updated; integrated 
 
 ## Notes during development
 
-(Leave empty in the initial plan.)
+- [Phase 3] `harness_scan`: no missingRefs for `git-workflow.json`, `PROJECT-STRUCTURE-VALIDATION.md`, or `git-workflow/RULE.md` (other missingRefs pre-existing / out of scope).
+- [Phase 3] CI parity block green (`test:classify`, `test:run` 72, type-check, validate:*, lint 0 errors, arch:check).
+- [Phase 3] `validate` impl-full: no blockers; fixed residual live-path `RULE.md` shorthand (validate skill, layers doc, REGISTRY, rules README/INDEX) + dropped `architecture.md` / `RULE.md` whitelist entries in `projectStructure.config.cjs`.
+- [Phase 3] PR #51 already CLOSED; integrated PR to `develop` still needs commit of Phase 3 sweep + `gh pr create` after user confirm.
 
 ## Decisions made
 
@@ -216,8 +219,8 @@ Impl-time only (`implement` fills). Product/scope forks → sibling [`DECISIONS.
 |---|-------|--------|-------------|
 | — | Merge conflict resolutions | _(per file — implement fills)_ | |
 | R1 | Phase 0+1 collapse | **Folded** — Phase 1 is atomic merge+resolve; no conflict-marker checkpoint | — |
-| R2 | Protected-file consent | **Folded** — Phase 0 batch consent before Phase 1 | Yes (`implement`) |
-| R3 | PR #51 | **Folded** — Phase 3 step 5 closes #51 | — |
+| R2 | Protected-file consent | **Folded** — Phase 0 batch consent before Phase 1 (paths: `.cursor/rules/**`, `.agents/skills/**`, `.github/workflows/ci.yml`, `projectStructure.config.cjs`) | Yes (`implement`) |
+| R3 | PR #51 | **Folded** — Phase 3 step 5 closes #51 (already CLOSED when Phase 3 ran) | — |
 | R4 | Phase 3 CI parity | **Folded** — Phase 3 step 2 + `validate` impl-full | — |
 | R5 | Hub mode-neutral | **Folded** — Phase 1 step 5 deliverable | — |
-| R6 | Stale-path + allowlist | **Folded** — Phase 1 step 8 + Phase 2 step 2 | — |
+| R6 | Stale-path + allowlist | **Folded** — Phase 1 step 8 + Phase 2 step 2 + Phase 3 residual `RULE.md` sweep | — |
