@@ -38,7 +38,8 @@ Central navigation for boilerplate documentation. For authoritative rules and pr
 | Topic | SSOT Location |
 |-------|----------------|
 | Workflow, versioning, changelog | `.agents/skills/finish/SKILL.md` |
-| Branch strategy, release promotion flow | `.cursor/rules/git-workflow/RULE.mdc` |
+| Branch strategy, release promotion flow | `.cursor/rules/git-workflow/RULE.mdc` (mode: `src/config/git-workflow.json`) |
+| Git workflow mode selector | `src/config/git-workflow.json` + `src/config/git-workflow.README.md` |
 | Protected files, agent behaviors | `.cursor/rules/agent-behavior/RULE.mdc` |
 | PowerShell / local environment | `.cursor/rules/platform/RULE.mdc` |
 | Code review, development process (hub) | `.cursor/rules/workflow/RULE.mdc` |

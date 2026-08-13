@@ -43,6 +43,9 @@ jobs:
       - name: Version/changelog consistency
         run: pnpm validate:version-sync
 
+      - name: Git workflow mode config
+        run: pnpm validate:git-workflow
+
       - name: Structure validation
         run: pnpm validate:structure
 

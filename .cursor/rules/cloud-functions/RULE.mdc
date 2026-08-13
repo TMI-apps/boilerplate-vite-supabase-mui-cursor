@@ -33,7 +33,7 @@ For complete project structure guidelines, refer to `architecture/RULE.mdc`.
 
 ## Critical Context: Deployment Model
 
-**Branch model (general):** `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy. **This section** is Edge Function deploy semantics only.
+**Branch model (general):** `.cursor/rules/git-workflow/RULE.mdc` § Mode-aware branch gate (`src/config/git-workflow.json`). **This section** is Edge Function deploy semantics only.
 
 **This project has develop and main branches that share ONE Supabase project.**
 

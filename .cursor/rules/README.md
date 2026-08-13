@@ -4,9 +4,7 @@ This directory contains global User Rules that apply across all your projects.
 
 ## SSOT catalog
 
-**`.cursor/rules/INDEX.md`** is the rule catalog and cross-reference matrix. Individual `RULE.mdc` files are SSOT for their domain.
-
-**Extension:** Cursor loads project rules only from `.mdc` files — a plain `.md` in `.cursor/rules/` is ignored, including its frontmatter.
+**`.cursor/rules/INDEX.md`** is the rule catalog and cross-reference matrix. Individual `RULE.md` files are SSOT for their domain.
 
 This README describes folder layout and maintenance — it does **not** override INDEX or per-rule SSOT declarations.
 
@@ -15,14 +13,14 @@ This README describes folder layout and maintenance — it does **not** override
 - **`code-style/RULE.mdc`**: SSOT for naming conventions, formatting, and documentation standards
 - **`security/RULE.mdc`**: SSOT for security best practices and vulnerability prevention
 - **`workflow/RULE.mdc`**: Hub for code review, development process, deployment pointers, and rule routing
-- **`git-workflow/RULE.mdc`**: SSOT for branch strategy (Model A), PRs, and production promotion
+- **`git-workflow/RULE.mdc`**: SSOT for branch strategy (Model A default / Model B opt-in via `src/config/git-workflow.json`), PRs, and production promotion
 - **`agent-behavior/RULE.mdc`**: SSOT for protected files, decision protocol, and user-test gate
 - **`platform/RULE.mdc`**: SSOT for PowerShell command rules and local environment configuration
 - **`cloud-functions/RULE.mdc`**: SSOT for when to use Edge Functions vs frontend, and function organization
-- **`database/RULE.mdc`**: SSOT for database migration best practices and patterns
+- **`database/RULE.md`**: SSOT for database migration best practices and patterns
 - **`debugging/RULE.mdc`**: SSOT for debugging strategies, logging, and issue analysis
 - **`file-placement/RULE.mdc`**: SSOT for file and folder placement validation before creation
-- **`project-specific/RULE.mdc`**: SSOT for project-specific patterns (rate limiting, etc.)
+- **`project-specific/RULE.md`**: SSOT for project-specific patterns (rate limiting, etc.)
 
 **When rules reference content from other domains, they must explicitly reference the SSOT rule.**
 
@@ -30,7 +28,7 @@ Example: If `cloud-functions/RULE.mdc` mentions function locations, it should re
 
 ## Rule Organization
 
-Each rule is a folder containing a `RULE.mdc` file with:
+Each rule is a folder containing a `RULE.md` file with:
 - Frontmatter metadata (description, alwaysApply, globs)
 - Rule content
 - Cross-reference section for consistency checks
@@ -55,7 +53,7 @@ Each rule is a folder containing a `RULE.mdc` file with:
 ## Adding a New Rule
 
 1. Create a new folder: `rules/[category]/`
-2. Create `RULE.mdc` with the standard template
+2. Create `RULE.md` with the standard template
 3. Update this README with the new rule and its SSOT scope
 4. Add cross-references to related rules
 5. Reference SSOT rules when content overlaps
@@ -63,7 +61,7 @@ Each rule is a folder containing a `RULE.mdc` file with:
 ## Consistency Checks
 
 When modifying a rule:
-- Check the "Related Rules" section at the bottom of each `RULE.mdc` file
+- Check the "Related Rules" section at the bottom of each `RULE.md` file
 - Ensure SSOT references are correct and up to date
 - Update this README if SSOT scope changes
 

@@ -65,7 +65,7 @@ Err toward inclusion in all modes — `applicable: false` is cheap.
 
 ### Branch verification (impl-full / gate)
 
-Per `.cursor/rules/git-workflow/RULE.mdc` § Branch Strategy — verify branch before impl-full / gate; stop if on protected branches per that section.
+Read `src/config/git-workflow.json`. Apply `.cursor/rules/git-workflow/RULE.mdc` § Mode-aware branch gate before impl-full / gate.
 
 ---
 
@@ -84,7 +84,7 @@ Every rule subagent is invoked the same way. The parent calls `Task` with `subag
 
 ```json
 {
-  "rule": ".cursor/rules/<name>/RULE.mdc",
+  "rule": ".cursor/rules/<name>/RULE.md",
   "applicable": true,
   "findings": [
     {
@@ -189,7 +189,7 @@ Group findings by category (Architecture, File placement, Code style, … — pl
 
 - **Finding** — what is wrong, missing, or risky
 - **Suggestion** — concrete improvement
-- **Rule** — `.cursor/rules/<name>/RULE.mdc` § section
+- **Rule** — `.cursor/rules/<name>/RULE.md` § section
 - **Severity** — Blocker | Warning | Suggestion
 - **Source** — `file:line` for impl/gate, plan section for plan review
 - **Ambiguity answer** — when the finding had a `user-question-needed` flag, include the user's batched answer

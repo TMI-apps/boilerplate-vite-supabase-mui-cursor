@@ -9,7 +9,8 @@ This guide points you to the canonical process documents. Follow these links for
    - Run this command before committing
 
 2. **Branch strategy** – [`.cursor/rules/git-workflow/RULE.mdc`](../.cursor/rules/git-workflow/RULE.mdc)  
-   - Branch naming, Model A flow (`feature/*` -> `develop` -> promote -> `main`), PRs, production promotion
+   - Mode: [`src/config/git-workflow.json`](../src/config/git-workflow.json) (Model A default / Model B opt-in)  
+   - § Mode-aware branch gate; PRs (Model A); production promotion (both)
 
 3. **Protected files** – [`.cursor/rules/agent-behavior/RULE.mdc`](../.cursor/rules/agent-behavior/RULE.mdc)  
    - Files requiring explicit user approval before agent edits
@@ -25,7 +26,7 @@ This guide points you to the canonical process documents. Follow these links for
 
 **Pre-commit hook** runs staged tests (related or full), type-check, and validators on app-surface commits. See `documentation/DOC_AGENT_WORKFLOW_LAYERS.md` § Local git.
 
-**Before opening a PR**, ensure CI parity locally:
+**Before opening a PR** (Model A) **or pushing `develop`** (Model B), ensure CI parity locally:
 
 | Check | Command |
 |-------|---------|
@@ -36,11 +37,12 @@ This guide points you to the canonical process documents. Follow these links for
 | Lint | `pnpm lint` |
 | Format | `pnpm format:check` |
 | Version/changelog sync | `pnpm validate:version-sync` |
+| Git workflow mode config | `pnpm validate:git-workflow` |
 | Structure | `pnpm validate:structure` |
 | Architecture | `pnpm arch:check:ci` |
 | Build | `pnpm build` |
 
-CI runs these on every push to `main` or `develop` and every PR targeting `main` or `develop`. The **merge gate** is the green CI `test` job on `develop`.
+CI runs these on every push to `main` or `develop` and every PR targeting `main` or `develop`. The **authoritative gate** is the green CI `test` job on `develop`.
 
 ## How to write tests
 
@@ -48,10 +50,25 @@ See **[DOC_TESTING.md](./DOC_TESTING.md)** — runner choice, colocated file pla
 
 ## Release Direction
 
-- Model A: `feature/*` -> `develop` (via squash PR after checks and validation)
-- `develop` deploys to stable staging (Cloudflare Workers Builds); optional per-branch previews for PRs
-- Production: run **Promote to production** workflow (`promote-to-production.yml`) to fast-forward `main` to `develop` — no squash PR `develop` -> `main`, no back-merge `main` -> `develop`
-- Never push directly to `main` or `develop` — rulesets require PRs (except promote workflow on `main`)
+Read mode from `src/config/git-workflow.json`:
+
+- **Model A:** `feature/*` → `develop` via squash PR after checks
+- **Model B:** commit and push directly to `develop` (no daily PR); watch branch CI
+- `develop` deploys to stable staging (Cloudflare Workers Builds); Model A may also use per-branch PR previews
+- Production: **Promote to production** workflow — ff `main` ← `develop` (no squash PR `develop` → `main`, no back-merge)
+- Never push app code to `main` (except promote workflow / rare emergency exception)
+
+**Model B staging note:** Workers Builds may deploy a `develop` push before CI `test` is green. Production still requires green tip + promote.
+
+## Mid-project mode switch
+
+No automated migrator. Manual steps:
+
+1. Finish or close open `feature/*` PRs (merge to `develop` or abandon).
+2. Update GitHub `develop` ruleset to match the target mode (see `.cursor/rules/git-workflow/RULE.mdc` § Branch Protection).
+3. Set `"mode"` in `src/config/git-workflow.json` to `model-a` or `model-b`.
+4. `git switch develop && git pull origin develop` (or create a fresh `feature/*` if switching to Model A).
+5. Confirm agents read the new mode (`pnpm validate:git-workflow`).
 
 ## Finding Authoritative Rules
 

@@ -147,20 +147,30 @@ pnpm install
 
 ### Step 3: Set up branch workflow for this repo
 
-Keep `main` as production/stable and use `develop` as long-lived integration.
+Keep `main` as production and `develop` as long-lived staging/integration. Mode lives in `src/config/git-workflow.json` (SSOT behavior: `.cursor/rules/git-workflow/RULE.mdc`).
 
 ```bash
 git switch -c develop
 git push -u origin develop
 ```
 
-Then configure branch protection in GitHub:
-- `main`: require pull requests, require status checks, disallow force pushes
-- `develop` (recommended): require pull requests, require status checks, disallow force pushes
+**Choose a mode (fork onboarding):**
 
-Recommended PR flow:
-- Daily work: `feature/*` -> `develop`
-- Production: promote `develop` to `main` via **Promote to production** workflow (fast-forward only) — see `.cursor/rules/git-workflow/RULE.mdc` § Promote to production
+| Mode | Daily work | `develop` ruleset | Config |
+|------|------------|-------------------|--------|
+| **Model A** (default — feature branches + PR) | `feature/*` → squash PR → `develop` | PR + `test` + non-ff + deletion | `"mode": "model-a"` |
+| **Model B** (opt-in — direct `develop`) | Commit/push on `develop` | `test` + non-ff + deletion (**no** PR required) | `"mode": "model-b"` |
+
+Both modes: production via **Promote to production** (ff `main` ← `develop`). Never commit app code to `main`.
+
+**Model A** first branch:
+
+```bash
+git switch develop && git pull origin develop
+git switch -c feature/<name>
+```
+
+**Model B:** stay on `develop` after creating it; do not create `feature/*` for daily work.
 
 Optional (to pull future boilerplate updates):
 
@@ -225,7 +235,7 @@ Chrome DevTools device mode is enough for width breakpoints; it is **not** enoug
 
 ### You're ready
 
-Start building features on `feature/*` branches and merge through `develop` before promoting to `main`.
+Start building per your git-workflow mode (`src/config/git-workflow.json`): Model A uses `feature/*` → `develop`; Model B works on `develop`. Promote to `main` when staging looks good.
 
 ## Installation
 

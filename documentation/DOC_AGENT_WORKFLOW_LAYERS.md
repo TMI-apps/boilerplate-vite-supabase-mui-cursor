@@ -7,7 +7,7 @@ How **skills**, **rules**, **documentation**, and **scripts/hooks** fit together
 | Layer | Location | Purpose |
 |-------|----------|---------|
 | **Skill** | `.agents/skills/<slug>/SKILL.md` | Full procedure the agent runs (SSOT for *how*) |
-| **Rule** | `.cursor/rules/<category>/RULE.mdc` | Always-on principles; **link** to skills/docs, avoid copying long checklists |
+| **Rule** | `.cursor/rules/<category>/RULE.md` | Always-on principles; **link** to skills/docs, avoid copying long checklists |
 | **Human doc** | `documentation/DOC_*.md` | Product/process narrative for people and agents |
 | **Enforcement** | `.husky/*`, `scripts/*`, `.github/workflows/*` | Machine checks; shared helpers in `scripts/*.cjs` |
 
@@ -162,15 +162,15 @@ Copy `write-adoption-guide/` to other projects and adjust the skill **Configurat
 | dry-run | `pnpm test:staged` | log only |
 | live (no commit) | `pnpm test:staged:live` | same as hook |
 
-**Merge safety:** Related or full pre-commit green is **not** merge-safe. Only the CI `test` job on `develop` is authoritative.
+**Merge safety:** Related or full pre-commit green is **not** merge-safe. Only the CI `test` job on `develop` is authoritative (Model A: PR checks; Model B: branch push workflow).
 
 **Agent commands:** `pnpm test:staged` (preview after `git add`); `PRECOMMIT_TEST_FULL=1 pnpm test:staged` (force full preview); `pnpm test:classify && pnpm test:run` (CI parity).
 
 **Rollback:** Revert hook commit and restore pre-push `test:run` if related spawn fails in the wild.
 
-PR CI runs full `pnpm test:classify`, `pnpm test:run`, and cold `pnpm type-check` in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
+PR / push CI runs full `pnpm test:classify`, `pnpm test:run`, and cold `pnpm type-check` in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
-See `.cursor/rules/git-workflow/RULE.mdc` for branch strategy and `.cursor/rules/agent-behavior/RULE.mdc` for protected files.
+See `.cursor/rules/git-workflow/RULE.mdc` § Mode-aware branch gate (`src/config/git-workflow.json`) and `.cursor/rules/agent-behavior/RULE.mdc` for protected files.
 
 ## Agent-only mode (human files features/bugs)
 
@@ -181,7 +181,7 @@ When the human only files feature requests or bug reports and tests in the app:
 | Human | Describe goal or bug; test in app; confirm pass/fail |
 | Agent | Full delivery chain — no git/CI coordination required from human |
 
-**Default agent chain:** `router` → plan/feature/debug as needed → `implement` or `quick-piv` → `validate` → `finish` → `push` → **`babysit`** when a PR to `develop` exists → **Ready for you to test** handoff (`finish` § User test).
+**Default agent chain:** `router` → plan/feature/debug as needed → `implement` or `quick-piv` → `validate` → `finish` → `push` → **post-push CI** (Model A: babysit PR to `develop`; Model B: watch branch `test` run) → **Ready for you to test** handoff (`finish` § User test).
 
 **Standing protected-file consent:** Optional Cursor **user rule** listing categories agents may edit without per-task ask (e.g. `.agents/skills/**` for workflow glue). Repo `.cursor/rules/agent-behavior/RULE.mdc` § Protected Files stays strict — the user rule is external standing consent, not a repo policy change.
 
@@ -189,13 +189,14 @@ When the human only files feature requests or bug reports and tests in the app:
 
 ## Release and versioning
 
-- Feature branches: `.changeset/*.md` + conventional commits (`finish` SSOT).
-- Version bump lands with each feature PR to `develop`: `documentation/DOC_CHANGESETS.md`. Production promotion (`main`) is a separate **Promote to production** workflow step.
+- Mode-aware changesets: `documentation/DOC_CHANGESETS.md` + conventional commits (`finish` SSOT).
+- Version bump lands with each land on `develop` (Model A: feature PR; Model B: direct `finish` on `develop`). Production promotion (`main`) is a separate **Promote to production** workflow step.
 
 ## When you change something
 
 | You change… | Also update… |
 |-------------|----------------|
+| `src/config/git-workflow.json` / mode docs | `git-workflow/RULE.mdc`, `start` / `push` / `router` matrix, `DOC_CONTRIBUTING`, `DOC_CLOUDFLARE_WORKERS`, this doc agent chain |
 | `.husky/pre-commit` | `git-workflow/RULE.mdc`, `agent-behavior/RULE.mdc`, `finish` skill, this doc if hook scope changes |
 | `.husky/pre-push` | `git-workflow/RULE.mdc`, `push` skill, this doc if hook scope changes |
 | `finish` / `push` flow | Both skills, `router` matrix |
@@ -210,23 +211,6 @@ When the human only files feature requests or bug reports and tests in the app:
 | Layer consistency / workaround guard | `.agents/skills/layer-consistency-check/` — see § Layer consistency / workaround guard above |
 | External API / backend integration research | `.agents/skills/api-integrate/` — see § External API / backend integration research above |
 | New cross-repo adoption guide | `write-adoption-guide` skill; file under `documentation/handoffs/*_ADOPTION_GUIDE.md` |
-| Harness coherence audit | `.agents/skills/align-harness/`; manifest `documentation/jobs/harness/entry-points.yaml` |
-| External harness intake | `.agents/harness-inbox/` + `.agents/skills/update-harness/`; reports under `documentation/jobs/harness/` |
-| Rule file extension (`.mdc`) | `AGENTS.md` catalog rows; validators; `INDEX.md` links |
-| Session lesson / mistake capture | `.agents/skills/learn/`; `finish` § Lesson check |
-
-## Harness maintenance
-
-Keeps **AGENTS.md**, rules, skills, INDEX, layers doc, and subagent briefs aligned (SSOT, no context bloat).
-
-| Skill | When |
-|-------|------|
-| [`align-harness`](../.agents/skills/align-harness/SKILL.md) | In-repo drift, periodic health check, after ingest |
-| [`update-harness`](../.agents/skills/update-harness/SKILL.md) | External drops in `.agents/harness-inbox/` |
-| [`learn`](../.agents/skills/learn/SKILL.md) | Session mistakes; removal-first; finish-pipeline hook |
-
-**Artifacts:** `documentation/jobs/harness/` (registry, ledger, update reports, `entry-points.yaml`).  
-**Facts scanner:** `node .agents/skills/align-harness/scripts/harness_scan.cjs` (advisory budget only).
 
 ## Product decision ledger (`DECISIONS.md`)
 

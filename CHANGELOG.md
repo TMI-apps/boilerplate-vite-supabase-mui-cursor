@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.39.0] - 2026-08-11
+
+### Added
+
+- **Git workflow Model B (opt-in):** Direct work on `develop` without feature branches. Mode selector `src/config/git-workflow.json` (`model-a` | `model-b`); `validate:git-workflow` script + tests wired into structure validation and CI.
+- **Mode-aware agent gate:** `.cursor/rules/git-workflow/RULE.md` § Mode-aware branch gate; skills (`push`, `router`, `start`, `plan`, …) and docs read config instead of hardcoding Model A.
+
+### Changed
+
+- **Model A remains default** for template and new forks; Model B is fork-time / onboarding opt-in with different `develop` ruleset (no PR requirement; keep `test` checks).
+- **Post-push CI:** Model A babysits PR checks; Model B watches branch `test` workflow runs (`gh run watch`).
+- README, contributing, Cloudflare, changesets, and workflow layers docs updated for dual-mode; mid-project mode-switch steps documented.
+
 ## [0.38.0] - 2026-06-29
 
 ### Added

@@ -65,16 +65,16 @@ Quick reference guide to all rules and their relationships.
 - Code review process and development process
 - Deployment pointers (links to `DOC_CLOUDFLARE_WORKERS`, `cloud-functions/RULE`)
 - **Rule routing** to child domain rules (do not duplicate their bodies here)
-- **Minimal branch gate stub** — full Model A in `git-workflow/RULE.mdc`
+- **Minimal branch gate stub** — read `src/config/git-workflow.json`; full Model A / Model B in `git-workflow/RULE.mdc` § Mode-aware branch gate
 
 **Related to:** All other rules (references them in review process)
 
 ---
 
 ### Git workflow (`git-workflow/RULE.mdc`)
-- **Branch and release strategy** (SSOT: Model A, `feature/*` -> `develop`, promote workflow -> `main`)
-- Branch protection, PR standards, merge diagnostics
-- **Promote to production** workflow
+- **Branch and release strategy** (SSOT: Model A default or Model B opt-in — config: `src/config/git-workflow.json`; behavior: `git-workflow/RULE.mdc`)
+- Branch protection, PR standards (Model A), merge diagnostics
+- **Promote to production** workflow (both modes)
 - Commit/push flow pointers (`finish` / `push` skills for semver/changelog SSOT)
 
 **Related to:** workflow hub, agent-behavior, platform
@@ -110,7 +110,7 @@ Quick reference guide to all rules and their relationships.
 
 ---
 
-### Database (`database/RULE.mdc`)
+### Database (`database/RULE.md`)
 - **SQL migrations only** (`supabase/migrations/`) — not client queries or TanStack
 - Safe migration patterns (idempotent, handles fresh/existing databases)
 - New-table checklist (RLS, indexes, type generation)
@@ -122,7 +122,7 @@ Quick reference guide to all rules and their relationships.
 
 ---
 
-### API Integration (`api-integration/RULE.mdc`)
+### API Integration (`api-integration/RULE.md`)
 - **MCP-first check** before assuming REST/scripts/browser fetch is the only path
 - Doc-freshness (don't trust cached/stale docs)
 - Cite doc URL(s) or MCP tool(s) actually used
@@ -143,7 +143,7 @@ Quick reference guide to all rules and their relationships.
 
 ---
 
-### Project-Specific (`project-specific/RULE.mdc`)
+### Project-Specific (`project-specific/RULE.md`)
 - Rate limiting patterns for Edge Functions
 - Project-specific security implementations
 - Implementation examples and checklists
@@ -188,7 +188,7 @@ When modifying a rule, check these related rules:
 ## Adding a New Rule
 
 1. Create folder: `rules/[category]/` (e.g. `rules/my-category/`)
-2. Create `RULE.mdc` following the template in an existing rule (Cursor ignores plain `.md` here)
+2. Create `RULE.md` following the template in an existing rule
 3. Add "Related Rules" section at the bottom
 4. Update this INDEX.md
 5. Update related rules to reference the new rule
