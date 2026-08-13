@@ -40,7 +40,7 @@ Check each rule category systematically:
 - NO → Skip
 
 **Database changes?**
-- YES → Check `database/RULE.md` (migration patterns: idempotent, IF EXISTS, safe for fresh/existing DBs)
+- YES → Check `database/RULE.mdc` (migration patterns: idempotent, IF EXISTS, safe for fresh/existing DBs)
 - NO → Skip
 
 **File placement?**
@@ -222,7 +222,7 @@ Identify **subjective** choices requiring user input.
 - [ ] Organize by business capability if creating functions
 
 ### 3.3 Database Planning (if database changes needed)
-- [ ] Plan migration patterns (`database/RULE.md`): idempotent, safe for fresh/existing DBs
+- [ ] Plan migration patterns (`database/RULE.mdc`): idempotent, safe for fresh/existing DBs
 - [ ] Use safe patterns (IF EXISTS, OR REPLACE, etc.)
 - [ ] Handle empty tables in data migrations
 
@@ -231,7 +231,7 @@ Identify **subjective** choices requiring user input.
 - [ ] Input validation patterns (`security/RULE.mdc`)
 - [ ] RLS policies if database changes (`security/RULE.mdc`)
 - [ ] Secrets management if Edge Functions (`security/RULE.mdc`)
-- [ ] Rate limiting if Edge Functions (`project-specific/RULE.md`)
+- [ ] Rate limiting if Edge Functions (`project-specific/RULE.mdc`)
 
 ### 3.5 File Placement Validation
 - [ ] Validate against `projectStructure.config.cjs` (run `pnpm validate:structure`)

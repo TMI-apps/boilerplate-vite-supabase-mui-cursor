@@ -17,10 +17,10 @@ This README describes folder layout and maintenance — it does **not** override
 - **`agent-behavior/RULE.mdc`**: SSOT for protected files, decision protocol, and user-test gate
 - **`platform/RULE.mdc`**: SSOT for PowerShell command rules and local environment configuration
 - **`cloud-functions/RULE.mdc`**: SSOT for when to use Edge Functions vs frontend, and function organization
-- **`database/RULE.md`**: SSOT for database migration best practices and patterns
+- **`database/RULE.mdc`**: SSOT for database migration best practices and patterns
 - **`debugging/RULE.mdc`**: SSOT for debugging strategies, logging, and issue analysis
 - **`file-placement/RULE.mdc`**: SSOT for file and folder placement validation before creation
-- **`project-specific/RULE.md`**: SSOT for project-specific patterns (rate limiting, etc.)
+- **`project-specific/RULE.mdc`**: SSOT for project-specific patterns (rate limiting, etc.)
 
 **When rules reference content from other domains, they must explicitly reference the SSOT rule.**
 

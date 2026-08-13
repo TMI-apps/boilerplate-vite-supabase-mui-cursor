@@ -290,7 +290,7 @@ Use `pnpm validate:structure` to validate:
 - `featureBudgets.config.cjs` - Feature size budget configuration (SSOT for limits and waivers)
 - `package.json` - Scripts that call the validator
 - `documentation/PROJECT-STRUCTURE-VALIDATION.md` - User documentation
-- `architecture.md` - Architecture documentation
+- `ARCHITECTURE.md` - Architecture documentation
 - `.cursor/rules/file-placement/RULE.mdc` - File placement rules
 
 ### Path Aliases (Required)

@@ -110,7 +110,7 @@ Quick reference guide to all rules and their relationships.
 
 ---
 
-### Database (`database/RULE.md`)
+### Database (`database/RULE.mdc`)
 - **SQL migrations only** (`supabase/migrations/`) — not client queries or TanStack
 - Safe migration patterns (idempotent, handles fresh/existing databases)
 - New-table checklist (RLS, indexes, type generation)
@@ -122,7 +122,7 @@ Quick reference guide to all rules and their relationships.
 
 ---
 
-### API Integration (`api-integration/RULE.md`)
+### API Integration (`api-integration/RULE.mdc`)
 - **MCP-first check** before assuming REST/scripts/browser fetch is the only path
 - Doc-freshness (don't trust cached/stale docs)
 - Cite doc URL(s) or MCP tool(s) actually used
@@ -143,7 +143,7 @@ Quick reference guide to all rules and their relationships.
 
 ---
 
-### Project-Specific (`project-specific/RULE.md`)
+### Project-Specific (`project-specific/RULE.mdc`)
 - Rate limiting patterns for Edge Functions
 - Project-specific security implementations
 - Implementation examples and checklists

@@ -103,7 +103,7 @@ When skipping version/changelog: commit message uses `type: Subject` **without**
 - commit with proper message format (see commit message standards below)
 - fix any issues found by pre-commit hook
 - **CRITICAL:** If fixing requires modifying protected files, STOP and ASK the user first. Full manifest: `.cursor/rules/agent-behavior/RULE.mdc` § Protected Files. NEVER modify protected files without explicit user approval.
-- check if architecture.md needs update
+- check if `ARCHITECTURE.md` needs update
 - do not create new deep docs during finish unless user explicitly requests it
 - **Do NOT push in this command.** `finish` is local-only and ends at a successful commit.
 - **After a successful commit:** Tell the user the commit succeeded and offer **`.agents/skills/push/SKILL.md`** — do **not** invoke `push` in the same turn unless the user explicitly asks to push. Push requires its own confirmation (see `push` skill and `.cursor/rules/git-workflow/RULE.mdc`).

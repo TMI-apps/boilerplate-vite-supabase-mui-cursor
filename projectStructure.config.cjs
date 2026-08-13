@@ -485,6 +485,7 @@ module.exports = {
         // Root-level files - ONLY DOC_ prefixed markdown files allowed
         // This enforces explicit approval for permanent documentation
         { name: "DOC_*.md" },
+        { name: "PROJECT-STRUCTURE-VALIDATION.md" },
         { name: "*.dbml" },
         { name: "*.svg" },
         { name: "*.sql" }, // SQL documentation/queries

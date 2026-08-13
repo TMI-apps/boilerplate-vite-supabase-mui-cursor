@@ -280,7 +280,7 @@ When updating this rule, also check:
 - `projectStructure.config.cjs` - Structure configuration file
 - `package.json` - Scripts that call the validator (validate:structure)
 - `documentation/PROJECT-STRUCTURE-VALIDATION.md` - User documentation
-- `architecture.md` - Architecture documentation
+- `ARCHITECTURE.md` - Architecture documentation
 - `.cursor/rules/architecture/RULE.mdc` - Architecture standards and structure
 
 ## Related Rules

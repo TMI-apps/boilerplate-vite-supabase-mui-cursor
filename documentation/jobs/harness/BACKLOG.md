@@ -8,8 +8,18 @@
 ### Follow-up (out of scope for harness-skills job)
 
 - Always-on context restructure when over 32 KiB budget (D12 advisory — `harness_scan` reports facts)
-- `temp_job_harness-fixes` — structural apply rows deferred from Phase 7 cap (D17)
 - Optional `pnpm harness:scan` alias (non-blocking)
+
+---
+
+## Consumed — structural fixes (`temp_job_harness-fixes`, 2026-08-13)
+
+**Job:** `documentation/jobs/temp_job_harness-fixes/`  
+**Branch:** `feature/harness-fixes` (supersedes PR #51)
+
+- Merged `develop` Model B (`git-workflow.json`, `validate-git-workflow`, mode-aware `RULE.mdc` chain) onto harness-skills line
+- Created `documentation/PROJECT-STRUCTURE-VALIDATION.md`; removed `ALLOWED_MISSING` band-aids
+- Retargeted live `architecture.md` refs → `ARCHITECTURE.md`; fixed stale `RULE.md` shorthand refs in harness surfaces
 
 ---
 

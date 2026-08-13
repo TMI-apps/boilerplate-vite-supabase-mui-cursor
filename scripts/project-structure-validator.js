@@ -12,7 +12,7 @@
  * - projectStructure.config.cjs - Configuration file that defines allowed structure
  * - package.json - Contains scripts that call this validator (validate:structure)
  * - documentation/PROJECT-STRUCTURE-VALIDATION.md - User documentation
- * - architecture.md - Architecture documentation mentioning this validator
+ * - ARCHITECTURE.md - Architecture documentation mentioning this validator
  * - .cursor/rules/file-placement/RULE.mdc - File placement rules that reference this
  * - .cursor/rules/architecture/RULE.mdc - Architecture rules mentioning structure validation
  */

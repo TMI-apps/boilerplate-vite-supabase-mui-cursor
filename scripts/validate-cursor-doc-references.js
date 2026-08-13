@@ -31,10 +31,7 @@ function stripMarkdownFencedCodeBlocks(content) {
   return content.replace(/```[\s\S]*?```/g, "\n");
 }
 
-const ALLOWED_MISSING = new Set([
-  "architecture.md",
-  "documentation/PROJECT-STRUCTURE-VALIDATION.md",
-]);
+const ALLOWED_MISSING = new Set([]);
 
 function toPosix(inputPath) {
   return inputPath.replace(/\\/g, "/");
@@ -70,7 +67,6 @@ function isExplicitRootFile(value) {
     "README.md",
     "CHANGELOG.md",
     "ARCHITECTURE.md",
-    "architecture.md",
     "package.json",
     "projectStructure.config.cjs",
     ".dependency-cruiser.cjs",

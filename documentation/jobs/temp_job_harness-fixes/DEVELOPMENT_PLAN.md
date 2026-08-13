@@ -15,10 +15,10 @@
 
 | Phase | Goal | Gate | Status |
 |-------|------|------|--------|
-| 0 | Pre-implement: branch, consent, `validate` plan-review | Consent recorded; `validate` plan-review green | Pending |
-| 1 | Merge `develop` + resolve all conflicts atomically | Model B SSOT chain truthful; no `RULE.md` on disk; merge commit pushable | Pending |
-| 2 | Structure doc + `ALLOWED_MISSING` cleanup | Doc exists; both allowlist entries resolved; `validate:docs` green | Pending |
-| 3 | CI parity audit, backlog, PR handoff | `validate` impl-full green; `harness_scan` targets clean; user confirms | Pending |
+| 0 | Pre-implement: branch, consent, `validate` plan-review | Consent recorded; `validate` plan-review green | Done |
+| 1 | Merge `develop` + resolve all conflicts atomically | Model B SSOT chain truthful; no `RULE.md` on disk; merge commit pushable | Done |
+| 2 | Structure doc + `ALLOWED_MISSING` cleanup | Doc exists; both allowlist entries resolved; `validate:docs` green | Done |
+| 3 | CI parity audit, backlog, PR handoff | `validate` impl-full green; `harness_scan` targets clean; user confirms | In progress |
 
 ---
 
@@ -216,7 +216,7 @@ Impl-time only (`implement` fills). Product/scope forks → sibling [`DECISIONS.
 |---|-------|--------|-------------|
 | — | Merge conflict resolutions | _(per file — implement fills)_ | |
 | R1 | Phase 0+1 collapse | **Folded** — Phase 1 is atomic merge+resolve; no conflict-marker checkpoint | — |
-| R2 | Protected-file consent | **Folded** — Phase 0 batch consent before Phase 1 | Pending |
+| R2 | Protected-file consent | **Folded** — Phase 0 batch consent before Phase 1 | Yes (`implement`) |
 | R3 | PR #51 | **Folded** — Phase 3 step 5 closes #51 | — |
 | R4 | Phase 3 CI parity | **Folded** — Phase 3 step 2 + `validate` impl-full | — |
 | R5 | Hub mode-neutral | **Folded** — Phase 1 step 5 deliverable | — |
