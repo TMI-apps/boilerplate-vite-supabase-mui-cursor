@@ -8,11 +8,11 @@ description: >-
 
 # Learn from changes and sharpen rules
 
-Extract lessons from **what just happened** (diffs, errors, retries) and persist them where the assistant will see them **before** the same mistake repeats — or **remove/narrow** guidance that caused context bloat or wrong behavior. Prefer **one primary home** per lesson; cross-link instead of duplicating.
+Extract lessons from **what just happened** (diffs, errors, retries) and persist them where the assistant will see them **before** the same mistake repeats — or **remove/narrow** guidance that caused context bloat or wrong behavior. Prefer **one primary home** per lesson; cross-link instead of duplicating. **Never persist** what a capable model, Cursor’s product knowledge, or common training data already contains — that is context bloat, not a lesson. Restating it in rules/skills can also **degrade** how the model applies that same knowledge: the prompt snippet is a lossy stand-in, and the model then follows the snippet instead of its richer prior.
 
 **Bias:** Removal-first when existing harness text contributed to the mistake or adds always-on noise without enforcement value. Mechanical lessons → validators (`validate:structure`, `harness_scan`, etc.), not prose.
 
-**Related:** Rule grading: `.agents/skills/rule-quality/SKILL.md`. Structural harness conflicts → `.agents/skills/align-harness/SKILL.md`. Finish hook: `.agents/skills/finish/SKILL.md` § Lesson check.
+**Related:** Rule grading: `.agents/skills/rule-quality/SKILL.md`. Structural harness conflicts → `.agents/skills/align-harness/SKILL.md`. Finish hook: `.agents/skills/finish/SKILL.md` § Lesson check. Skill authoring (domain knowledge the agent would not already know): `.agents/skills/create-skill/SKILL.md`.
 
 **This project:** In-repo skills live under `.agents/skills/<name>/SKILL.md` (whitelisted in `projectStructure.config.cjs`). Add new skills as new folders with a `SKILL.md`; do not create other file types under `skills/` unless the whitelist is extended.
 
@@ -20,7 +20,7 @@ Extract lessons from **what just happened** (diffs, errors, retries) and persist
 
 ## Goal
 
-Durable, discoverable guidance with minimal duplication.
+Durable, discoverable guidance that a blank capable model would **not** already apply, with minimal duplication and no training-data restatement. Do not load textbook text into context: it can crowd out or distort the prior it was meant to “remind.”
 
 ---
 
@@ -56,13 +56,14 @@ Summarize in 3–7 bullets: **symptom → root cause → fix** (facts only).
 
 ### 1b. Reverse Audit — trace the cause to existing guidance
 
-Using the root cause from Step 1, check whether existing guidance **steered the assistant toward** the mistake.
+Using the root cause from Step 1, check whether existing guidance **steered the assistant toward** the mistake. While scanning that domain, also flag lines that only restate base knowledge (they load context and add no unique signal).
 
 - **Scan:** Search `.cursor/rules/` and `.agents/skills/` for lines related to the root cause.
 - **Classify each hit:**
   - **Misleading** — the rule directly caused or encouraged the wrong behavior → recommend **delete** or **rewrite**.
   - **Overly broad** — correct in spirit but its wording invites misapplication → recommend **narrow** (add scope qualifier or exception).
   - **Outdated** — was once valid but the codebase or tooling has changed → recommend **delete**.
+  - **Base knowledge** — restates training-data, Cursor product knowledge, or what a capable model would already choose (e.g. GPU vs CPU, generic HTTP/React/SQL idioms) → recommend **delete**. Context cost, **and** risk of overriding or distorting trained priors (lossy restatement becomes the whole rule).
   - **Innocent** — did not contribute → leave alone.
 - **Record findings** as a short list: `file : section/line → classification → proposed action`.
 - If nothing in existing guidance contributed, state that explicitly and move on.
@@ -74,6 +75,22 @@ Using the root cause from Step 1, check whether existing guidance **steered the 
 - **Scope:** One domain (e.g. migrations, React, Edge, structure validation).
 
 Merge near-duplicates; drop one-off noise.
+
+### 2b. Blank-model test (required before persist)
+
+Ask: **Would a capable model with no project rules or skills already choose this correctly?**
+
+- **Yes → do not persist.** List it under Report → Omissions. A model forgetting a well-known fact is not fixed by writing it into a rule. The line costs context on every later turn **and can make textbook application worse**: attention follows the written snippet; a partial GPU-vs-CPU bullet can produce worse hardware reasoning than a blank model.
+- **No → persist** only when the lesson is **this-repo / this-product / this-user**: conventions, local exceptions to general practice, tooling defaults that differ from industry, product preferences.
+
+| Persist | Do not persist |
+|---------|----------------|
+| This repo’s folder whitelist, branch gate, protected-file list | GPU vs CPU, generic hardware/perf folklore |
+| Local exception that *contradicts* common practice | Language/framework idioms already in training data |
+| This app’s auth/RLS/query-cache contract | Cursor product behavior already in Cursor’s base knowledge |
+| User-tested preference that is not an industry default | “The model should have known X” with no repo-specific twist |
+
+If the struggle was “the model ignored general knowledge,” omit the lesson. Do not compensate for a one-shot model miss by permanently loading textbook text — that can **adversely influence** the prior you were trying to reinforce.
 
 ### 3. Choose where it lives
 
@@ -116,14 +133,14 @@ Confirm ownership via `.cursor/rules/INDEX.md` and `documentation/DOC_AGENT_WORK
 - **Imperatives:** Direct verbs (“Always…”, “Never…”).
 - **Examples:** Short `// BAD` / `// GOOD` only where this repo already uses code in that file (e.g. `debug.md` patterns). For `RULE.mdc` edits, prefer concise bullets; follow `.agents/skills/rule-quality/SKILL.md` when tightening prose.
 - **Minimal diff:** Small subsection or bullet group; merging duplicates in the same section is fine. Large rewrites need **explicit user confirmation**.
-- **Deletions & narrowing (from Step 1b):** When the Reverse Audit flagged misleading or outdated guidance, present each proposed removal or rewrite to the user **before** applying. Never delete or substantially rewrite rule content without explicit user approval.
+- **Deletions & narrowing (from Step 1b):** When the Reverse Audit flagged misleading, outdated, or **base-knowledge** guidance, present each proposed removal or rewrite to the user **before** applying. Never delete or substantially rewrite rule content without explicit user approval.
 
 ### 5. Report
 
 - **TL;DR:** What was learned (1–2 sentences).
 - **Location:** The exact file path and section heading where it was saved.
 - **Removals:** List any rules proposed for deletion or narrowing, with the user's decision (applied / deferred / rejected). If none, omit this line.
-- **Omissions:** Briefly list anything explicitly *not* saved and why.
+- **Omissions:** Briefly list anything explicitly *not* saved and why. Always include blank-model drops (training-data / Cursor-base / general CS).
 - **Stop.** Wait for next instructions. Do not print the whole file or long code blocks.
 
 ---
@@ -132,6 +149,7 @@ Confirm ownership via `.cursor/rules/INDEX.md` and `documentation/DOC_AGENT_WORK
 
 - Pasting long SQL or stack traces into rules — summarize; reference migration filenames if useful.
 - Duplicating the same lesson across many files.
+- Logging textbook or training-data knowledge as a lesson (blank-model test fails). Not merely noise: restating it can degrade application of that knowledge.
 - Putting secrets or new credentials in rules or skills.
 - Rewriting large rule sections without approval.
 - Deleting or silently rewriting existing rules without presenting the offending line and recommendation to the user first.
