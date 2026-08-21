@@ -82,6 +82,7 @@ Full domain variety is in the shapes rubric. Illustrative cases:
 | Concern | Use instead |
 |---------|-------------|
 | External industry / product precedent | [`pattern-review`](../pattern-review/SKILL.md) |
+| Package / pattern reuse vs custom code | [`dont-reinvent-the-wheel`](../dont-reinvent-the-wheel/SKILL.md) |
 | Heavy DB/UI operation cost | `architecture/RULE.mdc` § Performance cost risk |
 | Repo rule compliance on plan or diff | [`validate`](../validate/SKILL.md) |
 | Post-hoc wrong-layer repair in existing code | [`consolidate`](../consolidate/SKILL.md) § Semantic placement |

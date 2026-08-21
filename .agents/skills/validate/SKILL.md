@@ -215,6 +215,7 @@ Spawn one subagent per applicable rule. Registry SSOT: [`.cursor/rules/INDEX.md`
 | Topic | Use instead |
 |-------|-------------|
 | Industry standards / best practice vs plans and proposals (agent-chosen aspects) | [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) |
+| Package / pattern reuse vs custom code | [`.agents/skills/dont-reinvent-the-wheel/SKILL.md`](../dont-reinvent-the-wheel/SKILL.md) |
 | Multi-lens qualitative plan critique (rebel, scale, industry precedent, …) | [`.agents/skills/review-dev-plan/SKILL.md`](../review-dev-plan/SKILL.md) |
 | Single React component rubric | [`.agents/skills/review/SKILL.md`](../review/SKILL.md) |
 | Commit / changelog / push | [`.agents/skills/finish/SKILL.md`](../finish/SKILL.md) / `push` |
@@ -228,6 +229,7 @@ For Complexity **M/L** plans, run **`review-dev-plan`** before implementation wh
 | Not `validate` | Use instead |
 |----------------|-------------|
 | Industry / product precedent | `pattern-review` |
+| Package / pattern reuse vs custom | `dont-reinvent-the-wheel` |
 | Six-lens qualitative plan critique | `review-dev-plan` |
 | Single React component rubric | `review` |
 | Commit / changelog | `finish` |

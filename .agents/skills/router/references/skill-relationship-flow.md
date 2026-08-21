@@ -4,7 +4,7 @@
 `router` and `align-harness` **link here** — do not duplicate a second mermaid elsewhere.
 
 **Owner:** `.agents/skills/router/references/skill-relationship-flow.md`  
-**Maintainers:** update when skills are added/removed/renamed, or when handoffs between `grill-me` / `plan-grill` / `plan` / `feature` / `pattern-review` / `quick-piv` change.  
+**Maintainers:** update when skills are added/removed/renamed, or when handoffs between `grill-me` / `plan-grill` / `plan` / `feature` / `pattern-review` / `dont-reinvent-the-wheel` / `quick-piv` change.  
 **Checked on every** `/align-harness` run (Phase 0 need-check → Phase 7 update if stale).
 
 Optional IDE canvas (not repo SSOT): Cursor `canvases/plan-grill-flow.canvas.tsx` may mirror this; prefer editing **this file** first.
@@ -53,6 +53,8 @@ flowchart TD
   planfile --> impl[implement]
   impl --> ship[validate → finish]
 
+  corridor -->|reuse vs custom| wheel[dont-reinvent-the-wheel]
+  wheel --> corridor
   corridor -->|industry precedent| pr[pattern-review]
   pr --> corridor
   feature[feature 🔴 stops] --> ledger
@@ -68,6 +70,7 @@ flowchart TD
 | **DECISIONS.md** | Product/scope locks |
 | **DEVELOPMENT_PLAN.md** | How to build |
 | **pattern-review** | Industry precedent side door |
+| **dont-reinvent-the-wheel** | Package/pattern reuse side door (Investigate; before custom generic code) |
 | **quick-piv** | No plan-grill |
 
 Checklist/cues SSOT: [`.agents/skills/plan-grill/SKILL.md`](../../plan-grill/SKILL.md).  

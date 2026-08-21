@@ -194,9 +194,10 @@ While inside **plan corridor** (`I`), product/scope forks use **`plan-grill` rai
 | **Goal and scope clear**; non-trivial job needing phased written plan + compliance | `.agents/skills/plan/SKILL.md` |
 | Plan written; qualitative critique before implementation (especially Complexity M/L) | `.agents/skills/review-dev-plan/SKILL.md` |
 | Industry standard / best practice / “is this how products usually do it?” on a **plan or proposal** | `.agents/skills/pattern-review/SKILL.md` |
+| Nontrivial generic subsystem (auth, queues, parsers, webhooks, protocol clients, …) — reuse a package/pattern vs build custom | `.agents/skills/dont-reinvent-the-wheel/SKILL.md` |
 | Ambiguous “improve / clean up / make better” on an existing area; `/improve` | `.agents/skills/improve/SKILL.md` |
 | Should we align [existing product/feature/component] with industry standards? / how to align? | `.agents/skills/standards-align/SKILL.md` |
-| Delete / remove / `/purge` a named feature/module with multi-asset cleanup | `.agents/skills/purge-skill/SKILL.md` |
+| Delete / remove / rip out / `/purge` a named feature/module/path/engine with multi-asset cleanup; leftover engine after a flag-off or replacement phase; "is the old path gone?" | `.agents/skills/purge-skill/SKILL.md` |
 | Author or refine one project skill under `.agents/skills/` (`/create-skill`) | `.agents/skills/create-skill/SKILL.md` |
 | Change existing behavior / unverified system assumption / workaround / “just this one” exception during implementation | `.agents/skills/layer-consistency-check/SKILL.md` (also always-on via `architecture/RULE.mdc` § Layer consistency) |
 | Write a cross-repo adoption guide from an implemented pattern | `.agents/skills/write-adoption-guide/SKILL.md` |
@@ -409,11 +410,22 @@ Choose by **primary outcome** (what must be true when done). If two outcomes are
 
 When the user asks to **review a plan** or before **implement** on Complexity **M/L**, run **in order** — do not pick multiple primaries for the same pass:
 
-1. **`pattern-review`** (`plan-section`) during **`plan`** step 5 when M/L or new user-visible/contracts — fills **Pattern & precedent** in the plan.
-2. **`review-dev-plan`** when Summary says `Plan review: Required: pending` (mandatory for M/L).
-3. **`validate`** (plan-review mode) for **repo rule** compliance on the plan document.
+1. **`dont-reinvent-the-wheel`** during **`plan`** Investigate (and `feature` § 3.1a) when the work is a generic subsystem not obviously covered — recommendation only; skip when bespoke.
+2. **`pattern-review`** (`plan-section`) during **`plan`** step 5 when M/L or new user-visible/contracts — fills **Pattern & precedent** in the plan.
+3. **`review-dev-plan`** when Summary says `Plan review: Required: pending` (mandatory for M/L).
+4. **`validate`** (plan-review mode) for **repo rule** compliance on the plan document.
 
 Do **not** run standalone **`pattern-review`** `scan` in the same session if **`review-dev-plan`** already ran the industry-precedent lens (unless the user requests a delta review).
+
+### `dont-reinvent-the-wheel` vs `pattern-review` vs `api-integrate`
+
+- **`dont-reinvent-the-wheel`:** Should we **depend on a package** or **model a verified public implementation** instead of writing custom code for a generic subsystem? Live search; stops at a recommendation.
+- **`pattern-review`:** Does this **design** match **external industry / product precedent** for the capability?
+- **`api-integrate`:** How do we **research this vendor’s contract** (MCP → schema → sample) once we are integrating an API?
+
+**Order when both apply:** **`dont-reinvent-the-wheel` first** (may pick an SDK and skip raw API work). If still integrating a vendor API → **`api-integrate`**. Then **`pattern-review`** on the chosen approach (M/L or new contracts).
+
+**Tiebreak:** User asks “which library / don’t build this ourselves” → **`dont-reinvent-the-wheel`**. “Is this how products usually do it?” → **`pattern-review`**. “How does this vendor’s API work?” → **`api-integrate`**.
 
 ### `pattern-review` vs `layer-consistency-check`
 
@@ -426,7 +438,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 
 - **`improve`:** Product-facing **facade** — plain-language target, optional vision, ≤3 findings, then invokes one child skill. Use when the user has not named a technique.
 - **`standards-align` / `challenge` / `consolidate` / `validate` / `review`:** Named technique already clear → skip facade.
-- **`layer-consistency-check` / `pattern-review`:** Proactive guards stay always-on; `improve` may also route a finding into `layer-consistency-check`.
+- **`layer-consistency-check` / `pattern-review` / `dont-reinvent-the-wheel`:** Proactive guards stay always-on; `improve` may also route a finding into `layer-consistency-check`.
 - **`optimize2` / `react-perf-vite`:** Named hotspot or Vite SPA perf symptom → those skills; vague “make better/faster” without a named hotspot → **`improve`** first (may recommend optimize/perf as a finding).
 - **`grill-me`:** Gate-1 vision/tradeoff ambiguity, or explicit stress-test when gates already pass → **`grill-me`**. Vague quality on an existing area → **`improve`** (vision Qs only if thin).
 
@@ -551,6 +563,7 @@ Do **not** run standalone **`pattern-review`** `scan` in the same session if **`
 - `.agents/skills/grill-me/SKILL.md`
 - `.agents/skills/plan-grill/SKILL.md`
 - `.agents/skills/pattern-review/SKILL.md`
+- `.agents/skills/dont-reinvent-the-wheel/SKILL.md`
 - `.agents/skills/improve/SKILL.md`
 - `.agents/skills/standards-align/SKILL.md`
 - `.agents/skills/purge-skill/SKILL.md`

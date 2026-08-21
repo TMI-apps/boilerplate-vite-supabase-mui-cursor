@@ -9,7 +9,8 @@ description: >-
   run this skill before writing the choice into the plan. IF ≥2 Pareto-fair
   options remain THEN ask one grill question; IF only one viable option after
   enumerating alternatives THEN log clear-winner (no Q). Not for XS/quick-piv.
-  Not for industry-precedent forks (pattern-review). Not for gate-2 acceptance
+  Not for industry-precedent forks (pattern-review). Not for package/pattern
+  reuse vs custom (dont-reinvent-the-wheel). Not for gate-2 acceptance
   examples alone. plan must run the rail at every phase — not only Create.
 disable-model-invocation: false
 ---
@@ -25,7 +26,7 @@ disable-model-invocation: false
 | Owns | Does not own |
 |------|----------------|
 | Plan-time fork detection + tie asks + clear-winner logs | Pre-plan / gate-1 stress-test → `grill-me` |
-| Anti-dup via `DECISIONS.md` | Industry/precedent A/B/C → `pattern-review` |
+| Anti-dup via `DECISIONS.md` | Industry/precedent A/B/C → `pattern-review`; package/pattern reuse → `dont-reinvent-the-wheel` |
 | Mandatory fork checklist before locking a choice | Gate-2 acceptance/API examples alone → `plan` § Refine |
 | Shared ledger format (with `grill-me` / `feature`) | Writing `DEVELOPMENT_PLAN.md` body → `plan` |
 
@@ -57,6 +58,7 @@ A **fork** exists when **any** of these is true for a topic **not** already in `
 |-----|--------|
 | Concrete API example, schema field list, RLS policy text | `plan` § Refine gate-2 |
 | Industry “is this standard?” A/B/C | `pattern-review` |
+| Package/pattern reuse vs custom (library search) | `dont-reinvent-the-wheel` |
 | Pure code mechanism with **no** product/scope/boundary effect (helper name, local refactor shape) | Agent decides — still prefer a one-line note in plan Notes if non-obvious |
 
 ### Mandatory fork checklist (before locking)
@@ -104,6 +106,7 @@ Loop shape: **ask (if tie) → write DECISIONS.md → continue the same phase.**
 | Clear winner after enumeration | Log Closed `clear-winner`; no question |
 | Already in Closed / Open | Skip (anti-dup) |
 | Industry/precedent only | `pattern-review` |
+| Package/pattern reuse vs custom | `dont-reinvent-the-wheel` |
 | Pure mechanism, no product/boundary edge | Agent decides (see “Not a fork”) |
 
 Question style: `.agents/skills/grill-me/SKILL.md` § Question style — do not fork a second format.
@@ -126,6 +129,7 @@ Question style: `.agents/skills/grill-me/SKILL.md` § Question style — do not 
 | Clear-winner after enumeration | Ledger → same phase |
 | Gate-1 / standalone stress-test | `grill-me` |
 | Precedent / non-standard industry path | `pattern-review` |
+| Package/pattern reuse vs custom | `dont-reinvent-the-wheel` |
 | XS work | `quick-piv` |
 
 **SSOT note:** Plan-time forks live in `DECISIONS.md`; `DEVELOPMENT_PLAN.md` is how to build. `implement` soft-warns on open rows (no hard block). Relationship diagram: [`.agents/skills/router/references/skill-relationship-flow.md`](../router/references/skill-relationship-flow.md).

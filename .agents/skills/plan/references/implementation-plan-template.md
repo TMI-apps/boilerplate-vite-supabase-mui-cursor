@@ -27,6 +27,7 @@ Use as a menu aligned with [`.agents/skills/plan/SKILL.md`](../SKILL.md). Output
 
 - Applicable rules:
 - File placements:
+- Reuse / packages: <`dont-reinvent-the-wheel` rec, or skipped — reason>
 - Risks / open questions:
 - Standards diversions (repo / industry):
 

@@ -29,6 +29,7 @@ Apply **without being asked** when you are about to propose or write a plan, RFC
 | Concern | Use instead |
 |---------|-------------|
 | Internal abstraction / architecture layer fit; workaround shapes | [`layer-consistency-check`](../layer-consistency-check/SKILL.md) |
+| Package / pattern reuse vs writing custom code | [`dont-reinvent-the-wheel`](../dont-reinvent-the-wheel/SKILL.md) |
 | Should we / how to align an **existing** product/feature/component | [`standards-align`](../standards-align/SKILL.md) |
 | Heavy DB/UI operation cost | `architecture/RULE.mdc` § Performance cost risk |
 | Repo rule compliance on plan or diff | [`validate`](../validate/SKILL.md) |
@@ -94,6 +95,7 @@ Rubric § Lite pass; escalate to full alert if material divergence.
 | Caller | How |
 |--------|-----|
 | `plan` | Step 5: `plan-section` when M/L or material behavioral design |
+| `dont-reinvent-the-wheel` | Complementary — reuse vs custom **before** this skill's design check |
 | `review-dev-plan` | Industry precedent agent reads `references/rubric.md` |
 | `router` | Novel behavior → pattern-review before `src/`; see dev-cycle matrix |
 | `feature` | § 3.1b at architecture phase |
@@ -118,6 +120,7 @@ Next: owner pick A/B/C or waive → then plan / implementation
 ## Related
 
 - [`standards-align`](../standards-align/SKILL.md) — should + how on existing scope (reuses this rubric)
+- [`dont-reinvent-the-wheel`](../dont-reinvent-the-wheel/SKILL.md) — package/pattern reuse vs custom code
 - [`layer-consistency-check`](../layer-consistency-check/SKILL.md) — internal layer / workaround guard (complementary lens)
 - [`review-dev-plan`](../review-dev-plan/SKILL.md)
 - [`plan`](../plan/SKILL.md)

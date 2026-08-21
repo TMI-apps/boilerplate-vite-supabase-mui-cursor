@@ -210,6 +210,11 @@ Identify **subjective** choices requiring user input.
 - [ ] Select path aliases (@/hooks/*, @/components/*, etc.) - `architecture/RULE.mdc`
 - [ ] Decide: feature-specific vs shared code - `architecture/RULE.mdc`
 
+### 3.1a Don't reinvent the wheel (proactive — when applicable)
+
+- [ ] If this feature includes a generic subsystem (auth, webhooks, parsers, queues, protocol clients, complex widgets, …) not obviously covered by current deps, run [`.agents/skills/dont-reinvent-the-wheel/SKILL.md`](../dont-reinvent-the-wheel/SKILL.md) **before** locking a from-scratch design. Skip when the work is bespoke/business-specific.
+- [ ] Record the compact rec for the later plan (Conflict & compliance). Do **not** install packages from this step.
+
 ### 3.1b Pattern & industry precedent (proactive — when applicable)
 
 - [ ] Run [`.agents/skills/pattern-review/SKILL.md`](../pattern-review/SKILL.md) (`scan` or `lite`) **without waiting for the user to ask** — follow [`references/rubric.md`](../pattern-review/references/rubric.md); **select aspects** relevant to this feature.
@@ -348,7 +353,7 @@ When Phases 1–4 are complete and the user approved the implementation plan:
 
 1. Ensure **`documentation/jobs/temp_job_<name>/DECISIONS.md`** holds all product/scope 🔴 outcomes from this run (create/migrate if missing) so `plan` / `plan-grill` do not re-ask.
 2. Run **`.agents/skills/plan/SKILL.md`** to produce **`documentation/jobs/temp_job_<name>/DEVELOPMENT_PLAN.md`** (engineering SSOT), **or** confirm that file already exists and matches the approved spec.
-3. Satisfy required gates per [dev-cycle matrix](../router/references/dev-cycle-matrix.md): `pattern-review` when M/L; `review-dev-plan` when Complexity M/L; `validate` (plan-review) when warranted.
+3. Satisfy required gates per [dev-cycle matrix](../router/references/dev-cycle-matrix.md): `dont-reinvent-the-wheel` when a generic subsystem is in play; `pattern-review` when M/L; `review-dev-plan` when Complexity M/L; `validate` (plan-review) when warranted.
 4. Run **`.agents/skills/implement/SKILL.md`** only after `DEVELOPMENT_PLAN.md` exists — **do not skip `plan`**; **do not implement product code in this skill**.
 
 **Next (execution chain):** `plan` → (gates) → `implement` → **`.agents/skills/validate/SKILL.md`** → user acceptance → **`.agents/skills/finish/SKILL.md`** (changelog/commit only in `finish`).

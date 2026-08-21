@@ -30,6 +30,8 @@ Lightweight Plan → Implement → Validate in one workflow. **Primary outcome:*
 
 ## Hard stops (M/L and gates)
 
+Deleting a path, engine, or module is **never** `quick-piv`, even when it looks small — route to **`.agents/skills/purge-skill/SKILL.md`** so the reference map and residue sweep happen. Only a single unreferenced file stays a direct edit.
+
 Before implementing, if **Branch A** loads a plan with **Complexity M** or **L**, or **Plan review: Required: pending**, or incomplete **Pattern & precedent** when required — **stop** and route to **`.agents/skills/implement/SKILL.md`** (after `review-dev-plan` / `pattern-review` per [dev-cycle matrix](../router/references/dev-cycle-matrix.md)). Do **not** continue in `quick-piv`.
 
 ---
@@ -71,7 +73,7 @@ If unclear, **ask** which branch applies.
 **Process:**
 
 1. If the request is vague, or ambiguity appears during quick investigation, stop and ask 1–2 clarifying questions about the user's vision for how the app will be used. Do not choose between plausible interpretations silently.
-2. Quick investigation: search codebase; skim `.cursor/rules/INDEX.md` for applicable rules; use `documentation/DOC_TANSTACK_QUERY.md` if server state / queries are involved.
+2. Quick investigation: search codebase; skim `.cursor/rules/INDEX.md` for applicable rules; use `documentation/DOC_TANSTACK_QUERY.md` if server state / queries are involved. If the change is a generic subsystem not obviously covered by current deps, run `.agents/skills/dont-reinvent-the-wheel/SKILL.md` (skip when bespoke / tiny).
 3. Sanity-check file placement against `.cursor/rules/file-placement/RULE.mdc` and `projectStructure.config.cjs`.
 4. Check whether the quick plan would diverge from industry standards, framework best practices, or established repo conventions. If yes, ask whether the diversion is intentional or whether to align with best practices before implementing.
 5. **Branch B:** Output the quick plan in chat (vital). **Branch A:** Optionally extend the plan document.
@@ -119,6 +121,7 @@ See [`.cursor/rules/INDEX.md`](../../../.cursor/rules/INDEX.md) and [`.agents/sk
 | Full rule subagent audit | `validate` |
 | Commit / changelog | `finish` |
 | Durable multi-phase plan | `plan` |
+| Delete a path / engine / module | `purge-skill` |
 
 ---
 

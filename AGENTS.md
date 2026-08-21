@@ -19,6 +19,8 @@ Project agent workflows live under **`.agents/skills/<name>/SKILL.md`**. **Full 
 
 Layer model: `documentation/DOC_AGENT_WORKFLOW_LAYERS.md`.
 
+**Package / pattern reuse:** `.agents/skills/dont-reinvent-the-wheel/SKILL.md` (before custom generic subsystems).
+
 **Harness maintenance:** Coherence audit → `.agents/skills/align-harness/SKILL.md`. External intake → drop in `.agents/harness-inbox/` then `.agents/skills/update-harness/SKILL.md`.
 
 ## Rules

@@ -165,7 +165,7 @@ Reply 1, 2, or 3 — or go for the recommendation.
 
 - Do **not** show a menu of skill names.
 - Do **not** run all downstream skills in parallel as equal primaries.
-- Do **not** replace proactive `pattern-review` / `layer-consistency-check` obligations elsewhere.
+- Do **not** replace proactive `pattern-review` / `dont-reinvent-the-wheel` / `layer-consistency-check` obligations elsewhere.
 - Do **not** implement before the child’s own decision gates (e.g. standards-align Should; challenge A/B/C).
 - Keep the facade thin: routing + plain findings — procedures stay in child skills.
 

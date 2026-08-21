@@ -31,6 +31,7 @@ Quick reference guide to all rules and their relationships.
 - **Feature granularity / bounded context** (size budgets, cross-feature imports — `featureBudgets.config.cjs`)
 - **Architecture documentation** (minimal contract-doc maintenance)
 - **Pattern risk (industry precedent)** — pointer to `.agents/skills/pattern-review/` (plans/proposals; not repo lint)
+- **Don't reinvent the wheel (package / pattern reuse)** — pointer to `.agents/skills/dont-reinvent-the-wheel/` (before custom generic subsystems; not pattern-review)
 - **Performance cost risk (heavy DB/UI ops)** — detect heavy operations, propose leaner alternatives, ask user before implementing
 - **Layer consistency (workaround guard)** — pointer to `.agents/skills/layer-consistency-check/` (verify assumptions about existing behavior; catch internal layer mismatches before shipping workarounds)
 

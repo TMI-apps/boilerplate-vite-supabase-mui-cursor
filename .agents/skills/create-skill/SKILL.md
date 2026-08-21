@@ -501,4 +501,4 @@ Good luck!
 | Grade/rewrite one **rule** file | [`rule-quality`](../rule-quality/SKILL.md) |
 | User-global Cursor skill authoring outside this repo | `~/.cursor/skills-cursor/create-skill/` (reference-only here) |
 
-**Next:** After the skill lands in `.agents/skills/` → update [`router`](../router/SKILL.md) situation + index (and layers doc if needed) → optionally [`align-harness`](../align-harness/SKILL.md) for library coherence. Requires explicit user approval to edit protected skill/rule paths unless standing consent applies.
+**Next:** After the skill lands in `.agents/skills/` → update [`router`](../router/SKILL.md) situation + index (and layers doc if needed) → optionally [`align-harness`](../align-harness/SKILL.md) for library coherence. If the new skill is a **proactive guard**, add a thin always-on pointer in the matching `RULE.mdc` (see `pattern-review` / `dont-reinvent-the-wheel`). Requires explicit user approval to edit protected skill/rule paths unless standing consent applies.

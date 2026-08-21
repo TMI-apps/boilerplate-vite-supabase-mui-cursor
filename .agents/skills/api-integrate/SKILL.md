@@ -13,7 +13,7 @@ description: >-
 
 Two phases, same discipline as this repo's retired `airtable-inspect` skill, generalized to any vendor. **Always run Phase 1 (schema/contract) before Phase 2 (sample/wire shape)** — you need to know what exists before you fetch real values.
 
-**Boundary:** this skill covers *researching* an API/vendor, not writing the integration code.
+**Boundary:** this skill covers *researching* an API/vendor, not writing the integration code. If a maintained client/SDK might already cover the work, run [`.agents/skills/dont-reinvent-the-wheel/SKILL.md`](../dont-reinvent-the-wheel/SKILL.md) **first**.
 
 **Next:** Hand off to [`.agents/skills/plan/SKILL.md`](../plan/SKILL.md) § Investigate / Foundation validation for file-level integration work.
 

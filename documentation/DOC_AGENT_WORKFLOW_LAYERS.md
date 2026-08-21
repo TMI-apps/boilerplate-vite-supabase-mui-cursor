@@ -36,7 +36,28 @@ No separate `documentation/DOC_*` procedure for this workflow — invocable step
 
 **Callers:** `plan`, `router`, `feature`, `review-dev-plan` (industry lens), `standards-align` (Phase 3 rubric only). Do not duplicate the rubric elsewhere — link these paths.
 
-**Not the same as:** `.agents/skills/validate/SKILL.md` (repo rule compliance); `.agents/skills/standards-align/SKILL.md` (should-we / how-to align an **existing** scope — reuses this rubric).
+**Not the same as:** `.agents/skills/validate/SKILL.md` (repo rule compliance); `.agents/skills/standards-align/SKILL.md` (should-we / how-to align an **existing** scope — reuses this rubric); `.agents/skills/dont-reinvent-the-wheel/SKILL.md` (package/pattern *reuse* vs custom code).
+
+## Don't reinvent the wheel (package / pattern reuse)
+
+Before writing custom code for a **generic** subsystem, check whether a well-maintained package or a verified public pattern is worth reusing. Agents apply **proactively** per `dont-reinvent-the-wheel` skill and `architecture/RULE.mdc` § Don't reinvent the wheel. Stops at a recommendation (no install, no adapted code).
+
+No separate `documentation/DOC_*` procedure — invocable steps live in the skill.
+
+| Audience | Start here |
+|----------|------------|
+| **Agents** | `.agents/skills/dont-reinvent-the-wheel/SKILL.md` |
+| **Humans** | Same skill; router § `dont-reinvent-the-wheel` vs `pattern-review` vs `api-integrate` |
+
+| Content | Path |
+|---------|------|
+| Procedure (existing coverage → search → shortlist → license → rec) | `.agents/skills/dont-reinvent-the-wheel/SKILL.md` |
+| Always-on reminder | `.cursor/rules/architecture/RULE.mdc` § Don't reinvent the wheel |
+| Plan persistence | `.agents/skills/plan/references/implementation-plan-template.md` § Conflict & compliance |
+
+**Callers:** `plan` § Investigate, `feature` § 3.1a, `implement` / `quick-piv` catch, `router`. Order: this skill → `api-integrate` (if still researching a vendor) → `pattern-review` on the chosen approach.
+
+**Not the same as:** `.agents/skills/pattern-review/SKILL.md` (industry *design* fit); `.agents/skills/api-integrate/SKILL.md` (vendor contract / MCP / wire shape).
 
 ## Standards align loop (should + how)
 
@@ -204,6 +225,7 @@ When the human only files feature requests or bug reports and tests in the app:
 | Product decision ledger (`DECISIONS.md`) / `grill-me` ↔ `plan-grill` | `.agents/skills/plan-grill/` (template SSOT); `grill-me`, `feature`, `plan`, `implement`; router § Plan corridor flow + [`skill-relationship-flow.md`](../.agents/skills/router/references/skill-relationship-flow.md) |
 | Rules registry for skills | `.agents/skills/plan/references/rules-registry.md`; callers link only |
 | Pattern / industry-standard review | `.agents/skills/pattern-review/` — see § Pattern / industry-standard review above |
+| Package / pattern reuse (don't reinvent) | `.agents/skills/dont-reinvent-the-wheel/` — see § Don't reinvent the wheel above |
 | Standards align (should + how) | `.agents/skills/standards-align/` — see § Standards align loop above |
 | Improve facade (product entry) | `.agents/skills/improve/` — see § Improve facade above |
 | Feature purge / multi-asset removal | `.agents/skills/purge-skill/` — router situation + skill index |
@@ -239,6 +261,7 @@ Checklist/cues SSOT: `.agents/skills/plan-grill/SKILL.md`.
 
 - Write adoption guides: `.agents/skills/write-adoption-guide/SKILL.md`
 - Pattern review: `.agents/skills/pattern-review/SKILL.md`
+- Don't reinvent the wheel: `.agents/skills/dont-reinvent-the-wheel/SKILL.md`
 - Standards align: `.agents/skills/standards-align/SKILL.md`
 - Improve facade: `.agents/skills/improve/SKILL.md`
 - Purge feature: `.agents/skills/purge-skill/SKILL.md`

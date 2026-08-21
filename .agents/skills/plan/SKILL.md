@@ -18,7 +18,7 @@ Create a development plan for a feature or job. Research how best to implement i
 
 **Templates:** [`references/implementation-plan-template.md`](references/implementation-plan-template.md), [`references/complexity-rubric.md`](references/complexity-rubric.md).
 
-**Related:** For session context, use `.agents/skills/prime/SKILL.md`. For product forks during this skill, `.agents/skills/plan-grill/SKILL.md`. For architecture/quality gate before merging, use `.agents/skills/validate/SKILL.md` (auto-selects gate depth). For small scoped work without a full plan file, use `.agents/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.agents/skills/implement/SKILL.md`. For repo-rule plan/impl review, use `.agents/skills/validate/SKILL.md`. For multi-lens plan critique (including industry precedent), use `.agents/skills/review-dev-plan/SKILL.md`. For industry precedent on plans/proposals, use `.agents/skills/pattern-review/SKILL.md`. For commits and changelog, use `.agents/skills/finish/SKILL.md`.
+**Related:** For session context, use `.agents/skills/prime/SKILL.md`. For product forks during this skill, `.agents/skills/plan-grill/SKILL.md`. For architecture/quality gate before merging, use `.agents/skills/validate/SKILL.md` (auto-selects gate depth). For small scoped work without a full plan file, use `.agents/skills/quick-piv/SKILL.md`. To execute this plan phase by phase, use `.agents/skills/implement/SKILL.md`. For repo-rule plan/impl review, use `.agents/skills/validate/SKILL.md`. For multi-lens plan critique (including industry precedent), use `.agents/skills/review-dev-plan/SKILL.md`. For industry precedent on plans/proposals, use `.agents/skills/pattern-review/SKILL.md`. For package/pattern reuse vs custom code, use `.agents/skills/dont-reinvent-the-wheel/SKILL.md`. For commits and changelog, use `.agents/skills/finish/SKILL.md`.
 
 ---
 
@@ -66,11 +66,12 @@ For features involving external APIs, database changes, auth, or novel logic, ga
 ### 3. Investigate
 
 - [ ] Search the codebase for existing functionality to reuse (features under `src/features/`, shared under `src/shared/`, `src/components/common/`).
+- [ ] **Reuse vs custom:** If the remaining work is a generic subsystem (auth, webhooks, parsers, queues, protocol clients, complex widgets, …) and current deps do not obviously cover it, run [`.agents/skills/dont-reinvent-the-wheel/SKILL.md`](../dont-reinvent-the-wheel/SKILL.md) **before** locking a from-scratch approach. Record the compact rec in Conflict & compliance. Skip when the work is bespoke/business-specific.
 - [ ] Identify relevant rules from `.cursor/rules/` (start at `.cursor/rules/INDEX.md`).
 - [ ] Align narrative with **`documentation/DOC_APP_VISION.md`** when the plan changes user-facing behavior (problem, persona, app role); if **`DRAFT`**, pause for fill or explicit deferral.
 - [ ] For server-cached data, check `documentation/DOC_TANSTACK_QUERY.md` and existing `api/keys.ts` patterns in features.
 - [ ] Determine scope and boundaries (in-scope vs out-of-scope).
-- [ ] **plan-grill rail:** Before locking ride-vs-new, neighbor absorption, greenfield, or architecture-boundary choices — run [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) **mandatory fork checklist** (enumerate ≥2 options or justify sole option; ask on ties; log clear-winners; anti-dup). Loop: ask → `DECISIONS.md` → **continue Investigate**. Industry/precedent → `pattern-review`.
+- [ ] **plan-grill rail:** Before locking ride-vs-new, neighbor absorption, greenfield, or architecture-boundary choices — run [`.agents/skills/plan-grill/SKILL.md`](../plan-grill/SKILL.md) **mandatory fork checklist** (enumerate ≥2 options or justify sole option; ask on ties; log clear-winners; anti-dup). Loop: ask → `DECISIONS.md` → **continue Investigate**. Industry/precedent → `pattern-review`. Package/pattern reuse vs custom → `dont-reinvent-the-wheel` (already run above when Step 1 applies).
 - [ ] **Feature decomposition self-check (mandatory):** Enumerate distinct domain concepts this work introduces. If more than one cohesive bounded context applies, or projected file count exceeds `featureBudgets.config.cjs` defaults, plan multiple features under `src/features/` before writing steps. Do not wait for the user to request architecture. See `.cursor/rules/architecture/RULE.mdc` § Feature granularity.
 
 #### Optional: Foundation validation (high-risk features)
@@ -100,7 +101,7 @@ Do **not** invest in full planning until the foundation is proven.
 
 Fill **Pattern & precedent** in the plan. If non-standard, **stop** for owner pick (A/B/C or waiver) before implementation.
 
-Industry / product precedent → **pattern-review**. Repo rules → **Conflict & compliance** and later **validate**.
+Industry / product precedent → **pattern-review**. Package/pattern reuse → **dont-reinvent-the-wheel** (Investigate, before this step). Repo rules → **Conflict & compliance** and later **validate**.
 
 ### 6. Plan review gate
 
@@ -197,6 +198,7 @@ During planning, work through (using the rules reference above):
 - Applicable rules (by name/path).
 - Planned file placements and validation status (confirmed vs needs config change — config changes require explicit approval per architecture rule).
 - Known risks / attention points.
+- Reuse / packages (`dont-reinvent-the-wheel` rec, or skipped — reason).
 - Open questions for the user.
 - Confirmed standards diversions, including whether the user chose to keep the diversion or align with best practices.
 
@@ -280,6 +282,7 @@ Each phase must have a gate.
 | Small XS/S one-pass change | `quick-piv` |
 | Product discovery with 🔴 stops | `feature` |
 | Industry precedent procedure | `pattern-review` |
+| Package / pattern reuse vs custom | `dont-reinvent-the-wheel` |
 | Six-lens plan critique | `review-dev-plan` |
 | Repo-rule audit of plan/impl | `validate` |
 | Changelog / commit | `finish` |

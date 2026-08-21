@@ -35,7 +35,19 @@ Architectural patterns, module organization, and structural standards for applic
 
 Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AGENT_WORKFLOW_LAYERS.md) § Pattern / industry-standard review.
 
-**Not:** internal abstraction-layer mismatch or workaround shapes — see § Layer consistency (workaround guard) below.
+**Not:** internal abstraction-layer mismatch or workaround shapes — see § Layer consistency (workaround guard) below. **Not:** package-or-pattern reuse vs writing custom code — see § Don't reinvent the wheel below.
+
+### Don't reinvent the wheel (package / pattern reuse)
+
+**Proactively** before sinking real effort into a generic subsystem (auth, webhooks, parsers, queues, rate limits, protocol clients, complex UI widgets, etc.) that this project's current dependencies may not already cover. Run [`.agents/skills/dont-reinvent-the-wheel/SKILL.md`](../../../.agents/skills/dont-reinvent-the-wheel/SKILL.md) — live search, shortlist, license fit, recommendation only.
+
+- Do this **before** the first line of custom code for that subsystem, and before locking a from-scratch approach in a plan.
+- Skip when the work is small, bespoke, or unique business logic.
+- Do **not** install packages or write adapted code from this check — record the recommendation in the plan (Conflict & compliance) and let `plan` / `implement` decide.
+
+Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AGENT_WORKFLOW_LAYERS.md) § Don't reinvent the wheel.
+
+**Not:** industry UX/API *design* precedent (`pattern-review`); vendor contract research (`api-integrate`).
 
 ### Performance cost risk (heavy DB / UI operations)
 
@@ -63,7 +75,7 @@ Before writing the workaround: run [`.agents/skills/layer-consistency-check/SKIL
 
 Paths: [`documentation/DOC_AGENT_WORKFLOW_LAYERS.md`](../../../documentation/DOC_AGENT_WORKFLOW_LAYERS.md) § Layer consistency (workaround guard).
 
-**Not:** industry precedent ([`pattern-review`](../../../.agents/skills/pattern-review/SKILL.md)); repo rule audit ([`validate`](../../../.agents/skills/validate/SKILL.md)); post-hoc wrong-layer repair ([`consolidate`](../../../.agents/skills/consolidate/SKILL.md) § Semantic placement). When both pattern-review and layer-consistency apply, run layer-consistency first (router § tiebreak).
+**Not:** industry precedent ([`pattern-review`](../../../.agents/skills/pattern-review/SKILL.md)); package/pattern reuse ([`dont-reinvent-the-wheel`](../../../.agents/skills/dont-reinvent-the-wheel/SKILL.md)); repo rule audit ([`validate`](../../../.agents/skills/validate/SKILL.md)); post-hoc wrong-layer repair ([`consolidate`](../../../.agents/skills/consolidate/SKILL.md) § Semantic placement). When both pattern-review and layer-consistency apply, run layer-consistency first (router § tiebreak).
 
 ## Project Structure
 
